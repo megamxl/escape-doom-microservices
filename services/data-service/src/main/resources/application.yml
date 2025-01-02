@@ -1,0 +1,12 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /data-api
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: "env,beans"
