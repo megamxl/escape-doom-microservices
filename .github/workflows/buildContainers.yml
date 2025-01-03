@@ -16,7 +16,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
       - name: Build and Push Image with Jib
-        run: mvn compile jib:build -pl services/gateway-service,services/data-service
+        run: mvn compile -Dmaven.multiModuleProjectDirectory=. jib:build -pl services/gateway-service,services/data-service
         env:
           JIB_REGISTRY_USERNAME: ${{ github.actor }}
           JIB_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
