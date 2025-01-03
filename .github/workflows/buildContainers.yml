@@ -14,9 +14,9 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn clean install --file pom.xml
       - name: Build and Push Image with Jib
-        run: mvn compile -Dmaven.multiModuleProjectDirectory=. jib:build -pl services/gateway-service,services/data-service
+        run: mvn compile -Dmaven.multiModuleProjectDirectory=. jib:build -pl services/gateway-service,services/data-service --file pom.xml
         env:
           JIB_REGISTRY_USERNAME: ${{ github.actor }}
           JIB_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
