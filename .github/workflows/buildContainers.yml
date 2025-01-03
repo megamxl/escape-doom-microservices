@@ -13,6 +13,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
       - name: Build and Push Image with Jib
         run: mvn compile jib:build -pl services/gateway-service,services/data-service
         env:
