@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: data-api
+          uri: http://localhost:8090
+          predicates:
+            - Path=/data-api/**

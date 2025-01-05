@@ -16,14 +16,14 @@ public class Gateway
         SpringApplication.run(Gateway.class, args);
     }
 
-    @Bean
-    public RouteLocator myRoutes(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route(p -> p
-                        .path("/data-api/**")
-                        .uri("http://host.docker.internal:8090"))
-                .build();
-    }
+//    @Bean
+//    public RouteLocator myRoutes(RouteLocatorBuilder builder) {
+//        return builder.routes()
+//                .route(p -> p
+//                        .path("/data-api/**")
+//                        .uri("http://host.docker.internal:8090"))
+//                .build();
+//    }
 }
 
 

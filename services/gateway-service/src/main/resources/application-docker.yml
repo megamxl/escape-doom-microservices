@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: data-api
+          uri: http://host.docker.internal:8090
+          predicates:
+            - Path=/data-api/**
