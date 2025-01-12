@@ -1,3 +1,10 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9081/realms/escape-doom/protocol/openid-connect/certs
+
 server:
   port: 8090
   servlet:
