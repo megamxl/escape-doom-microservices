@@ -7,10 +7,10 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>data-service</artifactId>
+    <artifactId>player-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>data-service</name>
+    <name>player-service</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

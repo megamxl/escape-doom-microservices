@@ -30,12 +30,20 @@
             <artifactId>domain-objects</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>at.escapedoom.spring</groupId>
+            <artifactId>shared-spring-classes</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
     <modules>
         <module>data-service</module>
         <module>gateway-service</module>
+        <module>session-service</module>
+        <module>player-service</module>
+        <module>leaderboard-service</module>
     </modules>
 
     <build>

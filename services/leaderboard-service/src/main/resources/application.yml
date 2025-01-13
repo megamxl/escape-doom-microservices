@@ -6,9 +6,9 @@ spring:
           jwk-set-uri: http://localhost:9081/realms/escape-doom/protocol/openid-connect/certs
 
 server:
-  port: 8090
+  port: 8092
   servlet:
-    context-path: /data-api
+    context-path: /leaderboard-api
 
 
 management:

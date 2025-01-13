@@ -1,8 +1,39 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9081/realms/escape-doom/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:9081/realms/escape-doom
+        registration:
+          gateway:
+            provider: keycloak
+            client-id: gateway
+            client-secret: 379tziAv7ietfR5jRLxpaV59ijpy4Nmi
+            authorization-grant-type: authorization_code
+            scope: openid
+
   cloud:
     gateway:
+      default-filters:
+        - TokenRelay=
       routes:
         - id: data-api
           uri: http://localhost:8090
           predicates:
             - Path=/data-api/**
+        - id: session-api
+          uri: http://localhost:8094
+          predicates:
+            - Path=/session-api/**
+        - id: player-api
+          uri: http://localhost:8093
+          predicates:
+            - Path=/player-api/**
+        - id: leaderboard-api
+          uri: http://localhost:8092
+          predicates:
+            - Path=/leaderboard-api/**
