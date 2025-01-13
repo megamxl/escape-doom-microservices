@@ -18,4 +18,4 @@ jobs:
       - name: Build with Maven
         run: mvn clean install --file pom.xml
       - name: Build and Push Image with Jib
-        run: mvn compile  -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }} jib:build -pl services/gateway-service,services/data-service --file pom.xml
+        run: mvn compile  -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }} jib:build -pl services/gateway-service,services/data-service,services/session-service,services/player-service,services/leaderboard-service --file pom.xml

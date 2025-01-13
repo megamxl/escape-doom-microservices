@@ -1,18 +1,17 @@
-package at.escapedoom.dataService;
+package at.escapedoom.session;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 @SpringBootApplication
 @EnableMethodSecurity
-@ComponentScan(basePackages = {"at.escapedoom.dataService", "at.escapedoom.spring.security" })
-public class DataApi
+@ComponentScan(basePackages = {"at.escapedoom.session", "at.escapedoom.spring.security" })
+public class SessionApi
 {
     public static void main( String[] args )
     {
-        SpringApplication.run(DataApi.class, args);
+        SpringApplication.run(SessionApi.class, args);
     }
 }

@@ -41,6 +41,9 @@
     <modules>
         <module>data-service</module>
         <module>gateway-service</module>
+        <module>session-service</module>
+        <module>player-service</module>
+        <module>leaderboard-service</module>
     </modules>
 
     <build>

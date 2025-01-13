@@ -1,4 +1,4 @@
-package at.escapedoom.dataService;
+package at.escapedoom.data;
 
 import at.escapedoom.NameDTO;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -25,3 +25,15 @@ spring:
           uri: http://localhost:8090
           predicates:
             - Path=/data-api/**
+        - id: session-api
+          uri: http://localhost:8094
+          predicates:
+            - Path=/session-api/**
+        - id: player-api
+          uri: http://localhost:8093
+          predicates:
+            - Path=/player-api/**
+        - id: leaderboard-api
+          uri: http://localhost:8092
+          predicates:
+            - Path=/leaderboard-api/**
