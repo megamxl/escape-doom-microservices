@@ -1,4 +1,4 @@
-package at.escapedoom;
+package at.escapedoom.session;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
