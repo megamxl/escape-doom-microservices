@@ -12,5 +12,6 @@
 
     <modules>
         <module>domain-objects</module>
+        <module>shared-spring-classes</module>
     </modules>
 </project>
