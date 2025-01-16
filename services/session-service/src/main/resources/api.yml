@@ -1,0 +1,207 @@
+openapi: "3.0.3"
+info:
+  title: Session API
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1/escape-room
+paths:
+  /create:
+    post:
+      tags:
+        - management
+      summary: Create a new escape-room instance
+      description: Creates a new escape-room instance
+      requestBody:
+        description: The escape-room template to use
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EscapeRoomCreation"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+  /state/{escape_room_session_id}/{state}:
+    put:
+      tags:
+        - management
+      summary: Start or stop an escape-room instance
+      description: Starts or stops an escape-room instance
+      parameters:
+        - name: escape_room_session_id
+          in: path
+          description: The id of the escape-room instance
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: state
+          in: path
+          description: The state to set
+          required: true
+          schema:
+            type: string
+            format: enum
+            $ref: "#/components/schemas/EscapeRoomState"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+  /history:
+    get:
+      tags:
+        - history
+      summary: Get the history of all escape-room instances of a lector
+      description: Get the history of all escape-room instances of a lector
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EscapeRoomSessionResponse"
+  /tag/{escape_room_session_id}/{tag_name}:
+    delete:
+      tags:
+        - tags
+      summary: Remove a tag from an escape-room instance
+      description: Remove a tag from an escape-room instance
+      parameters:
+        - name: escape_room_session_id
+          in: path
+          description: The ID of the escape room session
+          required: true
+          example: a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+          schema:
+            type: string
+        - name: tag_name
+          in: path
+          description: The name of the tag to remove
+          required: true
+          example: "CSDC"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The tag was added to the escape room
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+    put:
+      tags:
+        - tags
+      summary: Add a tag to an escape-room instance
+      description: Add a tag to an escape-room instance
+      parameters:
+        - name: escape_room_session_id
+          in: path
+          description: The ID of the escape room session
+          required: true
+          example: a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+          schema:
+            type: string
+        - name: tag_name
+          in: path
+          description: The name of the tag to remove
+          required: true
+          example: "CSDC"
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The tag was added to the escape room
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+components:
+  schemas:
+    EscapeRoomTagChange:
+      description: The tag to add or remove
+      type: object
+      properties:
+        tag_name:
+          type: string
+          description: The tag to add or remove
+          example: "CSDC"
+        escape_room_session_id:
+          type: string
+          format: uuid
+          description: The id of the escape-room instance
+          example: a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+    EscapeRoomSessionResponse:
+      description: The escape-room instance
+      type: object
+      properties:
+        state:
+          $ref: "#/components/schemas/EscapeRoomState"
+        escape_room_template_id:
+          type: string
+          format: uuid
+          description: The id of the escape-room template used
+          example: c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+        escape_room_session_id:
+          type: string
+          format: uuid
+          description: The id of the escape-room session
+          example: a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+        play_time:
+          type: integer
+          description: The time in minutes the escape-room will be played for
+          minimum: 1
+          maximum: 180
+          default: 60
+          example: 60
+        room_pin:
+          type: integer
+          description: The pin to join the escape-room
+          minimum: 100000
+          maximum: 999999
+          example: 420666
+        tags:
+          type: array
+          items:
+            type: string
+            description: The tags of the escape-room
+            example: []
+    EscapeRoomCreation:
+      description: The escape-room template to use
+      type: object
+      properties:
+        escape_room_template_id:
+          type: string
+          format: uuid
+          description: The id of the escape-room template to use
+          example: c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+        play_time:
+          type: integer
+          description: The time in minutes the escape-room will be played for
+          minimum: 1
+          maximum: 180
+          default: 60
+          example: 60
+    EscapeRoomState:
+      description: The state of an escape-room instance
+      type: string
+      enum:
+        - open
+        - closed
+        - started
+        - finished
+
+  requestBodies:
+    escapeRoomCreation:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EscapeRoomCreation"
