@@ -14,7 +14,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
 import java.util.*;
 import jakarta.annotation.Generated;
 
@@ -26,120 +25,121 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public class EscapeRoomLevel {
 
-  @Valid
-  private List<@Valid Scene> scenes = new ArrayList<>();
+    @Valid
+    private List<@Valid Scene> scenes = new ArrayList<>();
 
-  private String codeSnippet;
+    private String codeSnippet;
 
-  private BigDecimal levelSequence;
+    private BigDecimal levelSequence;
 
-  public EscapeRoomLevel scenes(List<@Valid Scene> scenes) {
-    this.scenes = scenes;
-    return this;
-  }
-
-  public EscapeRoomLevel addScenesItem(Scene scenesItem) {
-    if (this.scenes == null) {
-      this.scenes = new ArrayList<>();
+    public EscapeRoomLevel scenes(List<@Valid Scene> scenes) {
+        this.scenes = scenes;
+        return this;
     }
-    this.scenes.add(scenesItem);
-    return this;
-  }
 
-  /**
-   * Get scenes
-   * @return scenes
-   */
-  @Valid 
-  @Schema(name = "scenes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("scenes")
-  public List<@Valid Scene> getScenes() {
-    return scenes;
-  }
-
-  public void setScenes(List<@Valid Scene> scenes) {
-    this.scenes = scenes;
-  }
-
-  public EscapeRoomLevel codeSnippet(String codeSnippet) {
-    this.codeSnippet = codeSnippet;
-    return this;
-  }
-
-  /**
-   * The code snippet of the level
-   * @return codeSnippet
-   */
-  
-  @Schema(name = "code_snippet", example = "public static void main(String[] args) { public static string riddle1() { //Your code goes here! } }", description = "The code snippet of the level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("code_snippet")
-  public String getCodeSnippet() {
-    return codeSnippet;
-  }
-
-  public void setCodeSnippet(String codeSnippet) {
-    this.codeSnippet = codeSnippet;
-  }
-
-  public EscapeRoomLevel levelSequence(BigDecimal levelSequence) {
-    this.levelSequence = levelSequence;
-    return this;
-  }
-
-  /**
-   * The sequence number of the level
-   * @return levelSequence
-   */
-  @Valid 
-  @Schema(name = "level_sequence", example = "1", description = "The sequence number of the level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("level_sequence")
-  public BigDecimal getLevelSequence() {
-    return levelSequence;
-  }
-
-  public void setLevelSequence(BigDecimal levelSequence) {
-    this.levelSequence = levelSequence;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    public EscapeRoomLevel addScenesItem(Scene scenesItem) {
+        if (this.scenes == null) {
+            this.scenes = new ArrayList<>();
+        }
+        this.scenes.add(scenesItem);
+        return this;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    /**
+     * Get scenes
+     *
+     * @return scenes
+     */
+    @Valid
+    @Schema(name = "scenes", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("scenes")
+    public List<@Valid Scene> getScenes() {
+        return scenes;
     }
-    EscapeRoomLevel escapeRoomLevel = (EscapeRoomLevel) o;
-    return Objects.equals(this.scenes, escapeRoomLevel.scenes) &&
-        Objects.equals(this.codeSnippet, escapeRoomLevel.codeSnippet) &&
-        Objects.equals(this.levelSequence, escapeRoomLevel.levelSequence);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(scenes, codeSnippet, levelSequence);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class EscapeRoomLevel {\n");
-    sb.append("    scenes: ").append(toIndentedString(scenes)).append("\n");
-    sb.append("    codeSnippet: ").append(toIndentedString(codeSnippet)).append("\n");
-    sb.append("    levelSequence: ").append(toIndentedString(levelSequence)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
+    public void setScenes(List<@Valid Scene> scenes) {
+        this.scenes = scenes;
     }
-    return o.toString().replace("\n", "\n    ");
-  }
+
+    public EscapeRoomLevel codeSnippet(String codeSnippet) {
+        this.codeSnippet = codeSnippet;
+        return this;
+    }
+
+    /**
+     * The code snippet of the level
+     *
+     * @return codeSnippet
+     */
+
+    @Schema(name = "code_snippet", example = "public static void main(String[] args) { public static string riddle1() { //Your code goes here! } }", description = "The code snippet of the level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("code_snippet")
+    public String getCodeSnippet() {
+        return codeSnippet;
+    }
+
+    public void setCodeSnippet(String codeSnippet) {
+        this.codeSnippet = codeSnippet;
+    }
+
+    public EscapeRoomLevel levelSequence(BigDecimal levelSequence) {
+        this.levelSequence = levelSequence;
+        return this;
+    }
+
+    /**
+     * The sequence number of the level
+     *
+     * @return levelSequence
+     */
+    @Valid
+    @Schema(name = "level_sequence", example = "1", description = "The sequence number of the level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("level_sequence")
+    public BigDecimal getLevelSequence() {
+        return levelSequence;
+    }
+
+    public void setLevelSequence(BigDecimal levelSequence) {
+        this.levelSequence = levelSequence;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        EscapeRoomLevel escapeRoomLevel = (EscapeRoomLevel) o;
+        return Objects.equals(this.scenes, escapeRoomLevel.scenes)
+                && Objects.equals(this.codeSnippet, escapeRoomLevel.codeSnippet)
+                && Objects.equals(this.levelSequence, escapeRoomLevel.levelSequence);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(scenes, codeSnippet, levelSequence);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class EscapeRoomLevel {\n");
+        sb.append("    scenes: ").append(toIndentedString(scenes)).append("\n");
+        sb.append("    codeSnippet: ").append(toIndentedString(codeSnippet)).append("\n");
+        sb.append("    levelSequence: ").append(toIndentedString(levelSequence)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces (except the first line).
+     */
+    private String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
 }
-

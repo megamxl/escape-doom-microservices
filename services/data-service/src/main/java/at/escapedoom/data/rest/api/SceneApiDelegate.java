@@ -19,8 +19,8 @@ import java.util.Optional;
 import jakarta.annotation.Generated;
 
 /**
- * A delegate to be called by the {@link SceneApiController}}.
- * Implement this interface with a {@link org.springframework.stereotype.Service} annotated class.
+ * A delegate to be called by the {@link SceneApiController}}. Implement this interface with a
+ * {@link org.springframework.stereotype.Service} annotated class.
  */
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public interface SceneApiDelegate {
@@ -30,16 +30,15 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * GET /scene : Get all scenes
-     * Retrieve all scenes that are not linked to any specific level
+     * GET /scene : Get all scenes Retrieve all scenes that are not linked to any specific level
      *
-     * @return A list of scenes (status code 200)
-     *         or Internal Server Error (status code 500)
+     * @return A list of scenes (status code 200) or Internal Server Error (status code 500)
+     *
      * @see SceneApi#sceneGet
      */
     default ResponseEntity<List<Scene>> sceneGet() {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -57,18 +56,19 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * POST /scene : Create a new scene
-     * Create a Scene independently of any level
+     * POST /scene : Create a new scene Create a Scene independently of any level
      *
-     * @param scene The details of the new Scene (required)
-     * @return Scene created successfully (status code 201)
-     *         or Bad Request (status code 400)
-     *         or Internal Server Error (status code 500)
+     * @param scene
+     *            The details of the new Scene (required)
+     *
+     * @return Scene created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
+     *         (status code 500)
+     *
      * @see SceneApi#scenePost
      */
     default ResponseEntity<Scene> scenePost(Scene scene) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -91,18 +91,20 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * DELETE /scenes/{escape-room-scene-id} : Delete a scene
-     * Delete a specific Scene by its ID
+     * DELETE /scenes/{escape-room-scene-id} : Delete a scene Delete a specific Scene by its ID
      *
-     * @param escapeRoomSceneId The unique ID of the Scene (required)
-     * @return Scene deleted successfully (status code 200)
-     *         or Not Found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomSceneId
+     *            The unique ID of the Scene (required)
+     *
+     * @return Scene deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
+     *         (status code 500)
+     *
      * @see SceneApi#scenesEscapeRoomSceneIdDelete
      */
-    default ResponseEntity<ScenesEscapeRoomSceneIdDelete200Response> scenesEscapeRoomSceneIdDelete(String escapeRoomSceneId) {
+    default ResponseEntity<ScenesEscapeRoomSceneIdDelete200Response> scenesEscapeRoomSceneIdDelete(
+            String escapeRoomSceneId) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"code\" : 200, \"message\" : \"Scene deleted successfully\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -125,18 +127,18 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * GET /scenes/{escape-room-scene-id} : Get details of a scene
-     * Retrieve details of a specific scene by its ID
+     * GET /scenes/{escape-room-scene-id} : Get details of a scene Retrieve details of a specific scene by its ID
      *
-     * @param escapeRoomSceneId The unique ID of the Scene (required)
-     * @return Scene details (status code 200)
-     *         or Not Found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomSceneId
+     *            The unique ID of the Scene (required)
+     *
+     * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
+     *
      * @see SceneApi#scenesEscapeRoomSceneIdGet
      */
     default ResponseEntity<Scene> scenesEscapeRoomSceneIdGet(String escapeRoomSceneId) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -159,21 +161,21 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * PUT /scenes/{escape-room-scene-id} : Update a scene
-     * Update the details of a specific Scene
+     * PUT /scenes/{escape-room-scene-id} : Update a scene Update the details of a specific Scene
      *
-     * @param escapeRoomSceneId The unique ID of the Scene (required)
-     * @param scene The updated details of the Scene (required)
-     * @return Scene updated successfully (status code 200)
-     *         or Bad Request (status code 400)
-     *         or Not Found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomSceneId
+     *            The unique ID of the Scene (required)
+     * @param scene
+     *            The updated details of the Scene (required)
+     *
+     * @return Scene updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
+     *         404) or Internal Server Error (status code 500)
+     *
      * @see SceneApi#scenesEscapeRoomSceneIdPut
      */
-    default ResponseEntity<Scene> scenesEscapeRoomSceneIdPut(String escapeRoomSceneId,
-        Scene scene) {
+    default ResponseEntity<Scene> scenesEscapeRoomSceneIdPut(String escapeRoomSceneId, Scene scene) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);

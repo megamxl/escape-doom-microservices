@@ -7,7 +7,6 @@ import at.escapedoom.data.rest.model.TemplateCreatePost400Response;
 import at.escapedoom.data.rest.model.TemplateCreatePost500Response;
 import at.escapedoom.data.rest.model.TemplateDeleteEscapeRoomTemplateIdDelete404Response;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,7 +37,8 @@ public class RiddleApiController implements RiddleApi {
     private final RiddleApiDelegate delegate;
 
     public RiddleApiController(@Autowired(required = false) RiddleApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new RiddleApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new RiddleApiDelegate() {
+        });
     }
 
     @Override

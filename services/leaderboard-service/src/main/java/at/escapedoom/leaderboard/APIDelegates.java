@@ -11,8 +11,8 @@ public class APIDelegates {
 
     @Bean
     @Primary
-    public AllLeaderboardsApiDelegate allLeaderboardsApiDelegate (@Autowired AllLeaderboardsService delegate) {
-      return  delegate;
+    public AllLeaderboardsApiDelegate allLeaderboardsApiDelegate(@Autowired AllLeaderboardsService delegate) {
+        return delegate;
     }
 
 }

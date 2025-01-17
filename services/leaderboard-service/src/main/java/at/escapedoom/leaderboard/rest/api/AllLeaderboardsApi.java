@@ -34,38 +34,28 @@ import jakarta.annotation.Generated;
 public interface AllLeaderboardsApi {
 
     default AllLeaderboardsApiDelegate getDelegate() {
-        return new AllLeaderboardsApiDelegate() {};
+        return new AllLeaderboardsApiDelegate() {
+        };
     }
 
     /**
-     * GET /escape-room-sessions : Get all session leaderboards
-     * Retrieve leaderboards for all sessions, optionally filtered by session tags.
+     * GET /escape-room-sessions : Get all session leaderboards Retrieve leaderboards for all sessions, optionally
+     * filtered by session tags.
      *
-     * @param tags A comma-separated list of tags to filter sessions. (optional)
-     * @return All session leaderboards (status code 200)
-     *         or No sessions found (status code 404)
+     * @param tags
+     *            A comma-separated list of tags to filter sessions. (optional)
+     *
+     * @return All session leaderboards (status code 200) or No sessions found (status code 404)
      */
-    @Operation(
-        operationId = "escapeRoomSessionsGet",
-        summary = "Get all session leaderboards",
-        description = "Retrieve leaderboards for all sessions, optionally filtered by session tags.",
-        tags = { "all-leaderboards" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "All session leaderboards", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FullExportRoomPinGet200ResponseInner.class)))
-            }),
-            @ApiResponse(responseCode = "404", description = "No sessions found")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/escape-room-sessions",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "escapeRoomSessionsGet", summary = "Get all session leaderboards", description = "Retrieve leaderboards for all sessions, optionally filtered by session tags.", tags = {
+            "all-leaderboards" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "All session leaderboards", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FullExportRoomPinGet200ResponseInner.class))) }),
+                    @ApiResponse(responseCode = "404", description = "No sessions found") })
+    @RequestMapping(method = RequestMethod.GET, value = "/escape-room-sessions", produces = { "application/json" })
+
     default ResponseEntity<List<FullExportRoomPinGet200ResponseInner>> escapeRoomSessionsGet(
-        @Parameter(name = "tags", description = "A comma-separated list of tags to filter sessions.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tags", required = false) List<String> tags
-    ) {
+            @Parameter(name = "tags", description = "A comma-separated list of tags to filter sessions.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tags", required = false) List<String> tags) {
         return getDelegate().escapeRoomSessionsGet(tags);
     }
 

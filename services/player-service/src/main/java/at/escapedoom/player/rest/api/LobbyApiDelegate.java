@@ -16,8 +16,8 @@ import java.util.Optional;
 import jakarta.annotation.Generated;
 
 /**
- * A delegate to be called by the {@link LobbyApiController}}.
- * Implement this interface with a {@link org.springframework.stereotype.Service} annotated class.
+ * A delegate to be called by the {@link LobbyApiController}}. Implement this interface with a
+ * {@link org.springframework.stereotype.Service} annotated class.
  */
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public interface LobbyApiDelegate {
@@ -27,16 +27,18 @@ public interface LobbyApiDelegate {
     }
 
     /**
-     * PUT /join : Join an escape-room instance
-     * Join an escape-room instance
+     * PUT /join : Join an escape-room instance Join an escape-room instance
      *
-     * @param escapeRoomJoin The escape-room instance to join (required)
+     * @param escapeRoomJoin
+     *            The escape-room instance to join (required)
+     *
      * @return OK (status code 200)
+     *
      * @see LobbyApi#joinPut
      */
     default ResponseEntity<EscapeRoomJoinResponse> joinPut(EscapeRoomJoin escapeRoomJoin) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"player_session_id\" : \"78787878-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"player_name\" : \"Waschbär\", \"escape_room_state\" : \"open\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);

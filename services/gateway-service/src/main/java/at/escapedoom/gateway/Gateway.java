@@ -18,22 +18,18 @@ import java.text.ParseException;
 @SpringBootApplication
 @EnableWebFluxSecurity
 @RestController
-public class Gateway
-{
-    private static final Logger LOGGER = LoggerFactory
-            .getLogger(Gateway.class);
+public class Gateway {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Gateway.class);
 
-    public static void main( String[] args )
-    {
+    public static void main(String[] args) {
         SpringApplication.run(Gateway.class, args);
     }
 
     @GetMapping(value = "/test")
-    public Mono<String> getHome(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient) throws ParseException {
+    public Mono<String> getHome(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient authorizedClient)
+            throws ParseException {
         SignedJWT signedJWT = (SignedJWT) JWTParser.parse(authorizedClient.getAccessToken().getTokenValue());
 
         return Mono.just(authorizedClient.getAccessToken().getTokenValue());
     }
 }
-
-

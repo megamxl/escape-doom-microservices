@@ -35,69 +35,48 @@ import jakarta.annotation.Generated;
 public interface SessionLeaderboardApi {
 
     default SessionLeaderboardApiDelegate getDelegate() {
-        return new SessionLeaderboardApiDelegate() {};
+        return new SessionLeaderboardApiDelegate() {
+        };
     }
 
     /**
-     * GET /full-export/{room_pin} : Retrieve full leaderboard
-     * Retrieve full leaderboard for a specific escape room session, showing progress for all users.
+     * GET /full-export/{room_pin} : Retrieve full leaderboard Retrieve full leaderboard for a specific escape room
+     * session, showing progress for all users.
      *
-     * @param roomPin The unique ID of the escape room session. (required)
+     * @param roomPin
+     *            The unique ID of the escape room session. (required)
+     *
      * @return Full leaderboard (status code 200)
      */
-    @Operation(
-        operationId = "fullExportRoomPinGet",
-        summary = "Retrieve full leaderboard",
-        description = "Retrieve full leaderboard for a specific escape room session, showing progress for all users.",
-        tags = { "session-leaderboard" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Full leaderboard", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FullExportRoomPinGet200ResponseInner.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/full-export/{room_pin}",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "fullExportRoomPinGet", summary = "Retrieve full leaderboard", description = "Retrieve full leaderboard for a specific escape room session, showing progress for all users.", tags = {
+            "session-leaderboard" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Full leaderboard", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = FullExportRoomPinGet200ResponseInner.class))) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/full-export/{room_pin}", produces = { "application/json" })
+
     default ResponseEntity<List<FullExportRoomPinGet200ResponseInner>> fullExportRoomPinGet(
-        @Min(100000) @Max(999999) @Parameter(name = "room_pin", description = "The unique ID of the escape room session.", required = true, in = ParameterIn.PATH) @PathVariable("room_pin") Integer roomPin
-    ) {
+            @Min(100000) @Max(999999) @Parameter(name = "room_pin", description = "The unique ID of the escape room session.", required = true, in = ParameterIn.PATH) @PathVariable("room_pin") Integer roomPin) {
         return getDelegate().fullExportRoomPinGet(roomPin);
     }
 
-
     /**
-     * GET /{room_pin} : Get current session leaderboard
-     * Retrieve the leaderboard for a specific escape room session, showing progress for all users.
+     * GET /{room_pin} : Get current session leaderboard Retrieve the leaderboard for a specific escape room session,
+     * showing progress for all users.
      *
-     * @param roomPin The unique ID of the escape room session. (required)
-     * @return Current session leaderboard (status code 200)
-     *         or Session not found (status code 404)
+     * @param roomPin
+     *            The unique ID of the escape room session. (required)
+     *
+     * @return Current session leaderboard (status code 200) or Session not found (status code 404)
      */
-    @Operation(
-        operationId = "roomPinGet",
-        summary = "Get current session leaderboard",
-        description = "Retrieve the leaderboard for a specific escape room session, showing progress for all users.",
-        tags = { "session-leaderboard" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Current session leaderboard", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserProgress.class)))
-            }),
-            @ApiResponse(responseCode = "404", description = "Session not found")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/{room_pin}",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "roomPinGet", summary = "Get current session leaderboard", description = "Retrieve the leaderboard for a specific escape room session, showing progress for all users.", tags = {
+            "session-leaderboard" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Current session leaderboard", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = UserProgress.class))) }),
+                    @ApiResponse(responseCode = "404", description = "Session not found") })
+    @RequestMapping(method = RequestMethod.GET, value = "/{room_pin}", produces = { "application/json" })
+
     default ResponseEntity<List<UserProgress>> roomPinGet(
-        @Min(100000) @Max(999999) @Parameter(name = "room_pin", description = "The unique ID of the escape room session.", required = true, in = ParameterIn.PATH) @PathVariable("room_pin") Integer roomPin
-    ) {
+            @Min(100000) @Max(999999) @Parameter(name = "room_pin", description = "The unique ID of the escape room session.", required = true, in = ParameterIn.PATH) @PathVariable("room_pin") Integer roomPin) {
         return getDelegate().roomPinGet(roomPin);
     }
 

@@ -20,8 +20,8 @@ import java.util.Optional;
 import jakarta.annotation.Generated;
 
 /**
- * A delegate to be called by the {@link RiddleApiController}}.
- * Implement this interface with a {@link org.springframework.stereotype.Service} annotated class.
+ * A delegate to be called by the {@link RiddleApiController}}. Implement this interface with a
+ * {@link org.springframework.stereotype.Service} annotated class.
  */
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public interface RiddleApiDelegate {
@@ -31,16 +31,15 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * GET /all-riddles : Get all  riddles
-     * Retrieve all riddles that are not yet linked to any level
+     * GET /all-riddles : Get all riddles Retrieve all riddles that are not yet linked to any level
      *
-     * @return A list of riddles (status code 200)
-     *         or Internal Server Error (status code 500)
+     * @return A list of riddles (status code 200) or Internal Server Error (status code 500)
+     *
      * @see RiddleApi#allRiddlesGet
      */
     default ResponseEntity<List<Riddle>> allRiddlesGet() {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }, { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -58,18 +57,19 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * POST /riddle : Create a new riddle
-     * Create a riddle without linking it to a specific level
+     * POST /riddle : Create a new riddle Create a riddle without linking it to a specific level
      *
-     * @param riddlePostRequest The details of the riddle to create (required)
-     * @return Riddle created successfully (status code 201)
-     *         or Bad Request (status code 400)
-     *         or Internal Server Error (status code 500)
+     * @param riddlePostRequest
+     *            The details of the riddle to create (required)
+     *
+     * @return Riddle created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
+     *         (status code 500)
+     *
      * @see RiddleApi#riddlePost
      */
     default ResponseEntity<Riddle> riddlePost(RiddlePostRequest riddlePostRequest) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -92,18 +92,20 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * DELETE /riddles/{escape-room-riddle-id} : Delete a riddle
-     * Delete a riddle that is not linked to any level
+     * DELETE /riddles/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
      *
-     * @param escapeRoomRiddleId The unique ID of the riddle (required)
-     * @return Riddle deleted successfully (status code 200)
-     *         or Not Found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomRiddleId
+     *            The unique ID of the riddle (required)
+     *
+     * @return Riddle deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
+     *         (status code 500)
+     *
      * @see RiddleApi#riddlesEscapeRoomRiddleIdDelete
      */
-    default ResponseEntity<RiddlesEscapeRoomRiddleIdDelete200Response> riddlesEscapeRoomRiddleIdDelete(String escapeRoomRiddleId) {
+    default ResponseEntity<RiddlesEscapeRoomRiddleIdDelete200Response> riddlesEscapeRoomRiddleIdDelete(
+            String escapeRoomRiddleId) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"code\" : 200, \"message\" : \"Riddle deleted successfully\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -126,21 +128,22 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * PUT /riddles/{escape-room-riddle-id} : Override a riddle
-     * Override the details of a riddle
+     * PUT /riddles/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
      *
-     * @param escapeRoomRiddleId The unique ID of the riddle (required)
-     * @param riddlePostRequest The override details of the riddle (required)
-     * @return Riddle updated successfully (status code 200)
-     *         or Bad Request (status code 400)
-     *         or Not Found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomRiddleId
+     *            The unique ID of the riddle (required)
+     * @param riddlePostRequest
+     *            The override details of the riddle (required)
+     *
+     * @return Riddle updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
+     *         404) or Internal Server Error (status code 500)
+     *
      * @see RiddleApi#riddlesEscapeRoomRiddleIdPut
      */
     default ResponseEntity<Riddle> riddlesEscapeRoomRiddleIdPut(String escapeRoomRiddleId,
-        RiddlePostRequest riddlePostRequest) {
+            RiddlePostRequest riddlePostRequest) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);

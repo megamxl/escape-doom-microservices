@@ -5,7 +5,6 @@ import at.escapedoom.player.rest.model.EscapeRoomResult;
 import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
 import java.util.UUID;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,7 +35,8 @@ public class LevelApiController implements LevelApi {
     private final LevelApiDelegate delegate;
 
     public LevelApiController(@Autowired(required = false) LevelApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new LevelApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new LevelApiDelegate() {
+        });
     }
 
     @Override

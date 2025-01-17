@@ -2,7 +2,6 @@ package at.escapedoom.leaderboard.rest.api;
 
 import at.escapedoom.leaderboard.rest.model.FullExportRoomPinGet200ResponseInner;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +32,8 @@ public class AllLeaderboardsApiController implements AllLeaderboardsApi {
     private final AllLeaderboardsApiDelegate delegate;
 
     public AllLeaderboardsApiController(@Autowired(required = false) AllLeaderboardsApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new AllLeaderboardsApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new AllLeaderboardsApiDelegate() {
+        });
     }
 
     @Override

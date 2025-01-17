@@ -3,7 +3,6 @@ package at.escapedoom.player.rest.api;
 import at.escapedoom.player.rest.model.EscapeRoomJoin;
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +33,8 @@ public class LobbyApiController implements LobbyApi {
     private final LobbyApiDelegate delegate;
 
     public LobbyApiController(@Autowired(required = false) LobbyApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new LobbyApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new LobbyApiDelegate() {
+        });
     }
 
     @Override

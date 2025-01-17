@@ -43,208 +43,139 @@ import jakarta.annotation.Generated;
 public interface TemplateApi {
 
     default TemplateApiDelegate getDelegate() {
-        return new TemplateApiDelegate() {};
+        return new TemplateApiDelegate() {
+        };
     }
 
     /**
-     * GET /all-templates : Get all EscapeRoomTemplates
-     * Retrieve a list of all existing EscapeRoomTemplates from a Lector
+     * GET /all-templates : Get all EscapeRoomTemplates Retrieve a list of all existing EscapeRoomTemplates from a
+     * Lector
      *
-     * @return A list of templates (status code 200)
-     *         or Internal Server Error (status code 500)
+     * @return A list of templates (status code 200) or Internal Server Error (status code 500)
      */
-    @Operation(
-        operationId = "allTemplatesGet",
-        summary = "Get all EscapeRoomTemplates",
-        description = "Retrieve a list of all existing EscapeRoomTemplates from a Lector",
-        tags = { "Template" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "A list of templates", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomTemplateDTO.class)))
-            }),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/all-templates",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "allTemplatesGet", summary = "Get all EscapeRoomTemplates", description = "Retrieve a list of all existing EscapeRoomTemplates from a Lector", tags = {
+            "Template" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "A list of templates", content = {
+                            @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomTemplateDTO.class))) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/all-templates", produces = { "application/json" })
+
     default ResponseEntity<List<EscapeRoomTemplateDTO>> allTemplatesGet(
-        
+
     ) {
         return getDelegate().allTemplatesGet();
     }
 
-
     /**
-     * POST /template/create : Creates a new Template for Escape Doom Game
-     * Creates a new Template for EscapeRoom
+     * POST /template/create : Creates a new Template for Escape Doom Game Creates a new Template for EscapeRoom
      *
-     * @param escapeRoomTemplateCreateRequest Lectors ID + Name and Description for a Template (required)
-     * @return Operation result for EscapeRoomTemplate (status code 200)
-     *         or Bad Request (status code 400)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomTemplateCreateRequest
+     *            Lectors ID + Name and Description for a Template (required)
+     *
+     * @return Operation result for EscapeRoomTemplate (status code 200) or Bad Request (status code 400) or Internal
+     *         Server Error (status code 500)
      */
-    @Operation(
-        operationId = "templateCreatePost",
-        summary = "Creates a new Template for Escape Doom Game",
-        description = "Creates a new Template for EscapeRoom",
-        tags = { "Template" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Operation result for EscapeRoomTemplate", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResult.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class))
-            }),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/template/create",
-        produces = { "application/json" },
-        consumes = { "application/json" }
-    )
-    
+    @Operation(operationId = "templateCreatePost", summary = "Creates a new Template for Escape Doom Game", description = "Creates a new Template for EscapeRoom", tags = {
+            "Template" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Operation result for EscapeRoomTemplate", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResult.class)) }),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+    @RequestMapping(method = RequestMethod.POST, value = "/template/create", produces = {
+            "application/json" }, consumes = { "application/json" })
+
     default ResponseEntity<EscapeRoomTemplateResult> templateCreatePost(
-        @Parameter(name = "EscapeRoomTemplateCreateRequest", description = "Lectors ID + Name and Description for a Template", required = true) @Valid @RequestBody EscapeRoomTemplateCreateRequest escapeRoomTemplateCreateRequest
-    ) {
+            @Parameter(name = "EscapeRoomTemplateCreateRequest", description = "Lectors ID + Name and Description for a Template", required = true) @Valid @RequestBody EscapeRoomTemplateCreateRequest escapeRoomTemplateCreateRequest) {
         return getDelegate().templateCreatePost(escapeRoomTemplateCreateRequest);
     }
 
-
     /**
-     * DELETE /template/delete/{escape-room-template-id} : Deletes an EscapeRoomTemplate
-     * Deletes an EscapeRoomTemplate by its unique ID
+     * DELETE /template/delete/{escape-room-template-id} : Deletes an EscapeRoomTemplate Deletes an EscapeRoomTemplate
+     * by its unique ID
      *
-     * @param escapeRoomTemplateId The unique ID of the EscapeRoomTemplate to delete (required)
-     * @return Operation result for EscapeRoomTemplate (status code 200)
-     *         or Bad Request (status code 400)
-     *         or Not Found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomTemplateId
+     *            The unique ID of the EscapeRoomTemplate to delete (required)
+     *
+     * @return Operation result for EscapeRoomTemplate (status code 200) or Bad Request (status code 400) or Not Found
+     *         (status code 404) or Internal Server Error (status code 500)
      */
-    @Operation(
-        operationId = "templateDeleteEscapeRoomTemplateIdDelete",
-        summary = "Deletes an EscapeRoomTemplate",
-        description = "Deletes an EscapeRoomTemplate by its unique ID",
-        tags = { "Template" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Operation result for EscapeRoomTemplate", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResult.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class))
-            }),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.DELETE,
-        value = "/template/delete/{escape-room-template-id}",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "templateDeleteEscapeRoomTemplateIdDelete", summary = "Deletes an EscapeRoomTemplate", description = "Deletes an EscapeRoomTemplate by its unique ID", tags = {
+            "Template" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Operation result for EscapeRoomTemplate", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResult.class)) }),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class)) }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/template/delete/{escape-room-template-id}", produces = {
+            "application/json" })
+
     default ResponseEntity<EscapeRoomTemplateResult> templateDeleteEscapeRoomTemplateIdDelete(
-        @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate to delete", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId
-    ) {
+            @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate to delete", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId) {
         return getDelegate().templateDeleteEscapeRoomTemplateIdDelete(escapeRoomTemplateId);
     }
 
-
     /**
-     * GET /template/{escape-room-template-id} : Get a specific EscapeRoomTemplate by ID
-     * Retrieve details of a specific EscapeRoomTemplate using its unique ID
+     * GET /template/{escape-room-template-id} : Get a specific EscapeRoomTemplate by ID Retrieve details of a specific
+     * EscapeRoomTemplate using its unique ID
      *
-     * @param escapeRoomTemplateId The unique ID of the EscapeRoomTemplate (required)
-     * @return Details of the specified template (status code 200)
-     *         or Template not found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomTemplateId
+     *            The unique ID of the EscapeRoomTemplate (required)
+     *
+     * @return Details of the specified template (status code 200) or Template not found (status code 404) or Internal
+     *         Server Error (status code 500)
      */
-    @Operation(
-        operationId = "templateEscapeRoomTemplateIdGet",
-        summary = "Get a specific EscapeRoomTemplate by ID",
-        description = "Retrieve details of a specific EscapeRoomTemplate using its unique ID",
-        tags = { "Template" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Details of the specified template", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplate.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Template not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateEscapeRoomTemplateIdGet404Response.class))
-            }),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/template/{escape-room-template-id}",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "templateEscapeRoomTemplateIdGet", summary = "Get a specific EscapeRoomTemplate by ID", description = "Retrieve details of a specific EscapeRoomTemplate using its unique ID", tags = {
+            "Template" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Details of the specified template", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplate.class)) }),
+                    @ApiResponse(responseCode = "404", description = "Template not found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateEscapeRoomTemplateIdGet404Response.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/template/{escape-room-template-id}", produces = {
+            "application/json" })
+
     default ResponseEntity<EscapeRoomTemplate> templateEscapeRoomTemplateIdGet(
-        @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId
-    ) {
+            @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId) {
         return getDelegate().templateEscapeRoomTemplateIdGet(escapeRoomTemplateId);
     }
 
-
     /**
-     * PUT /template/override/{escape-room-template-id} : Overrides an existing EscapeRoomTemplate
-     * Override the name, description, and levels of an existing EscapeRoomTemplate
+     * PUT /template/override/{escape-room-template-id} : Overrides an existing EscapeRoomTemplate Override the name,
+     * description, and levels of an existing EscapeRoomTemplate
      *
-     * @param escapeRoomTemplateId The unique ID of the EscapeRoomTemplate to update (required)
-     * @param escapeRoomTemplateUpdateRequest The updated data for the template (required)
-     * @return Template updated successfully (status code 200)
-     *         or Bad Request (status code 400)
-     *         or Not Found (status code 404)
-     *         or Internal Server Error (status code 500)
+     * @param escapeRoomTemplateId
+     *            The unique ID of the EscapeRoomTemplate to update (required)
+     * @param escapeRoomTemplateUpdateRequest
+     *            The updated data for the template (required)
+     *
+     * @return Template updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status
+     *         code 404) or Internal Server Error (status code 500)
      */
-    @Operation(
-        operationId = "templateOverrideEscapeRoomTemplateIdPut",
-        summary = "Overrides an existing EscapeRoomTemplate",
-        description = "Override the name, description, and levels of an existing EscapeRoomTemplate",
-        tags = { "Template" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "Template updated successfully", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateUpdateResult.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class))
-            }),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/template/override/{escape-room-template-id}",
-        produces = { "application/json" },
-        consumes = { "application/json" }
-    )
-    
+    @Operation(operationId = "templateOverrideEscapeRoomTemplateIdPut", summary = "Overrides an existing EscapeRoomTemplate", description = "Override the name, description, and levels of an existing EscapeRoomTemplate", tags = {
+            "Template" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Template updated successfully", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateUpdateResult.class)) }),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class)) }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+    @RequestMapping(method = RequestMethod.PUT, value = "/template/override/{escape-room-template-id}", produces = {
+            "application/json" }, consumes = { "application/json" })
+
     default ResponseEntity<EscapeRoomTemplateUpdateResult> templateOverrideEscapeRoomTemplateIdPut(
-        @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate to update", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId,
-        @Parameter(name = "EscapeRoomTemplateUpdateRequest", description = "The updated data for the template", required = true) @Valid @RequestBody EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest
-    ) {
-        return getDelegate().templateOverrideEscapeRoomTemplateIdPut(escapeRoomTemplateId, escapeRoomTemplateUpdateRequest);
+            @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate to update", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId,
+            @Parameter(name = "EscapeRoomTemplateUpdateRequest", description = "The updated data for the template", required = true) @Valid @RequestBody EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest) {
+        return getDelegate().templateOverrideEscapeRoomTemplateIdPut(escapeRoomTemplateId,
+                escapeRoomTemplateUpdateRequest);
     }
 
 }

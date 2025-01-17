@@ -37,100 +37,69 @@ import jakarta.annotation.Generated;
 public interface LevelApi {
 
     default LevelApiDelegate getDelegate() {
-        return new LevelApiDelegate() {};
+        return new LevelApiDelegate() {
+        };
     }
 
     /**
-     * GET /level/{player_session_id} : Get the current level of the escape-room instance
-     * Get the current level of the escape-room instance
+     * GET /level/{player_session_id} : Get the current level of the escape-room instance Get the current level of the
+     * escape-room instance
      *
-     * @param playerSessionId The session-id of the player (required)
-     * @return OK (status code 200)
-     *         or Internal Server Error (status code 500)
+     * @param playerSessionId
+     *            The session-id of the player (required)
+     *
+     * @return OK (status code 200) or Internal Server Error (status code 500)
      */
-    @Operation(
-        operationId = "levelPlayerSessionIdGet",
-        summary = "Get the current level of the escape-room instance",
-        description = "Get the current level of the escape-room instance",
-        tags = { "level" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomLevel.class))
-            }),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/level/{player_session_id}",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "levelPlayerSessionIdGet", summary = "Get the current level of the escape-room instance", description = "Get the current level of the escape-room instance", tags = {
+            "level" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomLevel.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error") })
+    @RequestMapping(method = RequestMethod.GET, value = "/level/{player_session_id}", produces = { "application/json" })
+
     default ResponseEntity<EscapeRoomLevel> levelPlayerSessionIdGet(
-        @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId
-    ) {
+            @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId) {
         return getDelegate().levelPlayerSessionIdGet(playerSessionId);
     }
 
-
     /**
-     * GET /level/{player_session_id}/result : Get the result of the submitted solution for the current level of the escape-room instance
-     * Get the result of the submitted solution for the current level of the escape-room instance
+     * GET /level/{player_session_id}/result : Get the result of the submitted solution for the current level of the
+     * escape-room instance Get the result of the submitted solution for the current level of the escape-room instance
      *
-     * @param playerSessionId The session-id of the player (required)
+     * @param playerSessionId
+     *            The session-id of the player (required)
+     *
      * @return OK (status code 200)
      */
-    @Operation(
-        operationId = "levelPlayerSessionIdResultGet",
-        summary = "Get the result of the submitted solution for the current level of the escape-room instance",
-        description = "Get the result of the submitted solution for the current level of the escape-room instance",
-        tags = { "level" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomResult.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/level/{player_session_id}/result",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "levelPlayerSessionIdResultGet", summary = "Get the result of the submitted solution for the current level of the escape-room instance", description = "Get the result of the submitted solution for the current level of the escape-room instance", tags = {
+            "level" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomResult.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/level/{player_session_id}/result", produces = {
+            "application/json" })
+
     default ResponseEntity<EscapeRoomResult> levelPlayerSessionIdResultGet(
-        @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId
-    ) {
+            @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId) {
         return getDelegate().levelPlayerSessionIdResultGet(playerSessionId);
     }
 
-
     /**
-     * POST /level/{player_session_id}/submit : Submit a possible solution for the current level of the escape-room instance
-     * Submit a possible solution for the current level of the escape-room instance
+     * POST /level/{player_session_id}/submit : Submit a possible solution for the current level of the escape-room
+     * instance Submit a possible solution for the current level of the escape-room instance
      *
-     * @param playerSessionId The session-id of the player (required)
-     * @param escapeRoomSolutionSubmition The solution to submit (required)
+     * @param playerSessionId
+     *            The session-id of the player (required)
+     * @param escapeRoomSolutionSubmition
+     *            The solution to submit (required)
+     *
      * @return OK (status code 200)
      */
-    @Operation(
-        operationId = "levelPlayerSessionIdSubmitPost",
-        summary = "Submit a possible solution for the current level of the escape-room instance",
-        description = "Submit a possible solution for the current level of the escape-room instance",
-        tags = { "level" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK")
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/level/{player_session_id}/submit",
-        consumes = { "application/json" }
-    )
-    
+    @Operation(operationId = "levelPlayerSessionIdSubmitPost", summary = "Submit a possible solution for the current level of the escape-room instance", description = "Submit a possible solution for the current level of the escape-room instance", tags = {
+            "level" }, responses = { @ApiResponse(responseCode = "200", description = "OK") })
+    @RequestMapping(method = RequestMethod.POST, value = "/level/{player_session_id}/submit", consumes = {
+            "application/json" })
+
     default ResponseEntity<Void> levelPlayerSessionIdSubmitPost(
-        @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId,
-        @Parameter(name = "EscapeRoomSolutionSubmition", description = "The solution to submit", required = true) @Valid @RequestBody EscapeRoomSolutionSubmition escapeRoomSolutionSubmition
-    ) {
+            @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId,
+            @Parameter(name = "EscapeRoomSolutionSubmition", description = "The solution to submit", required = true) @Valid @RequestBody EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
         return getDelegate().levelPlayerSessionIdSubmitPost(playerSessionId, escapeRoomSolutionSubmition);
     }
 

@@ -35,37 +35,26 @@ import jakarta.annotation.Generated;
 public interface LobbyApi {
 
     default LobbyApiDelegate getDelegate() {
-        return new LobbyApiDelegate() {};
+        return new LobbyApiDelegate() {
+        };
     }
 
     /**
-     * PUT /join : Join an escape-room instance
-     * Join an escape-room instance
+     * PUT /join : Join an escape-room instance Join an escape-room instance
      *
-     * @param escapeRoomJoin The escape-room instance to join (required)
+     * @param escapeRoomJoin
+     *            The escape-room instance to join (required)
+     *
      * @return OK (status code 200)
      */
-    @Operation(
-        operationId = "joinPut",
-        summary = "Join an escape-room instance",
-        description = "Join an escape-room instance",
-        tags = { "lobby" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomJoinResponse.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/join",
-        produces = { "application/json" },
-        consumes = { "application/json" }
-    )
-    
+    @Operation(operationId = "joinPut", summary = "Join an escape-room instance", description = "Join an escape-room instance", tags = {
+            "lobby" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomJoinResponse.class)) }) })
+    @RequestMapping(method = RequestMethod.PUT, value = "/join", produces = { "application/json" }, consumes = {
+            "application/json" })
+
     default ResponseEntity<EscapeRoomJoinResponse> joinPut(
-        @Parameter(name = "EscapeRoomJoin", description = "The escape-room instance to join", required = true) @Valid @RequestBody EscapeRoomJoin escapeRoomJoin
-    ) {
+            @Parameter(name = "EscapeRoomJoin", description = "The escape-room instance to join", required = true) @Valid @RequestBody EscapeRoomJoin escapeRoomJoin) {
         return getDelegate().joinPut(escapeRoomJoin);
     }
 

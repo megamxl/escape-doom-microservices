@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
 import java.util.*;
 import jakarta.annotation.Generated;
 
@@ -21,39 +20,38 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
 public enum NodeType {
-  
-  ZOOM("ZOOM"),
-  
-  CONSOLE("CONSOLE"),
-  
-  DETAIL("DETAIL"),
-  
-  STORY("STORY");
 
-  private String value;
+    ZOOM("ZOOM"),
 
-  NodeType(String value) {
-    this.value = value;
-  }
+    CONSOLE("CONSOLE"),
 
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
+    DETAIL("DETAIL"),
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
+    STORY("STORY");
 
-  @JsonCreator
-  public static NodeType fromValue(String value) {
-    for (NodeType b : NodeType.values()) {
-      if (b.value.equals(value)) {
-        return b;
-      }
+    private String value;
+
+    NodeType(String value) {
+        this.value = value;
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
-  }
-}
 
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static NodeType fromValue(String value) {
+        for (NodeType b : NodeType.values()) {
+            if (b.value.equals(value)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+}

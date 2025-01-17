@@ -3,7 +3,6 @@ package at.escapedoom.leaderboard.rest.api;
 import at.escapedoom.leaderboard.rest.model.FullExportRoomPinGet200ResponseInner;
 import at.escapedoom.leaderboard.rest.model.UserProgress;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +33,8 @@ public class SessionLeaderboardApiController implements SessionLeaderboardApi {
     private final SessionLeaderboardApiDelegate delegate;
 
     public SessionLeaderboardApiController(@Autowired(required = false) SessionLeaderboardApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new SessionLeaderboardApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new SessionLeaderboardApiDelegate() {
+        });
     }
 
     @Override
