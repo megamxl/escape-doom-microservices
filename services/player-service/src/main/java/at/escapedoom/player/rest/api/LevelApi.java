@@ -42,6 +42,26 @@ public interface LevelApi {
     }
 
     /**
+     * GET /level/{player_session_id}/result : Get the result of the submitted solution for the current level of the
+     * escape-room instance Get the result of the submitted solution for the current level of the escape-room instance
+     *
+     * @param playerSessionId
+     *            The session-id of the player (required)
+     *
+     * @return OK (status code 200)
+     */
+    @Operation(operationId = "getLevelResult", summary = "Get the result of the submitted solution for the current level of the escape-room instance", description = "Get the result of the submitted solution for the current level of the escape-room instance", tags = {
+            "level" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomResult.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/level/{player_session_id}/result", produces = {
+            "application/json" })
+
+    default ResponseEntity<EscapeRoomResult> getLevelResult(
+            @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId) {
+        return getDelegate().getLevelResult(playerSessionId);
+    }
+
+    /**
      * GET /level/{player_session_id} : Get the current level of the escape-room instance Get the current level of the
      * escape-room instance
      *
@@ -59,26 +79,6 @@ public interface LevelApi {
     default ResponseEntity<EscapeRoomLevel> levelPlayerSessionIdGet(
             @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId) {
         return getDelegate().levelPlayerSessionIdGet(playerSessionId);
-    }
-
-    /**
-     * GET /level/{player_session_id}/result : Get the result of the submitted solution for the current level of the
-     * escape-room instance Get the result of the submitted solution for the current level of the escape-room instance
-     *
-     * @param playerSessionId
-     *            The session-id of the player (required)
-     *
-     * @return OK (status code 200)
-     */
-    @Operation(operationId = "levelPlayerSessionIdResultGet", summary = "Get the result of the submitted solution for the current level of the escape-room instance", description = "Get the result of the submitted solution for the current level of the escape-room instance", tags = {
-            "level" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomResult.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/level/{player_session_id}/result", produces = {
-            "application/json" })
-
-    default ResponseEntity<EscapeRoomResult> levelPlayerSessionIdResultGet(
-            @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId) {
-        return getDelegate().levelPlayerSessionIdResultGet(playerSessionId);
     }
 
     /**

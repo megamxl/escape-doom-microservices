@@ -78,6 +78,7 @@ paths:
 
   /level/{player_session_id}/result:
     get:
+      operationId: getLevelResult
       tags:
           - level
       description: Get the result of the submitted solution for the current level of the escape-room instance
