@@ -1,0 +1,263 @@
+openapi: "3.0.3"
+info:
+  title: Player API
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1/player
+paths:
+  /join:
+    put:
+      tags:
+        - lobby
+      summary: Join an escape-room instance
+      description: Join an escape-room instance
+      requestBody:
+        description: The escape-room instance to join
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EscapeRoomJoin"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomJoinResponse"
+  /level/{player_session_id}:
+    get:
+      tags:
+        - level
+      summary: Get the current level of the escape-room instance
+      description: Get the current level of the escape-room instance
+      parameters:
+        - name: player_session_id
+          in: path
+          description: The session-id of the player
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 78787878-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomLevel"
+        "500":
+          description: Internal Server Error
+
+  /level/{player_session_id}/submit:
+    post:
+      tags:
+        - level
+      summary: Submit a possible solution for the current level of the escape-room instance
+      description: Submit a possible solution for the current level of the escape-room instance
+      parameters:
+        - name: player_session_id
+          in: path
+          description: The session-id of the player
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 78787878-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+      requestBody:
+        description: The solution to submit
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EscapeRoomSolutionSubmition"
+      responses:
+        "200":
+          description: OK
+
+  /level/{player_session_id}/result:
+    get:
+      operationId: getLevelResult
+      tags:
+          - level
+      description: Get the result of the submitted solution for the current level of the escape-room instance
+      summary: Get the result of the submitted solution for the current level of the escape-room instance
+      parameters:
+        - name: player_session_id
+          in: path
+          description: The session-id of the player
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 78787878-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomResult"
+components:
+  schemas:
+    EscapeRoomJoin:
+      description: The escape-room instance to join
+      type: object
+      properties:
+        room_pin:
+          type: integer
+          description: The room-pin to join the escape-room
+          minimum: 100000
+          maximum: 999999
+          example: 420666
+        player_name:
+          type: string
+          description: The name of the player
+          example: Waschbär
+          minLength: 1
+          maxLength: 128
+    EscapeRoomJoinResponse:
+      description: The escape-room instance
+      type: object
+      properties:
+        player_session_id:
+          type: string
+          format: uuid
+          description: The id of the escape-room session for the player
+          example: 78787878-f2f4-4c4d-b9c3-e5a7d7f6e8f0
+        escape_room_state:
+          $ref: "#/components/schemas/EscapeRoomState"
+        player_name:
+          type: string
+          description: The name of the player
+          example: Waschbär
+    EscapeRoomState:
+      description: The state of an escape-room instance
+      type: string
+      enum:
+        - open
+        - closed
+        - started
+        - finished
+    EscapeRoomSolutionSubmition:
+      description: The solution to submit
+      type: object
+      properties:
+        solution:
+          type: string
+          description: The solution to submit
+          example: public static void main(String[] args) { public static int riddle1() { return -1; } }
+        language:
+          type: string
+          description: The language of the solution
+          enum:
+            - JAVA
+            - PYTHON
+            - JS
+          example: JAVA
+    EscapeRoomLevel:
+      description: The current level of an escape-room instance
+      type: object
+      properties:
+        scenes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Scene"
+        code_snippet:
+          type: string
+          description: The code snippet of the level
+          example: public static void main(String[] args) { public static string riddle1() { //Your code goes here! } }
+          
+        level_sequence:
+          type: number
+          format: integer
+          description: The sequence number of the level
+          example: 1
+    EscapeRoomResult:
+      description: The result of a submitted solution
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ERROR
+            - COMPILED
+            - SUCCESS
+            - WAITING
+            - WON
+          example: SUCCESS
+        output:
+          type: string
+          description: The output of the solution
+          example: Hello World!
+    Scene:
+      description: A scene of an escape-room instance
+      type: object
+      properties:
+        scene_sequence:
+          type: number
+          format: long
+          description: The sequence number of the scene
+          example: 1
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Node"
+          description: The nodes of the scene
+        background_image_uri:
+          type: string
+          description: The URI of the background image
+          example: https://example.com/background.png
+        name:
+          type: string
+          description: The name of the scene
+          example: Scene 1
+    NodeType:
+      description: The type of a node
+      type: string
+      enum:
+        - ZOOM
+        - CONSOLE
+        - DETAIL
+        - STORY
+    Node:
+      description: A node of an escape-room instance
+      type: object
+      properties:
+        node_type:
+          $ref: "#/components/schemas/NodeType"
+        node_info:
+          $ref: "#/components/schemas/NodeInfo"
+        position:
+          $ref: "#/components/schemas/Position"
+    NodeInfo:
+      description: The information of a node
+      type: object
+      properties:
+        description:
+          type: string
+          description: The description of the node
+          example: This is a story node
+        title:
+          type: string
+          description: The display title of the node
+          example: I like cheese
+        imageURI:
+          type: string
+          description: The URI of the image to display
+          example: https://example.com/image.png
+    Position:
+      description: The position of a node
+      type: object
+      properties:
+        top:
+          type: number
+          format: double
+          description: The relative top position of the node
+          example: 50.5
+        left:
+          type: number
+          format: double
+          description: The relative left position of the node
+          example: 22.0

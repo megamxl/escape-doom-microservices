@@ -1,0 +1,258 @@
+openapi: "3.0.3"
+info:
+  title: Leaderboard API
+  version: "0.0.1"
+servers:
+  - url: https://api.server.test/v1/leaderboard
+paths:
+  /{room_pin}:  
+    get:
+      tags:
+        - session-leaderboard
+      summary: Get current session leaderboard
+      description: Retrieve the leaderboard for a specific escape room session, showing progress for all users.
+      parameters:
+        - name: room_pin
+          in: path
+          description: The unique ID of the escape room session.
+          required: true
+          schema:
+            type: integer
+            minimum: 100000
+            maximum: 999999
+            example: 420666
+      responses:
+        "200":
+          description: Current session leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserProgress"
+              example:
+                  - escape_room_session_id: "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0"
+                    player_name: "Waschbär"
+                    current_escape_room_level: 3
+                    last_riddle_solved_at: "2025-01-02T14:30:00Z"
+                    score: 30
+                  - escape_room_session_id: "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0"
+                    player_name: "Tacocat"
+                    current_escape_room_level: 42
+                    last_riddle_solved_at: "2025-01-02T14:31:09Z"
+                    score: 420
+        "404":
+          description: Session not found
+
+  /full-export/{room_pin}:
+    get:
+      tags:
+        - session-leaderboard
+      summary: Retrieve full leaderboard
+      description: Retrieve full leaderboard for a specific escape room session, showing progress for all users.
+      parameters:
+        - name: room_pin
+          in: path
+          description: The unique ID of the escape room session.
+          required: true
+          schema:
+            type: integer
+            minimum: 100000
+            maximum: 999999
+            example: 420666
+      responses:
+        "200":
+          description: Full leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    session:
+                      $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                    user_progress:
+                      type: array
+                      description: List of user progress for the session.
+                      items:
+                        $ref: "#/components/schemas/UserProgress"
+              example:
+                  - session:
+                      state: "CLOSED"
+                      play_time: 60
+                      room_pin: 420666
+                      escape_room_template_id: "ff95c83b-c8da-4180-8a97-09dc91892a01"
+                      escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                      tags: ["SDE26", "CSDC"]
+                      user_progress:
+                        - escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                          player_name: "Waschbär"
+                          current_escape_room_level: 3
+                          last_riddle_solved_at: "2025-01-02T14:30:00Z"
+                          score: 30
+                          results:
+                            - current_escape_room_level: 1
+                              input: "Solution Level 1"
+                              solved_date: "2025-01-02T14:00:00Z"
+                              added_points: 10
+                            - current_escape_room_level: 2
+                              input: "Solution Level 2"
+                              solved_date: "2025-01-02T14:30:00Z"
+                              added_points: 20
+  /escape-room-sessions:
+    get:
+      tags:
+        - all-leaderboards
+      summary: Get all session leaderboards
+      description: Retrieve leaderboards for all sessions, optionally filtered by session tags.
+      parameters:
+        - name: tags
+          in: query
+          description: A comma-separated list of tags to filter sessions.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+              example: "SDE26"
+      responses:
+        "200":
+          description: All session leaderboards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    session:
+                      $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                    user_progress:
+                      type: array
+                      description: List of user progress for the session.
+                      items:
+                        $ref: "#/components/schemas/UserProgress"
+              example:
+                - session:
+                    state: "CLOSED"
+                    play_time: 60
+                    room_pin: 420666
+                    escape_room_template_id: "ff95c83b-c8da-4180-8a97-09dc91892a01"
+                    escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                    tags: ["SDE26"]
+                  user_progress:
+                    - escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                      player_name: "Waschbär"
+                      current_escape_room_level: 3
+                      last_riddle_solved_at: "2025-01-02T14:30:00Z"
+                      score: 30
+                      results:
+                        - current_escape_room_level: 1
+                          input: "Solution Level 1"
+                          solved_date: "2025-01-02T14:00:00Z"
+                          added_points: 10
+                        - current_escape_room_level: 2
+                          input: "Solution Level 2"
+                          solved_date: "2025-01-02T14:30:00Z"
+                          added_points: 20
+        "404":
+          description: No sessions found
+
+components:
+  schemas:
+    EscapeRoomSessionResponse:
+      type: object
+      description: Represents metadata for a session in API responses.
+      properties:
+        state:
+          type: string
+          enum:
+            - OPEN
+            - CLOSED
+            - STARTED
+            - FINISHED
+          description: The state of the session.
+          example: FINISHED
+        play_time:
+          type: integer
+          description: The time in minutes the escape-room will be played for
+          minimum: 1
+          maximum: 180
+          default: 60
+          example: 60
+        room_pin:
+          type: integer
+          description: The PIN to join the session.
+          example: 420666
+        escape_room_template_id:
+          type: string
+          format: uuid
+          description: The ID of the escape room template.
+          example: "ff95c83b-c8da-4180-8a97-09dc91892a01"
+        escape_room_session_id:
+          type: string
+          format: uuid
+          description: The unique session ID.
+          example: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+        tags:
+          type: array
+          items:
+            type: string
+          description: Tags associated with the session.
+          example: ["SDE26", "CSDC"]
+
+    UserProgress:
+      type: object
+      description: Represents the progress of user in a session.
+      properties:
+        escape_room_session_id:
+          type: string
+          format: uuid
+          description: The session the user participated in.
+          example: "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0"
+        player_name:
+          type: string
+          description: The unique ID of the user.
+          example: "Waschbär"
+        current_escape_room_level:
+          type: integer
+          description: The highest level reached by the user.
+          example: 5
+        last_riddle_solved_at:
+          type: string
+          format: date-time
+          description: The timestamp of the last riddle solved.
+          example: "2025-01-02T15:45:00Z"
+        score:
+          type: integer
+          description: The score of the user.
+          example: 30
+          minimum: 0
+        results:
+          type: array
+          description: List of riddle results for the user.
+          items:
+            $ref: "#/components/schemas/Result"
+
+    Result:
+      type: object
+      description: Represents the result of a user's progress in a session.
+      properties:
+        current_escape_room_level:
+          type: integer
+          description: Level of the escape room.
+          example: 3
+        input:
+          type: string
+          description: User's solution attempt.
+          example: "Solution Attempt"
+        solved_date:
+          type: string
+          format: date-time
+          description: Date the riddle was solved.
+          example: "2025-01-02T15:45:00Z"
+        added_points:
+          type: integer
+          description: Points awarded for solving the riddle.
+          example: 100

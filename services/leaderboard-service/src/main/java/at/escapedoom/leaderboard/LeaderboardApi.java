@@ -7,11 +7,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @SpringBootApplication
 @EnableMethodSecurity
-@ComponentScan(basePackages = {"at.escapedoom.leaderboard", "at.escapedoom.spring.security" })
-public class LeaderboardApi
-{
-    public static void main( String[] args )
-    {
+@ComponentScan(basePackages = { "at.escapedoom.leaderboard", "at.escapedoom.spring.security" })
+public class LeaderboardApi {
+    public static void main(String[] args) {
         SpringApplication.run(LeaderboardApi.class, args);
     }
 }

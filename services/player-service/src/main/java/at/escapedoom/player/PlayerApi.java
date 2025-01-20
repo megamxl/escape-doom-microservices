@@ -7,11 +7,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @SpringBootApplication
 @EnableMethodSecurity
-@ComponentScan(basePackages = {"at.escapedoom.player", "at.escapedoom.spring.security" })
-public class PlayerApi
-{
-    public static void main( String[] args )
-    {
+@ComponentScan(basePackages = { "at.escapedoom.player", "at.escapedoom.spring.security" })
+public class PlayerApi {
+    public static void main(String[] args) {
         SpringApplication.run(PlayerApi.class, args);
     }
 }
