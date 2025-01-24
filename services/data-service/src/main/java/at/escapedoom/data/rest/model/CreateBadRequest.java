@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -14,18 +14,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * TemplateCreatePost400Response
+ * CreateBadRequest
  */
 
-@JsonTypeName("_template_create_post_400_response")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class TemplateCreatePost400Response {
+public class CreateBadRequest {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
-    public TemplateCreatePost400Response message(String message) {
+    public CreateBadRequest message(String message) {
         this.message = message;
         return this;
     }
@@ -46,7 +45,7 @@ public class TemplateCreatePost400Response {
         this.message = message;
     }
 
-    public TemplateCreatePost400Response code(Integer code) {
+    public CreateBadRequest code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -56,14 +55,14 @@ public class TemplateCreatePost400Response {
      *
      * @return code
      */
-
+    @Valid
     @Schema(name = "code", example = "400", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
@@ -75,9 +74,9 @@ public class TemplateCreatePost400Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TemplateCreatePost400Response templateCreatePost400Response = (TemplateCreatePost400Response) o;
-        return Objects.equals(this.message, templateCreatePost400Response.message)
-                && Objects.equals(this.code, templateCreatePost400Response.code);
+        CreateBadRequest createBadRequest = (CreateBadRequest) o;
+        return Objects.equals(this.message, createBadRequest.message)
+                && Objects.equals(this.code, createBadRequest.code);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class TemplateCreatePost400Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TemplateCreatePost400Response {\n");
+        sb.append("class CreateBadRequest {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");

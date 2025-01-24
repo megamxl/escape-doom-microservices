@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -14,18 +14,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * TemplateEscapeRoomTemplateIdGet404Response
+ * CreateInternalServerError
  */
 
-@JsonTypeName("_template__escape_room_template_id__get_404_response")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class TemplateEscapeRoomTemplateIdGet404Response {
+public class CreateInternalServerError {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
-    public TemplateEscapeRoomTemplateIdGet404Response message(String message) {
+    public CreateInternalServerError message(String message) {
         this.message = message;
         return this;
     }
@@ -36,7 +35,7 @@ public class TemplateEscapeRoomTemplateIdGet404Response {
      * @return message
      */
 
-    @Schema(name = "message", example = "EscapeRoomTemplate with the provided ID was not found", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "message", example = "An unexpected error occurred on the server", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("message")
     public String getMessage() {
         return message;
@@ -46,7 +45,7 @@ public class TemplateEscapeRoomTemplateIdGet404Response {
         this.message = message;
     }
 
-    public TemplateEscapeRoomTemplateIdGet404Response code(Integer code) {
+    public CreateInternalServerError code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -56,14 +55,14 @@ public class TemplateEscapeRoomTemplateIdGet404Response {
      *
      * @return code
      */
-
-    @Schema(name = "code", example = "404", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Valid
+    @Schema(name = "code", example = "500", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
@@ -75,9 +74,9 @@ public class TemplateEscapeRoomTemplateIdGet404Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TemplateEscapeRoomTemplateIdGet404Response templateEscapeRoomTemplateIdGet404Response = (TemplateEscapeRoomTemplateIdGet404Response) o;
-        return Objects.equals(this.message, templateEscapeRoomTemplateIdGet404Response.message)
-                && Objects.equals(this.code, templateEscapeRoomTemplateIdGet404Response.code);
+        CreateInternalServerError createInternalServerError = (CreateInternalServerError) o;
+        return Objects.equals(this.message, createInternalServerError.message)
+                && Objects.equals(this.code, createInternalServerError.code);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class TemplateEscapeRoomTemplateIdGet404Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TemplateEscapeRoomTemplateIdGet404Response {\n");
+        sb.append("class CreateInternalServerError {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");

@@ -1,15 +1,15 @@
 package at.escapedoom.data.rest.api;
 
+import at.escapedoom.data.rest.model.CreateBadRequest;
+import at.escapedoom.data.rest.model.CreateInternalServerError;
+import at.escapedoom.data.rest.model.CreateNotFound;
 import at.escapedoom.data.rest.model.EscapeRoomTemplate;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateCreateRequest;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateDTO;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateResult;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateRequest;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateResult;
-import at.escapedoom.data.rest.model.TemplateCreatePost400Response;
-import at.escapedoom.data.rest.model.TemplateCreatePost500Response;
-import at.escapedoom.data.rest.model.TemplateDeleteEscapeRoomTemplateIdDelete404Response;
-import at.escapedoom.data.rest.model.TemplateEscapeRoomTemplateIdGet404Response;
+import at.escapedoom.data.rest.model.GetTemplateNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,33 +35,6 @@ public interface TemplateApiDelegate {
     }
 
     /**
-     * GET /all-templates : Get all EscapeRoomTemplates Retrieve a list of all existing EscapeRoomTemplates from a
-     * Lector
-     *
-     * @return A list of templates (status code 200) or Internal Server Error (status code 500)
-     *
-     * @see TemplateApi#allTemplatesGet
-     */
-    default ResponseEntity<List<EscapeRoomTemplateDTO>> allTemplatesGet() {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" }, { \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-    /**
      * POST /template/create : Creates a new Template for Escape Doom Game Creates a new Template for EscapeRoom
      *
      * @param escapeRoomTemplateCreateRequest
@@ -70,9 +43,9 @@ public interface TemplateApiDelegate {
      * @return Operation result for EscapeRoomTemplate (status code 200) or Bad Request (status code 400) or Internal
      *         Server Error (status code 500)
      *
-     * @see TemplateApi#templateCreatePost
+     * @see TemplateApi#createTemplate
      */
-    default ResponseEntity<EscapeRoomTemplateResult> templateCreatePost(
+    default ResponseEntity<EscapeRoomTemplateResult> createTemplate(
             EscapeRoomTemplateCreateRequest escapeRoomTemplateCreateRequest) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -107,10 +80,9 @@ public interface TemplateApiDelegate {
      * @return Operation result for EscapeRoomTemplate (status code 200) or Bad Request (status code 400) or Not Found
      *         (status code 404) or Internal Server Error (status code 500)
      *
-     * @see TemplateApi#templateDeleteEscapeRoomTemplateIdDelete
+     * @see TemplateApi#deleteTemplate
      */
-    default ResponseEntity<EscapeRoomTemplateResult> templateDeleteEscapeRoomTemplateIdDelete(
-            String escapeRoomTemplateId) {
+    default ResponseEntity<EscapeRoomTemplateResult> deleteTemplate(String escapeRoomTemplateId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -140,6 +112,33 @@ public interface TemplateApiDelegate {
     }
 
     /**
+     * GET /all-templates : Get all EscapeRoomTemplates Retrieve a list of all existing EscapeRoomTemplates from a
+     * Lector
+     *
+     * @return A list of templates (status code 200) or Internal Server Error (status code 500)
+     *
+     * @see TemplateApi#getAllTemplates
+     */
+    default ResponseEntity<List<EscapeRoomTemplateDTO>> getAllTemplates() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" }, { \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
      * GET /template/{escape-room-template-id} : Get a specific EscapeRoomTemplate by ID Retrieve details of a specific
      * EscapeRoomTemplate using its unique ID
      *
@@ -149,9 +148,9 @@ public interface TemplateApiDelegate {
      * @return Details of the specified template (status code 200) or Template not found (status code 404) or Internal
      *         Server Error (status code 500)
      *
-     * @see TemplateApi#templateEscapeRoomTemplateIdGet
+     * @see TemplateApi#getTemplate
      */
-    default ResponseEntity<EscapeRoomTemplate> templateEscapeRoomTemplateIdGet(String escapeRoomTemplateId) {
+    default ResponseEntity<EscapeRoomTemplate> getTemplate(String escapeRoomTemplateId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -187,10 +186,10 @@ public interface TemplateApiDelegate {
      * @return Template updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status
      *         code 404) or Internal Server Error (status code 500)
      *
-     * @see TemplateApi#templateOverrideEscapeRoomTemplateIdPut
+     * @see TemplateApi#putTemplate
      */
-    default ResponseEntity<EscapeRoomTemplateUpdateResult> templateOverrideEscapeRoomTemplateIdPut(
-            String escapeRoomTemplateId, EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest) {
+    default ResponseEntity<EscapeRoomTemplateUpdateResult> putTemplate(String escapeRoomTemplateId,
+            EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

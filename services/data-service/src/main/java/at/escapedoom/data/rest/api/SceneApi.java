@@ -5,11 +5,11 @@
  */
 package at.escapedoom.data.rest.api;
 
+import at.escapedoom.data.rest.model.CreateBadRequest;
+import at.escapedoom.data.rest.model.CreateInternalServerError;
+import at.escapedoom.data.rest.model.CreateNotFound;
+import at.escapedoom.data.rest.model.DeleteLevelResponse;
 import at.escapedoom.data.rest.model.Scene;
-import at.escapedoom.data.rest.model.ScenesEscapeRoomSceneIdDelete200Response;
-import at.escapedoom.data.rest.model.TemplateCreatePost400Response;
-import at.escapedoom.data.rest.model.TemplateCreatePost500Response;
-import at.escapedoom.data.rest.model.TemplateDeleteEscapeRoomTemplateIdDelete404Response;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,24 +43,6 @@ public interface SceneApi {
     }
 
     /**
-     * GET /scene : Get all scenes Retrieve all scenes that are not linked to any specific level
-     *
-     * @return A list of scenes (status code 200) or Internal Server Error (status code 500)
-     */
-    @Operation(operationId = "sceneGet", summary = "Get all scenes", description = "Retrieve all scenes that are not linked to any specific level", tags = {
-            "Scene" }, responses = { @ApiResponse(responseCode = "200", description = "A list of scenes", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Scene.class))) }),
-                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/scene", produces = { "application/json" })
-
-    default ResponseEntity<List<Scene>> sceneGet(
-
-    ) {
-        return getDelegate().sceneGet();
-    }
-
-    /**
      * POST /scene : Create a new scene Create a Scene independently of any level
      *
      * @param scene
@@ -69,20 +51,20 @@ public interface SceneApi {
      * @return Scene created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
      *         (status code 500)
      */
-    @Operation(operationId = "scenePost", summary = "Create a new scene", description = "Create a Scene independently of any level", tags = {
+    @Operation(operationId = "createScene", summary = "Create a new scene", description = "Create a Scene independently of any level", tags = {
             "Scene" }, responses = {
                     @ApiResponse(responseCode = "201", description = "Scene created successfully", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/scene", produces = { "application/json" }, consumes = {
             "application/json" })
 
-    default ResponseEntity<Scene> scenePost(
+    default ResponseEntity<Scene> createScene(
             @Parameter(name = "Scene", description = "The details of the new Scene", required = true) @Valid @RequestBody Scene scene) {
-        return getDelegate().scenePost(scene);
+        return getDelegate().createScene(scene);
     }
 
     /**
@@ -94,20 +76,38 @@ public interface SceneApi {
      * @return Scene deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
      *         (status code 500)
      */
-    @Operation(operationId = "scenesEscapeRoomSceneIdDelete", summary = "Delete a scene", description = "Delete a specific Scene by its ID", tags = {
+    @Operation(operationId = "deleteScene", summary = "Delete a scene", description = "Delete a specific Scene by its ID", tags = {
             "Scene" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Scene deleted successfully", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = ScenesEscapeRoomSceneIdDelete200Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteLevelResponse.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
     @RequestMapping(method = RequestMethod.DELETE, value = "/scenes/{escape-room-scene-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<ScenesEscapeRoomSceneIdDelete200Response> scenesEscapeRoomSceneIdDelete(
+    default ResponseEntity<DeleteLevelResponse> deleteScene(
             @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId) {
-        return getDelegate().scenesEscapeRoomSceneIdDelete(escapeRoomSceneId);
+        return getDelegate().deleteScene(escapeRoomSceneId);
+    }
+
+    /**
+     * GET /scene : Get all scenes Retrieve all scenes that are not linked to any specific level
+     *
+     * @return A list of scenes (status code 200) or Internal Server Error (status code 500)
+     */
+    @Operation(operationId = "getAllScenes", summary = "Get all scenes", description = "Retrieve all scenes that are not linked to any specific level", tags = {
+            "Scene" }, responses = { @ApiResponse(responseCode = "200", description = "A list of scenes", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Scene.class))) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/scene", produces = { "application/json" })
+
+    default ResponseEntity<List<Scene>> getAllScenes(
+
+    ) {
+        return getDelegate().getAllScenes();
     }
 
     /**
@@ -118,20 +118,20 @@ public interface SceneApi {
      *
      * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "scenesEscapeRoomSceneIdGet", summary = "Get details of a scene", description = "Retrieve details of a specific scene by its ID", tags = {
+    @Operation(operationId = "getScene", summary = "Get details of a scene", description = "Retrieve details of a specific scene by its ID", tags = {
             "Scene" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Scene details", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/scenes/{escape-room-scene-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<Scene> scenesEscapeRoomSceneIdGet(
+    default ResponseEntity<Scene> getScene(
             @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId) {
-        return getDelegate().scenesEscapeRoomSceneIdGet(escapeRoomSceneId);
+        return getDelegate().getScene(escapeRoomSceneId);
     }
 
     /**
@@ -145,23 +145,23 @@ public interface SceneApi {
      * @return Scene updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "scenesEscapeRoomSceneIdPut", summary = "Update a scene", description = "Update the details of a specific Scene", tags = {
+    @Operation(operationId = "putScene", summary = "Update a scene", description = "Update the details of a specific Scene", tags = {
             "Scene" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Scene updated successfully", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Scene.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
     @RequestMapping(method = RequestMethod.PUT, value = "/scenes/{escape-room-scene-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<Scene> scenesEscapeRoomSceneIdPut(
+    default ResponseEntity<Scene> putScene(
             @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId,
             @Parameter(name = "Scene", description = "The updated details of the Scene", required = true) @Valid @RequestBody Scene scene) {
-        return getDelegate().scenesEscapeRoomSceneIdPut(escapeRoomSceneId, scene);
+        return getDelegate().putScene(escapeRoomSceneId, scene);
     }
 
 }

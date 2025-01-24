@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -14,18 +14,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * TemplateCreatePost500Response
+ * CreateNotFound
  */
 
-@JsonTypeName("_template_create_post_500_response")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class TemplateCreatePost500Response {
+public class CreateNotFound {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
-    public TemplateCreatePost500Response message(String message) {
+    public CreateNotFound message(String message) {
         this.message = message;
         return this;
     }
@@ -36,7 +35,7 @@ public class TemplateCreatePost500Response {
      * @return message
      */
 
-    @Schema(name = "message", example = "An unexpected error occurred on the server", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "message", example = "The requested resource was not found", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("message")
     public String getMessage() {
         return message;
@@ -46,7 +45,7 @@ public class TemplateCreatePost500Response {
         this.message = message;
     }
 
-    public TemplateCreatePost500Response code(Integer code) {
+    public CreateNotFound code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -56,14 +55,14 @@ public class TemplateCreatePost500Response {
      *
      * @return code
      */
-
-    @Schema(name = "code", example = "500", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Valid
+    @Schema(name = "code", example = "404", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
@@ -75,9 +74,8 @@ public class TemplateCreatePost500Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TemplateCreatePost500Response templateCreatePost500Response = (TemplateCreatePost500Response) o;
-        return Objects.equals(this.message, templateCreatePost500Response.message)
-                && Objects.equals(this.code, templateCreatePost500Response.code);
+        CreateNotFound createNotFound = (CreateNotFound) o;
+        return Objects.equals(this.message, createNotFound.message) && Objects.equals(this.code, createNotFound.code);
     }
 
     @Override
@@ -88,7 +86,7 @@ public class TemplateCreatePost500Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TemplateCreatePost500Response {\n");
+        sb.append("class CreateNotFound {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");

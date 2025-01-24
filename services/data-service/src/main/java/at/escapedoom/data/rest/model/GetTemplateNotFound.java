@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -14,18 +14,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * LevelEscapeRoomLevelIdDelete200Response
+ * GetTemplateNotFound
  */
 
-@JsonTypeName("_level__escape_room_level_id__delete_200_response")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class LevelEscapeRoomLevelIdDelete200Response {
+public class GetTemplateNotFound {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
-    public LevelEscapeRoomLevelIdDelete200Response message(String message) {
+    public GetTemplateNotFound message(String message) {
         this.message = message;
         return this;
     }
@@ -36,7 +35,7 @@ public class LevelEscapeRoomLevelIdDelete200Response {
      * @return message
      */
 
-    @Schema(name = "message", example = "Level deleted successfully", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "message", example = "EscapeRoomTemplate with the provided ID was not found", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("message")
     public String getMessage() {
         return message;
@@ -46,7 +45,7 @@ public class LevelEscapeRoomLevelIdDelete200Response {
         this.message = message;
     }
 
-    public LevelEscapeRoomLevelIdDelete200Response code(Integer code) {
+    public GetTemplateNotFound code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -56,14 +55,14 @@ public class LevelEscapeRoomLevelIdDelete200Response {
      *
      * @return code
      */
-
-    @Schema(name = "code", example = "200", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Valid
+    @Schema(name = "code", example = "404", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
@@ -75,9 +74,9 @@ public class LevelEscapeRoomLevelIdDelete200Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        LevelEscapeRoomLevelIdDelete200Response levelEscapeRoomLevelIdDelete200Response = (LevelEscapeRoomLevelIdDelete200Response) o;
-        return Objects.equals(this.message, levelEscapeRoomLevelIdDelete200Response.message)
-                && Objects.equals(this.code, levelEscapeRoomLevelIdDelete200Response.code);
+        GetTemplateNotFound getTemplateNotFound = (GetTemplateNotFound) o;
+        return Objects.equals(this.message, getTemplateNotFound.message)
+                && Objects.equals(this.code, getTemplateNotFound.code);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class LevelEscapeRoomLevelIdDelete200Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class LevelEscapeRoomLevelIdDelete200Response {\n");
+        sb.append("class GetTemplateNotFound {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");

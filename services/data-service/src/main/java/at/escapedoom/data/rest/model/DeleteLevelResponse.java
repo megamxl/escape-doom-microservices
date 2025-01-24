@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -14,18 +14,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * ScenesEscapeRoomSceneIdDelete200Response
+ * DeleteLevelResponse
  */
 
-@JsonTypeName("_scenes__escape_room_scene_id__delete_200_response")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class ScenesEscapeRoomSceneIdDelete200Response {
+public class DeleteLevelResponse {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
-    public ScenesEscapeRoomSceneIdDelete200Response message(String message) {
+    public DeleteLevelResponse message(String message) {
         this.message = message;
         return this;
     }
@@ -46,7 +45,7 @@ public class ScenesEscapeRoomSceneIdDelete200Response {
         this.message = message;
     }
 
-    public ScenesEscapeRoomSceneIdDelete200Response code(Integer code) {
+    public DeleteLevelResponse code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -56,14 +55,14 @@ public class ScenesEscapeRoomSceneIdDelete200Response {
      *
      * @return code
      */
-
+    @Valid
     @Schema(name = "code", example = "200", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
@@ -75,9 +74,9 @@ public class ScenesEscapeRoomSceneIdDelete200Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ScenesEscapeRoomSceneIdDelete200Response scenesEscapeRoomSceneIdDelete200Response = (ScenesEscapeRoomSceneIdDelete200Response) o;
-        return Objects.equals(this.message, scenesEscapeRoomSceneIdDelete200Response.message)
-                && Objects.equals(this.code, scenesEscapeRoomSceneIdDelete200Response.code);
+        DeleteLevelResponse deleteLevelResponse = (DeleteLevelResponse) o;
+        return Objects.equals(this.message, deleteLevelResponse.message)
+                && Objects.equals(this.code, deleteLevelResponse.code);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class ScenesEscapeRoomSceneIdDelete200Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ScenesEscapeRoomSceneIdDelete200Response {\n");
+        sb.append("class DeleteLevelResponse {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");
