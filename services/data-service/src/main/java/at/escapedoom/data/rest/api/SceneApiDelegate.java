@@ -1,10 +1,10 @@
 package at.escapedoom.data.rest.api;
 
+import at.escapedoom.data.rest.model.CreateBadRequest;
+import at.escapedoom.data.rest.model.CreateInternalServerError;
+import at.escapedoom.data.rest.model.CreateNotFound;
+import at.escapedoom.data.rest.model.DeleteLevelResponse;
 import at.escapedoom.data.rest.model.Scene;
-import at.escapedoom.data.rest.model.ScenesEscapeRoomSceneIdDelete200Response;
-import at.escapedoom.data.rest.model.TemplateCreatePost400Response;
-import at.escapedoom.data.rest.model.TemplateCreatePost500Response;
-import at.escapedoom.data.rest.model.TemplateDeleteEscapeRoomTemplateIdDelete404Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,32 +30,6 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * GET /scene : Get all scenes Retrieve all scenes that are not linked to any specific level
-     *
-     * @return A list of scenes (status code 200) or Internal Server Error (status code 500)
-     *
-     * @see SceneApi#sceneGet
-     */
-    default ResponseEntity<List<Scene>> sceneGet() {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-    /**
      * POST /scene : Create a new scene Create a Scene independently of any level
      *
      * @param scene
@@ -64,9 +38,9 @@ public interface SceneApiDelegate {
      * @return Scene created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
      *         (status code 500)
      *
-     * @see SceneApi#scenePost
+     * @see SceneApi#createScene
      */
-    default ResponseEntity<Scene> scenePost(Scene scene) {
+    default ResponseEntity<Scene> createScene(Scene scene) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -99,10 +73,9 @@ public interface SceneApiDelegate {
      * @return Scene deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
      *         (status code 500)
      *
-     * @see SceneApi#scenesEscapeRoomSceneIdDelete
+     * @see SceneApi#deleteScene
      */
-    default ResponseEntity<ScenesEscapeRoomSceneIdDelete200Response> scenesEscapeRoomSceneIdDelete(
-            String escapeRoomSceneId) {
+    default ResponseEntity<DeleteLevelResponse> deleteScene(String escapeRoomSceneId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -127,6 +100,32 @@ public interface SceneApiDelegate {
     }
 
     /**
+     * GET /scene : Get all scenes Retrieve all scenes that are not linked to any specific level
+     *
+     * @return A list of scenes (status code 200) or Internal Server Error (status code 500)
+     *
+     * @see SceneApi#getAllScenes
+     */
+    default ResponseEntity<List<Scene>> getAllScenes() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
      * GET /scenes/{escape-room-scene-id} : Get details of a scene Retrieve details of a specific scene by its ID
      *
      * @param escapeRoomSceneId
@@ -134,9 +133,9 @@ public interface SceneApiDelegate {
      *
      * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      *
-     * @see SceneApi#scenesEscapeRoomSceneIdGet
+     * @see SceneApi#getScene
      */
-    default ResponseEntity<Scene> scenesEscapeRoomSceneIdGet(String escapeRoomSceneId) {
+    default ResponseEntity<Scene> getScene(String escapeRoomSceneId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -171,9 +170,9 @@ public interface SceneApiDelegate {
      * @return Scene updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      *
-     * @see SceneApi#scenesEscapeRoomSceneIdPut
+     * @see SceneApi#putScene
      */
-    default ResponseEntity<Scene> scenesEscapeRoomSceneIdPut(String escapeRoomSceneId, Scene scene) {
+    default ResponseEntity<Scene> putScene(String escapeRoomSceneId, Scene scene) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

@@ -9,6 +9,7 @@ paths:
 
   /template/create:
     post:
+      operationId: createTemplate
       tags:
         - Template
       summary: Creates a new Template for Escape Doom Game
@@ -29,6 +30,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /template/delete/{escape-room-template-id}:
     delete:
+      operationId: deleteTemplate
       tags:
         - Template
       summary: Deletes an EscapeRoomTemplate
@@ -52,6 +54,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /template/override/{escape-room-template-id}:
     put:
+      operationId: putTemplate
       tags:
         - Template
       summary: Overrides an existing EscapeRoomTemplate
@@ -88,6 +91,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /all-templates:
     get:
+      operationId: getAllTemplates
       tags:
         - Template
       summary: Get all EscapeRoomTemplates
@@ -105,6 +109,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /template/{escape-room-template-id}:
     get:
+      operationId: getTemplate
       tags:
         - Template
       summary: Get a specific EscapeRoomTemplate by ID
@@ -130,12 +135,13 @@ paths:
             application/json:
               schema:
                 type: object
+                title: GetTemplateNotFound
                 properties:
                   message:
                     type: string
                     example: "EscapeRoomTemplate with the provided ID was not found"
                   code:
-                    type: integer
+                    type: number
                     example: 404
         '500':
           $ref: '#/components/responses/InternalServerError'
@@ -144,6 +150,7 @@ paths:
 ### Level
   /all-levels:
     get:
+      operationId: getAllLevels
       tags:
         - Level
       summary: Retrieve all levels by a specific user
@@ -161,6 +168,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /level:
     post:
+      operationId: createLevel
       tags:
         - Level
       summary: Create a new level
@@ -185,6 +193,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /levels/{escape-room-template-id}:
     get:
+      operationId: getLevelByTemplate
       summary: Retrieve levels
       tags:
         - Level
@@ -200,6 +209,7 @@ paths:
           description: Success
   /levels/{escape-room-level-id}:
     get:
+      operationId: getLevel
       tags:
         - Level
       summary: Get details of a level
@@ -225,6 +235,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /level/overide/{escape-room-level-id}:        
     put:
+      operationId: putLevelOfTemplate
       tags:
         - Level
       summary: Override a level
@@ -259,6 +270,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /level/{escape-room-level-id}:   
     delete:
+      operationId: deleteLevel
       tags:
         - Level
       summary: Delete a level
@@ -278,12 +290,13 @@ paths:
             application/json:
               schema:
                 type: object
+                title: DeleteLevelSuccess
                 properties:
                   message:
                     type: string
                     example: Level deleted successfully
                   code:
-                    type: integer
+                    type: number
                     example: 200
         '404':
           $ref: '#/components/responses/NotFound'
@@ -294,6 +307,7 @@ paths:
 
   /all-riddles:
     get:
+      operationId: getAllRiddles
       tags:
         - Riddle
       summary: Get all  riddles
@@ -311,6 +325,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /riddle:
     post:
+      operationId: createRiddle
       tags:
         - Riddle
       summary: Create a new riddle
@@ -345,6 +360,7 @@ paths:
           type: string
           example: riddle123
     put:
+      operationId: putRiddle
       tags:
         - Riddle
       summary: Override a riddle
@@ -372,6 +388,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     delete:
+      operationId: deleteRiddle
       tags:
         - Riddle
       summary: Delete a riddle
@@ -383,12 +400,13 @@ paths:
             application/json:
               schema:
                 type: object
+                title: DeleteRiddleRequest
                 properties:
                   message:
                     type: string
                     example: Riddle deleted successfully
                   code:
-                    type: integer
+                    type: number
                     example: 200
         '404':
           $ref: '#/components/responses/NotFound'
@@ -400,6 +418,7 @@ paths:
 
   /scene:
     get:
+      operationId: getAllScenes
       tags:
         - Scene
       summary: Get all scenes
@@ -416,6 +435,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     post:
+      operationId: createScene
       tags:
         - Scene
       summary: Create a new scene
@@ -440,6 +460,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /scenes/{escape-room-scene-id}:
     get:
+      operationId: getScene
       tags:
         - Scene
       summary: Get details of a scene
@@ -464,6 +485,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
+      operationId: putScene
       tags:
         - Scene
       summary: Update a scene
@@ -497,6 +519,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     delete:
+      operationId: deleteScene
       tags:
         - Scene
       summary: Delete a scene
@@ -516,12 +539,13 @@ paths:
             application/json:
               schema:
                 type: object
+                title: DeleteLevelResponse
                 properties:
                   message:
                     type: string
                     example: Scene deleted successfully
                   code:
-                    type: integer
+                    type: number
                     example: 200
         '404':
           $ref: '#/components/responses/NotFound'
@@ -590,7 +614,7 @@ components:
             deletion)
           example: Operation successful
         code:
-          type: integer
+          type: number
           description: A status code representing the operation result
           example: 200
     EscapeRoomTemplateUpdateRequest:
@@ -619,7 +643,7 @@ components:
           description: A message indicating the result of the update operation
           example: Template updated successfully
         code:
-          type: integer
+          type: number
           description: A status code representing the operation result
           example: 200
     EscapeRoomLevel:
@@ -632,7 +656,6 @@ components:
           example: "d1087efe-41fd-42da-9110-62d35659cf1f"
         sequence:
           type: number
-          format: integer
           description: The sequence number of the level
           example: 1
         scenes:
@@ -774,12 +797,13 @@ components:
         application/json:
           schema:
             type: object
+            title: CreateBadRequest
             properties:
               message:
                 type: string
                 example: Invalid data provided
               code:
-                type: integer
+                type: number
                 example: 400
     NotFound:
       description: Not Found
@@ -787,12 +811,13 @@ components:
         application/json:
           schema:
             type: object
+            title: CreateNotFound
             properties:
               message:
                 type: string
                 example: The requested resource was not found
               code:
-                type: integer
+                type: number
                 example: 404
     InternalServerError:
       description: Internal Server Error
@@ -800,12 +825,13 @@ components:
         application/json:
           schema:
             type: object
+            title: CreateInternalServerError
             properties:
               message:
                 type: string
                 example: An unexpected error occurred on the server
               code:
-                type: integer
+                type: number
                 example: 500
     EscapeRoomTemplateResult:
       description: Operation result for EscapeRoomTemplate

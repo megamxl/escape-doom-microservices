@@ -5,12 +5,12 @@
  */
 package at.escapedoom.data.rest.api;
 
+import at.escapedoom.data.rest.model.CreateBadRequest;
+import at.escapedoom.data.rest.model.CreateInternalServerError;
+import at.escapedoom.data.rest.model.CreateNotFound;
+import at.escapedoom.data.rest.model.CreateRiddleRequest;
+import at.escapedoom.data.rest.model.DeleteRiddleRequest;
 import at.escapedoom.data.rest.model.Riddle;
-import at.escapedoom.data.rest.model.RiddlePostRequest;
-import at.escapedoom.data.rest.model.RiddlesEscapeRoomRiddleIdDelete200Response;
-import at.escapedoom.data.rest.model.TemplateCreatePost400Response;
-import at.escapedoom.data.rest.model.TemplateCreatePost500Response;
-import at.escapedoom.data.rest.model.TemplateDeleteEscapeRoomTemplateIdDelete404Response;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -44,46 +44,28 @@ public interface RiddleApi {
     }
 
     /**
-     * GET /all-riddles : Get all riddles Retrieve all riddles that are not yet linked to any level
-     *
-     * @return A list of riddles (status code 200) or Internal Server Error (status code 500)
-     */
-    @Operation(operationId = "allRiddlesGet", summary = "Get all  riddles", description = "Retrieve all riddles that are not yet linked to any level", tags = {
-            "Riddle" }, responses = { @ApiResponse(responseCode = "200", description = "A list of riddles", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Riddle.class))) }),
-                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/all-riddles", produces = { "application/json" })
-
-    default ResponseEntity<List<Riddle>> allRiddlesGet(
-
-    ) {
-        return getDelegate().allRiddlesGet();
-    }
-
-    /**
      * POST /riddle : Create a new riddle Create a riddle without linking it to a specific level
      *
-     * @param riddlePostRequest
+     * @param createRiddleRequest
      *            The details of the riddle to create (required)
      *
      * @return Riddle created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
      *         (status code 500)
      */
-    @Operation(operationId = "riddlePost", summary = "Create a new riddle", description = "Create a riddle without linking it to a specific level", tags = {
+    @Operation(operationId = "createRiddle", summary = "Create a new riddle", description = "Create a riddle without linking it to a specific level", tags = {
             "Riddle" }, responses = {
                     @ApiResponse(responseCode = "201", description = "Riddle created successfully", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Riddle.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/riddle", produces = { "application/json" }, consumes = {
             "application/json" })
 
-    default ResponseEntity<Riddle> riddlePost(
-            @Parameter(name = "RiddlePostRequest", description = "The details of the riddle to create", required = true) @Valid @RequestBody RiddlePostRequest riddlePostRequest) {
-        return getDelegate().riddlePost(riddlePostRequest);
+    default ResponseEntity<Riddle> createRiddle(
+            @Parameter(name = "CreateRiddleRequest", description = "The details of the riddle to create", required = true) @Valid @RequestBody CreateRiddleRequest createRiddleRequest) {
+        return getDelegate().createRiddle(createRiddleRequest);
     }
 
     /**
@@ -95,20 +77,38 @@ public interface RiddleApi {
      * @return Riddle deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
      *         (status code 500)
      */
-    @Operation(operationId = "riddlesEscapeRoomRiddleIdDelete", summary = "Delete a riddle", description = "Delete a riddle that is not linked to any level", tags = {
+    @Operation(operationId = "deleteRiddle", summary = "Delete a riddle", description = "Delete a riddle that is not linked to any level", tags = {
             "Riddle" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Riddle deleted successfully", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = RiddlesEscapeRoomRiddleIdDelete200Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteRiddleRequest.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
     @RequestMapping(method = RequestMethod.DELETE, value = "/riddles/{escape-room-riddle-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<RiddlesEscapeRoomRiddleIdDelete200Response> riddlesEscapeRoomRiddleIdDelete(
+    default ResponseEntity<DeleteRiddleRequest> deleteRiddle(
             @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId) {
-        return getDelegate().riddlesEscapeRoomRiddleIdDelete(escapeRoomRiddleId);
+        return getDelegate().deleteRiddle(escapeRoomRiddleId);
+    }
+
+    /**
+     * GET /all-riddles : Get all riddles Retrieve all riddles that are not yet linked to any level
+     *
+     * @return A list of riddles (status code 200) or Internal Server Error (status code 500)
+     */
+    @Operation(operationId = "getAllRiddles", summary = "Get all  riddles", description = "Retrieve all riddles that are not yet linked to any level", tags = {
+            "Riddle" }, responses = { @ApiResponse(responseCode = "200", description = "A list of riddles", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Riddle.class))) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/all-riddles", produces = { "application/json" })
+
+    default ResponseEntity<List<Riddle>> getAllRiddles(
+
+    ) {
+        return getDelegate().getAllRiddles();
     }
 
     /**
@@ -116,29 +116,29 @@ public interface RiddleApi {
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
-     * @param riddlePostRequest
+     * @param createRiddleRequest
      *            The override details of the riddle (required)
      *
      * @return Riddle updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "riddlesEscapeRoomRiddleIdPut", summary = "Override a riddle", description = "Override the details of a riddle", tags = {
+    @Operation(operationId = "putRiddle", summary = "Override a riddle", description = "Override the details of a riddle", tags = {
             "Riddle" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Riddle updated successfully", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Riddle.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost400Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateDeleteEscapeRoomTemplateIdDelete404Response.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateCreatePost500Response.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
     @RequestMapping(method = RequestMethod.PUT, value = "/riddles/{escape-room-riddle-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<Riddle> riddlesEscapeRoomRiddleIdPut(
+    default ResponseEntity<Riddle> putRiddle(
             @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId,
-            @Parameter(name = "RiddlePostRequest", description = "The override details of the riddle", required = true) @Valid @RequestBody RiddlePostRequest riddlePostRequest) {
-        return getDelegate().riddlesEscapeRoomRiddleIdPut(escapeRoomRiddleId, riddlePostRequest);
+            @Parameter(name = "CreateRiddleRequest", description = "The override details of the riddle", required = true) @Valid @RequestBody CreateRiddleRequest createRiddleRequest) {
+        return getDelegate().putRiddle(escapeRoomRiddleId, createRiddleRequest);
     }
 
 }

@@ -19,7 +19,7 @@ import jakarta.annotation.Generated;
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class CodingRiddle implements RiddlePostRequest {
+public class CodingRiddle implements CreateRiddleRequest {
 
     private String escapeRoomRiddleId;
 

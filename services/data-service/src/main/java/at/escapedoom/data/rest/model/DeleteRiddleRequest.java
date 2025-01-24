@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -14,18 +14,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * TemplateDeleteEscapeRoomTemplateIdDelete404Response
+ * DeleteRiddleRequest
  */
 
-@JsonTypeName("_template_delete__escape_room_template_id__delete_404_response")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class TemplateDeleteEscapeRoomTemplateIdDelete404Response {
+public class DeleteRiddleRequest {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
-    public TemplateDeleteEscapeRoomTemplateIdDelete404Response message(String message) {
+    public DeleteRiddleRequest message(String message) {
         this.message = message;
         return this;
     }
@@ -36,7 +35,7 @@ public class TemplateDeleteEscapeRoomTemplateIdDelete404Response {
      * @return message
      */
 
-    @Schema(name = "message", example = "The requested resource was not found", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "message", example = "Riddle deleted successfully", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("message")
     public String getMessage() {
         return message;
@@ -46,7 +45,7 @@ public class TemplateDeleteEscapeRoomTemplateIdDelete404Response {
         this.message = message;
     }
 
-    public TemplateDeleteEscapeRoomTemplateIdDelete404Response code(Integer code) {
+    public DeleteRiddleRequest code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -56,14 +55,14 @@ public class TemplateDeleteEscapeRoomTemplateIdDelete404Response {
      *
      * @return code
      */
-
-    @Schema(name = "code", example = "404", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Valid
+    @Schema(name = "code", example = "200", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
@@ -75,9 +74,9 @@ public class TemplateDeleteEscapeRoomTemplateIdDelete404Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        TemplateDeleteEscapeRoomTemplateIdDelete404Response templateDeleteEscapeRoomTemplateIdDelete404Response = (TemplateDeleteEscapeRoomTemplateIdDelete404Response) o;
-        return Objects.equals(this.message, templateDeleteEscapeRoomTemplateIdDelete404Response.message)
-                && Objects.equals(this.code, templateDeleteEscapeRoomTemplateIdDelete404Response.code);
+        DeleteRiddleRequest deleteRiddleRequest = (DeleteRiddleRequest) o;
+        return Objects.equals(this.message, deleteRiddleRequest.message)
+                && Objects.equals(this.code, deleteRiddleRequest.code);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class TemplateDeleteEscapeRoomTemplateIdDelete404Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class TemplateDeleteEscapeRoomTemplateIdDelete404Response {\n");
+        sb.append("class DeleteRiddleRequest {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");

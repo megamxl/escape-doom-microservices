@@ -19,5 +19,5 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public interface RiddlePostRequest {
+public interface CreateRiddleRequest {
 }

@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -14,18 +14,17 @@ import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
- * RiddlesEscapeRoomRiddleIdDelete200Response
+ * DeleteLevelSuccess
  */
 
-@JsonTypeName("_riddles__escape_room_riddle_id__delete_200_response")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
-public class RiddlesEscapeRoomRiddleIdDelete200Response {
+public class DeleteLevelSuccess {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
-    public RiddlesEscapeRoomRiddleIdDelete200Response message(String message) {
+    public DeleteLevelSuccess message(String message) {
         this.message = message;
         return this;
     }
@@ -36,7 +35,7 @@ public class RiddlesEscapeRoomRiddleIdDelete200Response {
      * @return message
      */
 
-    @Schema(name = "message", example = "Riddle deleted successfully", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "message", example = "Level deleted successfully", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("message")
     public String getMessage() {
         return message;
@@ -46,7 +45,7 @@ public class RiddlesEscapeRoomRiddleIdDelete200Response {
         this.message = message;
     }
 
-    public RiddlesEscapeRoomRiddleIdDelete200Response code(Integer code) {
+    public DeleteLevelSuccess code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -56,14 +55,14 @@ public class RiddlesEscapeRoomRiddleIdDelete200Response {
      *
      * @return code
      */
-
+    @Valid
     @Schema(name = "code", example = "200", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
@@ -75,9 +74,9 @@ public class RiddlesEscapeRoomRiddleIdDelete200Response {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        RiddlesEscapeRoomRiddleIdDelete200Response riddlesEscapeRoomRiddleIdDelete200Response = (RiddlesEscapeRoomRiddleIdDelete200Response) o;
-        return Objects.equals(this.message, riddlesEscapeRoomRiddleIdDelete200Response.message)
-                && Objects.equals(this.code, riddlesEscapeRoomRiddleIdDelete200Response.code);
+        DeleteLevelSuccess deleteLevelSuccess = (DeleteLevelSuccess) o;
+        return Objects.equals(this.message, deleteLevelSuccess.message)
+                && Objects.equals(this.code, deleteLevelSuccess.code);
     }
 
     @Override
@@ -88,7 +87,7 @@ public class RiddlesEscapeRoomRiddleIdDelete200Response {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class RiddlesEscapeRoomRiddleIdDelete200Response {\n");
+        sb.append("class DeleteLevelSuccess {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
         sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");

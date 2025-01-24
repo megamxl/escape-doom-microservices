@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -22,7 +23,7 @@ public class EscapeRoomTemplateResult {
 
     private String message;
 
-    private Integer code;
+    private BigDecimal code;
 
     public EscapeRoomTemplateResult message(String message) {
         this.message = message;
@@ -45,7 +46,7 @@ public class EscapeRoomTemplateResult {
         this.message = message;
     }
 
-    public EscapeRoomTemplateResult code(Integer code) {
+    public EscapeRoomTemplateResult code(BigDecimal code) {
         this.code = code;
         return this;
     }
@@ -55,14 +56,14 @@ public class EscapeRoomTemplateResult {
      *
      * @return code
      */
-
+    @Valid
     @Schema(name = "code", example = "200", description = "A status code representing the operation result", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("code")
-    public Integer getCode() {
+    public BigDecimal getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(BigDecimal code) {
         this.code = code;
     }
 
