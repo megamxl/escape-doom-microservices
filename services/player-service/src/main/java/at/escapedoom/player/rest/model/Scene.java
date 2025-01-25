@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -22,17 +23,17 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "Scene", description = "A scene of an escape-room instance")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class Scene {
 
-    private BigDecimal sceneSequence;
+    private @Nullable BigDecimal sceneSequence;
 
     @Valid
     private List<@Valid Node> nodes = new ArrayList<>();
 
-    private String backgroundImageUri;
+    private @Nullable String backgroundImageUri;
 
-    private String name;
+    private @Nullable String name;
 
     public Scene sceneSequence(BigDecimal sceneSequence) {
         this.sceneSequence = sceneSequence;

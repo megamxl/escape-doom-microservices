@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.math.BigDecimal;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -18,12 +19,12 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomTemplateUpdateResult", description = "The result of updating an EscapeRoomTemplate")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomTemplateUpdateResult {
 
-    private String message;
+    private @Nullable String message;
 
-    private BigDecimal code;
+    private @Nullable BigDecimal code;
 
     public EscapeRoomTemplateUpdateResult message(String message) {
         this.message = message;

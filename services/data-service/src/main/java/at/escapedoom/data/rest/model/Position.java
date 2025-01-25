@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -17,12 +18,12 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "Position", description = "The position of a node")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class Position {
 
-    private Double top;
+    private @Nullable Double top;
 
-    private Double left;
+    private @Nullable Double left;
 
     public Position top(Double top) {
         this.top = top;

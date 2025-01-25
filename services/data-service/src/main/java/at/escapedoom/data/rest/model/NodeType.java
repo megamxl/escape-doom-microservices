@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * The type of a node
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public enum NodeType {
 
     ZOOM("ZOOM"),

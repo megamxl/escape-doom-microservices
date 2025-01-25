@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.UUID;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -19,10 +20,10 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomCreation", description = "The escape-room template to use")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomCreation {
 
-  private UUID escapeRoomTemplateId;
+  private @Nullable UUID escapeRoomTemplateId;
 
   private Integer playTime = 60;
 

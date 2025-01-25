@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -17,14 +18,14 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "NodeInfo", description = "The information of a node")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class NodeInfo {
 
-    private String description;
+    private @Nullable String description;
 
-    private String title;
+    private @Nullable String title;
 
-    private String imageURI;
+    private @Nullable String imageURI;
 
     public NodeInfo description(String description) {
         this.description = description;

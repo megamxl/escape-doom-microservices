@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -22,15 +23,15 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomLevel", description = "The current level of an escape-room instance")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomLevel {
 
     @Valid
     private List<@Valid Scene> scenes = new ArrayList<>();
 
-    private String codeSnippet;
+    private @Nullable String codeSnippet;
 
-    private BigDecimal levelSequence;
+    private @Nullable BigDecimal levelSequence;
 
     public EscapeRoomLevel scenes(List<@Valid Scene> scenes) {
         this.scenes = scenes;

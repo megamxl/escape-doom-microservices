@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.time.OffsetDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -19,17 +20,17 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "Result", description = "Represents the result of a user's progress in a session.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class Result {
 
-    private Integer currentEscapeRoomLevel;
+    private @Nullable Integer currentEscapeRoomLevel;
 
-    private String input;
+    private @Nullable String input;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private OffsetDateTime solvedDate;
+    private @Nullable OffsetDateTime solvedDate;
 
-    private Integer addedPoints;
+    private @Nullable Integer addedPoints;
 
     public Result currentEscapeRoomLevel(Integer currentEscapeRoomLevel) {
         this.currentEscapeRoomLevel = currentEscapeRoomLevel;

@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.lang.Nullable;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -18,10 +19,10 @@ import jakarta.annotation.Generated;
  * InputStringCompareRiddle
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class InputStringCompareRiddle implements CreateRiddleRequest {
 
-    private String escapeRoomRiddleId;
+    private @Nullable String escapeRoomRiddleId;
 
     /**
      * The type of the riddle
@@ -58,9 +59,9 @@ public class InputStringCompareRiddle implements CreateRiddleRequest {
         }
     }
 
-    private TypeEnum type;
+    private @Nullable TypeEnum type;
 
-    private String expectedOutput;
+    private @Nullable String expectedOutput;
 
     public InputStringCompareRiddle escapeRoomRiddleId(String escapeRoomRiddleId) {
         this.escapeRoomRiddleId = escapeRoomRiddleId;

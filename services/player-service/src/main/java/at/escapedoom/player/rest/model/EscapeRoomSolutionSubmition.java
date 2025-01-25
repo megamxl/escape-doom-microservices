@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -18,10 +19,10 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomSolutionSubmition", description = "The solution to submit")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomSolutionSubmition {
 
-    private String solution;
+    private @Nullable String solution;
 
     /**
      * The language of the solution
@@ -60,7 +61,7 @@ public class EscapeRoomSolutionSubmition {
         }
     }
 
-    private LanguageEnum language;
+    private @Nullable LanguageEnum language;
 
     public EscapeRoomSolutionSubmition solution(String solution) {
         this.solution = solution;

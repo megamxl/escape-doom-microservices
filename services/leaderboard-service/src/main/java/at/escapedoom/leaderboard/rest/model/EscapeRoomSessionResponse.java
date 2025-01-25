@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -22,7 +23,7 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomSessionResponse", description = "Represents metadata for a session in API responses.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomSessionResponse {
 
     /**
@@ -64,15 +65,15 @@ public class EscapeRoomSessionResponse {
         }
     }
 
-    private StateEnum state;
+    private @Nullable StateEnum state;
 
     private Integer playTime = 60;
 
-    private Integer roomPin;
+    private @Nullable Integer roomPin;
 
-    private UUID escapeRoomTemplateId;
+    private @Nullable UUID escapeRoomTemplateId;
 
-    private UUID escapeRoomSessionId;
+    private @Nullable UUID escapeRoomSessionId;
 
     @Valid
     private List<String> tags = new ArrayList<>();

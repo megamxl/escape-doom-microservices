@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -18,7 +19,7 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomResult", description = "The result of a submitted solution")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomResult {
 
     /**
@@ -62,9 +63,9 @@ public class EscapeRoomResult {
         }
     }
 
-    private StatusEnum status;
+    private @Nullable StatusEnum status;
 
-    private String output;
+    private @Nullable String output;
 
     public EscapeRoomResult status(StatusEnum status) {
         this.status = status;

@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -24,19 +25,19 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "UserProgress", description = "Represents the progress of user in a session.")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class UserProgress {
 
-    private UUID escapeRoomSessionId;
+    private @Nullable UUID escapeRoomSessionId;
 
-    private String playerName;
+    private @Nullable String playerName;
 
-    private Integer currentEscapeRoomLevel;
+    private @Nullable Integer currentEscapeRoomLevel;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    private OffsetDateTime lastRiddleSolvedAt;
+    private @Nullable OffsetDateTime lastRiddleSolvedAt;
 
-    private Integer score;
+    private @Nullable Integer score;
 
     @Valid
     private List<@Valid Result> results = new ArrayList<>();

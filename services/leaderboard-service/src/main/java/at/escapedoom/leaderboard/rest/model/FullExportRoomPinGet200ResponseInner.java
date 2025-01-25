@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -23,10 +24,10 @@ import jakarta.annotation.Generated;
  */
 
 @JsonTypeName("_full_export__room_pin__get_200_response_inner")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class FullExportRoomPinGet200ResponseInner {
 
-    private EscapeRoomSessionResponse session;
+    private @Nullable EscapeRoomSessionResponse session;
 
     @Valid
     private List<@Valid UserProgress> userProgress = new ArrayList<>();

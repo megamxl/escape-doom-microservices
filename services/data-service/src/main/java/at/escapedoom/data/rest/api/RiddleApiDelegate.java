@@ -23,7 +23,7 @@ import jakarta.annotation.Generated;
  * A delegate to be called by the {@link RiddleApiController}}. Implement this interface with a
  * {@link org.springframework.stereotype.Service} annotated class.
  */
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public interface RiddleApiDelegate {
 
     default Optional<NativeWebRequest> getRequest() {

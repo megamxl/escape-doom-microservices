@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -17,14 +18,14 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomTemplateDTO", description = "The escape-room template, base for an EscapeRoom Game")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomTemplateDTO {
 
-    private String escapeRoomTemplateId;
+    private @Nullable String escapeRoomTemplateId;
 
-    private String name;
+    private @Nullable String name;
 
-    private String description;
+    private @Nullable String description;
 
     public EscapeRoomTemplateDTO escapeRoomTemplateId(String escapeRoomTemplateId) {
         this.escapeRoomTemplateId = escapeRoomTemplateId;

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -21,12 +22,12 @@ import jakarta.annotation.Generated;
  */
 
 @Schema(name = "EscapeRoomTemplateUpdateRequest", description = "The payload for updating an EscapeRoomTemplate")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomTemplateUpdateRequest {
 
-    private String name;
+    private @Nullable String name;
 
-    private String description;
+    private @Nullable String description;
 
     @Valid
     private List<@Valid EscapeRoomLevel> levels = new ArrayList<>();

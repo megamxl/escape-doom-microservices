@@ -5,6 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.springframework.lang.Nullable;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -18,10 +19,10 @@ import jakarta.annotation.Generated;
  * CodingRiddle
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.10.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class CodingRiddle implements CreateRiddleRequest {
 
-    private String escapeRoomRiddleId;
+    private @Nullable String escapeRoomRiddleId;
 
     /**
      * The type of the riddle
@@ -58,17 +59,17 @@ public class CodingRiddle implements CreateRiddleRequest {
         }
     }
 
-    private TypeEnum type;
+    private @Nullable TypeEnum type;
 
-    private String expectedOutput;
+    private @Nullable String expectedOutput;
 
-    private String language;
+    private @Nullable String language;
 
-    private String functionSignature;
+    private @Nullable String functionSignature;
 
-    private String input;
+    private @Nullable String input;
 
-    private String variableName;
+    private @Nullable String variableName;
 
     public CodingRiddle escapeRoomRiddleId(String escapeRoomRiddleId) {
         this.escapeRoomRiddleId = escapeRoomRiddleId;
