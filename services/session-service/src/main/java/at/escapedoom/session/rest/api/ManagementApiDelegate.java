@@ -34,9 +34,9 @@ public interface ManagementApiDelegate {
      *
      * @param escapeRoomCreation The escape-room template to use (required)
      * @return OK (status code 200)
-     * @see ManagementApi#createPost
+     * @see ManagementApi#createERInstance
      */
-    default ResponseEntity<EscapeRoomSessionResponse> createPost(EscapeRoomCreation escapeRoomCreation) {
+    default ResponseEntity<EscapeRoomSessionResponse> createERInstance(EscapeRoomCreation escapeRoomCreation) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -57,9 +57,9 @@ public interface ManagementApiDelegate {
      * @param escapeRoomSessionId The id of the escape-room instance (required)
      * @param state The state to set (required)
      * @return OK (status code 200)
-     * @see ManagementApi#stateEscapeRoomSessionIdStatePut
+     * @see ManagementApi#toggleERInstanceState
      */
-    default ResponseEntity<EscapeRoomSessionResponse> stateEscapeRoomSessionIdStatePut(UUID escapeRoomSessionId,
+    default ResponseEntity<EscapeRoomSessionResponse> toggleERInstanceState(UUID escapeRoomSessionId,
         EscapeRoomState state) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {

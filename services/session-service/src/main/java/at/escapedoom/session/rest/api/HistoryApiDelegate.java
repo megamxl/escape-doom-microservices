@@ -30,9 +30,9 @@ public interface HistoryApiDelegate {
      * Get the history of all escape-room instances of a lector
      *
      * @return OK (status code 200)
-     * @see HistoryApi#historyGet
+     * @see HistoryApi#getERHistory
      */
-    default ResponseEntity<List<EscapeRoomSessionResponse>> historyGet() {
+    default ResponseEntity<List<EscapeRoomSessionResponse>> getERHistory() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

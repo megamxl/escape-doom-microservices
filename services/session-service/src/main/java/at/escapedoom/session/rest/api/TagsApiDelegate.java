@@ -26,15 +26,15 @@ public interface TagsApiDelegate {
     }
 
     /**
-     * DELETE /tag/{escape_room_session_id}/{tag_name} : Remove a tag from an escape-room instance
-     * Remove a tag from an escape-room instance
+     * PUT /tag/{escape_room_session_id}/{tag_name} : Add a tag to an escape-room instance
+     * Add a tag to an escape-room instance
      *
      * @param escapeRoomSessionId The ID of the escape room session (required)
      * @param tagName The name of the tag to remove (required)
      * @return The tag was added to the escape room (status code 200)
-     * @see TagsApi#tagEscapeRoomSessionIdTagNameDelete
+     * @see TagsApi#addERTag
      */
-    default ResponseEntity<EscapeRoomSessionResponse> tagEscapeRoomSessionIdTagNameDelete(String escapeRoomSessionId,
+    default ResponseEntity<EscapeRoomSessionResponse> addERTag(String escapeRoomSessionId,
         String tagName) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -50,15 +50,15 @@ public interface TagsApiDelegate {
     }
 
     /**
-     * PUT /tag/{escape_room_session_id}/{tag_name} : Add a tag to an escape-room instance
-     * Add a tag to an escape-room instance
+     * DELETE /tag/{escape_room_session_id}/{tag_name} : Remove a tag from an escape-room instance
+     * Remove a tag from an escape-room instance
      *
      * @param escapeRoomSessionId The ID of the escape room session (required)
      * @param tagName The name of the tag to remove (required)
      * @return The tag was added to the escape room (status code 200)
-     * @see TagsApi#tagEscapeRoomSessionIdTagNamePut
+     * @see TagsApi#deleteERTag
      */
-    default ResponseEntity<EscapeRoomSessionResponse> tagEscapeRoomSessionIdTagNamePut(String escapeRoomSessionId,
+    default ResponseEntity<EscapeRoomSessionResponse> deleteERTag(String escapeRoomSessionId,
         String tagName) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {

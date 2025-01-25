@@ -44,7 +44,7 @@ public interface HistoryApi {
      * @return OK (status code 200)
      */
     @Operation(
-        operationId = "historyGet",
+        operationId = "getERHistory",
         summary = "Get the history of all escape-room instances of a lector",
         description = "Get the history of all escape-room instances of a lector",
         tags = { "history" },
@@ -60,10 +60,10 @@ public interface HistoryApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<List<EscapeRoomSessionResponse>> historyGet(
+    default ResponseEntity<List<EscapeRoomSessionResponse>> getERHistory(
         
     ) {
-        return getDelegate().historyGet();
+        return getDelegate().getERHistory();
     }
 
 }
