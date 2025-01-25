@@ -11,6 +11,7 @@ paths:
         - management
       summary: Create a new escape-room instance
       description: Creates a new escape-room instance
+      operationId: createERInstance
       requestBody:
         description: The escape-room template to use
         required: true
@@ -31,6 +32,7 @@ paths:
         - management
       summary: Start or stop an escape-room instance
       description: Starts or stops an escape-room instance
+      operationId: toggleERInstanceState
       parameters:
         - name: escape_room_session_id
           in: path
@@ -60,6 +62,7 @@ paths:
         - history
       summary: Get the history of all escape-room instances of a lector
       description: Get the history of all escape-room instances of a lector
+      operationId: getERHistory
       responses:
         "200":
           description: OK
@@ -75,6 +78,7 @@ paths:
         - tags
       summary: Remove a tag from an escape-room instance
       description: Remove a tag from an escape-room instance
+      operationId: deleteERTag
       parameters:
         - name: escape_room_session_id
           in: path
@@ -102,6 +106,7 @@ paths:
         - tags
       summary: Add a tag to an escape-room instance
       description: Add a tag to an escape-room instance
+      operationId: addERTag
       parameters:
         - name: escape_room_session_id
           in: path

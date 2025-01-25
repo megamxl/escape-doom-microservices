@@ -48,7 +48,7 @@ public interface ManagementApi {
      * @return OK (status code 200)
      */
     @Operation(
-        operationId = "createPost",
+        operationId = "createERInstance",
         summary = "Create a new escape-room instance",
         description = "Creates a new escape-room instance",
         tags = { "management" },
@@ -65,10 +65,10 @@ public interface ManagementApi {
         consumes = { "application/json" }
     )
     
-    default ResponseEntity<EscapeRoomSessionResponse> createPost(
+    default ResponseEntity<EscapeRoomSessionResponse> createERInstance(
         @Parameter(name = "EscapeRoomCreation", description = "The escape-room template to use", required = true) @Valid @RequestBody EscapeRoomCreation escapeRoomCreation
     ) {
-        return getDelegate().createPost(escapeRoomCreation);
+        return getDelegate().createERInstance(escapeRoomCreation);
     }
 
 
@@ -81,7 +81,7 @@ public interface ManagementApi {
      * @return OK (status code 200)
      */
     @Operation(
-        operationId = "stateEscapeRoomSessionIdStatePut",
+        operationId = "toggleERInstanceState",
         summary = "Start or stop an escape-room instance",
         description = "Starts or stops an escape-room instance",
         tags = { "management" },
@@ -97,11 +97,11 @@ public interface ManagementApi {
         produces = { "application/json" }
     )
     
-    default ResponseEntity<EscapeRoomSessionResponse> stateEscapeRoomSessionIdStatePut(
+    default ResponseEntity<EscapeRoomSessionResponse> toggleERInstanceState(
         @Parameter(name = "escape_room_session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") UUID escapeRoomSessionId,
         @Parameter(name = "state", description = "The state to set", required = true, in = ParameterIn.PATH) @PathVariable("state") EscapeRoomState state
     ) {
-        return getDelegate().stateEscapeRoomSessionIdStatePut(escapeRoomSessionId, state);
+        return getDelegate().toggleERInstanceState(escapeRoomSessionId, state);
     }
 
 }
