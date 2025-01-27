@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="All-Services " type="CompoundRunConfigurationType">
+    <toRun name="DataApi" type="SpringBootApplicationConfigurationType" />
+    <toRun name="Gateway" type="SpringBootApplicationConfigurationType" />
+    <toRun name="LeaderboardApi" type="SpringBootApplicationConfigurationType" />
+    <toRun name="PlayerApi" type="SpringBootApplicationConfigurationType" />
+    <toRun name="SessionApi" type="SpringBootApplicationConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>
