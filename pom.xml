@@ -27,6 +27,9 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
+        <fmt-maven-plugin.version>2.23</fmt-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
+        <spring-doc.version>2.5.0</spring-doc.version>
     </properties>
 
     <build>
