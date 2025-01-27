@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-
 import java.util.*;
 import jakarta.annotation.Generated;
 
@@ -21,39 +20,38 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public enum EscapeRoomState {
-  
-  OPEN("open"),
-  
-  CLOSED("closed"),
-  
-  STARTED("started"),
-  
-  FINISHED("finished");
 
-  private String value;
+    OPEN("open"),
 
-  EscapeRoomState(String value) {
-    this.value = value;
-  }
+    CLOSED("closed"),
 
-  @JsonValue
-  public String getValue() {
-    return value;
-  }
+    STARTED("started"),
 
-  @Override
-  public String toString() {
-    return String.valueOf(value);
-  }
+    FINISHED("finished");
 
-  @JsonCreator
-  public static EscapeRoomState fromValue(String value) {
-    for (EscapeRoomState b : EscapeRoomState.values()) {
-      if (b.value.equals(value)) {
-        return b;
-      }
+    private String value;
+
+    EscapeRoomState(String value) {
+        this.value = value;
     }
-    throw new IllegalArgumentException("Unexpected value '" + value + "'");
-  }
-}
 
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static EscapeRoomState fromValue(String value) {
+        for (EscapeRoomState b : EscapeRoomState.values()) {
+            if (b.value.equals(value)) {
+                return b;
+            }
+        }
+        throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+}

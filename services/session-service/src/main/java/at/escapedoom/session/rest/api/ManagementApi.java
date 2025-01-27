@@ -37,70 +37,49 @@ import jakarta.annotation.Generated;
 public interface ManagementApi {
 
     default ManagementApiDelegate getDelegate() {
-        return new ManagementApiDelegate() {};
+        return new ManagementApiDelegate() {
+        };
     }
 
     /**
-     * POST /create : Create a new escape-room instance
-     * Creates a new escape-room instance
+     * POST /create : Create a new escape-room instance Creates a new escape-room instance
      *
-     * @param escapeRoomCreation The escape-room template to use (required)
+     * @param escapeRoomCreation
+     *            The escape-room template to use (required)
+     *
      * @return OK (status code 200)
      */
-    @Operation(
-        operationId = "createERInstance",
-        summary = "Create a new escape-room instance",
-        description = "Creates a new escape-room instance",
-        tags = { "management" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomSessionResponse.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.POST,
-        value = "/create",
-        produces = { "application/json" },
-        consumes = { "application/json" }
-    )
-    
+    @Operation(operationId = "createERInstance", summary = "Create a new escape-room instance", description = "Creates a new escape-room instance", tags = {
+            "management" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomSessionResponse.class)) }) })
+    @RequestMapping(method = RequestMethod.POST, value = "/create", produces = { "application/json" }, consumes = {
+            "application/json" })
+
     default ResponseEntity<EscapeRoomSessionResponse> createERInstance(
-        @Parameter(name = "EscapeRoomCreation", description = "The escape-room template to use", required = true) @Valid @RequestBody EscapeRoomCreation escapeRoomCreation
-    ) {
+            @Parameter(name = "EscapeRoomCreation", description = "The escape-room template to use", required = true) @Valid @RequestBody EscapeRoomCreation escapeRoomCreation) {
         return getDelegate().createERInstance(escapeRoomCreation);
     }
 
-
     /**
-     * PUT /state/{escape_room_session_id}/{state} : Start or stop an escape-room instance
-     * Starts or stops an escape-room instance
+     * PUT /state/{escape_room_session_id}/{state} : Start or stop an escape-room instance Starts or stops an
+     * escape-room instance
      *
-     * @param escapeRoomSessionId The id of the escape-room instance (required)
-     * @param state The state to set (required)
+     * @param escapeRoomSessionId
+     *            The id of the escape-room instance (required)
+     * @param state
+     *            The state to set (required)
+     *
      * @return OK (status code 200)
      */
-    @Operation(
-        operationId = "toggleERInstanceState",
-        summary = "Start or stop an escape-room instance",
-        description = "Starts or stops an escape-room instance",
-        tags = { "management" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomSessionResponse.class))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.PUT,
-        value = "/state/{escape_room_session_id}/{state}",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "toggleERInstanceState", summary = "Start or stop an escape-room instance", description = "Starts or stops an escape-room instance", tags = {
+            "management" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomSessionResponse.class)) }) })
+    @RequestMapping(method = RequestMethod.PUT, value = "/state/{escape_room_session_id}/{state}", produces = {
+            "application/json" })
+
     default ResponseEntity<EscapeRoomSessionResponse> toggleERInstanceState(
-        @Parameter(name = "escape_room_session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") UUID escapeRoomSessionId,
-        @Parameter(name = "state", description = "The state to set", required = true, in = ParameterIn.PATH) @PathVariable("state") EscapeRoomState state
-    ) {
+            @Parameter(name = "escape_room_session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") UUID escapeRoomSessionId,
+            @Parameter(name = "state", description = "The state to set", required = true, in = ParameterIn.PATH) @PathVariable("state") EscapeRoomState state) {
         return getDelegate().toggleERInstanceState(escapeRoomSessionId, state);
     }
 

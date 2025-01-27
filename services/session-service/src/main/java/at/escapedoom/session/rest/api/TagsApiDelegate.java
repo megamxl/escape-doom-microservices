@@ -15,8 +15,8 @@ import java.util.Optional;
 import jakarta.annotation.Generated;
 
 /**
- * A delegate to be called by the {@link TagsApiController}}.
- * Implement this interface with a {@link org.springframework.stereotype.Service} annotated class.
+ * A delegate to be called by the {@link TagsApiController}}. Implement this interface with a
+ * {@link org.springframework.stereotype.Service} annotated class.
  */
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public interface TagsApiDelegate {
@@ -26,18 +26,21 @@ public interface TagsApiDelegate {
     }
 
     /**
-     * PUT /tag/{escape_room_session_id}/{tag_name} : Add a tag to an escape-room instance
-     * Add a tag to an escape-room instance
+     * PUT /tag/{escape_room_session_id}/{tag_name} : Add a tag to an escape-room instance Add a tag to an escape-room
+     * instance
      *
-     * @param escapeRoomSessionId The ID of the escape room session (required)
-     * @param tagName The name of the tag to remove (required)
+     * @param escapeRoomSessionId
+     *            The ID of the escape room session (required)
+     * @param tagName
+     *            The name of the tag to remove (required)
+     *
      * @return The tag was added to the escape room (status code 200)
+     *
      * @see TagsApi#addERTag
      */
-    default ResponseEntity<EscapeRoomSessionResponse> addERTag(String escapeRoomSessionId,
-        String tagName) {
+    default ResponseEntity<EscapeRoomSessionResponse> addERTag(String escapeRoomSessionId, String tagName) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"room_pin\" : 420666, \"escape_room_template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
@@ -50,18 +53,21 @@ public interface TagsApiDelegate {
     }
 
     /**
-     * DELETE /tag/{escape_room_session_id}/{tag_name} : Remove a tag from an escape-room instance
-     * Remove a tag from an escape-room instance
+     * DELETE /tag/{escape_room_session_id}/{tag_name} : Remove a tag from an escape-room instance Remove a tag from an
+     * escape-room instance
      *
-     * @param escapeRoomSessionId The ID of the escape room session (required)
-     * @param tagName The name of the tag to remove (required)
+     * @param escapeRoomSessionId
+     *            The ID of the escape room session (required)
+     * @param tagName
+     *            The name of the tag to remove (required)
+     *
      * @return The tag was added to the escape room (status code 200)
+     *
      * @see TagsApi#deleteERTag
      */
-    default ResponseEntity<EscapeRoomSessionResponse> deleteERTag(String escapeRoomSessionId,
-        String tagName) {
+    default ResponseEntity<EscapeRoomSessionResponse> deleteERTag(String escapeRoomSessionId, String tagName) {
         getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"room_pin\" : 420666, \"escape_room_template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);

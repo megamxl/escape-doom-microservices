@@ -2,7 +2,6 @@ package at.escapedoom.session.rest.api;
 
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +32,8 @@ public class TagsApiController implements TagsApi {
     private final TagsApiDelegate delegate;
 
     public TagsApiController(@Autowired(required = false) TagsApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new TagsApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new TagsApiDelegate() {
+        });
     }
 
     @Override

@@ -2,7 +2,6 @@ package at.escapedoom.session.rest.api;
 
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,7 +32,8 @@ public class HistoryApiController implements HistoryApi {
     private final HistoryApiDelegate delegate;
 
     public HistoryApiController(@Autowired(required = false) HistoryApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new HistoryApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new HistoryApiDelegate() {
+        });
     }
 
     @Override

@@ -5,7 +5,6 @@ import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import java.util.UUID;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,7 +35,8 @@ public class ManagementApiController implements ManagementApi {
     private final ManagementApiDelegate delegate;
 
     public ManagementApiController(@Autowired(required = false) ManagementApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new ManagementApiDelegate() {});
+        this.delegate = Optional.ofNullable(delegate).orElse(new ManagementApiDelegate() {
+        });
     }
 
     @Override

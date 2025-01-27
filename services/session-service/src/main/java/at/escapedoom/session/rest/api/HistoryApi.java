@@ -34,34 +34,23 @@ import jakarta.annotation.Generated;
 public interface HistoryApi {
 
     default HistoryApiDelegate getDelegate() {
-        return new HistoryApiDelegate() {};
+        return new HistoryApiDelegate() {
+        };
     }
 
     /**
-     * GET /history : Get the history of all escape-room instances of a lector
-     * Get the history of all escape-room instances of a lector
+     * GET /history : Get the history of all escape-room instances of a lector Get the history of all escape-room
+     * instances of a lector
      *
      * @return OK (status code 200)
      */
-    @Operation(
-        operationId = "getERHistory",
-        summary = "Get the history of all escape-room instances of a lector",
-        description = "Get the history of all escape-room instances of a lector",
-        tags = { "history" },
-        responses = {
-            @ApiResponse(responseCode = "200", description = "OK", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomSessionResponse.class)))
-            })
-        }
-    )
-    @RequestMapping(
-        method = RequestMethod.GET,
-        value = "/history",
-        produces = { "application/json" }
-    )
-    
+    @Operation(operationId = "getERHistory", summary = "Get the history of all escape-room instances of a lector", description = "Get the history of all escape-room instances of a lector", tags = {
+            "history" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomSessionResponse.class))) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/history", produces = { "application/json" })
+
     default ResponseEntity<List<EscapeRoomSessionResponse>> getERHistory(
-        
+
     ) {
         return getDelegate().getERHistory();
     }
