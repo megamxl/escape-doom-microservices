@@ -1,8 +1,9 @@
 version: '3.9'
+name: escapedoom-ms
 services:
   postgres:
     image: postgres:15
-    container_name: postgres
+    container_name: postgres_ms
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
@@ -14,14 +15,14 @@ services:
 
   redis:
     image: redis:7
-    container_name: redis
+    container_name: redis_ms
     ports:
       - "6379:6379"
     command: ["redis-server", "--appendonly", "yes"]
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.7
-    container_name: keycloak
+    container_name: keycloak_ms
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin123
@@ -34,7 +35,7 @@ services:
 
   kafka:
     image: bitnami/kafka:3
-    container_name: kafka
+    container_name: kafka_ms
     environment:
       KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
@@ -47,7 +48,7 @@ services:
 
   zookeeper:
     image: bitnami/zookeeper:3
-    container_name: zookeeper
+    container_name: zookeeper_ms
     environment:
       ALLOW_ANONYMOUS_LOGIN: "yes"
     ports:

@@ -11,11 +11,8 @@ export const config = {
         path: '../services/leaderboard-service/src/main/resources/api.yml',
     },
     output: {
-        path: './src/gen',
-        clean: true,
-    },
-    hooks: {
-        done: ['npm run typecheck', 'biome format --write ./', 'biome lint --apply-unsafe ./src'],
+        path: './app/gen',
+        clean: true
     },
     plugins: [
         pluginOas({ generators: [] }),
@@ -28,6 +25,9 @@ export const config = {
             },
         }),
         pluginReactQuery({
+            client: {
+                baseURL: "http://localhost:8081/leaderboard-api/v1/leaderboard/"
+            },
             transformers: {
                 name: (name, type) => {
                     if (type === 'file' || type === 'function') {
@@ -44,7 +44,7 @@ export const config = {
             },
             queryKey(props) {
                 const keys = QueryKey.getTransformer(props)
-                return ['"v5"', ...keys]
+                return ['"v1"', ...keys]
             },
             paramsType: 'inline',
             pathParamsType: 'object',
