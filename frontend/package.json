@@ -6,13 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "next lint"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "@fontsource/roboto": "^5.1.0",
+    "@kubb/cli": "3.5.5",
+    "@kubb/core": "3.5.5",
+    "@kubb/plugin-client": "3.5.5",
+    "@kubb/plugin-oas": "3.5.5",
+    "@kubb/plugin-react-query": "3.5.5",
+    "@kubb/plugin-ts": "3.5.5",
+    "@kubb/react": "3.5.5",
+    "@tanstack/react-query-devtools": "^5.65.1",
     "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^6.1.6",
     "@mui/lab": "^6.0.0-beta.17",
