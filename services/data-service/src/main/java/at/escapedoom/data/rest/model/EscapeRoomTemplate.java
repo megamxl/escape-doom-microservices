@@ -16,6 +16,11 @@ import jakarta.annotation.Generated;
 /**
  * The escape-room template, base for an EscapeRoom Game
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomTemplate", description = "The escape-room template, base for an EscapeRoom Game")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
