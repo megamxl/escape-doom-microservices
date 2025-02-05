@@ -14,5 +14,4 @@ public class TestEntity {
 
     String name;
 
-
 }
