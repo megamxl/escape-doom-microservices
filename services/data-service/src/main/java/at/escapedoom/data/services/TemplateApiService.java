@@ -1,4 +1,4 @@
-package at.escapedoom.services;
+package at.escapedoom.data.services;
 
 import at.escapedoom.data.rest.api.TemplateApiDelegate;
 import at.escapedoom.data.rest.model.*;
