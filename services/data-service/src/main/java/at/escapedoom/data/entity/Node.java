@@ -13,18 +13,25 @@ import java.util.UUID;
 public class Node {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID nodeId;
 
     @Embedded
     private Position position;
 
-    @Enumerated(EnumType.STRING)
-    private NodeType nodeType;
-
     @Embedded
     private NodeInfo nodeInfo;
 
+    @Enumerated(EnumType.STRING)
+    private NodeType nodeType;
 
-
+    @Override
+    public String toString() {
+        return "Node{" +
+                "nodeId=" + nodeId +
+                ", position=" + position +
+                ", nodeType=" + nodeType +
+                ", nodeInfo=" + nodeInfo +
+                '}';
+    }
 }
