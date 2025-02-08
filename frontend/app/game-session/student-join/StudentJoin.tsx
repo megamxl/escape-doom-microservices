@@ -27,7 +27,7 @@ const StudentJoin = () => {
         console.log("Trying to get lobby of id: " + roomPin + "Current session: ", session)
         const {data, isError, error} = await refetch();
 
-        if (session && data?.state == RoomState.PLAYING) redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${session}`)
+        if (session && data?.state === RoomState.PLAYING) redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${session}`)
 
         if (isError) {
             setOpenOpenSnackbar(true)

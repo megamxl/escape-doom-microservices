@@ -23,10 +23,6 @@ const Leaderboard = ({boardID}: { boardID: number }) => {
         return () => clearInterval(interval)
     }, [remainingTime]);
 
-    useEffect(() => {
-        console.log(data)
-    }, [data]);
-
     return (
         <div className={"flex flex-col w-5/6 lg:w-1/2 mt-4 gap-8 justify-center m-auto"}>
             <p className={"text-8xl font-bold self-center"}> {formatTime(remainingTime / 1000)} </p>
