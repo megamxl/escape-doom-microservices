@@ -27,6 +27,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push Docker image
+        working-directory: /frontend
         run: |
           IMAGE_NAME=ghcr.io/megamxl/escape-doom-microservices/frontend:latest
               docker build -t $IMAGE_NAME .
