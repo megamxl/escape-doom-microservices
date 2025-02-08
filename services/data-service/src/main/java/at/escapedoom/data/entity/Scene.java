@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import java.net.URI;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,9 +13,10 @@ public class Scene {
 
     @Id
     private UUID escapeRoomSequenceId;
-    private Integer SceneSequence;
+
+    private Integer sceneSequence;
     private String name;
-    private String backgroundImageURI;
+    private URI backgroundImageURI;
 
     @OneToMany
     private List<Node> nodes;
