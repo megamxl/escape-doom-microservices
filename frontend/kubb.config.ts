@@ -8,7 +8,7 @@ import { pluginTs } from '@kubb/plugin-ts'
 export const config = {
     root: '.',
     input: {
-        path: '../services/leaderboard-service/src/main/resources/api.yml',
+        path: '../services/data-service/src/main/resources/api.yml',
     },
     output: {
         path: './app/gen',
@@ -26,7 +26,7 @@ export const config = {
         }),
         pluginReactQuery({
             client: {
-                baseURL: "http://localhost:8081/leaderboard-api/v1/leaderboard/"
+                importPath: "@/axios-client-v2.ts"
             },
             transformers: {
                 name: (name, type) => {
@@ -48,46 +48,7 @@ export const config = {
             },
             paramsType: 'inline',
             pathParamsType: 'object',
-            suspense: {},
-            override: [
-                {
-                    type: 'operationId',
-                    pattern: 'findPetsByTags',
-                    options: {
-                        client: {
-                            dataReturnType: 'full',
-                            importPath: '@kubb/plugin-client/clients/axios',
-                        },
-                        infinite: {
-                            queryParam: 'pageSize',
-                            initialPageParam: 0,
-                            cursorParam: undefined,
-                        },
-                    },
-                },
-                {
-                    type: 'operationId',
-                    pattern: 'getInventory',
-                    options: {
-                        query: false,
-                    },
-                },
-                {
-                    type: 'operationId',
-                    pattern: 'updatePetWithForm',
-                    options: {
-                        query: {
-                            importPath: '@tanstack/react-query',
-                            methods: ['post'],
-                        },
-                        mutation: {
-                            importPath: '@tanstack/react-query',
-                            methods: ['put', 'delete'],
-                        },
-                        pathParamsType: 'inline',
-                    },
-                },
-            ],
+            suspense: {}
         }),
     ],
 }

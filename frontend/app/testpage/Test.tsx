@@ -2,22 +2,19 @@
 
 import { useEffect } from "react";
 import {Button} from "@mui/material";
-import {useGetEscapeRoomSessionsHook, useGetFullExportRoomPinHook} from "@/app/gen";
-import {useGetStageInformation} from "@/app/hooks/game-session/useGetStageInformation";
+import {useCreateTemplateHook} from "@/app/gen";
 
 export default function Test() {
 
-    const {data, refetch} = useGetEscapeRoomSessionsHook();
+    const templateHook = useCreateTemplateHook();
 
     useEffect(() => {
-        console.log(data)
-    }, [data]);
+        console.log("Data:", templateHook.data)
+    }, [templateHook.data]);
 
     const handleClick = async () => {
         console.log("clicked")
-        await refetch()
-        console.log("re-fetched")
-        console.log(data)
+        templateHook.mutate({ data: { name:  "SDE24", description: "Cäsar´s Rätsel"}}); //
     }
 
     return (
