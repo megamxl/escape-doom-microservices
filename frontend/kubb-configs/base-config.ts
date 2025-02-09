@@ -1,21 +1,29 @@
-import { defineConfig } from '@kubb/core'
-import { pluginOas } from '@kubb/plugin-oas'
-import { pluginReactQuery } from '@kubb/plugin-react-query'
-import { QueryKey } from '@kubb/plugin-react-query/components'
-import { pluginTs } from '@kubb/plugin-ts'
+import {UserConfig} from '@kubb/core'
+import {pluginOas} from '@kubb/plugin-oas'
+import {pluginReactQuery} from '@kubb/plugin-react-query'
+import {QueryKey} from '@kubb/plugin-react-query/components'
+import {pluginTs} from '@kubb/plugin-ts'
+
+export const loadConfigWithPath = (pathName: string): UserConfig => {
+    //@ts-ignore
+    config.input.path = pathName;
+    return config
+}
 
 /** @type {import('@kubb/core').UserConfig} */
-export const config = {
+const config: UserConfig = {
     root: '.',
     input: {
-        path: '../services/data-service/src/main/resources/api.yml',
+        path: '',
     },
     output: {
         path: './app/gen',
         clean: true
     },
     plugins: [
-        pluginOas({ generators: [] }),
+        pluginOas({
+            serverIndex: 0
+        }),
         pluginTs({
             output: {
                 path: 'models',
@@ -25,9 +33,9 @@ export const config = {
             },
         }),
         pluginReactQuery({
-            client: {
-                importPath: "@/app/api/axios-client-v2"
-            },
+            // client: {
+            //     importPath: "@/app/api/axios-client-v2"
+            // },
             transformers: {
                 name: (name, type) => {
                     if (type === 'file' || type === 'function') {
@@ -53,6 +61,4 @@ export const config = {
     ],
 }
 
-defineConfig(config)
-
-export default defineConfig(config)
+export default loadConfigWithPath

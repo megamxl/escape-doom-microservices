@@ -1,9 +1,10 @@
 openapi: 3.0.3
 info:
   title: Escape Doom Data API
-  version: 0.0.1
+  version: 0.0.2
 servers:
-  - url: https://api.server.test/v1/data
+  - url: http://escapedoom.at/data-api/v1
+  - url: http://localhost:8081/data-api/v1
 paths:
 ### Template
 

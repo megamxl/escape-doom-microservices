@@ -33,11 +33,7 @@ public class EscapeRoomLevel {
 
     @Override
     public String toString() {
-        return "EscapeRoomLevel{" +
-                "escapeRoomLevelId=" + escapeRoomLevelId +
-                ", scenes=lazyLoading" +
-                ", riddle=" + riddle +
-                ", levelSequence=" + levelSequence +
-                '}';
+        return "EscapeRoomLevel{" + "escapeRoomLevelId=" + escapeRoomLevelId + ", scenes=lazyLoading" + ", riddle="
+                + riddle + ", levelSequence=" + levelSequence + '}';
     }
 }

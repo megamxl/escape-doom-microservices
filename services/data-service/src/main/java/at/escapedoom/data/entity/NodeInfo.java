@@ -19,10 +19,7 @@ public class NodeInfo {
 
     @Override
     public String toString() {
-        return "NodeInfo{" +
-                "description='" + description + '\'' +
-                ", title='" + title + '\'' +
-                ", imageURI='" + imageURI + '\'' +
-                '}';
+        return "NodeInfo{" + "description='" + description + '\'' + ", title='" + title + '\'' + ", imageURI='"
+                + imageURI + '\'' + '}';
     }
 }
