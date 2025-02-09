@@ -2,27 +2,31 @@ version: '3.9'
 name: escapedoom-ms
 services:
   postgres:
-    image: postgres:15
-    container_name: postgres_ms
+    image: postgres:17.2-bookworm
+    container_name: postgres
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: admin-schema
+      POSTGRES_DB: main
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   redis:
-    image: redis:7
-    container_name: redis_ms
+    image: redis:7.4.2-bookworm
+    container_name: redis
+    restart: always
     ports:
-      - "6379:6379"
-    command: ["redis-server", "--appendonly", "yes"]
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - cache:/data
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.0.7
-    container_name: keycloak_ms
+    container_name: keycloak
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin123
@@ -33,26 +37,29 @@ services:
     entrypoint: >
       /opt/keycloak/bin/kc.sh start-dev --hostname-strict=false --http-port=9081
 
-  kafka:
-    image: bitnami/kafka:3
-    container_name: kafka_ms
-    environment:
-      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
-      ALLOW_PLAINTEXT_LISTENER: "yes"
+  broker:
+    image: apache/kafka:3.7.2
+    hostname: broker
+    container_name: broker
     ports:
-      - "9092:9092"
-    depends_on:
-      - zookeeper
-
-  zookeeper:
-    image: bitnami/zookeeper:3
-    container_name: zookeeper_ms
+      - 9092:9092
     environment:
-      ALLOW_ANONYMOUS_LOGIN: "yes"
-    ports:
-      - "2181:2181"
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_NODE_ID: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@broker:29093
+      KAFKA_LISTENERS: PLAINTEXT://broker:29092,CONTROLLER://broker:29093,PLAINTEXT_HOST://0.0.0.0:9092
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
 
 volumes:
   postgres_data:
+  cache:

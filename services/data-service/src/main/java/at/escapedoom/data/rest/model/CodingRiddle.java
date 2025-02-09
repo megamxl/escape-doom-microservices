@@ -18,6 +18,11 @@ import jakarta.annotation.Generated;
 /**
  * CodingRiddle
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class CodingRiddle implements CreateRiddleRequest {

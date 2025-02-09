@@ -21,11 +21,17 @@ import jakarta.annotation.Generated;
 /**
  * The current level of an escape-room instance
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomLevel", description = "The current level of an escape-room instance")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomLevel {
 
+    @lombok.Builder.Default
     @Valid
     private List<@Valid Scene> scenes = new ArrayList<>();
 

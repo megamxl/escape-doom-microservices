@@ -49,3 +49,7 @@ spring:
           uri: http://localhost:8092
           predicates:
             - Path=/leaderboard-api/**
+        - id: frontend
+          uri: http://localhost:3000
+          predicates:
+            - Path= /frontend/**

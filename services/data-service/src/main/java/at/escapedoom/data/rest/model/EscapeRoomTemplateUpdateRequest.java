@@ -20,6 +20,11 @@ import jakarta.annotation.Generated;
 /**
  * The payload for updating an EscapeRoomTemplate
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomTemplateUpdateRequest", description = "The payload for updating an EscapeRoomTemplate")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -29,6 +34,7 @@ public class EscapeRoomTemplateUpdateRequest {
 
     private @Nullable String description;
 
+    @lombok.Builder.Default
     @Valid
     private List<@Valid EscapeRoomLevel> levels = new ArrayList<>();
 

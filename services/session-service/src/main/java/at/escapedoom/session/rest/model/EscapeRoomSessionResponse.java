@@ -22,6 +22,11 @@ import jakarta.annotation.Generated;
 /**
  * The escape-room instance
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomSessionResponse", description = "The escape-room instance")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -33,10 +38,12 @@ public class EscapeRoomSessionResponse {
 
     private @Nullable UUID escapeRoomSessionId;
 
+    @lombok.Builder.Default
     private Integer playTime = 60;
 
     private @Nullable Integer roomPin;
 
+    @lombok.Builder.Default
     @Valid
     private List<String> tags = new ArrayList<>();
 

@@ -96,6 +96,8 @@
                                     <useSpringBoot3>true</useSpringBoot3>
                                     <!-- Use tags for creating interface and controller classnames -->
                                     <useTags>true</useTags>
+
+                                    <additionalModelTypeAnnotations>@lombok.Builder @lombok.NoArgsConstructor @lombok.AllArgsConstructor @lombok.Getter @lombok.Setter </additionalModelTypeAnnotations>
                                 </configOptions>
                             </configuration>
                         </execution>

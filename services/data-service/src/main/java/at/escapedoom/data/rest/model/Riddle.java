@@ -17,6 +17,11 @@ import jakarta.annotation.Generated;
 /**
  * Base schema for a riddle
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "Riddle", description = "Base schema for a riddle")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
