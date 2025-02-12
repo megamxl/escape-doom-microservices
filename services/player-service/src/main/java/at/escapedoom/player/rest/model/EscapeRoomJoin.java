@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.math.BigDecimal;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -26,11 +27,11 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomJoin {
 
-    private @Nullable Integer roomPin;
+    private @Nullable BigDecimal roomPin;
 
     private @Nullable String playerName;
 
-    public EscapeRoomJoin roomPin(Integer roomPin) {
+    public EscapeRoomJoin roomPin(BigDecimal roomPin) {
         this.roomPin = roomPin;
         return this;
     }
@@ -40,15 +41,16 @@ public class EscapeRoomJoin {
      *
      * @return roomPin
      */
-    @Min(100000)
-    @Max(999999)
+    @Valid
+    @DecimalMin("100000")
+    @DecimalMax("999999")
     @Schema(name = "room_pin", example = "420666", description = "The room-pin to join the escape-room", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("room_pin")
-    public Integer getRoomPin() {
+    public BigDecimal getRoomPin() {
         return roomPin;
     }
 
-    public void setRoomPin(Integer roomPin) {
+    public void setRoomPin(BigDecimal roomPin) {
         this.roomPin = roomPin;
     }
 

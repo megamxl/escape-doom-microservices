@@ -47,15 +47,15 @@ public interface LobbyApi {
      *
      * @return OK (status code 200)
      */
-    @Operation(operationId = "joinPut", summary = "Join an escape-room instance", description = "Join an escape-room instance", tags = {
+    @Operation(operationId = "handlePlayerJoin", summary = "Join an escape-room instance", description = "Join an escape-room instance", tags = {
             "lobby" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomJoinResponse.class)) }) })
     @RequestMapping(method = RequestMethod.PUT, value = "/join", produces = { "application/json" }, consumes = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomJoinResponse> joinPut(
+    default ResponseEntity<EscapeRoomJoinResponse> handlePlayerJoin(
             @Parameter(name = "EscapeRoomJoin", description = "The escape-room instance to join", required = true) @Valid @RequestBody EscapeRoomJoin escapeRoomJoin) {
-        return getDelegate().joinPut(escapeRoomJoin);
+        return getDelegate().handlePlayerJoin(escapeRoomJoin);
     }
 
 }

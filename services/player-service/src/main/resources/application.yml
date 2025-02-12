@@ -1,4 +1,16 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/main
+    username: playerapi
+    password: escapedoom
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: player_schema
+    hibernate:
+      ddl-auto: create-drop
   security:
     oauth2:
       resourceserver:

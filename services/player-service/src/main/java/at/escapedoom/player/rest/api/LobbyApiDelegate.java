@@ -34,9 +34,9 @@ public interface LobbyApiDelegate {
      *
      * @return OK (status code 200)
      *
-     * @see LobbyApi#joinPut
+     * @see LobbyApi#handlePlayerJoin
      */
-    default ResponseEntity<EscapeRoomJoinResponse> joinPut(EscapeRoomJoin escapeRoomJoin) {
+    default ResponseEntity<EscapeRoomJoinResponse> handlePlayerJoin(EscapeRoomJoin escapeRoomJoin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
