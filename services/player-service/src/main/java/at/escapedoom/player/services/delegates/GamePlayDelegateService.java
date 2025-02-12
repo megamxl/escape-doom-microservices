@@ -1,6 +1,5 @@
-package at.escapedoom.player.services;
+package at.escapedoom.player.services.delegates;
 
-import at.escapedoom.player.rest.api.LevelApi;
 import at.escapedoom.player.rest.api.LevelApiDelegate;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
 import at.escapedoom.player.rest.model.EscapeRoomResult;
@@ -13,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
-public class LevelDelegateService implements LevelApiDelegate {
+public class GamePlayDelegateService implements LevelApiDelegate {
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return LevelApiDelegate.super.getRequest();

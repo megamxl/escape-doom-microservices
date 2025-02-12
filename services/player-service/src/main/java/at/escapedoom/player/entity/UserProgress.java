@@ -1,10 +1,7 @@
 package at.escapedoom.player.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -18,6 +15,7 @@ import static at.escapedoom.player.utils.EntityConstants.RESULT_JOIN_COLUMN;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserProgress {
 
     @Id
@@ -26,6 +24,8 @@ public class UserProgress {
     private UUID userIdentifier;
 
     private String userName;
+
+    private Long roomPin;
 
     private Long currentEscapeRoomLevel;
 
