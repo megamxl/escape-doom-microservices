@@ -3,7 +3,7 @@ info:
   title: Player API
   version: "1.0"
 servers:
-  - url: https://api.server.test/v1/player
+  - url: https://api.server.test/v1/
 paths:
   /join:
     put:

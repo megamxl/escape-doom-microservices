@@ -35,7 +35,7 @@ import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 @Controller
-@RequestMapping("${openapi.escapeDoomData.base-path:/data-api/v1}")
+@RequestMapping("${openapi.escapeDoomData.base-path:/v1}")
 public class TemplateApiController implements TemplateApi {
 
     private final TemplateApiDelegate delegate;
