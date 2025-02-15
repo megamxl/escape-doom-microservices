@@ -29,7 +29,7 @@ import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 @Controller
-@RequestMapping("${openapi.player.base-path:/v1/player}")
+@RequestMapping("${openapi.player.base-path:/v1}")
 public class LevelApiController implements LevelApi {
 
     private final LevelApiDelegate delegate;

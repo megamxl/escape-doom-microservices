@@ -52,6 +52,19 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
+                    <execution>
+                        <id>npm kubb generate</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+
+                        <!-- optional: default phase is "generate-resources" -->
+                        <phase>generate-resources</phase>
+
+                        <configuration>
+                            <arguments>run gen</arguments>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
 

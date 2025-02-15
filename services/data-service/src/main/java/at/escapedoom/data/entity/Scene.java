@@ -31,12 +31,7 @@ public class Scene {
 
     @Override
     public String toString() {
-        return "Scene{" +
-                "escapeRoomSequenceId=" + escapeRoomSequenceId +
-                ", sceneSequence=" + sceneSequence +
-                ", name='" + name + '\'' +
-                ", backgroundImageURI=" + backgroundImageURI +
-                ", nodes=lazyLoaded" +
-                '}';
+        return "Scene{" + "escapeRoomSequenceId=" + escapeRoomSequenceId + ", sceneSequence=" + sceneSequence
+                + ", name='" + name + '\'' + ", backgroundImageURI=" + backgroundImageURI + ", nodes=lazyLoaded" + '}';
     }
 }

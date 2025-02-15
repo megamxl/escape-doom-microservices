@@ -30,7 +30,7 @@ import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 @Controller
-@RequestMapping("${openapi.escapeDoomData.base-path:/v1/data}")
+@RequestMapping("${openapi.escapeDoomData.base-path:/v1}")
 public class SceneApiController implements SceneApi {
 
     private final SceneApiDelegate delegate;

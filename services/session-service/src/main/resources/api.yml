@@ -3,7 +3,7 @@ info:
   title: Session API
   version: "1.0"
 servers:
-  - url: https://api.server.test/v1/escape-room
+  - url: https://api.server.test/v1/
 paths:
   /create:
     post:

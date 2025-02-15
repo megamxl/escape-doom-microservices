@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "next lint"
+    "typecheck": "next lint",
+    "gen": "npx kubb generate -c kubbconfigs/leaderboard.config.ts & npx kubb generate -c kubbconfigs/session.config.ts & npx kubb generate -c kubbconfigs/player.config.ts & npx kubb generate -c kubbconfigs/data.config.ts & node baseUrlReformater.js"
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
