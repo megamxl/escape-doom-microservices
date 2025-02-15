@@ -17,6 +17,11 @@ import jakarta.annotation.Generated;
 /**
  * The escape-room template to use
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomCreation", description = "The escape-room template to use")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -24,6 +29,7 @@ public class EscapeRoomCreation {
 
     private @Nullable UUID escapeRoomTemplateId;
 
+    @lombok.Builder.Default
     private Integer playTime = 60;
 
     public EscapeRoomCreation escapeRoomTemplateId(UUID escapeRoomTemplateId) {

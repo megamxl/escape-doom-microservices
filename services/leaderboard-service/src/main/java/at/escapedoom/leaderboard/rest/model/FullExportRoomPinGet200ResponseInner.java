@@ -22,6 +22,11 @@ import jakarta.annotation.Generated;
 /**
  * FullExportRoomPinGet200ResponseInner
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @JsonTypeName("_full_export__room_pin__get_200_response_inner")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -29,6 +34,7 @@ public class FullExportRoomPinGet200ResponseInner {
 
     private @Nullable EscapeRoomSessionResponse session;
 
+    @lombok.Builder.Default
     @Valid
     private List<@Valid UserProgress> userProgress = new ArrayList<>();
 

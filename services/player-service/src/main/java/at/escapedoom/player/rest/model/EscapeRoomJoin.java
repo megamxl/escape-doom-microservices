@@ -16,6 +16,11 @@ import jakarta.annotation.Generated;
 /**
  * The escape-room instance to join
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomJoin", description = "The escape-room instance to join")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")

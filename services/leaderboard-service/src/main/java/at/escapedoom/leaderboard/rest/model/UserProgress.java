@@ -23,6 +23,11 @@ import jakarta.annotation.Generated;
 /**
  * Represents the progress of user in a session.
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "UserProgress", description = "Represents the progress of user in a session.")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -39,6 +44,7 @@ public class UserProgress {
 
     private @Nullable Integer score;
 
+    @lombok.Builder.Default
     @Valid
     private List<@Valid Result> results = new ArrayList<>();
 

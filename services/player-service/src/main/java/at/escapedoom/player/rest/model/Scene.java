@@ -21,6 +21,11 @@ import jakarta.annotation.Generated;
 /**
  * A scene of an escape-room instance
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "Scene", description = "A scene of an escape-room instance")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -28,6 +33,7 @@ public class Scene {
 
     private @Nullable BigDecimal sceneSequence;
 
+    @lombok.Builder.Default
     @Valid
     private List<@Valid Node> nodes = new ArrayList<>();
 

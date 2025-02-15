@@ -21,6 +21,11 @@ import jakarta.annotation.Generated;
 /**
  * Represents metadata for a session in API responses.
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomSessionResponse", description = "Represents metadata for a session in API responses.")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -67,6 +72,7 @@ public class EscapeRoomSessionResponse {
 
     private @Nullable StateEnum state;
 
+    @lombok.Builder.Default
     private Integer playTime = 60;
 
     private @Nullable Integer roomPin;
@@ -75,6 +81,7 @@ public class EscapeRoomSessionResponse {
 
     private @Nullable UUID escapeRoomSessionId;
 
+    @lombok.Builder.Default
     @Valid
     private List<String> tags = new ArrayList<>();
 

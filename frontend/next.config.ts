@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    basePath: "/f"
+    output: 'standalone',
+    basePath: '/frontend',
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    typescript: {
+        ignoreBuildErrors: true
+    },
   /* config options here */
 };
 

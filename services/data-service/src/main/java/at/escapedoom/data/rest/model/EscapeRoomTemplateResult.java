@@ -17,6 +17,11 @@ import jakarta.annotation.Generated;
 /**
  * The result of an operation on an EscapeRoomTemplate
  */
+@lombok.Builder
+@lombok.NoArgsConstructor
+@lombok.AllArgsConstructor
+@lombok.Getter
+@lombok.Setter
 
 @Schema(name = "EscapeRoomTemplateResult", description = "The result of an operation on an EscapeRoomTemplate")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
