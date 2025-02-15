@@ -1,8 +1,7 @@
+import path from "path";
+import {promises as fs} from "fs";
 
-const fs = require('fs').promises;
-const path = require('path');
-
-async function modifyStringInFile(filePath) {
+const modifyStringInFile = async (filePath: string) => {
     try {
         const fileContent = await fs.readFile(filePath, 'utf-8');
         const modifiedContent = modifyBaseUrlDelimiters(fileContent)
@@ -17,12 +16,12 @@ async function modifyStringInFile(filePath) {
     }
 }
 
-function modifyBaseUrlDelimiters(inputString) {
+const modifyBaseUrlDelimiters = (inputString: string) => {
     const regex = /(baseURL:\s*)'([^']*)'/g; // Matches baseUrl: '...'
     return inputString.replace(regex, `$1\`$2\``); // Replaces with baseUrl: `...`
 }
 
-async function processDirectory(dirPath) {
+const processDirectory = async (dirPath: string) => {
     try {
         const files = await fs.readdir(dirPath);
 
@@ -41,7 +40,7 @@ async function processDirectory(dirPath) {
     }
 }
 
-async function main() {
+const main = async () => {
 
     const directoryPath = `./app/gen/`;
 
@@ -57,4 +56,4 @@ async function main() {
     }
 }
 
-main();
+export default main

@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "next lint",
-    "gen": "npx kubb generate -c kubbconfigs/leaderboard.config.ts & npx kubb generate -c kubbconfigs/session.config.ts & npx kubb generate -c kubbconfigs/player.config.ts & npx kubb generate -c kubbconfigs/data.config.ts & node baseUrlReformater.js"
+    "gen": "npx kubb generate -c kubb-configs/leaderboard.config.ts & npx kubb generate -c kubb-configs/session.config.ts & npx kubb generate -c kubb-configs/player.config.ts & npx kubb generate -c kubb-configs/data.config.ts & npx tsx -e \"import main from './baseUrlReformater.ts'; main();\""
   },
   "dependencies": {
     "@emotion/cache": "^11.13.1",
@@ -22,19 +22,20 @@
     "@kubb/plugin-react-query": "3.5.5",
     "@kubb/plugin-ts": "3.5.5",
     "@kubb/react": "3.5.5",
-    "@tanstack/react-query-devtools": "^5.65.1",
     "@monaco-editor/react": "^4.6.0",
     "@mui/icons-material": "^6.1.6",
     "@mui/lab": "^6.0.0-beta.17",
     "@mui/material": "^6.1.6",
     "@mui/material-nextjs": "^6.1.6",
     "@tanstack/react-query": "^5.59.20",
+    "@tanstack/react-query-devtools": "^5.65.1",
     "axios": "^1.7.7",
     "dotenv": "^16.4.7",
     "next": "15.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-use-websocket": "^4.10.1"
+    "react-use-websocket": "^4.10.1",
+    "tsx": "^4.19.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.1",
