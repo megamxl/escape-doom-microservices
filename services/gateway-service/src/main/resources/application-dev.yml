@@ -18,21 +18,9 @@ spring:
 
   cloud:
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowed-origins: '*'
-            allowed-methods:
-              - GET
-              - POST
-              - OPTIONS
       default-filters:
         - TokenRelay=
       routes:
-        - id: frontend
-          uri: http://localhost:3000
-          predicates:
-            - Path=/f/**
         - id: data-api
           uri: http://localhost:8090
           predicates:
