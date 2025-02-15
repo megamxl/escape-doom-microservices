@@ -3,6 +3,7 @@ package at.escapedoom.player.services;
 import at.escapedoom.player.entity.UserProgress;
 import at.escapedoom.player.repository.UserProgressRepository;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
+import at.escapedoom.player.services.interfaces.EscapeRoomSessionRepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class GamePlayService {
         UserProgress user = userProgressRepository.findById(userIdentifier).orElseThrow(() -> new NoSuchElementException("Can't find user with identifier " + userIdentifier));
 
         //TODO get escapeRoom Session via roomPin
+
 
         // TODO if playable get the level and return the EscapeRoom Level
 

@@ -1,12 +1,17 @@
 package at.escapedoom.player.services;
 
+import at.escapedoom.player.domain.SessionView;
 import at.escapedoom.player.entity.UserProgress;
 import at.escapedoom.player.repository.UserProgressRepository;
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import at.escapedoom.player.rest.model.EscapeRoomState;
+import at.escapedoom.player.services.interfaces.EscapeRoomSessionRepositoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.EnumSet;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -14,18 +19,24 @@ import org.springframework.stereotype.Service;
 public class LobbyService {
 
     private final UserProgressRepository userProgressRepository;
+    private final EscapeRoomSessionRepositoryService escapeRoomSessionRepositoryService;
 
     public EscapeRoomJoinResponse joinSessionByRoomPin(Long roomPin, String playerName) {
 
-        // TODO Check if the room is in session
+        SessionView sessionView = escapeRoomSessionRepositoryService.getSessionInfoByRoomPin(roomPin).orElseThrow(
+                () -> new NoSuchElementException("No Session with this roomPin found"));
 
-        UserProgress andInitializeAUserObject = createAndInitializeAUserObject(roomPin,playerName);
+        if (!EnumSet.of(EscapeRoomState.OPEN, EscapeRoomState.STARTED).contains(sessionView.getRoomState())) {
+            throw new IllegalArgumentException("The roomPin you entered is Not Open or Started");
+        }
 
-        UserProgress persistedUser = userProgressRepository.save(andInitializeAUserObject);
+        UserProgress newUser = createAndInitializeAUserObject(roomPin,playerName);
+
+        UserProgress persistedUser = userProgressRepository.save(newUser);
 
         log.info("Saved user with Username {} and the identifier {} in room with roomPin {}", persistedUser.getUserName(),  persistedUser.getUserIdentifier(), persistedUser.getRoomPin());
 
-        return buildResponseFromPersistedUser(persistedUser, null);
+        return buildResponseFromPersistedUser(persistedUser, sessionView.getRoomState());
     }
 
     private static EscapeRoomJoinResponse buildResponseFromPersistedUser(UserProgress persistedUser, EscapeRoomState escapeRoomState) {
