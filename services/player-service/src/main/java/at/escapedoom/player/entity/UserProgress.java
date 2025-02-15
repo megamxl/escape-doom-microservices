@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 import static at.escapedoom.player.utils.EntityConstants.RESULT_JOIN_COLUMN;

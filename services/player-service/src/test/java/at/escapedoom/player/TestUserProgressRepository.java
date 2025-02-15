@@ -17,8 +17,6 @@ public class TestUserProgressRepository {
     @Autowired
     UserProgressRepository userProgressRepository;
 
-
-
     @Test
     void testTheAmountOfPeopleSolvedAStageIsCorrect(){
 
