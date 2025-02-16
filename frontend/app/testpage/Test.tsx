@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import {Button} from "@mui/material";
-import {useCreateTemplateHook} from "@/app/gen";
+import {useCreateTemplateHook} from "@/app/gen/data";
 
 export default function Test() {
 
