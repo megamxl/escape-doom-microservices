@@ -1,13 +1,14 @@
-package at.escapedoom.session.management;
+package at.escapedoom.session.service;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
-import at.escapedoom.session.service.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.ManagementApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import at.escapedoom.session.util.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,14 +17,11 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.*;
 
+@RequiredArgsConstructor
 @Component
-public class ManagementService implements ManagementApiDelegate {
+public class ManagementApiDelegateImpl implements ManagementApiDelegate {
 
     private final EscapeRoomSessionService sessionService;
-
-    public ManagementService(EscapeRoomSessionService sessionService) {
-        this.sessionService = sessionService;
-    }
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
@@ -38,16 +36,15 @@ public class ManagementService implements ManagementApiDelegate {
         String userName = KeycloakUserUtil.getCurrentUsername();
 
         Random random = new Random();
-       //Integer roomPin = 100000 + random.nextInt(900000);
-        //TODO roomPin random logik einbauen
-        Integer roomPin = 123;
+        Integer roomPin = 100000 + random.nextInt(900000);
 
         if(userName != null && !userName.isEmpty()) {
             try {
                 escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(), escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
             } catch (Exception e) {
-                if (e instanceof RuntimeException) {
-                    System.out.println("RuntimeException: " + e.getMessage());
+                if (e instanceof DataIntegrityViolationException) {
+                    roomPin = 100000 + random.nextInt(900000);
+                    escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(), escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
                 }
             }
         }

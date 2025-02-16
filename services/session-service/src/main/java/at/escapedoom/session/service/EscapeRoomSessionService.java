@@ -69,6 +69,7 @@ public class EscapeRoomSessionService {
     public EscapeRoomSession changeSessionStatus(UUID sessionId, EscapeRoomState newState) {
         EscapeRoomSession session = getSessionById(sessionId);
         session.setState(newState);
+        //TODO hier könnte man noch eine art state machine reincoden die nur State Änderungen in eine Richtung erlaubt
         if(newState == EscapeRoomState.STARTED) {
             session.setStartTime(LocalDateTime.now());
             session.setEndTime(LocalDateTime.now().plusMinutes(session.getPlayTime()));
