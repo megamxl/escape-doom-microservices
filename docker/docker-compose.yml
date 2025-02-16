@@ -32,8 +32,6 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin123
     ports:
       - "9081:9081"
-    depends_on:
-      - postgres
     entrypoint: >
       /opt/keycloak/bin/kc.sh start-dev --hostname-strict=false --http-port=9081
 
