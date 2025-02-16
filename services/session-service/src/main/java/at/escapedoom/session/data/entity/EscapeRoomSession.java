@@ -2,15 +2,22 @@ package at.escapedoom.session.data.entity;
 
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+
 @Entity
 @Table(name = "escape_room_session")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class EscapeRoomSession {
     @Id
     private UUID escapeRoomSessionId;
@@ -33,3 +40,4 @@ public class EscapeRoomSession {
     private List<String> tags;
 
 }
+

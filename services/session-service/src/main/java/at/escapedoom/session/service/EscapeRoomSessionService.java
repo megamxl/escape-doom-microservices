@@ -21,15 +21,14 @@ public class EscapeRoomSessionService {
     }
 
     public EscapeRoomSession createSession(UUID templateId, Long playTime, Long roomPin,String userId) {
-        EscapeRoomSession session = new EscapeRoomSession();
-
-        session.setEscapeRoomSessionId(UUID.randomUUID());
-        session.setEscapeRoomTemplateId(templateId);
-        session.setUserId(userId);
-        session.setRoomPin(roomPin);
-        session.setPlayTime(playTime);
-        session.setState(EscapeRoomState.OPEN);
-
+        EscapeRoomSession session = EscapeRoomSession.builder()
+                .escapeRoomSessionId(UUID.randomUUID())
+                .escapeRoomTemplateId(templateId)
+                .userId(userId)
+                .roomPin(roomPin)
+                .playTime(playTime)
+                .state(EscapeRoomState.OPEN)
+                .build();
         return repository.save(session);
     }
 
