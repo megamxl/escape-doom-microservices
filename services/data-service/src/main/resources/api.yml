@@ -3,7 +3,7 @@ info:
   title: Escape Doom Data API
   version: 0.0.1
 servers:
-  - url: https://api.server.test/v1/data
+  - url: https://api.server.test/v1/
 paths:
 ### Template
 

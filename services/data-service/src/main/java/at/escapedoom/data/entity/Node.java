@@ -27,11 +27,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" +
-                "nodeId=" + nodeId +
-                ", position=" + position +
-                ", nodeType=" + nodeType +
-                ", nodeInfo=" + nodeInfo +
-                '}';
+        return "Node{" + "nodeId=" + nodeId + ", position=" + position + ", nodeType=" + nodeType + ", nodeInfo="
+                + nodeInfo + '}';
     }
 }

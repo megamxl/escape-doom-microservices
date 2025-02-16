@@ -3,7 +3,7 @@ info:
   title: Leaderboard API
   version: "0.0.1"
 servers:
-  - url: https://api.server.test/v1/leaderboard
+  - url: https://api.server.test/v1/
 paths:
   /{room_pin}:  
     get:

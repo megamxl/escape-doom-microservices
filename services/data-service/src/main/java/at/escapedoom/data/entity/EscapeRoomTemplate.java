@@ -30,12 +30,8 @@ public class EscapeRoomTemplate {
 
     @Override
     public String toString() {
-        return "EscapeRoomTemplate{" +
-                "escapeRoomTemplateID=" + escapeRoomTemplateID +
-                ", userId=" + userId +
-                ", escapeRoomLevels=" + escapeRoomLevels +
-                ", description='" + description + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return "EscapeRoomTemplate{" + "escapeRoomTemplateID=" + escapeRoomTemplateID + ", userId=" + userId
+                + ", escapeRoomLevels=" + escapeRoomLevels + ", description='" + description + '\'' + ", name='" + name
+                + '\'' + '}';
     }
 }
