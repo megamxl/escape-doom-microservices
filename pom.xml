@@ -30,7 +30,48 @@
         <fmt-maven-plugin.version>2.23</fmt-maven-plugin.version>
         <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
         <spring-doc.version>2.5.0</spring-doc.version>
+        <gson-fire-version>1.9.0</gson-fire-version>
+        <okhttp-version>4.12.0</okhttp-version>
+        <gson-version>2.12.1</gson-version>
+        <commons-lang3-version>3.17.0</commons-lang3-version>
+        <jackson-databind-nullable-version>0.2.6</jackson-databind-nullable-version>
+        <jakarta-annotation-version>3.0.0</jakarta-annotation-version>
+        <beanvalidation-version>2.0.2</beanvalidation-version>
+        <junit-version>5.10.3</junit-version>
+        <junit-platform-runner.version>1.10.0</junit-platform-runner.version>
+        <jakarta.ws.rs-api-version>2.1.6</jakarta.ws.rs-api-version>
+        <jsr311-api-version>1.1.1</jsr311-api-version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spotless.version>2.43.0</spotless.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>${okhttp-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.gsonfire</groupId>
+            <artifactId>gson-fire</artifactId>
+            <version>${gson-fire-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3-version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <pluginManagement>
