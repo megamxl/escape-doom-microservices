@@ -26,7 +26,7 @@ import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 @Controller
-@RequestMapping("${openapi.session.base-path:/v1/escape-room}")
+@RequestMapping("${openapi.session.base-path:/v1}")
 public class TagsApiController implements TagsApi {
 
     private final TagsApiDelegate delegate;

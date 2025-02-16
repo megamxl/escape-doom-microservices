@@ -17,9 +17,6 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position{" +
-                "top=" + topPercentage +
-                ", left=" + leftPercentage +
-                '}';
+        return "Position{" + "top=" + topPercentage + ", left=" + leftPercentage + '}';
     }
 }

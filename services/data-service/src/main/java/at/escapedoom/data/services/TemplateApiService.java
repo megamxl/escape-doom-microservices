@@ -19,7 +19,8 @@ public class TemplateApiService implements TemplateApiDelegate {
     }
 
     @Override
-    public ResponseEntity<EscapeRoomTemplateResult> createTemplate(EscapeRoomTemplateCreateRequest escapeRoomTemplateCreateRequest) {
+    public ResponseEntity<EscapeRoomTemplateResult> createTemplate(
+            EscapeRoomTemplateCreateRequest escapeRoomTemplateCreateRequest) {
         var escape = new EscapeRoomTemplateResult();
         escape.setMessage("ILikeCheese");
         return new ResponseEntity<>(escape, HttpStatus.CREATED);
@@ -41,7 +42,8 @@ public class TemplateApiService implements TemplateApiDelegate {
     }
 
     @Override
-    public ResponseEntity<EscapeRoomTemplateUpdateResult> putTemplate(String escapeRoomTemplateId, EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest) {
+    public ResponseEntity<EscapeRoomTemplateUpdateResult> putTemplate(String escapeRoomTemplateId,
+            EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest) {
         return TemplateApiDelegate.super.putTemplate(escapeRoomTemplateId, escapeRoomTemplateUpdateRequest);
     }
 }
