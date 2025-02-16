@@ -1,4 +1,4 @@
-package at.escapedoom.session;
+package at.escapedoom.session.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

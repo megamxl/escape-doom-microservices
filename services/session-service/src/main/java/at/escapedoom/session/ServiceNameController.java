@@ -17,6 +17,6 @@ public class ServiceNameController {
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/name1")
     NameDTO serviceName1() {
-        return new NameDTO("Session-Api");
+        return new NameDTO("Session-Api student");
     }
 }
