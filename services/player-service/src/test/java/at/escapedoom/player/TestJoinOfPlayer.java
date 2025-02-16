@@ -1,8 +1,7 @@
 package at.escapedoom.player;
 
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
-import at.escapedoom.player.services.LobbyService;
-import org.junit.jupiter.api.Assertions;
+import at.escapedoom.player.service.LobbyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

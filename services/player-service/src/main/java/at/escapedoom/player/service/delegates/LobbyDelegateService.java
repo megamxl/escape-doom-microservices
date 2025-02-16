@@ -1,16 +1,14 @@
-package at.escapedoom.player.services.delegates;
+package at.escapedoom.player.service.delegates;
 
-import at.escapedoom.player.rest.api.LevelApiDelegate;
 import at.escapedoom.player.rest.api.LobbyApiDelegate;
 import at.escapedoom.player.rest.model.*;
-import at.escapedoom.player.services.LobbyService;
+import at.escapedoom.player.service.LobbyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor

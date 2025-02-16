@@ -1,7 +1,7 @@
 package at.escapedoom.player.config;
 
-import at.escapedoom.player.services.MOCKEscapeRoomSessionRepositoryImpl;
-import at.escapedoom.player.services.interfaces.EscapeRoomSessionRepositoryService;
+import at.escapedoom.player.service.MOCKEscapeRoomSessionRepositoryImpl;
+import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

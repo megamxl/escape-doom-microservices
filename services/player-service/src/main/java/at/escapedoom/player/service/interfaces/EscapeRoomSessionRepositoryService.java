@@ -1,9 +1,8 @@
-package at.escapedoom.player.services.interfaces;
+package at.escapedoom.player.service.interfaces;
 
-import at.escapedoom.player.domain.SessionView;
+import at.escapedoom.player.data.domain.SessionView;
 import jakarta.validation.constraints.NotNull;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public interface EscapeRoomSessionRepositoryService {

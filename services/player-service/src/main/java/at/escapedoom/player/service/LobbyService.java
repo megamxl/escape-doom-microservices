@@ -1,11 +1,11 @@
-package at.escapedoom.player.services;
+package at.escapedoom.player.service;
 
-import at.escapedoom.player.domain.SessionView;
-import at.escapedoom.player.entity.UserProgress;
-import at.escapedoom.player.repository.UserProgressRepository;
+import at.escapedoom.player.data.domain.SessionView;
+import at.escapedoom.player.data.entity.UserProgress;
+import at.escapedoom.player.data.repository.UserProgressRepository;
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import at.escapedoom.player.rest.model.EscapeRoomState;
-import at.escapedoom.player.services.interfaces.EscapeRoomSessionRepositoryService;
+import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

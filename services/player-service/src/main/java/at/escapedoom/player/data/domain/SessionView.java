@@ -1,4 +1,4 @@
-package at.escapedoom.player.domain;
+package at.escapedoom.player.data.domain;
 
 import at.escapedoom.player.rest.model.EscapeRoomState;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package at.escapedoom.player.services.interfaces;
+package at.escapedoom.player.service.interfaces;
 
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
 

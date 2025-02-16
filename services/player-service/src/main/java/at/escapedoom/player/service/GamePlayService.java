@@ -1,14 +1,12 @@
-package at.escapedoom.player.services;
+package at.escapedoom.player.service;
 
-import at.escapedoom.player.entity.UserProgress;
-import at.escapedoom.player.repository.UserProgressRepository;
+import at.escapedoom.player.data.entity.UserProgress;
+import at.escapedoom.player.data.repository.UserProgressRepository;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
-import at.escapedoom.player.services.interfaces.EscapeRoomSessionRepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

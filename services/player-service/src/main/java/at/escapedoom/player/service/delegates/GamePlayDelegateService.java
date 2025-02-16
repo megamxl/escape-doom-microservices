@@ -1,4 +1,4 @@
-package at.escapedoom.player.services.delegates;
+package at.escapedoom.player.service.delegates;
 
 import at.escapedoom.player.rest.api.LevelApiDelegate;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;

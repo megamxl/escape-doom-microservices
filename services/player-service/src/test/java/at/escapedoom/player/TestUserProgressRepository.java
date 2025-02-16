@@ -1,7 +1,7 @@
 package at.escapedoom.player;
 
-import at.escapedoom.player.entity.UserProgress;
-import at.escapedoom.player.repository.UserProgressRepository;
+import at.escapedoom.player.data.entity.UserProgress;
+import at.escapedoom.player.data.repository.UserProgressRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

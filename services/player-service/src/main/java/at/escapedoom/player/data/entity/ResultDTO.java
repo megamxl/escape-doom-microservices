@@ -1,4 +1,4 @@
-package at.escapedoom.player.entity;
+package at.escapedoom.player.data.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,8 +2,8 @@ package at.escapedoom.player.config;
 
 import at.escapedoom.player.rest.api.LevelApiDelegate;
 import at.escapedoom.player.rest.api.LobbyApiDelegate;
-import at.escapedoom.player.services.delegates.GamePlayDelegateService;
-import at.escapedoom.player.services.delegates.LobbyDelegateService;
+import at.escapedoom.player.service.delegates.GamePlayDelegateService;
+import at.escapedoom.player.service.delegates.LobbyDelegateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
