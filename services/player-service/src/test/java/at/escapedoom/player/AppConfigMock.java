@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Profile;
 public class AppConfigMock {
 
     @Bean
+    @Profile("test")
     public EscapeRoomSessionRepositoryService escapeRoomSessionRepositoryService(
             @Autowired MOCKEscapeRoomSessionRepositoryImpl escapeRoomSessionRepositoryService) {
         return escapeRoomSessionRepositoryService;
