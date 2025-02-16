@@ -1,6 +1,7 @@
 package at.escapedoom.session.service;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
+import at.escapedoom.session.data.repository.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.ManagementApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;

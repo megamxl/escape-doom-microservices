@@ -1,6 +1,7 @@
 package at.escapedoom.session.service;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
+import at.escapedoom.session.data.repository.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.TagsApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.util.KeycloakUserUtil;

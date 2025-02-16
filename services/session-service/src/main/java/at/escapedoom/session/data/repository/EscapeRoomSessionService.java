@@ -1,7 +1,6 @@
-package at.escapedoom.session.service;
+package at.escapedoom.session.data.repository;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
-import at.escapedoom.session.data.repository.EscapeRoomSessionRepository;
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
