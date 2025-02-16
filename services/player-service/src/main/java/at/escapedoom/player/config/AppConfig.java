@@ -12,7 +12,8 @@ public class AppConfig {
 
     @Primary
     @Bean
-    public EscapeRoomSessionRepositoryService escapeRoomSessionRepositoryService(@Autowired MOCKEscapeRoomSessionRepositoryImpl escapeRoomSessionRepositoryService) {
+    public EscapeRoomSessionRepositoryService escapeRoomSessionRepositoryService(
+            @Autowired MOCKEscapeRoomSessionRepositoryImpl escapeRoomSessionRepositoryService) {
         return escapeRoomSessionRepositoryService;
     }
 

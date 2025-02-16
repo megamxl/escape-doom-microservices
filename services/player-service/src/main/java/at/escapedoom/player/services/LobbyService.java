@@ -23,39 +23,32 @@ public class LobbyService {
 
     public EscapeRoomJoinResponse joinSessionByRoomPin(Long roomPin, String playerName) {
 
-        SessionView sessionView = escapeRoomSessionRepositoryService.getSessionInfoByRoomPin(roomPin).orElseThrow(
-                () -> new NoSuchElementException("No Session with this roomPin found"));
+        SessionView sessionView = escapeRoomSessionRepositoryService.getSessionInfoByRoomPin(roomPin)
+                .orElseThrow(() -> new NoSuchElementException("No Session with this roomPin found"));
 
         if (!EnumSet.of(EscapeRoomState.OPEN, EscapeRoomState.STARTED).contains(sessionView.getRoomState())) {
             throw new IllegalArgumentException("The roomPin you entered is Not Open or Started");
         }
 
-        UserProgress newUser = createAndInitializeAUserObject(roomPin,playerName);
+        UserProgress newUser = createAndInitializeAUserObject(roomPin, playerName);
 
         UserProgress persistedUser = userProgressRepository.save(newUser);
 
-        log.info("Saved user with Username {} and the identifier {} in room with roomPin {}", persistedUser.getUserName(),  persistedUser.getUserIdentifier(), persistedUser.getRoomPin());
+        log.info("Saved user with Username {} and the identifier {} in room with roomPin {}",
+                persistedUser.getUserName(), persistedUser.getUserIdentifier(), persistedUser.getRoomPin());
 
         return buildResponseFromPersistedUser(persistedUser, sessionView.getRoomState());
     }
 
-    private static EscapeRoomJoinResponse buildResponseFromPersistedUser(UserProgress persistedUser, EscapeRoomState escapeRoomState) {
-        return EscapeRoomJoinResponse.builder()
-                .escapeRoomState(escapeRoomState)
-                .playerSessionId(persistedUser.getUserIdentifier())
-                .playerName(persistedUser.getUserName())
-                .build();
+    private static EscapeRoomJoinResponse buildResponseFromPersistedUser(UserProgress persistedUser,
+            EscapeRoomState escapeRoomState) {
+        return EscapeRoomJoinResponse.builder().escapeRoomState(escapeRoomState)
+                .playerSessionId(persistedUser.getUserIdentifier()).playerName(persistedUser.getUserName()).build();
     }
 
-    private static UserProgress createAndInitializeAUserObject( Long roomPin, String playerName) {
-        return UserProgress.
-                builder().
-                userName(playerName)
-                .currentPoints(0L)
-                .roomPin(roomPin)
-                .currentEscapeRoomLevel(0L)
-                .currentPoints(0L).
-                build();
+    private static UserProgress createAndInitializeAUserObject(Long roomPin, String playerName) {
+        return UserProgress.builder().userName(playerName).currentPoints(0L).roomPin(roomPin).currentEscapeRoomLevel(0L)
+                .currentPoints(0L).build();
     }
 
 }

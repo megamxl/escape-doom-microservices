@@ -29,7 +29,9 @@ public class GamePlayDelegateService implements LevelApiDelegate {
     }
 
     @Override
-    public ResponseEntity<Void> submitSolutionAttemptForCurrentLevel(UUID playerSessionId, EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
-        return LevelApiDelegate.super.submitSolutionAttemptForCurrentLevel(playerSessionId, escapeRoomSolutionSubmition);
+    public ResponseEntity<Void> submitSolutionAttemptForCurrentLevel(UUID playerSessionId,
+            EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
+        return LevelApiDelegate.super.submitSolutionAttemptForCurrentLevel(playerSessionId,
+                escapeRoomSolutionSubmition);
     }
 }

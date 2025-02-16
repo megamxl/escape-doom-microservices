@@ -1,6 +1,5 @@
 package at.escapedoom.player;
 
-
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import at.escapedoom.player.services.LobbyService;
 import org.junit.jupiter.api.Assertions;
@@ -22,20 +21,19 @@ public class TestJoinOfPlayer {
 
     @Test
     void testJoinOfSessionNotPossibleBecauseOfState() {
-        assertThrows(IllegalArgumentException.class , () -> lobbyService.joinSessionByRoomPin(100000L, "maxl"));
+        assertThrows(IllegalArgumentException.class, () -> lobbyService.joinSessionByRoomPin(100000L, "maxl"));
     }
 
     @Test
     void testJoinOfSessionNotInSessionDataStore() {
-        assertThrows(NoSuchElementException.class , () -> lobbyService.joinSessionByRoomPin(600000L, "maxl"));
+        assertThrows(NoSuchElementException.class, () -> lobbyService.joinSessionByRoomPin(600000L, "maxl"));
     }
 
     @Test
     void testJoinOfSessionPossible() {
         EscapeRoomJoinResponse escapeRoomJoinResponse = lobbyService.joinSessionByRoomPin(300000L, "maxl");
 
-        assertThat(escapeRoomJoinResponse)
-                .isNotNull();
+        assertThat(escapeRoomJoinResponse).isNotNull();
 
         assertThat(escapeRoomJoinResponse.getPlayerName()).isEqualTo("maxl");
 

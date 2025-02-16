@@ -18,9 +18,9 @@ public class TestUserProgressRepository {
     UserProgressRepository userProgressRepository;
 
     @Test
-    void testTheAmountOfPeopleSolvedAStageIsCorrect(){
+    void testTheAmountOfPeopleSolvedAStageIsCorrect() {
 
-        //Arrange
+        // Arrange
         userSaver("1", 2L);
         userSaver("2", 2L);
         userSaver("3", 2L);
@@ -29,10 +29,13 @@ public class TestUserProgressRepository {
         userSaver("1", 3L);
         userSaver("1", 2L);
 
-        //Act
-        Optional<Integer> amountOfUsersSolvedThisLevel1 = userProgressRepository.getAmountOfUsersSolvedThisLevelByRoomPin(20L, 1L);
-        Optional<Integer> amountOfUsersSolvedThisLevel2 = userProgressRepository.getAmountOfUsersSolvedThisLevelByRoomPin(20L, 2L);
-        Optional<Integer> amountOfUsersSolvedThisLevel3 = userProgressRepository.getAmountOfUsersSolvedThisLevelByRoomPin(20L, 3L);
+        // Act
+        Optional<Integer> amountOfUsersSolvedThisLevel1 = userProgressRepository
+                .getAmountOfUsersSolvedThisLevelByRoomPin(20L, 1L);
+        Optional<Integer> amountOfUsersSolvedThisLevel2 = userProgressRepository
+                .getAmountOfUsersSolvedThisLevelByRoomPin(20L, 2L);
+        Optional<Integer> amountOfUsersSolvedThisLevel3 = userProgressRepository
+                .getAmountOfUsersSolvedThisLevelByRoomPin(20L, 3L);
 
         assertThat(amountOfUsersSolvedThisLevel1.isPresent()).isTrue();
         assertThat(amountOfUsersSolvedThisLevel1.get()).isEqualTo(7);
@@ -45,19 +48,12 @@ public class TestUserProgressRepository {
 
     }
 
-
     private void userSaver(String username, Long currentEscapeRoomLevel) {
 
-        userProgressRepository.save(
-                UserProgress.builder()
-                        .userName(username)
-                        .currentEscapeRoomLevel(currentEscapeRoomLevel)
-                        .roomPin(20L)
-                        .lastRiddleSolvedAt(LocalDateTime.now())
-                        .build()
-        );
+        userProgressRepository
+                .save(UserProgress.builder().userName(username).currentEscapeRoomLevel(currentEscapeRoomLevel)
+                        .roomPin(20L).lastRiddleSolvedAt(LocalDateTime.now()).build());
 
     }
-
 
 }

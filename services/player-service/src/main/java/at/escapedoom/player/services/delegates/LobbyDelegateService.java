@@ -26,7 +26,8 @@ public class LobbyDelegateService implements LobbyApiDelegate {
     @Override
     public ResponseEntity<EscapeRoomJoinResponse> handlePlayerJoin(EscapeRoomJoin escapeRoomJoin) {
 
-        EscapeRoomJoinResponse escapeRoomJoinResponse = lobbyService.joinSessionByRoomPin(escapeRoomJoin.getRoomPin().longValue(), escapeRoomJoin.getPlayerName());
+        EscapeRoomJoinResponse escapeRoomJoinResponse = lobbyService
+                .joinSessionByRoomPin(escapeRoomJoin.getRoomPin().longValue(), escapeRoomJoin.getPlayerName());
 
         return ResponseEntity.ok(escapeRoomJoinResponse);
     }

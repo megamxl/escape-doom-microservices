@@ -19,7 +19,7 @@ public class UserProgress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(unique = true, nullable = false, name = RESULT_JOIN_COLUMN )
+    @Column(unique = true, nullable = false, name = RESULT_JOIN_COLUMN)
     private UUID userIdentifier;
 
     private String userName;

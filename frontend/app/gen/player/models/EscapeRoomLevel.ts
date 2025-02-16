@@ -16,7 +16,7 @@ export type EscapeRoomLevel = {
   code_snippet?: string
   /**
    * @description The sequence number of the level
-   * @type number | undefined, integer
+   * @type number | undefined, number
    */
   level_sequence?: number
 }

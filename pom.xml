@@ -102,28 +102,86 @@
                             </configuration>
                         </execution>
                         <execution>
-                            <id>openapi-generate-asciidoc</id>
+                            <id>openapi-generate-player-java-client</id>
                             <goals>
                                 <goal>generate</goal>
                             </goals>
                             <configuration>
                                 <inputSpec>
-                                    ${project.basedir}/src/main/resources/api.yml
+                                    ${project.parent.basedir}/player-service/src/main/resources/api.yml
                                 </inputSpec>
-                                <generatorName>asciidoc</generatorName>
+                                <generatorName>java</generatorName>
+                                <configOptions>
+                                    <sourceFolder>src/gen/java/main</sourceFolder>
+                                    <testOutpput>src/gen/java/test</testOutpput>
+                                    <apiPackage>at.escapedoom.spring.communication.player.api</apiPackage>
+                                    <modelPackage>at.escapedoom.spring.communication.player.model</modelPackage>
+                                    <invokerPackage>at.escapedoom.spring.communication.player.invoker</invokerPackage>
+                                    <configPackage>at.escapedoom.spring.communication.player.config</configPackage>
+                                    <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                </configOptions>
                             </configuration>
                         </execution>
                         <execution>
-                            <id>openapi-generate-typescript</id>
+                            <id>openapi-generate-player-data-client</id>
                             <goals>
                                 <goal>generate</goal>
                             </goals>
                             <configuration>
                                 <inputSpec>
-                                    ${project.basedir}/src/main/resources/api.yml
+                                    ${project.parent.basedir}/data-service/src/main/resources/api.yml
                                 </inputSpec>
-                                <generatorName>typescript-axios</generatorName>
+                                <generatorName>java</generatorName>
                                 <configOptions>
+                                    <sourceFolder>src/gen/java/main</sourceFolder>
+                                    <testOutpput>src/gen/java/test</testOutpput>
+                                    <apiPackage>at.escapedoom.spring.communication.data.api</apiPackage>
+                                    <modelPackage>at.escapedoom.spring.communication.data.model</modelPackage>
+                                    <invokerPackage>at.escapedoom.spring.communication.data.invoker</invokerPackage>
+                                    <configPackage>at.escapedoom.spring.communication.data.config</configPackage>
+                                    <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                </configOptions>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>openapi-generate-session-client</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <inputSpec>
+                                    ${project.parent.basedir}/session-service/src/main/resources/api.yml
+                                </inputSpec>
+                                <generatorName>java</generatorName>
+                                <configOptions>
+                                    <sourceFolder>src/gen/java/main</sourceFolder>
+                                    <testOutpput>src/gen/java/test</testOutpput>
+                                    <apiPackage>at.escapedoom.spring.communication.session.api</apiPackage>
+                                    <modelPackage>at.escapedoom.spring.communication.session.model</modelPackage>
+                                    <invokerPackage>at.escapedoom.spring.communication.session.invoker</invokerPackage>
+                                    <configPackage>at.escapedoom.spring.communication.session.config</configPackage>
+                                    <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                                </configOptions>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>openapi-generate-leaderboard-client</id>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                            <configuration>
+                                <inputSpec>
+                                    ${project.parent.basedir}/leaderboard-service/src/main/resources/api.yml
+                                </inputSpec>
+                                <generatorName>java</generatorName>
+                                <configOptions>
+                                    <sourceFolder>src/gen/java/main</sourceFolder>
+                                    <testOutpput>src/gen/java/test</testOutpput>
+                                    <apiPackage>at.escapedoom.spring.communication.leaderboard.api</apiPackage>
+                                    <modelPackage>at.escapedoom.spring.communication.leaderboard.model</modelPackage>
+                                    <invokerPackage>at.escapedoom.spring.communication.leaderboard.invoker</invokerPackage>
+                                    <configPackage>at.escapedoom.spring.communication.leaderboard.config</configPackage>
+                                    <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 </configOptions>
                             </configuration>
                         </execution>
@@ -148,8 +206,25 @@
                                 </filesets>
                             </configuration>
                         </execution>
+                        <execution>
+                            <id>auto-clean-gen-tests</id>
+                            <phase>generate-resources</phase>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                            <configuration>
+                                <excludeDefaultDirectories>true</excludeDefaultDirectories>
+                                <filesets>
+                                    <fileset>
+                                        <directory>${project.build.directory}/generated-sources/openapi/src/test/java</directory>
+                                    </fileset>
+                                </filesets>
+                            </configuration>
+                        </execution>
+
                     </executions>
                 </plugin>
+
                 <plugin>
                     <groupId>net.revelc.code.formatter</groupId>
                     <artifactId>formatter-maven-plugin</artifactId>

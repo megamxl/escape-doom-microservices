@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface UserProgressRepository extends JpaRepository<UserProgress, UUID> {
 
     @Query("SELECT count(u) FROM UserProgress u where u.roomPin = :roomPin and u.currentEscapeRoomLevel >= :levelToCheck and u.lastRiddleSolvedAt is not null")
-   Optional<Integer> getAmountOfUsersSolvedThisLevelByRoomPin(@Param("roomPin") Long roomPin, @Param("levelToCheck") Long levelToCheck);
-
+    Optional<Integer> getAmountOfUsersSolvedThisLevelByRoomPin(@Param("roomPin") Long roomPin,
+            @Param("levelToCheck") Long levelToCheck);
 
 }

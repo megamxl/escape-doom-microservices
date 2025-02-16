@@ -19,13 +19,13 @@ public class ApiConfig {
 
     @Bean
     @Primary
-    LevelApiDelegate returnDelegate(){
+    LevelApiDelegate returnDelegate() {
         return this.levelApiController;
     }
 
     @Bean
     @Primary
-    LobbyApiDelegate returnLobbyDelegate(){
+    LobbyApiDelegate returnLobbyDelegate() {
         return this.lobbyApiController;
     }
 

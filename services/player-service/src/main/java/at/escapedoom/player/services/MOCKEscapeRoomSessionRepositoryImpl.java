@@ -14,11 +14,12 @@ public class MOCKEscapeRoomSessionRepositoryImpl implements EscapeRoomSessionRep
     @Override
     public Optional<SessionView> getSessionInfoByRoomPin(@NotNull Long roomPin) {
 
-        if(roomPin < 200000) {
-            return Optional.of(SessionView.builder().escapeRoomTemplateId(UUID.randomUUID()).roomState(EscapeRoomState.CLOSED).build());
-        }
-        else if(roomPin > 200000 && roomPin < 500001) {
-            return Optional.of(SessionView.builder().escapeRoomTemplateId(UUID.randomUUID()).roomState(EscapeRoomState.STARTED).build());
+        if (roomPin < 200000) {
+            return Optional.of(SessionView.builder().escapeRoomTemplateId(UUID.randomUUID())
+                    .roomState(EscapeRoomState.CLOSED).build());
+        } else if (roomPin > 200000 && roomPin < 500001) {
+            return Optional.of(SessionView.builder().escapeRoomTemplateId(UUID.randomUUID())
+                    .roomState(EscapeRoomState.STARTED).build());
         } else {
             return Optional.empty();
         }
