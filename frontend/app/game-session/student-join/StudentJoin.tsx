@@ -9,22 +9,36 @@ import {redirect} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import {RoomState} from "@/app/enums/RoomState";
 import {useSession} from "@/app/utils/game-session-handler";
+import {EscapeRoomJoin, useHandlePlayerJoinHook} from "@/app/gen/player";
 
 const StudentJoin = () => {
 
-    const [roomPin, setRoomPin] = useState('');
+    const [request, setRequest] = useState<EscapeRoomJoin>()
+
     const [openSnackbar, setOpenOpenSnackbar] = useState(false);
 
     const [session, setSession] = useSession();
     const {refetch} = useLobbyJoin(roomPin);
 
-    const handleUserInput = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setRoomPin(e.target.value);
+    const {data,isError} = useHandlePlayerJoinHook({  op});
+
+
+    const handleRoomPinChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setRequest(cur => ({
+            ... cur,
+            room_pin : Number(e.target.value)
+        }));
+    }
+    const handlePlayerNameChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setRequest(cur => ({
+            ... cur,
+            player_name : e.target.value
+        }));
     }
 
     const sendID = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Trying to get lobby of id: " + roomPin + "Current session: ", session)
+        console.log("Trying to get lobby of id: " + request?.room_pin + "Current session: ", session)
         const {data, isError, error} = await refetch();
 
         if (session && data?.state === RoomState.PLAYING) redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${session}`)
@@ -81,7 +95,16 @@ const StudentJoin = () => {
                                 label="Room-PIN"
                                 variant="outlined"
                                 value={roomPin}
-                                onChange={handleUserInput}
+                                onChange={handleRoomPinChange}
+                                fullWidth
+                            />
+                            <TextField
+                                type="text"
+                                id="outlined-basic"
+                                label="Username"
+                                variant="outlined"
+                                value={roomPin}
+                                onChange={handlePlayerNameChange}
                                 fullWidth
                             />
                             <Button sx={{height: 56}} variant="contained" type="submit" fullWidth>JOIN</Button>
