@@ -26,6 +26,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EscapeRoomSessionResponse"
+
   /state/{escape_room_session_id}/{state}:
     put:
       tags:
@@ -72,6 +73,55 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/EscapeRoomSessionResponse"
+  /session/tags:
+    get:
+      tags:
+        - session
+      summary: Get all escape-room instances having specific tags
+      description: Retrieves a list of escape-room instances filtered by tags
+      operationId: getERByTags
+      parameters:
+        - name: tags
+          in: query
+          description: List of tags to filter by
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EscapeRoomSessionResponse"
+
+  /session/{room_pin}:
+    get:
+      tags:
+        - session
+      summary: Retrieve an escape-room session by room pin
+      description: Fetches an escape-room session using its room pin
+      operationId: getERSessionByPin
+      parameters:
+        - name: room_pin
+          in: path
+          description: The pin to join the escape-room
+          required: true
+          schema:
+            type: integer
+            minimum: 100000
+            maximum: 999999
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EscapeRoomSessionResponse"
   /tag/{escape_room_session_id}/{tag_name}:
     delete:
       tags:
