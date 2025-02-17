@@ -24,11 +24,13 @@ public class ApiConfig {
     public HistoryApiDelegate historyApiDelegate() {
         return this.historyApiDelegate;
     }
+
     @Bean
     @Primary
     public ManagementApiDelegate managementApiDelegate() {
         return this.managementApiDelegate;
     }
+
     @Bean
     @Primary
     public TagsApiDelegate tagsApiDelegate() {

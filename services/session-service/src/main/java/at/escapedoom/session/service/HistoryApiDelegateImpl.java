@@ -29,13 +29,13 @@ public class HistoryApiDelegateImpl implements HistoryApiDelegate {
     @PreAuthorize("hasRole('LECTOR')")
     @Override
     public ResponseEntity<List<EscapeRoomSessionResponse>> getERHistory() {
-         String userName = KeycloakUserUtil.getCurrentUsername();
-         List<EscapeRoomSession> sessions = sessionService.getSessionsByUserName(userName);
-         List<EscapeRoomSessionResponse> response = new ArrayList<>();
+        String userName = KeycloakUserUtil.getCurrentUsername();
+        List<EscapeRoomSession> sessions = sessionService.getSessionsByUserName(userName);
+        List<EscapeRoomSessionResponse> response = new ArrayList<>();
 
-         for(EscapeRoomSession session : sessions){
-             response.add(EscapeRoomSessionMapperUtil.map(session));
-         }
+        for (EscapeRoomSession session : sessions) {
+            response.add(EscapeRoomSessionMapperUtil.map(session));
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

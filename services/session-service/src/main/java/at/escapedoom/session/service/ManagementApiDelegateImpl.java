@@ -39,18 +39,20 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
         Random random = new Random();
         Integer roomPin = 100000 + random.nextInt(900000);
 
-        if(userName != null && !userName.isEmpty()) {
+        if (userName != null && !userName.isEmpty()) {
             try {
-                escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(), escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
+                escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
+                        escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
             } catch (Exception e) {
                 if (e instanceof DataIntegrityViolationException) {
                     roomPin = 100000 + random.nextInt(900000);
-                    escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(), escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
+                    escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
+                            escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
                 }
             }
         }
 
-        if(escapeRoomSession != null) {
+        if (escapeRoomSession != null) {
             response = EscapeRoomSessionMapperUtil.map(escapeRoomSession);
         }
 
@@ -59,11 +61,12 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<EscapeRoomSessionResponse> toggleERInstanceState(UUID escapeRoomSessionId, EscapeRoomState state) {
+    public ResponseEntity<EscapeRoomSessionResponse> toggleERInstanceState(UUID escapeRoomSessionId,
+            EscapeRoomState state) {
 
         EscapeRoomSession escapeRoomSession = sessionService.getSessionById(escapeRoomSessionId);
 
-        if(escapeRoomSession == null) {
+        if (escapeRoomSession == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else if (!escapeRoomSession.getUserId().equals(KeycloakUserUtil.getCurrentUsername())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

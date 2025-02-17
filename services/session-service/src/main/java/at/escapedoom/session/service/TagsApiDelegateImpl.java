@@ -26,6 +26,7 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
     public Optional<NativeWebRequest> getRequest() {
         return TagsApiDelegate.super.getRequest();
     }
+
     @PreAuthorize("hasRole('LECTOR')")
     @Override
     public ResponseEntity<EscapeRoomSessionResponse> addERTag(String escapeRoomSessionId, String tagName) {
@@ -33,10 +34,10 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
         EscapeRoomSessionResponse response = null;
         String userName = KeycloakUserUtil.getCurrentUsername();
 
-        if(userName != null && !userName.isEmpty()) {
+        if (userName != null && !userName.isEmpty()) {
             escapeRoomSession = sessionService.addTagToSession(UUID.fromString(escapeRoomSessionId), tagName);
         }
-        if(escapeRoomSession != null) {
+        if (escapeRoomSession != null) {
             response = EscapeRoomSessionMapperUtil.map(escapeRoomSession);
         }
 
@@ -50,10 +51,10 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
         EscapeRoomSessionResponse response = null;
         String userName = KeycloakUserUtil.getCurrentUsername();
 
-        if(userName != null && !userName.isEmpty()) {
+        if (userName != null && !userName.isEmpty()) {
             escapeRoomSession = sessionService.removeTagFromSession(UUID.fromString(escapeRoomSessionId), tagName);
         }
-        if(escapeRoomSession != null) {
+        if (escapeRoomSession != null) {
             response = EscapeRoomSessionMapperUtil.map(escapeRoomSession);
         }
 
