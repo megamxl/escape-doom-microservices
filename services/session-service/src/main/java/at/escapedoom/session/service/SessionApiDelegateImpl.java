@@ -38,7 +38,7 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
         if (userName != null && !userName.isEmpty()) {
             try {
                 List<EscapeRoomSession> escapeRoomSessions = sessionService.getSessionsByTags(userName, tags);
-                for(EscapeRoomSession session : escapeRoomSessions) {
+                for (EscapeRoomSession session : escapeRoomSessions) {
                     response.add(EscapeRoomSessionMapperUtil.map(session));
                 }
                 return new ResponseEntity<>(response, HttpStatus.OK);
