@@ -4,63 +4,70 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Alert, Button, Card, CardContent, Grid2, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import BackgroundImage from '@/public/images/StudentJoin.jpg'
 import {common} from '@mui/material/colors';
-import {useLobbyJoin} from "@/app/hooks/student-join/useLobbyJoin";
 import {redirect} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
-import {RoomState} from "@/app/enums/RoomState";
 import {useSession} from "@/app/utils/game-session-handler";
-import {EscapeRoomJoin, useHandlePlayerJoinHook} from "@/app/gen/player";
+import {
+    EscapeRoomJoin,
+    EscapeRoomStateEnum,
+    escapeRoomStateEnum,
+    HandlePlayerJoinMutationResponse,
+    useHandlePlayerJoinHook
+} from "@/app/gen/player";
 
 const StudentJoin = () => {
 
-    const [request, setRequest] = useState<EscapeRoomJoin>()
+    const [roomJoin, setRoomJoin] = useState<EscapeRoomJoin>()
 
     const [openSnackbar, setOpenOpenSnackbar] = useState(false);
 
     const [session, setSession] = useSession();
-    const {refetch} = useLobbyJoin(roomPin);
 
-    const {data,isError} = useHandlePlayerJoinHook({  op});
+    const {mutateAsync, isError, error, data} = useHandlePlayerJoinHook();
 
 
     const handleRoomPinChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setRequest(cur => ({
-            ... cur,
-            room_pin : Number(e.target.value)
+        setRoomJoin(cur => ({
+            ...cur,
+            room_pin: Number(e.target.value)
         }));
     }
     const handlePlayerNameChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setRequest(cur => ({
-            ... cur,
-            player_name : e.target.value
+        setRoomJoin(cur => ({
+            ...cur,
+            player_name: e.target.value
         }));
     }
 
     const sendID = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Trying to get lobby of id: " + request?.room_pin + "Current session: ", session)
-        const {data, isError, error} = await refetch();
+        console.log("Trying to get lobby of id: " + roomJoin?.room_pin + "Current session: ", session)
 
-        if (session && data?.state === RoomState.PLAYING) redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${session}`)
+        const { player_name, player_session_id, escape_room_state } = await mutateAsync({data: roomJoin})
+
+        if (player_name == null || player_session_id == null || escape_room_state == null) return;
+
+
+        if (isEscapeRoomOpen(escape_room_state!)) redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${player_session_id}`)
 
         if (isError) {
             setOpenOpenSnackbar(true)
             console.error(error)
         } else if (data) {
-            const responseSessionID = data.sessionId
+            const responseSessionID = player_session_id
 
             console.log(data)
 
-            switch (data.state) {
-                case RoomState.PLAYING:
-                    setSession(responseSessionID)
+            switch (data.escape_room_state) {
+                case escapeRoomStateEnum.started:
+                    setSession(player_session_id)
                     redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${responseSessionID}`)
                     break;
-                case RoomState.JOINABLE:
+                case escapeRoomStateEnum.open:
                     setSession(responseSessionID)
-                    redirect(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomPin}`)
+                    redirect(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
                     break;
-                case RoomState.STOPPED:
+                case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:
                     setSession("")
                     setOpenOpenSnackbar(true)
                     break;
@@ -90,11 +97,12 @@ const StudentJoin = () => {
                     <CardContent>
                         <Stack spacing={2} alignItems="center" component="form" onSubmit={sendID} noValidate>
                             <TextField
+                                slotProps={{input: {type: 'number'}}}
                                 type="number"
                                 id="outlined-basic"
                                 label="Room-PIN"
                                 variant="outlined"
-                                value={roomPin}
+                                value={roomJoin?.room_pin}
                                 onChange={handleRoomPinChange}
                                 fullWidth
                             />
@@ -103,7 +111,7 @@ const StudentJoin = () => {
                                 id="outlined-basic"
                                 label="Username"
                                 variant="outlined"
-                                value={roomPin}
+                                value={roomJoin?.player_name}
                                 onChange={handlePlayerNameChange}
                                 fullWidth
                             />
@@ -121,5 +129,9 @@ const StudentJoin = () => {
         </>
     );
 };
+
+const isEscapeRoomOpen = (escape_room_state: EscapeRoomStateEnum) => {
+    return escape_room_state === escapeRoomStateEnum.open;
+}
 
 export default StudentJoin;
