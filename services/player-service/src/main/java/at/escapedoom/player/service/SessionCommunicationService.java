@@ -24,25 +24,25 @@ public class SessionCommunicationService implements EscapeRoomSessionRepositoryS
     @Override
     public Optional<SessionView> getSessionInfoByRoomPin(Long roomPin) {
 
-         try {
-             return getSessionViewFromApiResponseIfAllValuesAreFilled(sessionApi.getERSessionByPin(roomPin.intValue()));
-         } catch (ApiException e) {
-             if (e.getCode() == 404) {
-                 log.debug("Room pin not found got an 404");
-                 return Optional.empty();
-             }
+        try {
+            return getSessionViewFromApiResponseIfAllValuesAreFilled(sessionApi.getERSessionByPin(roomPin.intValue()));
+        } catch (ApiException e) {
+            if (e.getCode() == 404) {
+                log.debug("Room pin not found got an 404");
+                return Optional.empty();
+            }
             log.error("couldn't communicate with session Api via Rest when trying to Obtain Session Info by RoomPin");
             return Optional.empty();
-         }
+        }
     }
 
-    private static Optional<SessionView> getSessionViewFromApiResponseIfAllValuesAreFilled(EscapeRoomSessionResponse erSessionByPin) {
-        if(erSessionByPin != null && erSessionByPin.getRoomPin() != null && erSessionByPin.getState() != null && erSessionByPin.getEscapeRoomTemplateId()  != null ) {
-            return Optional.of(SessionView.builder()
-                    .roomPin(erSessionByPin.getRoomPin().longValue())
+    private static Optional<SessionView> getSessionViewFromApiResponseIfAllValuesAreFilled(
+            EscapeRoomSessionResponse erSessionByPin) {
+        if (erSessionByPin != null && erSessionByPin.getRoomPin() != null && erSessionByPin.getState() != null
+                && erSessionByPin.getEscapeRoomTemplateId() != null) {
+            return Optional.of(SessionView.builder().roomPin(erSessionByPin.getRoomPin().longValue())
                     .escapeRoomTemplateId(erSessionByPin.getEscapeRoomTemplateId())
-                    .roomState(EscapeRoomState.fromValue(erSessionByPin.getState().toString()))
-                    .build());
+                    .roomState(EscapeRoomState.fromValue(erSessionByPin.getState().toString())).build());
         }
         return Optional.empty();
     }

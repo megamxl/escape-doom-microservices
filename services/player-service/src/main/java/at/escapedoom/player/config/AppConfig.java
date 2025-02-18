@@ -1,6 +1,5 @@
 package at.escapedoom.player.config;
 
-
 import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.player.service.SessionCommunicationService;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
@@ -26,7 +25,7 @@ public class AppConfig {
 
     @Bean
     public SessionApi getSessionApi(@Autowired OkHttpClient client) {
-       return new SessionApi( new ApiClient(client).setBasePath("http://localhost:8081/session-api/v1"));
+        return new SessionApi(new ApiClient(client).setBasePath("http://localhost:8081/session-api/v1"));
     }
 
 }

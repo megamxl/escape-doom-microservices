@@ -4,11 +4,11 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Alert, Button, Card, CardContent, Grid2, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import BackgroundImage from '@/public/images/StudentJoin.jpg'
 import {common} from '@mui/material/colors';
-import {redirect} from "next/navigation";
+import {redirect, useRouter} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import {useSession} from "@/app/utils/game-session-handler";
 import {
-    EscapeRoomJoin,
+    EscapeRoomJoin, EscapeRoomJoinResponse,
     EscapeRoomStateEnum,
     escapeRoomStateEnum,
     HandlePlayerJoinMutationResponse,
@@ -16,6 +16,7 @@ import {
 } from "@/app/gen/player";
 
 const StudentJoin = () => {
+    const appRouterInstance = useRouter();
 
     const [roomJoin, setRoomJoin] = useState<EscapeRoomJoin>()
 
@@ -23,8 +24,7 @@ const StudentJoin = () => {
 
     const [session, setSession] = useSession();
 
-    const {mutateAsync, isError, error, data} = useHandlePlayerJoinHook();
-
+    const {mutate : playerJoinCall} = useHandlePlayerJoinHook();
 
     const handleRoomPinChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setRoomJoin(cur => ({
@@ -41,40 +41,37 @@ const StudentJoin = () => {
 
     const sendID = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Trying to get lobby of id: " + roomJoin?.room_pin + "Current session: ", session)
 
-        const { player_name, player_session_id, escape_room_state } = await mutateAsync({data: roomJoin})
-
-        if (player_name == null || player_session_id == null || escape_room_state == null) return;
-
-
-        if (isEscapeRoomOpen(escape_room_state!)) redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${player_session_id}`)
-
-        if (isError) {
-            setOpenOpenSnackbar(true)
-            console.error(error)
-        } else if (data) {
-            const responseSessionID = player_session_id
-
-            console.log(data)
-
-            switch (data.escape_room_state) {
-                case escapeRoomStateEnum.started:
-                    setSession(player_session_id)
-                    redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${responseSessionID}`)
-                    break;
-                case escapeRoomStateEnum.open:
-                    setSession(responseSessionID)
-                    redirect(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
-                    break;
-                case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:
-                    setSession("")
+        playerJoinCall({data: roomJoin},{
+            onSuccess: (response) => {
+                if (response.player_session_id === undefined){
                     setOpenOpenSnackbar(true)
-                    break;
-                default:
-                    console.log("Lobby is in an unknown state");
+                    return
+                }
+                switch (response.escape_room_state) {
+                    case escapeRoomStateEnum.started:
+                        setSession(response.player_session_id!)
+                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.SESSION}/${response.player_session_id}`)
+                        break;
+                    case escapeRoomStateEnum.open:
+                        setSession(response.player_session_id!)
+                        console.log("should redirect ", `${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
+                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
+                        break;
+                    case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:
+                        setSession("")
+                        setOpenOpenSnackbar(true)
+                        break;
+                    default:
+                        console.log("Lobby is in an unknown state");
+                }
+                console.log(response)
+            },
+            onError: (error) =>{
+                setOpenOpenSnackbar(true)
+                return
             }
-        }
+        })
     }
 
     return (
@@ -129,9 +126,5 @@ const StudentJoin = () => {
         </>
     );
 };
-
-const isEscapeRoomOpen = (escape_room_state: EscapeRoomStateEnum) => {
-    return escape_room_state === escapeRoomStateEnum.open;
-}
 
 export default StudentJoin;
