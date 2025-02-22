@@ -1,12 +1,16 @@
 package at.escapedoom.player.service;
 
 import at.escapedoom.player.data.domain.SessionView;
-import at.escapedoom.player.data.entity.UserProgress;
-import at.escapedoom.player.data.repository.UserProgressRepository;
+import at.escapedoom.player.data.postgres.entity.UserProgress;
+import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
+import at.escapedoom.player.data.redis.PlayerJoinedEvent;
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import at.escapedoom.player.rest.model.EscapeRoomState;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,8 @@ public class LobbyService {
 
     private final UserProgressRepository userProgressRepository;
     private final EscapeRoomSessionRepositoryService escapeRoomSessionRepositoryService;
+    private final RedisMessagingService redisMessagingService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public EscapeRoomJoinResponse joinSessionByRoomPin(Long roomPin, String playerName) {
 
@@ -37,6 +43,12 @@ public class LobbyService {
         log.info("Saved user with Username {} and the identifier {} in room with roomPin {}",
                 persistedUser.getUserName(), persistedUser.getUserIdentifier(), persistedUser.getRoomPin());
 
+        try {
+            publishJoin(persistedUser);
+        } catch (JsonProcessingException e) {
+            log.error("Could not publish join event", e);
+        }
+
         return buildResponseFromPersistedUser(persistedUser, sessionView.getRoomState());
     }
 
@@ -49,6 +61,12 @@ public class LobbyService {
     private static UserProgress createAndInitializeAUserObject(Long roomPin, String playerName) {
         return UserProgress.builder().userName(playerName).currentPoints(0L).roomPin(roomPin).currentEscapeRoomLevel(0L)
                 .currentPoints(0L).build();
+    }
+
+    private void publishJoin(UserProgress userProgress) throws JsonProcessingException {
+        redisMessagingService.sendMessage(objectMapper.writeValueAsString(PlayerJoinedEvent.builder()
+                .userName(userProgress.getUserName()).userIdentifier(userProgress.getUserIdentifier().toString())
+                .roomPin(userProgress.getRoomPin().toString()).build()));
     }
 
 }

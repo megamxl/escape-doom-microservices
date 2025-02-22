@@ -1,6 +1,6 @@
-package at.escapedoom.player.data.repository;
+package at.escapedoom.player.data.postgres.repository;
 
-import at.escapedoom.player.data.entity.UserProgress;
+import at.escapedoom.player.data.postgres.entity.UserProgress;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

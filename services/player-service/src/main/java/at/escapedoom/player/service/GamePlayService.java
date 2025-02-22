@@ -1,7 +1,7 @@
 package at.escapedoom.player.service;
 
-import at.escapedoom.player.data.entity.UserProgress;
-import at.escapedoom.player.data.repository.UserProgressRepository;
+import at.escapedoom.player.data.postgres.entity.UserProgress;
+import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
