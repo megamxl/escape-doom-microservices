@@ -6,8 +6,10 @@ import at.escapedoom.data.rest.model.DeleteRiddleRequest;
 import at.escapedoom.data.rest.model.Riddle;
 import at.escapedoom.data.services.RiddleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class RiddleInvocationController implements RiddleApiDelegate {
 
     @Override
     public ResponseEntity<Riddle> createRiddle(CreateRiddleRequest createRiddleRequest) {
-        return RiddleApiDelegate.super.createRiddle(createRiddleRequest);
+        return new ResponseEntity<>(service.createRiddle(createRiddleRequest), HttpStatus.OK);
     }
 
     @Override
@@ -29,7 +31,7 @@ public class RiddleInvocationController implements RiddleApiDelegate {
 
     @Override
     public ResponseEntity<List<Riddle>> getAllRiddles() {
-        return RiddleApiDelegate.super.getAllRiddles();
+        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 
     @Override

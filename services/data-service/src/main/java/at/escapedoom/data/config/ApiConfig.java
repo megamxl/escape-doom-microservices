@@ -23,10 +23,14 @@ public class ApiConfig {
 
     @Bean
     @Primary
-    public SceneApiDelegate sceneApiDelegate(@Autowired SceneInvocationController delegate) { return delegate; }
+    public SceneApiDelegate sceneApiDelegate(@Autowired SceneInvocationController delegate) {
+        return delegate;
+    }
 
     @Bean
     @Primary
-    public RiddleApiDelegate riddleApiDelegate(@Autowired RiddleInvocationController delegate) { return delegate; }
+    public RiddleApiDelegate riddleApiDelegate(@Autowired RiddleInvocationController delegate) {
+        return delegate;
+    }
 
 }

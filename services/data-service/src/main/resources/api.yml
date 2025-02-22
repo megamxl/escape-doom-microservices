@@ -337,8 +337,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/InputStringCompareRiddle'
-                - $ref: '#/components/schemas/CodingRiddle'
+                - $ref: '#/components/schemas/InputStringCompareRiddleCreationRequest'
+                - $ref: '#/components/schemas/CodingRiddleCreationRequest'
       responses:
         '201':
           description: Riddle created successfully
@@ -372,8 +372,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/InputStringCompareRiddle'
-                - $ref: '#/components/schemas/CodingRiddle'
+                - $ref: '#/components/schemas/InputStringCompareRiddleCreationRequest'
+                - $ref: '#/components/schemas/CodingRiddleCreationRequest'
       responses:
         '200':
           description: Riddle updated successfully
@@ -555,6 +555,14 @@ paths:
 
 components:
   schemas:
+    # Enums
+    CodingLanguage:
+      type: string
+      enum:
+        - JAVA
+        - TYPESCRIPT
+      example: "JAVA"
+    # Classes
     EscapeRoomTemplateDTO:
       description: The escape-room template, base for an EscapeRoom Game
       type: object
@@ -755,15 +763,13 @@ components:
           type: string
           description: The expected output of the riddle
           example: "42"
-    CodingRiddle:
+    CodingRiddleCreationRequest:
       allOf:
         - $ref: "#/components/schemas/Riddle"
         - type: object
           properties:
             language:
-              type: string
-              description: The programming language used in the riddle
-              example: "Java"
+              $ref: "#/components/schemas/CodingLanguage"
             function_signature:
               type: string
               description: The function signature
@@ -780,7 +786,7 @@ components:
               type: string
               description: The expected output of the function
               example: "5"
-    InputStringCompareRiddle:
+    InputStringCompareRiddleCreationRequest:
       allOf:
         - $ref: "#/components/schemas/Riddle"
         - type: object

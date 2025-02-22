@@ -7,6 +7,4 @@ import java.util.UUID;
 
 public interface RiddleRepository extends JpaRepository<Riddle, UUID> {
 
-
-
 }

@@ -2,8 +2,9 @@ package at.escapedoom.data.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.data.rest.model.CodingRiddle;
-import at.escapedoom.data.rest.model.InputStringCompareRiddle;
+import at.escapedoom.data.rest.model.CodingLanguage;
+import at.escapedoom.data.rest.model.CodingRiddleCreationRequest;
+import at.escapedoom.data.rest.model.InputStringCompareRiddleCreationRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;

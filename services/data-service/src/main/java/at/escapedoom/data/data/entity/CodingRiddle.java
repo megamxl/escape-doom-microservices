@@ -1,13 +1,14 @@
 package at.escapedoom.data.data.entity;
 
-import enums.CodingLanguage;
+import at.escapedoom.data.rest.model.CodingLanguage;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
