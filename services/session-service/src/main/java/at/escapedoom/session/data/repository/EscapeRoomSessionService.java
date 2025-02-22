@@ -26,16 +26,6 @@ public class EscapeRoomSessionService {
         return repository.save(session);
     }
 
-    public EscapeRoomSession getSessionById(UUID sessionId) {
-        Optional<EscapeRoomSession> sessionOptional = repository.findById(sessionId);
-        return sessionOptional.orElseThrow(() -> new RuntimeException("Session not found for ID: " + sessionId));
-    }
-
-    public List<EscapeRoomSession> getSessionsByUserName(String userName) {
-        List<EscapeRoomSession> sessions = repository.getEscapeRoomSessionsByUserIdOrderByStartTimeDesc(userName);
-        return sessions;
-    }
-
     public EscapeRoomSession addTagToSession(UUID sessionId, String tag) {
         EscapeRoomSession session = getSessionById(sessionId);
         if (!session.getTags().contains(tag)) {
@@ -69,5 +59,24 @@ public class EscapeRoomSessionService {
             session.setEndTime(LocalDateTime.now());
         }
         return repository.save(session);
+    }
+
+    public EscapeRoomSession getSessionById(UUID sessionId) {
+        Optional<EscapeRoomSession> sessionOptional = repository.findById(sessionId);
+        return sessionOptional.orElseThrow(() -> new RuntimeException("Session not found for ID: " + sessionId));
+    }
+
+    public List<EscapeRoomSession> getSessionsByUserName(String userName) {
+        List<EscapeRoomSession> sessions = repository.getEscapeRoomSessionsByUserIdOrderByStartTimeDesc(userName);
+        return sessions;
+    }
+
+    public List<EscapeRoomSession> getSessionsByTags(String userName, List<String> tags) {
+        return repository.getEscapeRoomSessionsByUserIdAndTagsContains(userName, tags);
+    }
+
+    public EscapeRoomSession getSessionByRoomPin(Long roomPin) {
+        Optional<EscapeRoomSession> sessionOptional = repository.getEscapeRoomSessionByRoomPin(roomPin);
+        return sessionOptional.orElseThrow(() -> new RuntimeException("Session not found for roomPin: " + roomPin));
     }
 }
