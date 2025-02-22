@@ -4,6 +4,7 @@ export type { GetLevelPlayerSessionIdSuspenseQueryKey } from './hooks/level/useG
 export type { GetLevelResultQueryKey } from './hooks/level/useGetLevelResultHook.ts'
 export type { GetLevelResultSuspenseQueryKey } from './hooks/level/useGetLevelResultSuspenseHook.ts'
 export type { PostLevelPlayerSessionIdSubmitMutationKey } from './hooks/level/usePostLevelPlayerSessionIdSubmitHook.ts'
+export type { Error } from './models/Error.ts'
 export type { EscapeRoomJoin } from './models/EscapeRoomJoin.ts'
 export type { EscapeRoomJoinResponse } from './models/EscapeRoomJoinResponse.ts'
 export type { EscapeRoomLevel } from './models/EscapeRoomLevel.ts'
@@ -29,7 +30,7 @@ export type {
   PostLevelPlayerSessionIdSubmitMutationResponse,
   PostLevelPlayerSessionIdSubmitMutation,
 } from './models/PostLevelPlayerSessionIdSubmit.ts'
-export type { PutJoin200, PutJoinMutationRequest, PutJoinMutationResponse, PutJoinMutation } from './models/PutJoin.ts'
+export type { PutJoin200, PutJoin500, PutJoinMutationRequest, PutJoinMutationResponse, PutJoinMutation } from './models/PutJoin.ts'
 export type { Scene } from './models/Scene.ts'
 export { putJoinMutationKey, putJoinHook, usePutJoinHook } from './hooks/join/usePutJoinHook.ts'
 export {

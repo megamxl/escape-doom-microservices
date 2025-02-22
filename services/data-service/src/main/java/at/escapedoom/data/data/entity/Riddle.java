@@ -2,6 +2,7 @@ package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
 public abstract class Riddle {
 
@@ -19,5 +21,4 @@ public abstract class Riddle {
     private UUID escapeRoomRiddleId;
 
     private String expectedOutput;
-
 }
