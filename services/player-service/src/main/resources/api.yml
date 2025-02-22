@@ -7,6 +7,7 @@ servers:
 paths:
   /join:
     put:
+      operationId: handlePlayerJoin
       tags:
         - lobby
       summary: Join an escape-room instance
@@ -25,8 +26,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EscapeRoomJoinResponse"
+        "500":
+          description: bad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorObject"
   /level/{player_session_id}:
     get:
+      operationId: getLevelOfSessionByPlayerSessionID
       tags:
         - level
       summary: Get the current level of the escape-room instance
@@ -52,6 +60,7 @@ paths:
 
   /level/{player_session_id}/submit:
     post:
+      operationId: submitSolutionAttemptForCurrentLevel
       tags:
         - level
       summary: Submit a possible solution for the current level of the escape-room instance
@@ -106,7 +115,7 @@ components:
       type: object
       properties:
         room_pin:
-          type: integer
+          type: number
           description: The room-pin to join the escape-room
           minimum: 100000
           maximum: 999999
@@ -171,7 +180,7 @@ components:
           
         level_sequence:
           type: number
-          format: integer
+          format: number
           description: The sequence number of the level
           example: 1
     EscapeRoomResult:
@@ -197,7 +206,7 @@ components:
       properties:
         scene_sequence:
           type: number
-          format: long
+          format: number
           description: The sequence number of the scene
           example: 1
         nodes:
@@ -261,3 +270,24 @@ components:
           format: double
           description: The relative left position of the node
           example: 22.0
+    ErrorObject:
+      description: An error returned by the API
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the error
+          example: "2020-01-01T00:00:00Z"
+        path:
+          type: string
+          description: The path of the error
+          example: /api/v1/escape-room/join
+        status:
+          type: string
+          description: The status of the error
+          example: 404
+        error:
+          type: string
+          description: The error message
+          example: The error message

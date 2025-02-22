@@ -1,5 +1,6 @@
 package at.escapedoom.player.rest.api;
 
+import at.escapedoom.player.rest.model.ErrorObject;
 import at.escapedoom.player.rest.model.EscapeRoomJoin;
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import org.springframework.http.HttpStatus;
@@ -32,15 +33,20 @@ public interface LobbyApiDelegate {
      * @param escapeRoomJoin
      *            The escape-room instance to join (required)
      *
-     * @return OK (status code 200)
+     * @return OK (status code 200) or bad (status code 500)
      *
-     * @see LobbyApi#joinPut
+     * @see LobbyApi#handlePlayerJoin
      */
-    default ResponseEntity<EscapeRoomJoinResponse> joinPut(EscapeRoomJoin escapeRoomJoin) {
+    default ResponseEntity<EscapeRoomJoinResponse> handlePlayerJoin(EscapeRoomJoin escapeRoomJoin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"player_session_id\" : \"78787878-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"player_name\" : \"Waschbär\", \"escape_room_state\" : \"open\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"path\" : \"/api/v1/escape-room/join\", \"error\" : \"The error message\", \"timestamp\" : \"2020-01-01T00:00:00Z\", \"status\" : \"404\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

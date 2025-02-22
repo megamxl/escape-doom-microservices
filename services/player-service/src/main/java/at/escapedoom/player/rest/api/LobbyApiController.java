@@ -1,5 +1,6 @@
 package at.escapedoom.player.rest.api;
 
+import at.escapedoom.player.rest.model.ErrorObject;
 import at.escapedoom.player.rest.model.EscapeRoomJoin;
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 

@@ -8,7 +8,7 @@ export type EscapeRoomJoin = {
    * @description The room-pin to join the escape-room
    * @minLength 100000
    * @maxLength 999999
-   * @type integer | undefined
+   * @type number | undefined
    */
   room_pin?: number
   /**

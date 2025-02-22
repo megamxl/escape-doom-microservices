@@ -5,7 +5,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@SpringBootTest
+@SpringBootTest(classes = LeaderboardApi.class)
 public class AppTest {
     @Test
     void testTrue() {

@@ -7,7 +7,7 @@ import type { Node } from './Node.ts'
 export type Scene = {
   /**
    * @description The sequence number of the scene
-   * @type number | undefined, long
+   * @type number | undefined, number
    */
   scene_sequence?: number
   /**

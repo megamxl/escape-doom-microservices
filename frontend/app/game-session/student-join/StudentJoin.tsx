@@ -4,56 +4,76 @@ import React, {ChangeEvent, FormEvent, useState} from 'react';
 import {Alert, Button, Card, CardContent, Grid2, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import BackgroundImage from '@/public/images/StudentJoin.jpg'
 import {common} from '@mui/material/colors';
-import {useLobbyJoin} from "@/app/hooks/student-join/useLobbyJoin";
-import {redirect} from "next/navigation";
+import {redirect, useRouter} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
-import {RoomState} from "@/app/enums/RoomState";
 import {useSession} from "@/app/utils/game-session-handler";
+import {
+    EscapeRoomJoin, EscapeRoomJoinResponse,
+    EscapeRoomStateEnum,
+    escapeRoomStateEnum,
+    HandlePlayerJoinMutationResponse,
+    useHandlePlayerJoinHook
+} from "@/app/gen/player";
 
 const StudentJoin = () => {
+    const appRouterInstance = useRouter();
 
-    const [roomPin, setRoomPin] = useState('');
+    const [roomJoin, setRoomJoin] = useState<EscapeRoomJoin>()
+
     const [openSnackbar, setOpenOpenSnackbar] = useState(false);
 
     const [session, setSession] = useSession();
-    const {refetch} = useLobbyJoin(roomPin);
 
-    const handleUserInput = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setRoomPin(e.target.value);
+    const {mutate : playerJoinCall} = useHandlePlayerJoinHook();
+
+    const handleRoomPinChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setRoomJoin(cur => ({
+            ...cur,
+            room_pin: Number(e.target.value)
+        }));
+    }
+    const handlePlayerNameChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setRoomJoin(cur => ({
+            ...cur,
+            player_name: e.target.value
+        }));
     }
 
     const sendID = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("Trying to get lobby of id: " + roomPin + "Current session: ", session)
-        const {data, isError, error} = await refetch();
 
-        if (session && data?.state === RoomState.PLAYING) redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${session}`)
-
-        if (isError) {
-            setOpenOpenSnackbar(true)
-            console.error(error)
-        } else if (data) {
-            const responseSessionID = data.sessionId
-
-            console.log(data)
-
-            switch (data.state) {
-                case RoomState.PLAYING:
-                    setSession(responseSessionID)
-                    redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${responseSessionID}`)
-                    break;
-                case RoomState.JOINABLE:
-                    setSession(responseSessionID)
-                    redirect(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomPin}`)
-                    break;
-                case RoomState.STOPPED:
-                    setSession("")
+        playerJoinCall({data: roomJoin},{
+            onSuccess: (response) => {
+                if (response.player_session_id === undefined){
                     setOpenOpenSnackbar(true)
-                    break;
-                default:
-                    console.log("Lobby is in an unknown state");
+                    return
+                }
+                switch (response.escape_room_state) {
+                    case escapeRoomStateEnum.started:
+                        setSession(response.player_session_id!)
+                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.SESSION}/${response.player_session_id}`)
+                        break;
+                    case escapeRoomStateEnum.open:
+                        setSession(response.player_session_id!)
+                        console.log("should redirect ", `${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
+                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
+                        break;
+                    case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:
+                        setSession("")
+                        setOpenOpenSnackbar(true)
+                        break;
+                    default:
+                        console.log("Lobby is in an unknown state");
+                }
+                console.log(response)
+            },
+            onError: (error) =>{
+                // @ts-ignore
+                console.log(error.response.data)
+                setOpenOpenSnackbar(true)
+                return
             }
-        }
+        })
     }
 
     return (
@@ -76,12 +96,22 @@ const StudentJoin = () => {
                     <CardContent>
                         <Stack spacing={2} alignItems="center" component="form" onSubmit={sendID} noValidate>
                             <TextField
+                                slotProps={{input: {type: 'number'}}}
                                 type="number"
                                 id="outlined-basic"
                                 label="Room-PIN"
                                 variant="outlined"
-                                value={roomPin}
-                                onChange={handleUserInput}
+                                value={roomJoin?.room_pin}
+                                onChange={handleRoomPinChange}
+                                fullWidth
+                            />
+                            <TextField
+                                type="text"
+                                id="outlined-basic"
+                                label="Username"
+                                variant="outlined"
+                                value={roomJoin?.player_name}
+                                onChange={handlePlayerNameChange}
                                 fullWidth
                             />
                             <Button sx={{height: 56}} variant="contained" type="submit" fullWidth>JOIN</Button>
