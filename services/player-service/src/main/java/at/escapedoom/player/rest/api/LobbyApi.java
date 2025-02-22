@@ -5,6 +5,7 @@
  */
 package at.escapedoom.player.rest.api;
 
+import at.escapedoom.player.rest.model.ErrorObject;
 import at.escapedoom.player.rest.model.EscapeRoomJoin;
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -45,11 +46,13 @@ public interface LobbyApi {
      * @param escapeRoomJoin
      *            The escape-room instance to join (required)
      *
-     * @return OK (status code 200)
+     * @return OK (status code 200) or bad (status code 500)
      */
     @Operation(operationId = "handlePlayerJoin", summary = "Join an escape-room instance", description = "Join an escape-room instance", tags = {
             "lobby" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomJoinResponse.class)) }) })
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomJoinResponse.class)) }),
+                    @ApiResponse(responseCode = "500", description = "bad", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorObject.class)) }) })
     @RequestMapping(method = RequestMethod.PUT, value = "/join", produces = { "application/json" }, consumes = {
             "application/json" })
 

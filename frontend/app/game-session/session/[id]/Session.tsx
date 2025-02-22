@@ -22,6 +22,7 @@ import {redirect} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import CodeExectuionDisplay from "@/app/game-session/session/[id]/_components/CodeExectuionDisplay";
 import {useSessionIdToRoomPin} from "@/app/hooks/game-session/useSessionIdToRoomPin";
+import {useGetLevelOfSessionByPlayerSessionIDHook} from "@/app/gen/player";
 
 const Session = ({sessionID}: { sessionID: string }) => {
 
@@ -53,7 +54,8 @@ const Session = ({sessionID}: { sessionID: string }) => {
     })
 
     /* TanStack Query Calls */
-    const {data: stageInformation, isFetching: isFetchingStageInformation} = useGetStageInformation(sessionID)
+    //const {data: stageInformation, isFetching: isFetchingStageInformation} = useGetStageInformation(sessionID)
+    const {data: stageInformation, isFetching: isFetchingStageInformation} = useGetLevelOfSessionByPlayerSessionIDHook({player_session_id : sessionID});
     const {refetch: refetchCodeResult, data: codeResultData, isFetching: isFetchingCodeResult} = useGetCodeResult(sessionID);
     const {refetch: reSubmitCode} = useSubmitCode(submittedCodeBody);
     const {data: roomPinOfSession} = useSessionIdToRoomPin(sessionID);
@@ -61,16 +63,6 @@ const Session = ({sessionID}: { sessionID: string }) => {
     const monacoEditorRef = useRef()
 
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
-
-    if (stageInformation?.state == RoomState.PLAYING && stageInformation?.stage && !stageState.stageScene) {
-        const newStage = parseStage(stageInformation.stage);
-        if (newStage) {
-            setStageState((prev) => ({
-                ...prev,
-                stageScene: newStage,
-            }));
-        }
-    }
 
     const handleCodeSubmission = async () => {
         setLoading(true)

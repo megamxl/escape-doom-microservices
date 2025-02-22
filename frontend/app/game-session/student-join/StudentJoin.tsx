@@ -68,6 +68,8 @@ const StudentJoin = () => {
                 console.log(response)
             },
             onError: (error) =>{
+                // @ts-ignore
+                console.log(error.response.data)
                 setOpenOpenSnackbar(true)
                 return
             }

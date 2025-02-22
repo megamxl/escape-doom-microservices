@@ -1,7 +1,7 @@
 import client from '@kubb/plugin-client/clients/axios'
 import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/axios'
 import type { UseMutationOptions } from '@tanstack/react-query'
-import type { HandlePlayerJoinMutationRequest, HandlePlayerJoinMutationResponse } from '../../models/HandlePlayerJoin.ts'
+import type { HandlePlayerJoinMutationRequest, HandlePlayerJoinMutationResponse, HandlePlayerJoin500 } from '../../models/HandlePlayerJoin.ts'
 import { useMutation } from '@tanstack/react-query'
 
 export const handlePlayerJoinMutationKey = () => [{ url: '/join' }] as const
@@ -19,7 +19,7 @@ export async function handlePlayerJoinHook(
 ) {
   const { client: request = client, ...requestConfig } = config
 
-  const res = await request<HandlePlayerJoinMutationResponse, ResponseErrorConfig<Error>, HandlePlayerJoinMutationRequest>({
+  const res = await request<HandlePlayerJoinMutationResponse, ResponseErrorConfig<HandlePlayerJoin500>, HandlePlayerJoinMutationRequest>({
     method: 'PUT',
     url: `/join`,
     baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1`,
@@ -36,14 +36,14 @@ export async function handlePlayerJoinHook(
  */
 export function useHandlePlayerJoinHook(
   options: {
-    mutation?: UseMutationOptions<HandlePlayerJoinMutationResponse, ResponseErrorConfig<Error>, { data?: HandlePlayerJoinMutationRequest }>
+    mutation?: UseMutationOptions<HandlePlayerJoinMutationResponse, ResponseErrorConfig<HandlePlayerJoin500>, { data?: HandlePlayerJoinMutationRequest }>
     client?: Partial<RequestConfig<HandlePlayerJoinMutationRequest>>
   } = {},
 ) {
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? handlePlayerJoinMutationKey()
 
-  return useMutation<HandlePlayerJoinMutationResponse, ResponseErrorConfig<Error>, { data?: HandlePlayerJoinMutationRequest }>({
+  return useMutation<HandlePlayerJoinMutationResponse, ResponseErrorConfig<HandlePlayerJoin500>, { data?: HandlePlayerJoinMutationRequest }>({
     mutationFn: async ({ data }) => {
       return handlePlayerJoinHook(data, config)
     },

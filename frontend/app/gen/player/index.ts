@@ -4,6 +4,7 @@ export type { GetLevelOfSessionByPlayerSessionIDSuspenseQueryKey } from './hooks
 export type { GetLevelResultQueryKey } from './hooks/level/useGetLevelResultHook.ts'
 export type { GetLevelResultSuspenseQueryKey } from './hooks/level/useGetLevelResultSuspenseHook.ts'
 export type { SubmitSolutionAttemptForCurrentLevelMutationKey } from './hooks/level/useSubmitSolutionAttemptForCurrentLevelHook.ts'
+export type { ErrorObject } from './models/ErrorObject.ts'
 export type { EscapeRoomJoin } from './models/EscapeRoomJoin.ts'
 export type { EscapeRoomJoinResponse } from './models/EscapeRoomJoinResponse.ts'
 export type { EscapeRoomLevel } from './models/EscapeRoomLevel.ts'
@@ -20,6 +21,7 @@ export type {
 export type { GetLevelResultPathParams, GetLevelResult200, GetLevelResultQueryResponse, GetLevelResultQuery } from './models/GetLevelResult.ts'
 export type {
   HandlePlayerJoin200,
+  HandlePlayerJoin500,
   HandlePlayerJoinMutationRequest,
   HandlePlayerJoinMutationResponse,
   HandlePlayerJoinMutation,

@@ -26,6 +26,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EscapeRoomJoinResponse"
+        "500":
+          description: bad
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorObject"
   /level/{player_session_id}:
     get:
       operationId: getLevelOfSessionByPlayerSessionID
@@ -264,3 +270,24 @@ components:
           format: double
           description: The relative left position of the node
           example: 22.0
+    ErrorObject:
+      description: An error returned by the API
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: The timestamp of the error
+          example: "2020-01-01T00:00:00Z"
+        path:
+          type: string
+          description: The path of the error
+          example: /api/v1/escape-room/join
+        status:
+          type: string
+          description: The status of the error
+          example: 404
+        error:
+          type: string
+          description: The error message
+          example: The error message
