@@ -18,7 +18,6 @@ import jakarta.annotation.Generated;
  * The result of a submitted solution
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

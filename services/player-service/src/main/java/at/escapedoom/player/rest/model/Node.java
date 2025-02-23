@@ -21,7 +21,6 @@ import jakarta.annotation.Generated;
  * A node of an escape-room instance
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

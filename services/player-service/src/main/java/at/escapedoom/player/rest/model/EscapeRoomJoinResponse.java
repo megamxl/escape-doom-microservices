@@ -20,7 +20,6 @@ import jakarta.annotation.Generated;
  * The escape-room instance
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

@@ -1,13 +1,16 @@
 package at.escapedoom.data.services;
 
-import at.escapedoom.data.data.entity.CodingRiddle;
-import at.escapedoom.data.data.entity.Riddle;
+import at.escapedoom.data.data.entity.DBRiddle;
 import at.escapedoom.data.data.repository.RiddleRepository;
-import at.escapedoom.data.rest.model.CreateRiddleRequest;
+import at.escapedoom.data.rest.model.Riddle;
+import at.escapedoom.data.rest.model.RiddleCreationRequest;
+import at.escapedoom.data.rest.model.RiddleDeletionResponse;
+import at.escapedoom.data.utils.ReflectionUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -20,69 +23,52 @@ public class RiddleService {
 
     private final RiddleRepository repository;
 
-    public at.escapedoom.data.rest.model.Riddle toRestBody(Riddle riddle) {
-
-        switch (riddle) {
-        case CodingRiddle codingRiddle -> {
-            return at.escapedoom.data.rest.model.CodingRiddle.builder()
-                    .escapeRoomRiddleId(codingRiddle.getEscapeRoomRiddleId().toString())
-                    .type(at.escapedoom.data.rest.model.Riddle.TypeEnum.CODING_RIDDLE).expectedOutput(codingRiddle.getExpectedOutput()).build();
-        }
-        default -> throw new IllegalStateException("Unexpected value: " + riddle);
-        }
-    }
-
-    public List<at.escapedoom.data.rest.model.Riddle> getAll() {
-        List<Riddle> riddles = repository.findAll();
+    public List<Riddle> getAll() {
+        List<DBRiddle> riddles = repository.findAll();
 
         return riddles.stream().map(this::toRestBody).toList();
     }
 
-    public at.escapedoom.data.rest.model.Riddle createRiddle(CreateRiddleRequest riddle) {
+    public Riddle createRiddle(RiddleCreationRequest riddle) {
+        assert riddle != null;
 
-        switch (riddle) {
-        case CodingRiddle creationRequest -> {
-            CodingRiddle codingRiddle = creationRequestToCodingRiddle(creationRequest);
-            repository.save(codingRiddle);
-            return toRestBody(codingRiddle);
-        }
-        default -> throw new IllegalArgumentException("Riddle type not supported: " + riddle);
-        }
+        DBRiddle dbRiddle = creationRequestToRiddle(riddle);
+        repository.save(dbRiddle);
+        return toRestBody(dbRiddle);
     }
 
-    public at.escapedoom.data.rest.model.Riddle updateRiddle(at.escapedoom.data.rest.model.Riddle riddle) {
-        baseRiddleAsserts(riddle);
+    @Transactional
+    public Riddle updateRiddle(RiddleCreationRequest riddle, String uuid) {
+        assert riddle != null;
 
-        Riddle r = repository.findById(UUID.fromString(riddle.getEscapeRoomRiddleId())).get();
+        DBRiddle dbRiddle = repository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Riddle with ID: %s not found", uuid)));
 
-        switch (r) {
-        case CodingRiddle codingRiddle -> {
-            log.info("Updating coding riddle");
-        }
-        default -> throw new IllegalStateException("Unexpected value: " + riddle);
-        }
-        repository.save(r);
-        return riddle;
+        ReflectionUtils.copyNonNullProperties(dbRiddle, riddle);
+        repository.save(dbRiddle);
+        return toRestBody(dbRiddle);
     }
 
-    public void deleteRiddle(at.escapedoom.data.rest.model.Riddle riddle) {
-        baseRiddleAsserts(riddle);
-
-        repository.deleteById(UUID.fromString(riddle.getEscapeRoomRiddleId()));
+    public RiddleDeletionResponse deleteRiddle(String uuid) {
+        repository.deleteById(UUID.fromString(uuid));
+        return new RiddleDeletionResponse("Riddle deleted successfully");
     }
 
-    private void baseRiddleAsserts(at.escapedoom.data.rest.model.Riddle riddle) {
-        assert riddle != null : "Riddle is null";
-        assert riddle.getEscapeRoomRiddleId() != null : "Escape Room Riddle Id is null";
-    }
-
-    private CodingRiddle creationRequestToCodingRiddle(CodingRiddle creationRequest) {
-        assert creationRequest.getEscapeRoomRiddleId() != null : "Escape Room Id is null";
-
-        new CodingRiddle();
-        return CodingRiddle.builder().escapeRoomRiddleId(creationRequest.getEscapeRoomRiddleId())
-                .input(creationRequest.getInput()).language(creationRequest.getLanguage())
-                .variableName(creationRequest.getVariableName()).expectedOutput(creationRequest.getExpectedOutput())
+    // region Utils functions
+    private DBRiddle creationRequestToRiddle(RiddleCreationRequest creationRequest) {
+        new DBRiddle();
+        return DBRiddle.builder()
+                .input(creationRequest.getInput())
+                .language(creationRequest.getLanguage())
+                .variableName(creationRequest.getVariableName())
+                .expectedOutput(creationRequest.getExpectedOutput())
                 .functionSignature(creationRequest.getFunctionSignature()).build();
     }
+
+    private Riddle toRestBody(DBRiddle riddle) throws IllegalArgumentException {
+        return Riddle.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
+                .input(riddle.getInput()).functionSignature(riddle.getFunctionSignature())
+                .escapeRoomRiddleId(riddle.getEscapeRoomRiddleId().toString()).build();
+    }
+    // endregion
 }

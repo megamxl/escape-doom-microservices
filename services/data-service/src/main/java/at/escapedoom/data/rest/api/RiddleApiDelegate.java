@@ -3,9 +3,9 @@ package at.escapedoom.data.rest.api;
 import at.escapedoom.data.rest.model.CreateBadRequest;
 import at.escapedoom.data.rest.model.CreateInternalServerError;
 import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.CreateRiddleRequest;
-import at.escapedoom.data.rest.model.DeleteRiddleRequest;
 import at.escapedoom.data.rest.model.Riddle;
+import at.escapedoom.data.rest.model.RiddleCreationRequest;
+import at.escapedoom.data.rest.model.RiddleDeletionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public interface RiddleApiDelegate {
     /**
      * POST /riddle : Create a new riddle Create a riddle without linking it to a specific level
      *
-     * @param createRiddleRequest
+     * @param riddleCreationRequest
      *            The details of the riddle to create (required)
      *
      * @return Riddle created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
@@ -41,11 +41,11 @@ public interface RiddleApiDelegate {
      *
      * @see RiddleApi#createRiddle
      */
-    default ResponseEntity<Riddle> createRiddle(CreateRiddleRequest createRiddleRequest) {
+    default ResponseEntity<Riddle> createRiddle(RiddleCreationRequest riddleCreationRequest) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"CodingRiddle\" }";
+                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -66,7 +66,7 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * DELETE /riddles/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
+     * DELETE /riddle/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -76,11 +76,11 @@ public interface RiddleApiDelegate {
      *
      * @see RiddleApi#deleteRiddle
      */
-    default ResponseEntity<DeleteRiddleRequest> deleteRiddle(String escapeRoomRiddleId) {
+    default ResponseEntity<RiddleDeletionResponse> deleteRiddle(String escapeRoomRiddleId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 200, \"message\" : \"Riddle deleted successfully\" }";
+                    String exampleString = "{ \"message\" : \"Riddle deleted successfully\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -111,7 +111,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"CodingRiddle\" }, { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"CodingRiddle\" } ]";
+                    String exampleString = "[ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -127,11 +127,11 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * PUT /riddles/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
+     * PUT /riddle/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
-     * @param createRiddleRequest
+     * @param riddleCreationRequest
      *            The override details of the riddle (required)
      *
      * @return Riddle updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
@@ -139,11 +139,11 @@ public interface RiddleApiDelegate {
      *
      * @see RiddleApi#putRiddle
      */
-    default ResponseEntity<Riddle> putRiddle(String escapeRoomRiddleId, CreateRiddleRequest createRiddleRequest) {
+    default ResponseEntity<Riddle> putRiddle(String escapeRoomRiddleId, RiddleCreationRequest riddleCreationRequest) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"CodingRiddle\" }";
+                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

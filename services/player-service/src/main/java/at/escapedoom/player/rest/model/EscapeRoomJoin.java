@@ -18,7 +18,6 @@ import jakarta.annotation.Generated;
  * The escape-room instance to join
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

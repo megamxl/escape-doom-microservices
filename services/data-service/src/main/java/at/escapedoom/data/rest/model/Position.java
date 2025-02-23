@@ -18,9 +18,9 @@ import jakarta.annotation.Generated;
  */
 @lombok.Builder
 @lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter
+@lombok.AllArgsConstructor
 
 @Schema(name = "Position", description = "The position of a node")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")

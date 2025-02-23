@@ -23,7 +23,6 @@ import jakarta.annotation.Generated;
  * FullExportRoomPinGet200ResponseInner
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

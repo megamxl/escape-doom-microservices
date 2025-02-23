@@ -1,7 +1,6 @@
 // version: 0.0.1
-import type { CodingRiddle } from './CodingRiddle.ts'
-import type { InputStringCompareRiddle } from './InputStringCompareRiddle.ts'
 import type { Riddle } from './Riddle.ts'
+import type { RiddleCreationRequest } from './RiddleCreationRequest.ts'
 
 /**
  * @description Riddle created successfully
@@ -39,7 +38,7 @@ export type CreateRiddle500 = {
 /**
  * @description The details of the riddle to create
  */
-export type CreateRiddleMutationRequest = InputStringCompareRiddle | CodingRiddle
+export type CreateRiddleMutationRequest = RiddleCreationRequest
 
 export type CreateRiddleMutationResponse = CreateRiddle201
 

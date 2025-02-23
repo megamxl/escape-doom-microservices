@@ -24,9 +24,9 @@ import jakarta.annotation.Generated;
  */
 @lombok.Builder
 @lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter
+@lombok.AllArgsConstructor
 
 @Schema(name = "EscapeRoomLevel", description = "The current level of an escape-room instance")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")

@@ -22,7 +22,6 @@ import jakarta.annotation.Generated;
  * The current level of an escape-room instance
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter
