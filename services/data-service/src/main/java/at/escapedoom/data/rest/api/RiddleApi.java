@@ -8,9 +8,9 @@ package at.escapedoom.data.rest.api;
 import at.escapedoom.data.rest.model.CreateBadRequest;
 import at.escapedoom.data.rest.model.CreateInternalServerError;
 import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.CreateRiddleRequest;
-import at.escapedoom.data.rest.model.DeleteRiddleRequest;
 import at.escapedoom.data.rest.model.Riddle;
+import at.escapedoom.data.rest.model.RiddleCreationRequest;
+import at.escapedoom.data.rest.model.RiddleDeletionResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,7 +46,7 @@ public interface RiddleApi {
     /**
      * POST /riddle : Create a new riddle Create a riddle without linking it to a specific level
      *
-     * @param createRiddleRequest
+     * @param riddleCreationRequest
      *            The details of the riddle to create (required)
      *
      * @return Riddle created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
@@ -64,12 +64,12 @@ public interface RiddleApi {
             "application/json" })
 
     default ResponseEntity<Riddle> createRiddle(
-            @Parameter(name = "CreateRiddleRequest", description = "The details of the riddle to create", required = true) @Valid @RequestBody CreateRiddleRequest createRiddleRequest) {
-        return getDelegate().createRiddle(createRiddleRequest);
+            @Parameter(name = "RiddleCreationRequest", description = "The details of the riddle to create", required = true) @Valid @RequestBody RiddleCreationRequest riddleCreationRequest) {
+        return getDelegate().createRiddle(riddleCreationRequest);
     }
 
     /**
-     * DELETE /riddles/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
+     * DELETE /riddle/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -80,15 +80,15 @@ public interface RiddleApi {
     @Operation(operationId = "deleteRiddle", summary = "Delete a riddle", description = "Delete a riddle that is not linked to any level", tags = {
             "Riddle" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Riddle deleted successfully", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteRiddleRequest.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = RiddleDeletionResponse.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/riddles/{escape-room-riddle-id}", produces = {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/riddle/{escape-room-riddle-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<DeleteRiddleRequest> deleteRiddle(
+    default ResponseEntity<RiddleDeletionResponse> deleteRiddle(
             @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId) {
         return getDelegate().deleteRiddle(escapeRoomRiddleId);
     }
@@ -112,11 +112,11 @@ public interface RiddleApi {
     }
 
     /**
-     * PUT /riddles/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
+     * PUT /riddle/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
-     * @param createRiddleRequest
+     * @param riddleCreationRequest
      *            The override details of the riddle (required)
      *
      * @return Riddle updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
@@ -132,13 +132,13 @@ public interface RiddleApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/riddles/{escape-room-riddle-id}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/riddle/{escape-room-riddle-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
     default ResponseEntity<Riddle> putRiddle(
             @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId,
-            @Parameter(name = "CreateRiddleRequest", description = "The override details of the riddle", required = true) @Valid @RequestBody CreateRiddleRequest createRiddleRequest) {
-        return getDelegate().putRiddle(escapeRoomRiddleId, createRiddleRequest);
+            @Parameter(name = "RiddleCreationRequest", description = "The override details of the riddle", required = true) @Valid @RequestBody RiddleCreationRequest riddleCreationRequest) {
+        return getDelegate().putRiddle(escapeRoomRiddleId, riddleCreationRequest);
     }
 
 }

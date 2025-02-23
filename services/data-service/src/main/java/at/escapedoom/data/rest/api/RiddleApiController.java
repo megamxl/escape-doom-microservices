@@ -3,9 +3,9 @@ package at.escapedoom.data.rest.api;
 import at.escapedoom.data.rest.model.CreateBadRequest;
 import at.escapedoom.data.rest.model.CreateInternalServerError;
 import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.CreateRiddleRequest;
-import at.escapedoom.data.rest.model.DeleteRiddleRequest;
 import at.escapedoom.data.rest.model.Riddle;
+import at.escapedoom.data.rest.model.RiddleCreationRequest;
+import at.escapedoom.data.rest.model.RiddleDeletionResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

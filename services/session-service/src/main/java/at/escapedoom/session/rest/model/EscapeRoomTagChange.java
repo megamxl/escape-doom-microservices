@@ -18,7 +18,6 @@ import jakarta.annotation.Generated;
  * The tag to add or remove
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

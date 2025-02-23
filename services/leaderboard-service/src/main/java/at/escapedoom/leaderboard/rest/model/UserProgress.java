@@ -24,7 +24,6 @@ import jakarta.annotation.Generated;
  * Represents the progress of user in a session.
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

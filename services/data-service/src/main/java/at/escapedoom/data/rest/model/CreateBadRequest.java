@@ -19,9 +19,9 @@ import jakarta.annotation.Generated;
  */
 @lombok.Builder
 @lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter
+@lombok.AllArgsConstructor
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class CreateBadRequest {

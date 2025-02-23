@@ -1,19 +1,25 @@
 package at.escapedoom.data.data.entity;
 
 import at.escapedoom.data.rest.model.CodingLanguage;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
+@Entity
 @Getter
 @Setter
-@SuperBuilder
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@DiscriminatorValue("Coding")
-public class CodingRiddle extends Riddle {
+@Builder
+@NoArgsConstructor
+public class DBRiddle {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID escapeRoomRiddleId;
+
+    private String expectedOutput;
 
     private CodingLanguage language;
 

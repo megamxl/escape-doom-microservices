@@ -27,7 +27,7 @@ public class EscapeRoomLevel {
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "escapeRoomRiddleId")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Riddle riddle;
+    private DBRiddle riddle;
 
     private Integer levelSequence;
 

@@ -1,15 +1,14 @@
 package at.escapedoom.data.services.controller;
 
 import at.escapedoom.data.rest.api.RiddleApiDelegate;
-import at.escapedoom.data.rest.model.CreateRiddleRequest;
-import at.escapedoom.data.rest.model.DeleteRiddleRequest;
 import at.escapedoom.data.rest.model.Riddle;
+import at.escapedoom.data.rest.model.RiddleCreationRequest;
+import at.escapedoom.data.rest.model.RiddleDeletionResponse;
 import at.escapedoom.data.services.RiddleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -20,13 +19,8 @@ public class RiddleInvocationController implements RiddleApiDelegate {
     private final RiddleService service;
 
     @Override
-    public ResponseEntity<Riddle> createRiddle(CreateRiddleRequest createRiddleRequest) {
-        return new ResponseEntity<>(service.createRiddle(createRiddleRequest), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<DeleteRiddleRequest> deleteRiddle(String escapeRoomRiddleId) {
-        return RiddleApiDelegate.super.deleteRiddle(escapeRoomRiddleId);
+    public ResponseEntity<RiddleDeletionResponse> deleteRiddle(String escapeRoomRiddleId) {
+        return new ResponseEntity<>(service.deleteRiddle(escapeRoomRiddleId), HttpStatus.OK);
     }
 
     @Override
@@ -35,7 +29,12 @@ public class RiddleInvocationController implements RiddleApiDelegate {
     }
 
     @Override
-    public ResponseEntity<Riddle> putRiddle(String escapeRoomRiddleId, CreateRiddleRequest createRiddleRequest) {
-        return RiddleApiDelegate.super.putRiddle(escapeRoomRiddleId, createRiddleRequest);
+    public ResponseEntity<Riddle> createRiddle(RiddleCreationRequest riddleCreationRequest) {
+        return new ResponseEntity<>(service.createRiddle(riddleCreationRequest), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Riddle> putRiddle(String escapeRoomRiddleId, RiddleCreationRequest riddleCreationRequest) {
+        return new ResponseEntity<>(service.updateRiddle(riddleCreationRequest, escapeRoomRiddleId), HttpStatus.OK);
     }
 }

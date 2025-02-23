@@ -18,7 +18,6 @@ import jakarta.annotation.Generated;
  * The solution to submit
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter

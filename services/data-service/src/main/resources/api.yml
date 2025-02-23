@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://api.server.test/v1/
 paths:
-### Template
+  ### Template
 
   /template/create:
     post:
@@ -145,9 +145,9 @@ paths:
                     example: 404
         '500':
           $ref: '#/components/responses/InternalServerError'
-          
 
-### Level
+
+  ### Level
   /all-levels:
     get:
       operationId: getAllLevels
@@ -233,7 +233,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level/overide/{escape-room-level-id}:        
+  /level/overide/{escape-room-level-id}:
     put:
       operationId: putLevelOfTemplate
       tags:
@@ -268,7 +268,7 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level/{escape-room-level-id}:   
+  /level/{escape-room-level-id}:
     delete:
       operationId: deleteLevel
       tags:
@@ -302,8 +302,8 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-          
-### Riddle
+
+  ### Riddle
 
   /all-riddles:
     get:
@@ -336,9 +336,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/CodingRiddle'
-                - $ref: '#/components/schemas/InputStringCompareRiddle'
+              $ref: '#/components/schemas/RiddleCreationRequest'
       responses:
         '201':
           description: Riddle created successfully
@@ -350,7 +348,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /riddles/{escape-room-riddle-id}:
+  /riddle/{escape-room-riddle-id}:
     parameters:
       - name: escape-room-riddle-id
         in: path
@@ -371,9 +369,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/InputStringCompareRiddle'
-                - $ref: '#/components/schemas/CodingRiddle'
+              $ref: '#/components/schemas/RiddleCreationRequest'
       responses:
         '200':
           description: Riddle updated successfully
@@ -400,21 +396,18 @@ paths:
             application/json:
               schema:
                 type: object
-                title: DeleteRiddleRequest
+                title: RiddleDeletionResponse
                 properties:
                   message:
                     type: string
                     example: Riddle deleted successfully
-                  code:
-                    type: number
-                    example: 200
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
 
-### Scene
+  ### Scene
 
   /scene:
     get:
@@ -590,7 +583,7 @@ components:
         EscapeRoomLevel:
           type: object
           description: Levels for the EscapeDoom Game
-          example: []
+          example: [ ]
         name:
           type: string
           description: Name of the Template
@@ -748,57 +741,51 @@ components:
     Riddle:
       description: Base schema for a riddle
       type: object
-      discriminator:
-        propertyName: type
       properties:
         escape_room_riddle_id:
           type: string
           description: The unique ID of the riddle
           example: "5830daed-cb7f-47dd-8248-5dee9bf0aa3d"
-        type:
+        language:
+          $ref: "#/components/schemas/CodingLanguage"
+        function_signature:
           type: string
-          description: The type of the riddle
-          enum:
-            - InputStringCompareRiddle
-            - CodingRiddle
-          example: CodingRiddle
+          description: The function signature
+          example: "public static int sum(int a, int b)"
+        input:
+          type: string
+          description: The input values for the function
+          example: "2, 3"
+        variable_name:
+          type: string
+          description: The name of the variable to compare
+          example: "result"
         expected_output:
           type: string
           description: The expected output of the riddle
           example: "42"
-    CodingRiddle:
-      allOf:
-        - $ref: "#/components/schemas/Riddle"
-        - type: object
-          properties:
-            language:
-              $ref: "#/components/schemas/CodingLanguage"
-            function_signature:
-              type: string
-              description: The function signature
-              example: "public static int sum(int a, int b)"
-            input:
-              type: string
-              description: The input values for the function
-              example: "2, 3"
-            variable_name:
-              type: string
-              description: The name of the variable to compare
-              example: "result"
-            expected_output:
-              type: string
-              description: The expected output of the function
-              example: "5"
-    InputStringCompareRiddle:
-      allOf:
-        - $ref: "#/components/schemas/Riddle"
-        - type: object
-          properties:
-            expected_output:
-              type: string
-              description: The expected output to compare against
-              example: "CorrectAnswer"
-
+    RiddleCreationRequest:
+      description: Base schema for riddle creation
+      type: object
+      properties:
+        language:
+          $ref: "#/components/schemas/CodingLanguage"
+        function_signature:
+          type: string
+          description: The function signature
+          example: "public static int sum(int a, int b)"
+        input:
+          type: string
+          description: The input values for the function
+          example: "2, 3"
+        variable_name:
+          type: string
+          description: The name of the variable to compare
+          example: "result"
+        expected_output:
+          type: string
+          description: The expected output of the riddle
+          example: "42"
   responses:
     BadRequest:
       description: Bad Request

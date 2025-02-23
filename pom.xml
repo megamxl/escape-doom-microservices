@@ -30,6 +30,7 @@
         <fmt-maven-plugin.version>2.23</fmt-maven-plugin.version>
         <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
         <spring-doc.version>2.5.0</spring-doc.version>
+        <additional-annotations>@lombok.Builder @lombok.AllArgsConstructor @lombok.Getter @lombok.Setter</additional-annotations>
     </properties>
 
     <build>
@@ -97,7 +98,7 @@
                                     <!-- Use tags for creating interface and controller classnames -->
                                     <useTags>true</useTags>
 
-                                    <additionalModelTypeAnnotations>@lombok.Builder @lombok.NoArgsConstructor @lombok.AllArgsConstructor @lombok.Getter @lombok.Setter </additionalModelTypeAnnotations>
+                                    <additionalModelTypeAnnotations>${additional-annotations}</additionalModelTypeAnnotations>
                                 </configOptions>
                             </configuration>
                         </execution>

@@ -16,10 +16,6 @@ export type DeleteRiddle200 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**

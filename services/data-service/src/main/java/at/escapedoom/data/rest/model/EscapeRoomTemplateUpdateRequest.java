@@ -22,9 +22,9 @@ import jakarta.annotation.Generated;
  */
 @lombok.Builder
 @lombok.NoArgsConstructor
-@lombok.AllArgsConstructor
 @lombok.Getter
 @lombok.Setter
+@lombok.AllArgsConstructor
 
 @Schema(name = "EscapeRoomTemplateUpdateRequest", description = "The payload for updating an EscapeRoomTemplate")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
