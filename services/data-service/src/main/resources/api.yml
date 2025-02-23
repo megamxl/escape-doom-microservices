@@ -337,8 +337,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/InputStringCompareRiddleCreationRequest'
-                - $ref: '#/components/schemas/CodingRiddleCreationRequest'
+                - $ref: '#/components/schemas/CodingRiddle'
+                - $ref: '#/components/schemas/InputStringCompareRiddle'
       responses:
         '201':
           description: Riddle created successfully
@@ -372,8 +372,8 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: '#/components/schemas/InputStringCompareRiddleCreationRequest'
-                - $ref: '#/components/schemas/CodingRiddleCreationRequest'
+                - $ref: '#/components/schemas/InputStringCompareRiddle'
+                - $ref: '#/components/schemas/CodingRiddle'
       responses:
         '200':
           description: Riddle updated successfully
@@ -748,6 +748,8 @@ components:
     Riddle:
       description: Base schema for a riddle
       type: object
+      discriminator:
+        propertyName: type
       properties:
         escape_room_riddle_id:
           type: string
@@ -755,15 +757,16 @@ components:
           example: "5830daed-cb7f-47dd-8248-5dee9bf0aa3d"
         type:
           type: string
+          description: The type of the riddle
           enum:
             - InputStringCompareRiddle
             - CodingRiddle
-          description: The type of the riddle
+          example: CodingRiddle
         expected_output:
           type: string
           description: The expected output of the riddle
           example: "42"
-    CodingRiddleCreationRequest:
+    CodingRiddle:
       allOf:
         - $ref: "#/components/schemas/Riddle"
         - type: object
@@ -786,7 +789,7 @@ components:
               type: string
               description: The expected output of the function
               example: "5"
-    InputStringCompareRiddleCreationRequest:
+    InputStringCompareRiddle:
       allOf:
         - $ref: "#/components/schemas/Riddle"
         - type: object
