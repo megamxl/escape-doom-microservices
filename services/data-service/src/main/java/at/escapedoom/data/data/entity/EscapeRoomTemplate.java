@@ -1,4 +1,4 @@
-package at.escapedoom.data.entity;
+package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Table(name = "escape_room_template")
 public class EscapeRoomTemplate {
 
@@ -21,17 +22,14 @@ public class EscapeRoomTemplate {
 
     private Long userId;
 
-    @OneToMany
+    @OneToMany(mappedBy = "template", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<EscapeRoomLevel> escapeRoomLevels;
 
     private String description;
 
     private String name;
 
-    @Override
-    public String toString() {
-        return "EscapeRoomTemplate{" + "escapeRoomTemplateID=" + escapeRoomTemplateID + ", userId=" + userId
-                + ", escapeRoomLevels=" + escapeRoomLevels + ", description='" + description + '\'' + ", name='" + name
-                + '\'' + '}';
-    }
+    @Version
+    private Integer version;
+
 }

@@ -1,4 +1,4 @@
-package at.escapedoom.data.entity;
+package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Table(name = "escape_room_level")
 public class EscapeRoomLevel {
 
@@ -31,9 +32,7 @@ public class EscapeRoomLevel {
 
     private Integer levelSequence;
 
-    @Override
-    public String toString() {
-        return "EscapeRoomLevel{" + "escapeRoomLevelId=" + escapeRoomLevelId + ", scenes=lazyLoading" + ", riddle="
-                + riddle + ", levelSequence=" + levelSequence + '}';
-    }
+    @ManyToOne
+    @JoinColumn(name = "escape_room_template_id", nullable = false)
+    private EscapeRoomTemplate template;
 }

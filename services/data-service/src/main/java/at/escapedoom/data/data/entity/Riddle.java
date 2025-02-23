@@ -1,7 +1,10 @@
-package at.escapedoom.data.entity;
+package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 

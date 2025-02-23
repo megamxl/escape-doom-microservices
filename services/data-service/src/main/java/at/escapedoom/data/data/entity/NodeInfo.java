@@ -1,4 +1,4 @@
-package at.escapedoom.data.entity;
+package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -8,6 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Embeddable
 public class NodeInfo {
 
@@ -16,10 +17,4 @@ public class NodeInfo {
     private String title;
 
     private String imageURI;
-
-    @Override
-    public String toString() {
-        return "NodeInfo{" + "description='" + description + '\'' + ", title='" + title + '\'' + ", imageURI='"
-                + imageURI + '\'' + '}';
-    }
 }

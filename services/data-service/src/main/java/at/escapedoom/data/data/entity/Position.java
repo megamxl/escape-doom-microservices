@@ -1,4 +1,4 @@
-package at.escapedoom.data.entity;
+package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.*;
@@ -8,15 +8,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Embeddable
 public class Position {
 
     private Double topPercentage;
 
     private Double leftPercentage;
-
-    @Override
-    public String toString() {
-        return "Position{" + "top=" + topPercentage + ", left=" + leftPercentage + '}';
-    }
 }

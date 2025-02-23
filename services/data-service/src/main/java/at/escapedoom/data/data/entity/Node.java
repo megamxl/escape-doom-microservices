@@ -1,15 +1,17 @@
-package at.escapedoom.data.entity;
+package at.escapedoom.data.data.entity;
 
 import enums.NodeType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class Node {
 
     @Id
@@ -24,10 +26,4 @@ public class Node {
 
     @Enumerated(EnumType.STRING)
     private NodeType nodeType;
-
-    @Override
-    public String toString() {
-        return "Node{" + "nodeId=" + nodeId + ", position=" + position + ", nodeType=" + nodeType + ", nodeInfo="
-                + nodeInfo + '}';
-    }
 }

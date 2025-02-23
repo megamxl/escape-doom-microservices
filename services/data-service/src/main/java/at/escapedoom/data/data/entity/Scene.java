@@ -1,4 +1,4 @@
-package at.escapedoom.data.entity;
+package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,6 +13,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 @Table(name = "scene")
 public class Scene {
 
@@ -28,10 +29,4 @@ public class Scene {
 
     @OneToMany
     private List<Node> nodes;
-
-    @Override
-    public String toString() {
-        return "Scene{" + "escapeRoomSequenceId=" + escapeRoomSequenceId + ", sceneSequence=" + sceneSequence
-                + ", name='" + name + '\'' + ", backgroundImageURI=" + backgroundImageURI + ", nodes=lazyLoaded" + '}';
-    }
 }
