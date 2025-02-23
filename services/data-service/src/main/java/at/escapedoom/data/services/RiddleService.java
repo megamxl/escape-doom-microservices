@@ -3,7 +3,6 @@ package at.escapedoom.data.services;
 import at.escapedoom.data.data.entity.CodingRiddle;
 import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.data.repository.RiddleRepository;
-import at.escapedoom.data.rest.model.CodingRiddleCreationRequest;
 import at.escapedoom.data.rest.model.CreateRiddleRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,14 +22,11 @@ public class RiddleService {
 
     public at.escapedoom.data.rest.model.Riddle toRestBody(Riddle riddle) {
 
-        new at.escapedoom.data.rest.model.Riddle();
-
         switch (riddle) {
         case CodingRiddle codingRiddle -> {
-            return at.escapedoom.data.rest.model.Riddle.builder()
+            return at.escapedoom.data.rest.model.CodingRiddle.builder()
                     .escapeRoomRiddleId(codingRiddle.getEscapeRoomRiddleId().toString())
-                    .type(at.escapedoom.data.rest.model.Riddle.TypeEnum.CODING_RIDDLE)
-                    .expectedOutput(codingRiddle.getExpectedOutput()).build();
+                    .type(at.escapedoom.data.rest.model.Riddle.TypeEnum.CODING_RIDDLE).expectedOutput(codingRiddle.getExpectedOutput()).build();
         }
         default -> throw new IllegalStateException("Unexpected value: " + riddle);
         }
@@ -43,10 +39,9 @@ public class RiddleService {
     }
 
     public at.escapedoom.data.rest.model.Riddle createRiddle(CreateRiddleRequest riddle) {
-        assert riddle != null;
 
         switch (riddle) {
-        case CodingRiddleCreationRequest creationRequest -> {
+        case CodingRiddle creationRequest -> {
             CodingRiddle codingRiddle = creationRequestToCodingRiddle(creationRequest);
             repository.save(codingRiddle);
             return toRestBody(codingRiddle);
@@ -81,17 +76,13 @@ public class RiddleService {
         assert riddle.getEscapeRoomRiddleId() != null : "Escape Room Riddle Id is null";
     }
 
-    private CodingRiddle creationRequestToCodingRiddle(CodingRiddleCreationRequest creationRequest) {
+    private CodingRiddle creationRequestToCodingRiddle(CodingRiddle creationRequest) {
         assert creationRequest.getEscapeRoomRiddleId() != null : "Escape Room Id is null";
 
         new CodingRiddle();
-        return CodingRiddle.builder()
-                .escapeRoomRiddleId(UUID.fromString(creationRequest.getEscapeRoomRiddleId()))
-                .input(creationRequest.getInput())
-                .language(creationRequest.getLanguage())
-                .variableName(creationRequest.getVariableName())
-                .expectedOutput(creationRequest.getExpectedOutput())
-                .functionSignature(creationRequest.getFunctionSignature())
-                .build();
+        return CodingRiddle.builder().escapeRoomRiddleId(creationRequest.getEscapeRoomRiddleId())
+                .input(creationRequest.getInput()).language(creationRequest.getLanguage())
+                .variableName(creationRequest.getVariableName()).expectedOutput(creationRequest.getExpectedOutput())
+                .functionSignature(creationRequest.getFunctionSignature()).build();
     }
 }
