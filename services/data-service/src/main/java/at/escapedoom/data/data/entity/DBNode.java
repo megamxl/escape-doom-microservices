@@ -1,26 +1,28 @@
 package at.escapedoom.data.data.entity;
 
-import enums.NodeType;
+import at.escapedoom.data.rest.model.NodeType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-public class Node {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class DBNode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID nodeId;
 
     @Embedded
-    private Position position;
+    private DBPosition position;
 
     @Embedded
-    private NodeInfo nodeInfo;
+    private DBNodeInfo nodeInfo;
 
     @Enumerated(EnumType.STRING)
     private NodeType nodeType;

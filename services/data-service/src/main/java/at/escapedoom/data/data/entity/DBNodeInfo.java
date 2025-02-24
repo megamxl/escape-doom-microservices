@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Embeddable
-public class NodeInfo {
+public class DBNodeInfo {
 
     private String description;
 

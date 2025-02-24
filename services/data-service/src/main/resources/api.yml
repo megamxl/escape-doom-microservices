@@ -439,7 +439,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Scene'
+              $ref: '#/components/schemas/SceneRequest'
       responses:
         '201':
           description: Scene created successfully
@@ -497,7 +497,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Scene'
+              $ref: '#/components/schemas/SceneRequest'
       responses:
         '200':
           description: Scene updated successfully
@@ -537,9 +537,6 @@ paths:
                   message:
                     type: string
                     example: Scene deleted successfully
-                  code:
-                    type: number
-                    example: 200
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -614,10 +611,6 @@ components:
             A message indicating the result of the operation (e.g., creation or
             deletion)
           example: Operation successful
-        code:
-          type: number
-          description: A status code representing the operation result
-          example: 200
     EscapeRoomTemplateUpdateRequest:
       description: The payload for updating an EscapeRoomTemplate
       type: object
@@ -676,7 +669,11 @@ components:
         escape_room_sequence_id:
           type: string
           description: The unique ID of the scene sequence
-          example: "1"
+          example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
+        scene_sequence:
+          type: integer
+          description: Defines the "position" of the scene in the escape room
+          example: 1
         nodes:
           type: array
           items:
@@ -786,6 +783,27 @@ components:
           type: string
           description: The expected output of the riddle
           example: "42"
+    SceneRequest:
+      description: Base schema for any request to the scene api
+      type: object
+      properties:
+        scene_sequence:
+          type: integer
+          description: Defines the "position" of the scene in the escape room
+          example: 1
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/Node"
+          description: The nodes of the scene
+        background_image_uri:
+          type: string
+          description: The URI of the background image
+          example: "https://example.com/background.png"
+        name:
+          type: string
+          description: The name of the scene
+          example: "Scene 1"
   responses:
     BadRequest:
       description: Bad Request
@@ -798,9 +816,6 @@ components:
               message:
                 type: string
                 example: Invalid data provided
-              code:
-                type: number
-                example: 400
     NotFound:
       description: Not Found
       content:
@@ -812,9 +827,6 @@ components:
               message:
                 type: string
                 example: The requested resource was not found
-              code:
-                type: number
-                example: 404
     InternalServerError:
       description: Internal Server Error
       content:
@@ -826,9 +838,6 @@ components:
               message:
                 type: string
                 example: An unexpected error occurred on the server
-              code:
-                type: number
-                example: 500
     EscapeRoomTemplateResult:
       description: Operation result for EscapeRoomTemplate
       content:

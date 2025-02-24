@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.math.BigDecimal;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -28,8 +27,6 @@ public class DeleteLevelResponse {
 
     private @Nullable String message;
 
-    private @Nullable BigDecimal code;
-
     public DeleteLevelResponse message(String message) {
         this.message = message;
         return this;
@@ -51,27 +48,6 @@ public class DeleteLevelResponse {
         this.message = message;
     }
 
-    public DeleteLevelResponse code(BigDecimal code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get code
-     *
-     * @return code
-     */
-    @Valid
-    @Schema(name = "code", example = "200", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("code")
-    public BigDecimal getCode() {
-        return code;
-    }
-
-    public void setCode(BigDecimal code) {
-        this.code = code;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,13 +57,12 @@ public class DeleteLevelResponse {
             return false;
         }
         DeleteLevelResponse deleteLevelResponse = (DeleteLevelResponse) o;
-        return Objects.equals(this.message, deleteLevelResponse.message)
-                && Objects.equals(this.code, deleteLevelResponse.code);
+        return Objects.equals(this.message, deleteLevelResponse.message);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(message, code);
+        return Objects.hash(message);
     }
 
     @Override
@@ -95,7 +70,6 @@ public class DeleteLevelResponse {
         StringBuilder sb = new StringBuilder();
         sb.append("class DeleteLevelResponse {\n");
         sb.append("    message: ").append(toIndentedString(message)).append("\n");
-        sb.append("    code: ").append(toIndentedString(code)).append("\n");
         sb.append("}");
         return sb.toString();
     }

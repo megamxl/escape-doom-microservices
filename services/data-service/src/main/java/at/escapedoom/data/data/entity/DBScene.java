@@ -2,6 +2,7 @@ package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.net.URI;
 import java.util.List;
@@ -14,8 +15,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "scene")
-public class Scene {
+public class DBScene {
 
+    //TODO: SceneSequence should be part of key
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID escapeRoomSequenceId;
@@ -27,7 +29,8 @@ public class Scene {
     private URI backgroundImageURI;
 
     @OneToMany
-    private List<Node> nodes;
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<DBNode> nodes;
 
     @Override
     public String toString() {

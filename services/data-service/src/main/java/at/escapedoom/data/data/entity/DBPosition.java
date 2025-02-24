@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Embeddable
-public class Position {
+public class DBPosition {
 
     private Double topPercentage;
 
