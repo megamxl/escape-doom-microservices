@@ -22,7 +22,7 @@ public class EscapeRoomLevel {
     private UUID escapeRoomLevelId;
 
     @OneToMany
-    private List<Scene> scenes;
+    private List<DBScene> scenes;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "escapeRoomRiddleId")

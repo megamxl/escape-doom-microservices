@@ -32,6 +32,8 @@ public class Scene {
 
     private @Nullable String escapeRoomSequenceId;
 
+    private @Nullable Integer sceneSequence;
+
     @lombok.Builder.Default
     @Valid
     private List<@Valid Node> nodes = new ArrayList<>();
@@ -51,7 +53,7 @@ public class Scene {
      * @return escapeRoomSequenceId
      */
 
-    @Schema(name = "escape_room_sequence_id", example = "1", description = "The unique ID of the scene sequence", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "escape_room_sequence_id", example = "241a70fe-47d6-4756-9ac7-330f1b199e84", description = "The unique ID of the scene sequence", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("escape_room_sequence_id")
     public String getEscapeRoomSequenceId() {
         return escapeRoomSequenceId;
@@ -59,6 +61,27 @@ public class Scene {
 
     public void setEscapeRoomSequenceId(String escapeRoomSequenceId) {
         this.escapeRoomSequenceId = escapeRoomSequenceId;
+    }
+
+    public Scene sceneSequence(Integer sceneSequence) {
+        this.sceneSequence = sceneSequence;
+        return this;
+    }
+
+    /**
+     * Defines the \"position\" of the scene in the escape room
+     *
+     * @return sceneSequence
+     */
+
+    @Schema(name = "scene_sequence", example = "1", description = "Defines the \"position\" of the scene in the escape room", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("scene_sequence")
+    public Integer getSceneSequence() {
+        return sceneSequence;
+    }
+
+    public void setSceneSequence(Integer sceneSequence) {
+        this.sceneSequence = sceneSequence;
     }
 
     public Scene nodes(List<@Valid Node> nodes) {
@@ -142,14 +165,14 @@ public class Scene {
         }
         Scene scene = (Scene) o;
         return Objects.equals(this.escapeRoomSequenceId, scene.escapeRoomSequenceId)
-                && Objects.equals(this.nodes, scene.nodes)
+                && Objects.equals(this.sceneSequence, scene.sceneSequence) && Objects.equals(this.nodes, scene.nodes)
                 && Objects.equals(this.backgroundImageUri, scene.backgroundImageUri)
                 && Objects.equals(this.name, scene.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(escapeRoomSequenceId, nodes, backgroundImageUri, name);
+        return Objects.hash(escapeRoomSequenceId, sceneSequence, nodes, backgroundImageUri, name);
     }
 
     @Override
@@ -157,6 +180,7 @@ public class Scene {
         StringBuilder sb = new StringBuilder();
         sb.append("class Scene {\n");
         sb.append("    escapeRoomSequenceId: ").append(toIndentedString(escapeRoomSequenceId)).append("\n");
+        sb.append("    sceneSequence: ").append(toIndentedString(sceneSequence)).append("\n");
         sb.append("    nodes: ").append(toIndentedString(nodes)).append("\n");
         sb.append("    backgroundImageUri: ").append(toIndentedString(backgroundImageUri)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");

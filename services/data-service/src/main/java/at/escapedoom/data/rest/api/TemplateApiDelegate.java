@@ -50,17 +50,17 @@ public interface TemplateApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 200, \"message\" : \"Operation successful\" }";
+                    String exampleString = "{ \"message\" : \"Operation successful\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -86,22 +86,22 @@ public interface TemplateApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 200, \"message\" : \"Operation successful\" }";
+                    String exampleString = "{ \"message\" : \"Operation successful\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -128,7 +128,7 @@ public interface TemplateApiDelegate {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -164,7 +164,7 @@ public interface TemplateApiDelegate {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -198,17 +198,17 @@ public interface TemplateApiDelegate {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

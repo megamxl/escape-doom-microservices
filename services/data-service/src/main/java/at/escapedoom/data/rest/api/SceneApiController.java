@@ -5,6 +5,7 @@ import at.escapedoom.data.rest.model.CreateInternalServerError;
 import at.escapedoom.data.rest.model.CreateNotFound;
 import at.escapedoom.data.rest.model.DeleteLevelResponse;
 import at.escapedoom.data.rest.model.Scene;
+import at.escapedoom.data.rest.model.SceneRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

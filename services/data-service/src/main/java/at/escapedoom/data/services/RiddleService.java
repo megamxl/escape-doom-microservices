@@ -57,11 +57,8 @@ public class RiddleService {
     // region Utils functions
     private DBRiddle creationRequestToRiddle(RiddleCreationRequest creationRequest) {
         new DBRiddle();
-        return DBRiddle.builder()
-                .input(creationRequest.getInput())
-                .language(creationRequest.getLanguage())
-                .variableName(creationRequest.getVariableName())
-                .expectedOutput(creationRequest.getExpectedOutput())
+        return DBRiddle.builder().input(creationRequest.getInput()).language(creationRequest.getLanguage())
+                .variableName(creationRequest.getVariableName()).expectedOutput(creationRequest.getExpectedOutput())
                 .functionSignature(creationRequest.getFunctionSignature()).build();
     }
 

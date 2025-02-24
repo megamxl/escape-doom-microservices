@@ -20,8 +20,8 @@ public class ReflectionUtils {
             for (Field targetField : targetFields) {
                 targetField.setAccessible(true);
 
-                if (sourceField.getName().equals(targetField.getName()) &&
-                        sourceField.getType().equals(targetField.getType())) {
+                if (sourceField.getName().equals(targetField.getName())
+                        && sourceField.getType().equals(targetField.getType())) {
                     try {
                         Object value = targetField.get(target);
                         // Avoid overwriting with null values

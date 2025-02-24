@@ -10,6 +10,7 @@ import at.escapedoom.data.rest.model.CreateInternalServerError;
 import at.escapedoom.data.rest.model.CreateNotFound;
 import at.escapedoom.data.rest.model.DeleteLevelResponse;
 import at.escapedoom.data.rest.model.Scene;
+import at.escapedoom.data.rest.model.SceneRequest;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -45,7 +46,7 @@ public interface SceneApi {
     /**
      * POST /scene : Create a new scene Create a Scene independently of any level
      *
-     * @param scene
+     * @param sceneRequest
      *            The details of the new Scene (required)
      *
      * @return Scene created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
@@ -63,8 +64,8 @@ public interface SceneApi {
             "application/json" })
 
     default ResponseEntity<Scene> createScene(
-            @Parameter(name = "Scene", description = "The details of the new Scene", required = true) @Valid @RequestBody Scene scene) {
-        return getDelegate().createScene(scene);
+            @Parameter(name = "SceneRequest", description = "The details of the new Scene", required = true) @Valid @RequestBody SceneRequest sceneRequest) {
+        return getDelegate().createScene(sceneRequest);
     }
 
     /**
@@ -139,7 +140,7 @@ public interface SceneApi {
      *
      * @param escapeRoomSceneId
      *            The unique ID of the Scene (required)
-     * @param scene
+     * @param sceneRequest
      *            The updated details of the Scene (required)
      *
      * @return Scene updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
@@ -160,8 +161,8 @@ public interface SceneApi {
 
     default ResponseEntity<Scene> putScene(
             @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId,
-            @Parameter(name = "Scene", description = "The updated details of the Scene", required = true) @Valid @RequestBody Scene scene) {
-        return getDelegate().putScene(escapeRoomSceneId, scene);
+            @Parameter(name = "SceneRequest", description = "The updated details of the Scene", required = true) @Valid @RequestBody SceneRequest sceneRequest) {
+        return getDelegate().putScene(escapeRoomSceneId, sceneRequest);
     }
 
 }
