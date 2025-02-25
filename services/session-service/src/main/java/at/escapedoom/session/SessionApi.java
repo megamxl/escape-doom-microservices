@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 
 @SpringBootApplication
 @EnableMethodSecurity
-@ComponentScan(basePackages = { "at.escapedoom.session", "at.escapedoom.spring.security" })
+@ComponentScan(basePackages = { "at.escapedoom.session", "at.escapedoom.spring.security", "at.escapedoom.spring.redis" })
 public class SessionApi {
     public static void main(String[] args) {
         SpringApplication.run(SessionApi.class, args);
