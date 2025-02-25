@@ -29,3 +29,8 @@ management:
       exposure:
         include: "*"
         exclude: "env,beans"
+
+escapedoom:
+  redis:
+    host: localhost
+    port: 6379

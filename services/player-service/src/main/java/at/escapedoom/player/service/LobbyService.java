@@ -1,6 +1,7 @@
 package at.escapedoom.player.service;
 
-import at.escapedoom.player.data.domain.SessionView;
+import at.escapedoom.player.utils.MapperFunctions;
+import at.escapedoom.spring.redis.data.models.SessionView;
 import at.escapedoom.player.data.postgres.entity.UserProgress;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
 import at.escapedoom.player.data.redis.PlayerJoinedEvent;
@@ -10,7 +11,6 @@ import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryServic
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ public class LobbyService {
         SessionView sessionView = escapeRoomSessionRepositoryService.getSessionInfoByRoomPin(roomPin)
                 .orElseThrow(() -> new NoSuchElementException("No Session with this roomPin found"));
 
-        if (!EnumSet.of(EscapeRoomState.OPEN, EscapeRoomState.STARTED).contains(sessionView.getRoomState())) {
+        if (!EnumSet.of(at.escapedoom.spring.redis.data.models.EscapeRoomState.OPEN, at.escapedoom.spring.redis.data.models.EscapeRoomState.STARTED).contains(sessionView.getRoomState())) {
             throw new IllegalArgumentException("The roomPin you entered is Not Open or Started");
         }
 
@@ -49,7 +49,7 @@ public class LobbyService {
             log.error("Could not publish join event", e);
         }
 
-        return buildResponseFromPersistedUser(persistedUser, sessionView.getRoomState());
+        return buildResponseFromPersistedUser(persistedUser, MapperFunctions.stateRedisToRedisRest( sessionView.getRoomState()));
     }
 
     private static EscapeRoomJoinResponse buildResponseFromPersistedUser(UserProgress persistedUser,
