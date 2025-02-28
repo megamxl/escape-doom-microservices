@@ -4,12 +4,10 @@ import at.escapedoom.player.data.domain.SessionView;
 import at.escapedoom.player.rest.model.EscapeRoomState;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
 import at.escapedoom.spring.communication.session.api.SessionApi;
-import at.escapedoom.spring.communication.session.invoker.ApiClient;
 import at.escapedoom.spring.communication.session.invoker.ApiException;
 import at.escapedoom.spring.communication.session.model.EscapeRoomSessionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

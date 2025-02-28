@@ -697,6 +697,12 @@ components:
         - CONSOLE
         - DETAIL
         - STORY
+    RiddleType:
+      description: The type of a riddle
+      type: string
+      enum:
+        - FOO
+        - BOO
     Node:
       description: A node of an escape-room instance
       type: object

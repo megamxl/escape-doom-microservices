@@ -6,8 +6,8 @@ import at.escapedoom.session.rest.api.ManagementApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
-import at.escapedoom.session.util.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
+import at.escapedoom.session.util.KeycloakUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import java.util.*;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component

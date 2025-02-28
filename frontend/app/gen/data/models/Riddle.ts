@@ -1,11 +1,11 @@
 // version: 0.0.1
 
-export const riddleTypeEnum = {
+export const riddleTypeEnum2 = {
   InputStringCompareRiddle: 'InputStringCompareRiddle',
   CodingRiddle: 'CodingRiddle',
 } as const
 
-export type RiddleTypeEnum = (typeof riddleTypeEnum)[keyof typeof riddleTypeEnum]
+export type RiddleTypeEnum2 = (typeof riddleTypeEnum2)[keyof typeof riddleTypeEnum2]
 
 /**
  * @description Base schema for a riddle
@@ -20,7 +20,7 @@ export type Riddle = {
    * @description The type of the riddle
    * @type string | undefined
    */
-  type?: RiddleTypeEnum
+  type?: RiddleTypeEnum2
   /**
    * @description The expected output of the riddle
    * @type string | undefined

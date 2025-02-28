@@ -160,7 +160,8 @@ export type {
   PutTemplateMutationResponse,
   PutTemplateMutation,
 } from './models/PutTemplate.ts'
-export type { RiddleTypeEnum, Riddle } from './models/Riddle.ts'
+export type { RiddleTypeEnum2, Riddle } from './models/Riddle.ts'
+export type { RiddleTypeEnum, RiddleType } from './models/RiddleType.ts'
 export type { Scene } from './models/Scene.ts'
 export { getAllLevelsQueryKey, getAllLevelsHook, getAllLevelsQueryOptionsHook, useGetAllLevelsHook } from './hooks/all-levels/useGetAllLevelsHook.ts'
 export {
@@ -241,4 +242,5 @@ export {
 } from './hooks/template/useGetTemplateSuspenseHook.ts'
 export { putTemplateMutationKey, putTemplateHook, usePutTemplateHook } from './hooks/template/usePutTemplateHook.ts'
 export { nodeTypeEnum } from './models/NodeType.ts'
-export { riddleTypeEnum } from './models/Riddle.ts'
+export { riddleTypeEnum2 } from './models/Riddle.ts'
+export { riddleTypeEnum } from './models/RiddleType.ts'

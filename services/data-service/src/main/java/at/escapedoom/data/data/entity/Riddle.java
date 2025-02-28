@@ -15,7 +15,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Riddle {
+public class Riddle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

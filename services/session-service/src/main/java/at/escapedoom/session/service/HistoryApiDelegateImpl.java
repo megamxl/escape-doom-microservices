@@ -4,8 +4,8 @@ import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.data.repository.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.HistoryApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
-import at.escapedoom.session.util.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
+import at.escapedoom.session.util.KeycloakUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component

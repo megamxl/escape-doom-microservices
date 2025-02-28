@@ -1,7 +1,7 @@
 package at.escapedoom.data.config;
 
 import at.escapedoom.data.rest.api.TemplateApiDelegate;
-import at.escapedoom.data.service.TemplateApiDelegateImpl;
+import at.escapedoom.data.delegate.TemplateApiDelegateImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

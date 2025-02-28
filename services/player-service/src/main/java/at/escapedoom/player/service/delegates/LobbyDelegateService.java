@@ -1,7 +1,8 @@
 package at.escapedoom.player.service.delegates;
 
 import at.escapedoom.player.rest.api.LobbyApiDelegate;
-import at.escapedoom.player.rest.model.*;
+import at.escapedoom.player.rest.model.EscapeRoomJoin;
+import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import at.escapedoom.player.service.LobbyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,10 +1,9 @@
 package at.escapedoom.player.config;
 
-import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.player.service.SessionCommunicationService;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
+import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.spring.communication.session.invoker.ApiClient;
-
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

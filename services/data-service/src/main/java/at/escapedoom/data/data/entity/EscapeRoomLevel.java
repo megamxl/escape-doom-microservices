@@ -22,7 +22,7 @@ public class EscapeRoomLevel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID escapeRoomLevelId;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Scene> scenes;
 
     @OneToOne(cascade = CascadeType.REMOVE)
@@ -35,4 +35,7 @@ public class EscapeRoomLevel {
     @ManyToOne
     @JoinColumn(name = "escape_room_template_id", nullable = false)
     private EscapeRoomTemplate template;
+
+    @Version
+    private Long version;
 }
