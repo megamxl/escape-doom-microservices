@@ -1,7 +1,9 @@
 package at.escapedoom.data.config;
 
-import at.escapedoom.data.rest.api.TemplateApiDelegate;
 import at.escapedoom.data.delegate.TemplateApiDelegateImpl;
+import at.escapedoom.data.services.controller.RiddleInvocationController;
+import at.escapedoom.data.services.controller.SceneInvocationController;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,4 +17,17 @@ public class ApiConfig {
     public TemplateApiDelegate templateApiDelegate(@Autowired TemplateApiDelegateImpl delegate) {
         return delegate;
     }
+
+    @Bean
+    @Primary
+    public SceneApiDelegate sceneApiDelegate(@Autowired SceneInvocationController delegate) {
+        return delegate;
+    }
+
+    @Bean
+    @Primary
+    public RiddleApiDelegate riddleApiDelegate(@Autowired RiddleInvocationController delegate) {
+        return delegate;
+    }
+
 }

@@ -1,7 +1,6 @@
 // version: 0.0.1
-import type { CodingRiddle } from './CodingRiddle.ts'
-import type { InputStringCompareRiddle } from './InputStringCompareRiddle.ts'
 import type { Riddle } from './Riddle.ts'
+import type { RiddleCreationRequest } from './RiddleCreationRequest.ts'
 
 export type PutRiddlePathParams = {
   /**
@@ -61,7 +60,7 @@ export type PutRiddle500 = {
 /**
  * @description The override details of the riddle
  */
-export type PutRiddleMutationRequest = InputStringCompareRiddle | CodingRiddle
+export type PutRiddleMutationRequest = RiddleCreationRequest
 
 export type PutRiddleMutationResponse = PutRiddle200
 
