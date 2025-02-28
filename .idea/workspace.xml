@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bf46cbb7-e1a9-4ab3-a897-fadf552ddeea" name="Changes" comment="wip clean" />
+    <list default="true" id="bf46cbb7-e1a9-4ab3-a897-fadf552ddeea" name="Changes" comment="clean">
+      <change beforePath="$PROJECT_DIR$/services/data-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/data-service/pom.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,25 +23,25 @@
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
   </component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "contexts": [
+  <component name="KubernetesApiProvider">{
+  &quot;contexts&quot;: [
     {
-      "name": "markperov-dev/api-rm2-thpm-p1-openshiftapps-com:6443/markperov",
-      "originalNamespace": "markperov-dev"
+      &quot;name&quot;: &quot;markperov-dev/api-rm2-thpm-p1-openshiftapps-com:6443/markperov&quot;,
+      &quot;originalNamespace&quot;: &quot;markperov-dev&quot;
     }
   ],
-  "isMigrated": true
-}]]></component>
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="KubernetesSettings">
     <option name="contextName" value="markperov-dev/api-rm2-thpm-p1-openshiftapps-com:6443/markperov" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2tg4SMrNmKMhlQ1cjWFkpZ3s5uF" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -68,6 +70,9 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "ts.external.directory.path": "D:\\Users\\Mark\\IdeaProjects\\escape-doom-microservices\\frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -175,7 +180,8 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Finished join made abstractions for infos needed and added Tests" />
     <MESSAGE value="wip clean" />
-    <option name="LAST_COMMIT_MESSAGE" value="wip clean" />
+    <MESSAGE value="clean" />
+    <option name="LAST_COMMIT_MESSAGE" value="clean" />
     <option name="GROUP_MULTIFILE_MERGE_BY_DIRECTORY" value="true" />
   </component>
   <component name="VgoProject">
