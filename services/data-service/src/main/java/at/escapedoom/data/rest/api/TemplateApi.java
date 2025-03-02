@@ -5,16 +5,15 @@
  */
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequest;
-import at.escapedoom.data.rest.model.CreateInternalServerError;
-import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.EscapeRoomTemplate;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateCreateRequest;
+import at.escapedoom.data.rest.model.CreateBadRequestDTO;
+import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
+import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateCreateRequestDTO;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateDTO;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateResult;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateRequest;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateResult;
-import at.escapedoom.data.rest.model.GetTemplateNotFound;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateResultDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateRequestDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateResultDTO;
+import at.escapedoom.data.rest.model.GetTemplateNotFoundDTO;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -50,7 +49,7 @@ public interface TemplateApi {
     /**
      * POST /template/create : Creates a new Template for Escape Doom Game Creates a new Template for EscapeRoom
      *
-     * @param escapeRoomTemplateCreateRequest
+     * @param escapeRoomTemplateCreateRequestDTO
      *            Lectors ID + Name and Description for a Template (required)
      *
      * @return Operation result for EscapeRoomTemplate (status code 200) or Bad Request (status code 400) or Internal
@@ -59,17 +58,17 @@ public interface TemplateApi {
     @Operation(operationId = "createTemplate", summary = "Creates a new Template for Escape Doom Game", description = "Creates a new Template for EscapeRoom", tags = {
             "Template" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Operation result for EscapeRoomTemplate", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResult.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResultDTO.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/template/create", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<EscapeRoomTemplateResult> createTemplate(
-            @Parameter(name = "EscapeRoomTemplateCreateRequest", description = "Lectors ID + Name and Description for a Template", required = true) @Valid @RequestBody EscapeRoomTemplateCreateRequest escapeRoomTemplateCreateRequest) {
-        return getDelegate().createTemplate(escapeRoomTemplateCreateRequest);
+    default ResponseEntity<EscapeRoomTemplateResultDTO> createTemplate(
+            @Parameter(name = "EscapeRoomTemplateCreateRequestDTO", description = "Lectors ID + Name and Description for a Template", required = true) @Valid @RequestBody EscapeRoomTemplateCreateRequestDTO escapeRoomTemplateCreateRequestDTO) {
+        return getDelegate().createTemplate(escapeRoomTemplateCreateRequestDTO);
     }
 
     /**
@@ -85,17 +84,17 @@ public interface TemplateApi {
     @Operation(operationId = "deleteTemplate", summary = "Deletes an EscapeRoomTemplate", description = "Deletes an EscapeRoomTemplate by its unique ID", tags = {
             "Template" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Operation result for EscapeRoomTemplate", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResult.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResultDTO.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
     @RequestMapping(method = RequestMethod.DELETE, value = "/template/delete/{escape-room-template-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomTemplateResult> deleteTemplate(
+    default ResponseEntity<EscapeRoomTemplateResultDTO> deleteTemplate(
             @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate to delete", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId) {
         return getDelegate().deleteTemplate(escapeRoomTemplateId);
     }
@@ -111,7 +110,7 @@ public interface TemplateApi {
                     @ApiResponse(responseCode = "200", description = "A list of templates", content = {
                             @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomTemplateDTO.class))) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/all-templates", produces = { "application/json" })
 
     default ResponseEntity<List<EscapeRoomTemplateDTO>> getAllTemplates(
@@ -133,15 +132,15 @@ public interface TemplateApi {
     @Operation(operationId = "getTemplate", summary = "Get a specific EscapeRoomTemplate by ID", description = "Retrieve details of a specific EscapeRoomTemplate using its unique ID", tags = {
             "Template" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Details of the specified template", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplate.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateDTO.class)) }),
                     @ApiResponse(responseCode = "404", description = "Template not found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = GetTemplateNotFound.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = GetTemplateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/template/{escape-room-template-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomTemplate> getTemplate(
+    default ResponseEntity<EscapeRoomTemplateDTO> getTemplate(
             @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId) {
         return getDelegate().getTemplate(escapeRoomTemplateId);
     }
@@ -152,7 +151,7 @@ public interface TemplateApi {
      *
      * @param escapeRoomTemplateId
      *            The unique ID of the EscapeRoomTemplate to update (required)
-     * @param escapeRoomTemplateUpdateRequest
+     * @param escapeRoomTemplateUpdateRequestDTO
      *            The updated data for the template (required)
      *
      * @return Template updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status
@@ -161,20 +160,20 @@ public interface TemplateApi {
     @Operation(operationId = "putTemplate", summary = "Overrides an existing EscapeRoomTemplate", description = "Override the name, description, and levels of an existing EscapeRoomTemplate", tags = {
             "Template" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Template updated successfully", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateUpdateResult.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateUpdateResultDTO.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
     @RequestMapping(method = RequestMethod.PUT, value = "/template/override/{escape-room-template-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<EscapeRoomTemplateUpdateResult> putTemplate(
+    default ResponseEntity<EscapeRoomTemplateUpdateResultDTO> putTemplate(
             @Parameter(name = "escape-room-template-id", description = "The unique ID of the EscapeRoomTemplate to update", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId,
-            @Parameter(name = "EscapeRoomTemplateUpdateRequest", description = "The updated data for the template", required = true) @Valid @RequestBody EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest) {
-        return getDelegate().putTemplate(escapeRoomTemplateId, escapeRoomTemplateUpdateRequest);
+            @Parameter(name = "EscapeRoomTemplateUpdateRequestDTO", description = "The updated data for the template", required = true) @Valid @RequestBody EscapeRoomTemplateUpdateRequestDTO escapeRoomTemplateUpdateRequestDTO) {
+        return getDelegate().putTemplate(escapeRoomTemplateId, escapeRoomTemplateUpdateRequestDTO);
     }
 
 }

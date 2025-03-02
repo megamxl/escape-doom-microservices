@@ -1,10 +1,10 @@
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequest;
-import at.escapedoom.data.rest.model.CreateInternalServerError;
-import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.DeleteLevelSuccess;
-import at.escapedoom.data.rest.model.EscapeRoomLevel;
+import at.escapedoom.data.rest.model.CreateBadRequestDTO;
+import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
+import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
+import at.escapedoom.data.rest.model.EscapeRoomLevelDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +32,7 @@ public interface LevelApiDelegate {
     /**
      * POST /level : Create a new level Create an EscapeRoomLevel independently of any template
      *
-     * @param escapeRoomLevel
+     * @param escapeRoomLevelDTO
      *            The details of the new EscapeRoomLevel (required)
      *
      * @return Level created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
@@ -40,21 +40,21 @@ public interface LevelApiDelegate {
      *
      * @see LevelApi#createLevel
      */
-    default ResponseEntity<EscapeRoomLevel> createLevel(EscapeRoomLevel escapeRoomLevel) {
+    default ResponseEntity<EscapeRoomLevelDTO> createLevel(EscapeRoomLevelDTO escapeRoomLevelDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"riddles\" : [ { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }, { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" } ], \"sequence\" : 1, \"scenes\" : [ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }";
+                    String exampleString = "{ \"riddles\" : [ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" } ], \"sequence\" : 1, \"escape_room_template_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\", \"scenes\" : [ { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -75,7 +75,7 @@ public interface LevelApiDelegate {
      *
      * @see LevelApi#deleteLevel
      */
-    default ResponseEntity<DeleteLevelSuccess> deleteLevel(String escapeRoomLevelId) {
+    default ResponseEntity<DeleteLevelSuccessDTO> deleteLevel(String escapeRoomLevelId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -84,12 +84,12 @@ public interface LevelApiDelegate {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -106,16 +106,16 @@ public interface LevelApiDelegate {
      *
      * @see LevelApi#getAllLevels
      */
-    default ResponseEntity<List<EscapeRoomLevel>> getAllLevels() {
+    default ResponseEntity<List<EscapeRoomLevelDTO>> getAllLevels() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"riddles\" : [ { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }, { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" } ], \"sequence\" : 1, \"scenes\" : [ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }, { \"riddles\" : [ { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }, { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" } ], \"sequence\" : 1, \"scenes\" : [ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" } ]";
+                    String exampleString = "[ { \"riddles\" : [ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" } ], \"sequence\" : 1, \"escape_room_template_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\", \"scenes\" : [ { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }, { \"riddles\" : [ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" } ], \"sequence\" : 1, \"escape_room_template_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\", \"scenes\" : [ { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -136,21 +136,21 @@ public interface LevelApiDelegate {
      *
      * @see LevelApi#getLevel
      */
-    default ResponseEntity<EscapeRoomLevel> getLevel(String escapeRoomLevelId) {
+    default ResponseEntity<EscapeRoomLevelDTO> getLevel(String escapeRoomLevelId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"riddles\" : [ { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }, { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" } ], \"sequence\" : 1, \"scenes\" : [ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }";
+                    String exampleString = "{ \"riddles\" : [ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" } ], \"sequence\" : 1, \"escape_room_template_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\", \"scenes\" : [ { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -180,35 +180,35 @@ public interface LevelApiDelegate {
      *
      * @param escapeRoomLevelId
      *            The unique ID of the EscapeRoomLevel (required)
-     * @param escapeRoomLevel
+     * @param escapeRoomLevelDTO
      *            The overriden details of the EscapeRoomLevel (required)
      *
      * @return Level updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      *
-     * @see LevelApi#putLevelOfTemplate
+     * @see LevelApi#updateLevel
      */
-    default ResponseEntity<EscapeRoomLevel> putLevelOfTemplate(String escapeRoomLevelId,
-            EscapeRoomLevel escapeRoomLevel) {
+    default ResponseEntity<EscapeRoomLevelDTO> updateLevel(String escapeRoomLevelId,
+            EscapeRoomLevelDTO escapeRoomLevelDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"riddles\" : [ { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" }, { \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"type\" : \"InputStringCompareRiddle\" } ], \"sequence\" : 1, \"scenes\" : [ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }";
+                    String exampleString = "{ \"riddles\" : [ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" } ], \"sequence\" : 1, \"escape_room_template_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\", \"scenes\" : [ { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"background_image_uri\" : \"https://example.com/background.png\" } ], \"escape_room_level_id\" : \"d1087efe-41fd-42da-9110-62d35659cf1f\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

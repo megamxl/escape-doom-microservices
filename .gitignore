@@ -36,3 +36,16 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/.idea/workspace.xml
+/.idea/misc.xml
+/services/data-service/.openapi-generator/
+/.idea/
+/frontend/app/gen/
+/services/leaderboard-service/.openapi-generator/
+/services/session-service/.openapi-generator/
+/services/player-service/.openapi-generator/
+/frontend/node/node.exe
+/frontend/node/npm
+/frontend/node/npm.cmd
+/frontend/node/npx
+/frontend/node/npx.cmd

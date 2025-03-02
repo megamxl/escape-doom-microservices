@@ -1,15 +1,14 @@
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequest;
-import at.escapedoom.data.rest.model.CreateInternalServerError;
-import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.EscapeRoomTemplate;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateCreateRequest;
+import at.escapedoom.data.rest.model.CreateBadRequestDTO;
+import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
+import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateCreateRequestDTO;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateDTO;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateResult;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateRequest;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateResult;
-import at.escapedoom.data.rest.model.GetTemplateNotFound;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateResultDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateRequestDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateResultDTO;
+import at.escapedoom.data.rest.model.GetTemplateNotFoundDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public interface TemplateApiDelegate {
     /**
      * POST /template/create : Creates a new Template for Escape Doom Game Creates a new Template for EscapeRoom
      *
-     * @param escapeRoomTemplateCreateRequest
+     * @param escapeRoomTemplateCreateRequestDTO
      *            Lectors ID + Name and Description for a Template (required)
      *
      * @return Operation result for EscapeRoomTemplate (status code 200) or Bad Request (status code 400) or Internal
@@ -45,22 +44,22 @@ public interface TemplateApiDelegate {
      *
      * @see TemplateApi#createTemplate
      */
-    default ResponseEntity<EscapeRoomTemplateResult> createTemplate(
-            EscapeRoomTemplateCreateRequest escapeRoomTemplateCreateRequest) {
+    default ResponseEntity<EscapeRoomTemplateResultDTO> createTemplate(
+            EscapeRoomTemplateCreateRequestDTO escapeRoomTemplateCreateRequestDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 200, \"message\" : \"Operation successful\" }";
+                    String exampleString = "{ \"message\" : \"Operation successful\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -82,26 +81,26 @@ public interface TemplateApiDelegate {
      *
      * @see TemplateApi#deleteTemplate
      */
-    default ResponseEntity<EscapeRoomTemplateResult> deleteTemplate(String escapeRoomTemplateId) {
+    default ResponseEntity<EscapeRoomTemplateResultDTO> deleteTemplate(String escapeRoomTemplateId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 200, \"message\" : \"Operation successful\" }";
+                    String exampleString = "{ \"message\" : \"Operation successful\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -128,7 +127,7 @@ public interface TemplateApiDelegate {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -150,11 +149,11 @@ public interface TemplateApiDelegate {
      *
      * @see TemplateApi#getTemplate
      */
-    default ResponseEntity<EscapeRoomTemplate> getTemplate(String escapeRoomTemplateId) {
+    default ResponseEntity<EscapeRoomTemplateDTO> getTemplate(String escapeRoomTemplateId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"EscapeRoomLevel\" : [ ], \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" }";
+                    String exampleString = "{ \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -164,7 +163,7 @@ public interface TemplateApiDelegate {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -180,7 +179,7 @@ public interface TemplateApiDelegate {
      *
      * @param escapeRoomTemplateId
      *            The unique ID of the EscapeRoomTemplate to update (required)
-     * @param escapeRoomTemplateUpdateRequest
+     * @param escapeRoomTemplateUpdateRequestDTO
      *            The updated data for the template (required)
      *
      * @return Template updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status
@@ -188,8 +187,8 @@ public interface TemplateApiDelegate {
      *
      * @see TemplateApi#putTemplate
      */
-    default ResponseEntity<EscapeRoomTemplateUpdateResult> putTemplate(String escapeRoomTemplateId,
-            EscapeRoomTemplateUpdateRequest escapeRoomTemplateUpdateRequest) {
+    default ResponseEntity<EscapeRoomTemplateUpdateResultDTO> putTemplate(String escapeRoomTemplateId,
+            EscapeRoomTemplateUpdateRequestDTO escapeRoomTemplateUpdateRequestDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -198,17 +197,17 @@ public interface TemplateApiDelegate {
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

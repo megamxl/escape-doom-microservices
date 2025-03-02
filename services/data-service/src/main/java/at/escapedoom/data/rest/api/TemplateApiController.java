@@ -1,15 +1,14 @@
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequest;
-import at.escapedoom.data.rest.model.CreateInternalServerError;
-import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.EscapeRoomTemplate;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateCreateRequest;
+import at.escapedoom.data.rest.model.CreateBadRequestDTO;
+import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
+import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateCreateRequestDTO;
 import at.escapedoom.data.rest.model.EscapeRoomTemplateDTO;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateResult;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateRequest;
-import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateResult;
-import at.escapedoom.data.rest.model.GetTemplateNotFound;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateResultDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateRequestDTO;
+import at.escapedoom.data.rest.model.EscapeRoomTemplateUpdateResultDTO;
+import at.escapedoom.data.rest.model.GetTemplateNotFoundDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
