@@ -1,5 +1,11 @@
 // version: 0.0.1
-import type { CodingLanguage } from './CodingLanguage.ts'
+
+export const riddleTypeEnum = {
+  InputStringCompareRiddle: 'InputStringCompareRiddle',
+  CodingRiddle: 'CodingRiddle',
+} as const
+
+export type RiddleTypeEnum = (typeof riddleTypeEnum)[keyof typeof riddleTypeEnum]
 
 /**
  * @description Base schema for a riddle
@@ -29,6 +35,7 @@ export type Riddle = {
    * @type string | undefined
    */
   variable_name?: string
+  type?: RiddleTypeEnum
   /**
    * @description The expected output of the riddle
    * @type string | undefined
