@@ -1,7 +1,7 @@
 package at.escapedoom.player.mock;
 
 import at.escapedoom.spring.redis.data.models.SessionView;
-import at.escapedoom.player.rest.model.EscapeRoomState;
+import at.escapedoom.spring.redis.data.models.EscapeRoomState;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
