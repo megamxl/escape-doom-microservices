@@ -16,6 +16,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <specifier.package>data</specifier.package>
         <openapi-generator-maven-plugin.version>7.11.0</openapi-generator-maven-plugin.version>
+        <!--suppress UnresolvedMavenProperty -->
+        <additional-annotations>@lombok.Builder @lombok.NoArgsConstructor @lombok.Getter @lombok.Setter @lombok.AllArgsConstructor</additional-annotations>
     </properties>
 
     <dependencies>

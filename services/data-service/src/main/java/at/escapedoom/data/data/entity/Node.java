@@ -1,17 +1,20 @@
+
 package at.escapedoom.data.data.entity;
 
-import enums.NodeType;
+import at.escapedoom.data.rest.model.NodeType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
+@Builder
+@Table(name = "node")
 public class Node {
 
     @Id
@@ -26,4 +29,8 @@ public class Node {
 
     @Enumerated(EnumType.STRING)
     private NodeType nodeType;
+
+    @ManyToOne
+    @JoinColumn(name = "scene_id", nullable = false)
+    private Scene scene;
 }

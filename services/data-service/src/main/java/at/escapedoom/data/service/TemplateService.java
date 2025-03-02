@@ -1,26 +1,29 @@
 package at.escapedoom.data.service;
 
-import at.escapedoom.data.TemplateNotFoundException;
+import at.escapedoom.data.data.TemplateRepository;
 import at.escapedoom.data.data.entity.EscapeRoomTemplate;
-import at.escapedoom.data.data.reporitory.EscapeRoomTemplateRepository;
 import at.escapedoom.data.rest.model.*;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
 @Service
+@PreAuthorize("hasRole('LECTOR')")
 public class TemplateService {
 
-    private final EscapeRoomTemplateRepository repository;
+    private final TemplateRepository repository;
 
-    public TemplateService(EscapeRoomTemplateRepository repository) {
+    public TemplateService(TemplateRepository repository) {
         this.repository = repository;
     }
 
-    public EscapeRoomTemplateResult createTemplate(EscapeRoomTemplateCreateRequest request) {
+    public EscapeRoomTemplateResultDTO createTemplate(EscapeRoomTemplateCreateRequestDTO request) {
         log.debug("Creating template with name: {}", request.getName());
 
         EscapeRoomTemplate template = EscapeRoomTemplate.builder().name(request.getName())
@@ -28,22 +31,23 @@ public class TemplateService {
 
         repository.save(template);
 
-        return EscapeRoomTemplateResult.builder().message("Template created successfully").build();
+        return EscapeRoomTemplateResultDTO.builder()
+                .message("Template created successfully. Id: " + template.getEscapeRoomTemplateID().toString()).build();
     }
 
-    public EscapeRoomTemplateResult deleteTemplate(String escapeRoomTemplateId) throws TemplateNotFoundException {
+    public EscapeRoomTemplateResultDTO deleteTemplate(String escapeRoomTemplateId) {
         log.debug("Deleting template with ID: {}", escapeRoomTemplateId);
 
         UUID id = validateUUID(escapeRoomTemplateId);
 
         if (!repository.existsById(id)) {
-            throw new TemplateNotFoundException("Template not found");
+            return EscapeRoomTemplateResultDTO.builder().message("Template not found").build();
         }
 
         repository.deleteById(id);
         log.debug("Template with ID {} successfully deleted", escapeRoomTemplateId);
 
-        return EscapeRoomTemplateResult.builder().message("Template deleted successfully").build();
+        return EscapeRoomTemplateResultDTO.builder().message("Template deleted successfully").build();
     }
 
     public List<EscapeRoomTemplateDTO> getAllTemplates() {
@@ -56,21 +60,19 @@ public class TemplateService {
                 .toList();
     }
 
-    public at.escapedoom.data.rest.model.EscapeRoomTemplate getTemplate(String escapeRoomTemplateId)
-            throws TemplateNotFoundException {
+    public EscapeRoomTemplateDTO getTemplate(String escapeRoomTemplateId) {
         UUID id = validateUUID(escapeRoomTemplateId);
 
-        EscapeRoomTemplate entity = repository.findById(id)
-                .orElseThrow(() -> new TemplateNotFoundException("Template not found"));
-
-        return toApiModel(entity);
+        Optional<EscapeRoomTemplate> entityOpt = repository.findById(id);
+        assert entityOpt.isPresent();
+        return toApiModel(entityOpt.get());
     }
 
-    private at.escapedoom.data.rest.model.EscapeRoomTemplate toApiModel(EscapeRoomTemplate entity) {
+    private EscapeRoomTemplateDTO toApiModel(EscapeRoomTemplate entity) {
         if (entity == null)
             return null;
 
-        at.escapedoom.data.rest.model.EscapeRoomTemplate apiTemplate = new at.escapedoom.data.rest.model.EscapeRoomTemplate();
+        EscapeRoomTemplateDTO apiTemplate = new EscapeRoomTemplateDTO();
         apiTemplate.setEscapeRoomTemplateId(entity.getEscapeRoomTemplateID().toString());
         apiTemplate.setName(entity.getName());
         apiTemplate.setDescription(entity.getDescription());
@@ -78,21 +80,26 @@ public class TemplateService {
         return apiTemplate;
     }
 
-    public EscapeRoomTemplateUpdateResult updateTemplate(String escapeRoomTemplateId,
-            EscapeRoomTemplateUpdateRequest request) throws TemplateNotFoundException {
+    public EscapeRoomTemplateUpdateResultDTO updateTemplate(String escapeRoomTemplateId,
+            EscapeRoomTemplateUpdateRequestDTO request) {
         log.debug("Updating template with ID: {}", escapeRoomTemplateId);
 
         UUID id = validateUUID(escapeRoomTemplateId);
 
-        EscapeRoomTemplate template = repository.findById(id)
-                .orElseThrow(() -> new TemplateNotFoundException("Template not found"));
+        Optional<EscapeRoomTemplate> templateOpt = repository.findById(id);
 
-        template.setName(request.getName());
-        template.setDescription(request.getDescription());
+        if (templateOpt.isPresent()) {
+            EscapeRoomTemplate template = templateOpt.get();
 
-        repository.save(template);
+            template.setName(request.getName());
+            template.setDescription(request.getDescription());
 
-        return EscapeRoomTemplateUpdateResult.builder().message("Template updated successfully").build();
+            repository.save(template);
+
+            return EscapeRoomTemplateUpdateResultDTO.builder().message("Template updated successfully").build();
+        } else {
+            throw new EntityNotFoundException("Template with ID " + escapeRoomTemplateId + " not found");
+        }
     }
 
     private UUID validateUUID(String escapeRoomTemplateId) {

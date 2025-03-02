@@ -2,9 +2,8 @@ package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,20 +21,19 @@ public class EscapeRoomLevel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID escapeRoomLevelId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "escape_room_level_scene", joinColumns = @JoinColumn(name = "escape_room_level_id"), inverseJoinColumns = @JoinColumn(name = "scene_id"))
     private List<Scene> scenes;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "escapeRoomRiddleId")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Riddle riddle;
+    @OneToMany(mappedBy = "escapeRoomLevel", cascade = { CascadeType.PERSIST, CascadeType.MERGE }, orphanRemoval = true)
+    private List<Riddle> riddles;
 
     private Integer levelSequence;
 
-    @ManyToOne
-    @JoinColumn(name = "escape_room_template_id", nullable = false)
-    private EscapeRoomTemplate template;
-
     @Version
-    private Long version;
+    private int version;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "escape_room_template_id", nullable = true)
+    private EscapeRoomTemplate template;
 }
