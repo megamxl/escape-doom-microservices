@@ -41,9 +41,9 @@ spring:
           uri: ws://localhost:8093
           predicates:
             - Path=/player-api/gs-guide-websocket
-          filters:
-            - RemoveRequestHeader=Sec-WebSocket-Protocol
-            - SetRequestHeader=Authorization, Bearer {jwtToken}
+#          filters:
+#            - RemoveRequestHeader=Sec-WebSocket-Protocol
+#            - SetRequestHeader=Authorization, Bearer {jwtToken}
         - id: frontend
           uri: http://localhost:3000
           predicates:
