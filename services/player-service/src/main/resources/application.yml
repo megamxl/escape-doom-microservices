@@ -34,3 +34,14 @@ escapedoom:
   redis:
     host: localhost
     port: 6379
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework.web.socket: DEBUG
+    org.springframework.messaging: DEBUG
+    reactor.netty: DEBUG
+    org.springframework.web.socket.server: DEBUG
+    org.springframework.web.socket.client: DEBUG
+    org.springframework.web.socket.messaging: DEBUG
+    org.springframework.web.socket.handler: DEBUG
