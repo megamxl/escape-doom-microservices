@@ -37,10 +37,7 @@ escapedoom:
 
 logging:
   level:
-    root: DEBUG
     org.springframework.web.socket: DEBUG
-    org.springframework.messaging: DEBUG
-    reactor.netty: DEBUG
     org.springframework.web.socket.server: DEBUG
     org.springframework.web.socket.client: DEBUG
     org.springframework.web.socket.messaging: DEBUG

@@ -10,7 +10,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 @RequiredArgsConstructor
 public class RedisMessagingService {
 
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     public void sendMessage(String message) {
         redisTemplate.convertAndSend(AppConfig.nameChangeChannel(), message);

@@ -6,10 +6,7 @@ export const initializeStompClient = async () => {
         if (!token) throw new Error("Failed to get Keycloak token");
 
         const client = new Client({
-            brokerURL: "ws://localhost:8081/player-api/gs-guide-websocket",
-            connectHeaders: {
-                Authorization: `Bearer ${token}`,
-            },
+            brokerURL: "ws://localhost:8093/player-api/gs-guide-websocket",
             reconnectDelay: 5000, // Auto-reconnect after 5 sec
         });
 
