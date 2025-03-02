@@ -127,6 +127,35 @@ public interface RiddleApiDelegate {
     }
 
     /**
+     * GET /riddle/{escape-room-riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
+     *
+     * @param escapeRoomRiddleId
+     *            The unique ID of the riddle (required)
+     *
+     * @return The riddle (status code 200) or Internal Server Error (status code 500)
+     *
+     * @see RiddleApi#getRiddleById
+     */
+    default ResponseEntity<RiddleDTO> getRiddleById(String escapeRoomRiddleId) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    /**
      * PUT /riddle/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
      *
      * @param escapeRoomRiddleId

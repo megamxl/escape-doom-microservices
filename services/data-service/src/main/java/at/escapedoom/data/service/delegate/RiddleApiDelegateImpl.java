@@ -25,7 +25,12 @@ public class RiddleApiDelegateImpl implements RiddleApiDelegate {
 
     @Override
     public ResponseEntity<List<RiddleDTO>> getAllRiddles() {
-        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAllRiddles(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RiddleDTO> getRiddleById(String escapeRoomRiddleId) {
+        return new ResponseEntity<>(service.getRiddleById(escapeRoomRiddleId), HttpStatus.OK);
     }
 
     @Override

@@ -112,6 +112,27 @@ public interface RiddleApi {
     }
 
     /**
+     * GET /riddle/{escape-room-riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
+     *
+     * @param escapeRoomRiddleId
+     *            The unique ID of the riddle (required)
+     *
+     * @return The riddle (status code 200) or Internal Server Error (status code 500)
+     */
+    @Operation(operationId = "getRiddleById", summary = "Get one riddle by id", description = "Retrieve riddle that matches the UUID", tags = {
+            "Riddle" }, responses = { @ApiResponse(responseCode = "200", description = "The riddle", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = RiddleDTO.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/riddle/{escape-room-riddle-id}", produces = {
+            "application/json" })
+
+    default ResponseEntity<RiddleDTO> getRiddleById(
+            @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId) {
+        return getDelegate().getRiddleById(escapeRoomRiddleId);
+    }
+
+    /**
      * PUT /riddle/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
      *
      * @param escapeRoomRiddleId

@@ -3,7 +3,6 @@ package at.escapedoom.data.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,10 +12,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 @Table(name = "scene")
 public class Scene {
 
+    // TODO: SceneSequence should be part of key
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID sceneId;
@@ -32,6 +31,12 @@ public class Scene {
     @Column(name = "escape_room_sequence_id", nullable = false, unique = true)
     private UUID escapeRoomSequenceId;
 
-    @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Node> nodes;
+
+    @Override
+    public String toString() {
+        return "Scene{" + "escapeRoomSequenceId=" + escapeRoomSequenceId + ", sceneSequence=" + sceneSequence
+                + ", name='" + name + '\'' + ", backgroundImageURI=" + backgroundImageURI + ", nodes=lazyLoaded" + '}';
+    }
 }

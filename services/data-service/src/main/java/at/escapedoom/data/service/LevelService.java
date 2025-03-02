@@ -47,35 +47,28 @@ public class LevelService {
 
         return convertToRestModel(newLevel);
     }
-/*
-    @Transactional
-    public EscapeRoomLevelDTO updateLevel(String escapeRoomLevelId, EscapeRoomLevelDTO restModel) {
-        UUID levelUUID = UUID.fromString(escapeRoomLevelId);
-
-        EscapeRoomLevel level = repository.findById(levelUUID)
-                .orElseThrow(() -> new NoSuchElementException("Level with ID " + escapeRoomLevelId + " not found"));
-
-        level.setLevelSequence(restModel.getSequence().intValue());
-
-        level.getScenes().clear();
-        level.getRiddles().clear();
-
-        if (restModel.getScenes() != null && !restModel.getScenes().isEmpty()) {
-            List<Scene> scenes = sceneService.createScenesForLevel(restModel.getScenes(), level);
-            level.getScenes().addAll(scenes);
-        }
-
-        if (restModel.getRiddles() != null && !restModel.getRiddles().isEmpty()) {
-            List<Riddle> riddles = riddleService.createRiddlesForLevel(restModel.getRiddles(), level);
-            level.getRiddles().addAll(riddles);
-        }
-
-        level = repository.saveAndFlush(level);
-
-        return convertToRestModel(level);
-    }
-
- */
+    /*
+     * @Transactional public EscapeRoomLevelDTO updateLevel(String escapeRoomLevelId, EscapeRoomLevelDTO restModel) {
+     * UUID levelUUID = UUID.fromString(escapeRoomLevelId);
+     *
+     * EscapeRoomLevel level = repository.findById(levelUUID) .orElseThrow(() -> new
+     * NoSuchElementException("Level with ID " + escapeRoomLevelId + " not found"));
+     *
+     * level.setLevelSequence(restModel.getSequence().intValue());
+     *
+     * level.getScenes().clear(); level.getRiddles().clear();
+     *
+     * if (restModel.getScenes() != null && !restModel.getScenes().isEmpty()) { List<Scene> scenes =
+     * sceneService.createScenesForLevel(restModel.getScenes(), level); level.getScenes().addAll(scenes); }
+     *
+     * if (restModel.getRiddles() != null && !restModel.getRiddles().isEmpty()) { List<Riddle> riddles =
+     * riddleService.createRiddlesForLevel(restModel.getRiddles(), level); level.getRiddles().addAll(riddles); }
+     *
+     * level = repository.saveAndFlush(level);
+     *
+     * return convertToRestModel(level); }
+     *
+     */
 
     public EscapeRoomLevelDTO getLevel(String escapeRoomLevelId) {
         UUID levelUUID = UUID.fromString(escapeRoomLevelId);

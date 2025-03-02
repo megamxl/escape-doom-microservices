@@ -1,7 +1,8 @@
 package at.escapedoom.data.service.delegate;
 
 import at.escapedoom.data.rest.api.LevelApiDelegate;
-import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
+import at.escapedoom.data.rest.model.EscapeRoomLevelDTO;
 import at.escapedoom.data.service.LevelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,12 +24,10 @@ public class LevelApiDelegateImpl implements LevelApiDelegate {
     }
 
     /*
-    @Override
-    public ResponseEntity<EscapeRoomLevelDTO> updateLevel(String escapeRoomLevelId, EscapeRoomLevelDTO request) {
-        EscapeRoomLevelDTO updatedLevel = levelService.updateLevel(escapeRoomLevelId, request);
-        return new ResponseEntity<>(updatedLevel, HttpStatus.OK);
-    }
-
+     * @Override public ResponseEntity<EscapeRoomLevelDTO> updateLevel(String escapeRoomLevelId, EscapeRoomLevelDTO
+     * request) { EscapeRoomLevelDTO updatedLevel = levelService.updateLevel(escapeRoomLevelId, request); return new
+     * ResponseEntity<>(updatedLevel, HttpStatus.OK); }
+     *
      */
 
     @Override

@@ -18,7 +18,6 @@ import static at.escapedoom.data.utils.ReflectionUtils.copyNonNullProperties;
 
 @Slf4j
 @Service
-@PreAuthorize("hasRole('LECTOR')")
 @RequiredArgsConstructor
 public class SceneService {
 

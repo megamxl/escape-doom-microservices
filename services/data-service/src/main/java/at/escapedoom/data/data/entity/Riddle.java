@@ -31,4 +31,11 @@ public class Riddle {
     @ManyToOne
     @JoinColumn(name = "escape_room_level_id")
     private EscapeRoomLevel escapeRoomLevel;
+
+    @Override
+    public String toString() {
+        return "DBRiddle{" + "escapeRoomRiddleId=" + escapeRoomRiddleId + ", expectedOutput='" + expectedOutput + '\''
+                + ", language=" + language + ", functionSignature='" + functionSignature + '\'' + ", input='" + input
+                + '\'' + ", variableName='" + variableName + '\'' + '}';
+    }
 }

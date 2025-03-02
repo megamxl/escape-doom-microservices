@@ -19,14 +19,14 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@PreAuthorize("hasRole('LECTOR')")
 @RequiredArgsConstructor
 public class RiddleService {
 
     final RiddleRepository repository;
 
-    public List<RiddleDTO> getAll() {
+    public List<RiddleDTO> getAllRiddles() {
         List<Riddle> riddles = repository.findAll();
+
         return riddles.stream().map(this::toRestBody).toList();
     }
 
@@ -34,12 +34,24 @@ public class RiddleService {
         return repository.saveAndFlush(riddle);
     }
 
+    public RiddleDTO getRiddleById(String uuid) {
+        assert uuid != null : "Riddle UUID must not be null";
+
+        Riddle riddle = repository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new IllegalArgumentException(String.format("Riddle with ID: %s not found", uuid)));
+
+        return toRestBody(riddle);
+    }
+
+    @Transactional
     public RiddleDTO createRiddle(RiddleCreationRequestDTO riddleRequest) {
         assert riddleRequest != null;
+
         Riddle riddle = creationRequestToRiddle(riddleRequest);
         repository.save(riddle);
         return toRestBody(riddle);
     }
+
 
     public RiddleDTO createRiddle(RiddleCreationRequestDTO riddleRequest, String levelId) {
         assert riddleRequest != null && levelId != null;
@@ -74,7 +86,7 @@ public class RiddleService {
         return toRestBody(dbRiddle);
     }
 
-    public RiddleDeletionResponseDTO deleteRiddle(String uuid) {
+    public RiddleDeletionResponseDTO deleteRiddle(String uuid) throws IllegalArgumentException {
         repository.deleteById(UUID.fromString(uuid));
         return new RiddleDeletionResponseDTO("Riddle deleted successfully");
     }
@@ -86,11 +98,16 @@ public class RiddleService {
                 .functionSignature(riddle.getFunctionSignature()).build();
     }
 
-    private Riddle creationRequestToRiddle(RiddleCreationRequestDTO creationRequest) {
-        return Riddle.builder().input(creationRequest.getInput()).language(creationRequest.getLanguage())
-                .variableName(creationRequest.getVariableName()).expectedOutput(creationRequest.getExpectedOutput())
-                .functionSignature(creationRequest.getFunctionSignature()).build();
+    public Riddle creationRequestToRiddle(RiddleCreationRequestDTO riddleRequest) {
+        return Riddle.builder()
+                .input(riddleRequest.getInput())
+                .language(riddleRequest.getLanguage())
+                .expectedOutput(riddleRequest.getExpectedOutput())
+                .functionSignature(riddleRequest.getFunctionSignature())
+                .variableName(riddleRequest.getVariableName())
+                .build();
     }
+
 
     RiddleDTO toRestBody(Riddle riddle) {
         return RiddleDTO.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
