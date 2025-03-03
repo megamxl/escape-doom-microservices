@@ -8,11 +8,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface EscapeRoomSessionRepository extends JpaRepository<EscapeRoomSession, UUID> {
-    List<EscapeRoomSession> getEscapeRoomSessionsByUserIdOrderByStartTimeDesc(String userId);
+    List<EscapeRoomSession> getEscapeRoomSessionsByUserIdOrderByStartTimeDesc(UUID userId);
 
     Optional<EscapeRoomSession> getEscapeRoomSessionByRoomPin(Long roomPin);
 
-    List<EscapeRoomSession> getEscapeRoomSessionsByUserIdAndTags(String userId, List<String> tags);
-
-    List<EscapeRoomSession> getEscapeRoomSessionsByUserIdAndTagsContains(String userId, List<String> tags);
+    List<EscapeRoomSession> getEscapeRoomSessionsByUserIdAndTagsContains(UUID userId, List<String> tags);
 }

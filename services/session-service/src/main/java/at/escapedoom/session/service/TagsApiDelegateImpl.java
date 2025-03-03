@@ -4,7 +4,7 @@ import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.data.repository.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.TagsApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
-import at.escapedoom.session.util.KeycloakUserUtil;
+import at.escapedoom.spring.security.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,11 +33,12 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
     public ResponseEntity<EscapeRoomSessionResponse> addERTag(String escapeRoomSessionId, String tagName) {
         EscapeRoomSession escapeRoomSession = null;
         EscapeRoomSessionResponse response = null;
-        String userName = KeycloakUserUtil.getCurrentUsername();
+        UUID userId = KeycloakUserUtil.getCurrentUserUUID()
+                .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
-        if (userName != null && !userName.isEmpty()) {
-            escapeRoomSession = sessionService.addTagToSession(UUID.fromString(escapeRoomSessionId), tagName);
-        }
+        System.out.println(userId.toString());
+        escapeRoomSession = sessionService.addTagToSession(userId, UUID.fromString(escapeRoomSessionId), tagName);
+
         if (escapeRoomSession != null) {
             response = EscapeRoomSessionMapperUtil.map(escapeRoomSession);
         }
@@ -49,11 +51,12 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
     public ResponseEntity<EscapeRoomSessionResponse> deleteERTag(String escapeRoomSessionId, String tagName) {
         EscapeRoomSession escapeRoomSession = null;
         EscapeRoomSessionResponse response = null;
-        String userName = KeycloakUserUtil.getCurrentUsername();
+        UUID userId = KeycloakUserUtil.getCurrentUserUUID()
+                .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
-        if (userName != null && !userName.isEmpty()) {
-            escapeRoomSession = sessionService.removeTagFromSession(UUID.fromString(escapeRoomSessionId), tagName);
-        }
+
+        escapeRoomSession = sessionService.removeTagFromSession(userId, UUID.fromString(escapeRoomSessionId), tagName);
+
         if (escapeRoomSession != null) {
             response = EscapeRoomSessionMapperUtil.map(escapeRoomSession);
         }
