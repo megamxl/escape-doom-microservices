@@ -16,10 +16,6 @@ export type DeleteScene200 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -30,10 +26,6 @@ export type DeleteScene404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -44,10 +36,6 @@ export type DeleteScene500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type DeleteSceneMutationResponse = DeleteScene200

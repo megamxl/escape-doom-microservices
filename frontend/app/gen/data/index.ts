@@ -6,14 +6,16 @@ export type { GetAllTemplatesQueryKey } from './hooks/all-templates/useGetAllTem
 export type { GetAllTemplatesSuspenseQueryKey } from './hooks/all-templates/useGetAllTemplatesSuspenseHook.ts'
 export type { CreateLevelMutationKey } from './hooks/level/useCreateLevelHook.ts'
 export type { DeleteLevelMutationKey } from './hooks/level/useDeleteLevelHook.ts'
-export type { PutLevelOfTemplateMutationKey } from './hooks/level/usePutLevelOfTemplateHook.ts'
+export type { UpdateLevelMutationKey } from './hooks/level/useUpdateLevelHook.ts'
 export type { GetLevelByTemplateQueryKey } from './hooks/levels/useGetLevelByTemplateHook.ts'
 export type { GetLevelByTemplateSuspenseQueryKey } from './hooks/levels/useGetLevelByTemplateSuspenseHook.ts'
 export type { GetLevelQueryKey } from './hooks/levels/useGetLevelHook.ts'
 export type { GetLevelSuspenseQueryKey } from './hooks/levels/useGetLevelSuspenseHook.ts'
 export type { CreateRiddleMutationKey } from './hooks/riddle/useCreateRiddleHook.ts'
-export type { DeleteRiddleMutationKey } from './hooks/riddles/useDeleteRiddleHook.ts'
-export type { PutRiddleMutationKey } from './hooks/riddles/usePutRiddleHook.ts'
+export type { DeleteRiddleMutationKey } from './hooks/riddle/useDeleteRiddleHook.ts'
+export type { GetRiddleByIdQueryKey } from './hooks/riddle/useGetRiddleByIdHook.ts'
+export type { GetRiddleByIdSuspenseQueryKey } from './hooks/riddle/useGetRiddleByIdSuspenseHook.ts'
+export type { PutRiddleMutationKey } from './hooks/riddle/usePutRiddleHook.ts'
 export type { CreateSceneMutationKey } from './hooks/scene/useCreateSceneHook.ts'
 export type { GetAllScenesQueryKey } from './hooks/scene/useGetAllScenesHook.ts'
 export type { GetAllScenesSuspenseQueryKey } from './hooks/scene/useGetAllScenesSuspenseHook.ts'
@@ -27,7 +29,7 @@ export type { GetTemplateQueryKey } from './hooks/template/useGetTemplateHook.ts
 export type { GetTemplateSuspenseQueryKey } from './hooks/template/useGetTemplateSuspenseHook.ts'
 export type { PutTemplateMutationKey } from './hooks/template/usePutTemplateHook.ts'
 export type { BadRequest } from './models/BadRequest.ts'
-export type { CodingRiddle } from './models/CodingRiddle.ts'
+export type { CodingLanguageEnum, CodingLanguage } from './models/CodingLanguage.ts'
 export type {
   CreateLevel201,
   CreateLevel400,
@@ -93,13 +95,12 @@ export type {
   DeleteTemplateMutationResponse,
   DeleteTemplateMutation,
 } from './models/DeleteTemplate.ts'
-export type { EscapeRoomLevel } from './models/EscapeRoomLevel.ts'
-export type { EscapeRoomTemplate } from './models/EscapeRoomTemplate.ts'
-export type { EscapeRoomTemplateCreateRequest } from './models/EscapeRoomTemplateCreateRequest.ts'
+export type { EscapeRoomLevelDTO } from './models/EscapeRoomLevelDTO.ts'
+export type { EscapeRoomTemplateCreateRequestDTO } from './models/EscapeRoomTemplateCreateRequestDTO.ts'
 export type { EscapeRoomTemplateDTO } from './models/EscapeRoomTemplateDTO.ts'
-export type { EscapeRoomTemplateResult } from './models/EscapeRoomTemplateResult.ts'
-export type { EscapeRoomTemplateUpdateRequest } from './models/EscapeRoomTemplateUpdateRequest.ts'
-export type { EscapeRoomTemplateUpdateResult } from './models/EscapeRoomTemplateUpdateResult.ts'
+export type { EscapeRoomTemplateResultDTO } from './models/EscapeRoomTemplateResultDTO.ts'
+export type { EscapeRoomTemplateUpdateRequestDTO } from './models/EscapeRoomTemplateUpdateRequestDTO.ts'
+export type { EscapeRoomTemplateUpdateResultDTO } from './models/EscapeRoomTemplateUpdateResultDTO.ts'
 export type { GetAllLevels200, GetAllLevels500, GetAllLevelsQueryResponse, GetAllLevelsQuery } from './models/GetAllLevels.ts'
 export type { GetAllRiddles200, GetAllRiddles500, GetAllRiddlesQueryResponse, GetAllRiddlesQuery } from './models/GetAllRiddles.ts'
 export type { GetAllScenes200, GetAllScenes500, GetAllScenesQueryResponse, GetAllScenesQuery } from './models/GetAllScenes.ts'
@@ -111,25 +112,15 @@ export type {
   GetLevelByTemplateQueryResponse,
   GetLevelByTemplateQuery,
 } from './models/GetLevelByTemplate.ts'
+export type { GetRiddleByIdPathParams, GetRiddleById200, GetRiddleById500, GetRiddleByIdQueryResponse, GetRiddleByIdQuery } from './models/GetRiddleById.ts'
 export type { GetScenePathParams, GetScene200, GetScene404, GetScene500, GetSceneQueryResponse, GetSceneQuery } from './models/GetScene.ts'
 export type { GetTemplatePathParams, GetTemplate200, GetTemplate404, GetTemplate500, GetTemplateQueryResponse, GetTemplateQuery } from './models/GetTemplate.ts'
-export type { InputStringCompareRiddle } from './models/InputStringCompareRiddle.ts'
 export type { InternalServerError } from './models/InternalServerError.ts'
-export type { Node } from './models/Node.ts'
-export type { NodeInfo } from './models/NodeInfo.ts'
+export type { NodeDTO } from './models/NodeDTO.ts'
+export type { NodeInfoDTO } from './models/NodeInfoDTO.ts'
 export type { NodeTypeEnum, NodeType } from './models/NodeType.ts'
 export type { NotFound } from './models/NotFound.ts'
-export type { Position } from './models/Position.ts'
-export type {
-  PutLevelOfTemplatePathParams,
-  PutLevelOfTemplate200,
-  PutLevelOfTemplate400,
-  PutLevelOfTemplate404,
-  PutLevelOfTemplate500,
-  PutLevelOfTemplateMutationRequest,
-  PutLevelOfTemplateMutationResponse,
-  PutLevelOfTemplateMutation,
-} from './models/PutLevelOfTemplate.ts'
+export type { PositionDTO } from './models/PositionDTO.ts'
 export type {
   PutRiddlePathParams,
   PutRiddle200,
@@ -160,8 +151,20 @@ export type {
   PutTemplateMutationResponse,
   PutTemplateMutation,
 } from './models/PutTemplate.ts'
-export type { RiddleTypeEnum, Riddle } from './models/Riddle.ts'
-export type { Scene } from './models/Scene.ts'
+export type { RiddleCreationRequestDTO } from './models/RiddleCreationRequestDTO.ts'
+export type { RiddleDTO } from './models/RiddleDTO.ts'
+export type { SceneDTO } from './models/SceneDTO.ts'
+export type { SceneRequestDTO } from './models/SceneRequestDTO.ts'
+export type {
+  UpdateLevelPathParams,
+  UpdateLevel200,
+  UpdateLevel400,
+  UpdateLevel404,
+  UpdateLevel500,
+  UpdateLevelMutationRequest,
+  UpdateLevelMutationResponse,
+  UpdateLevelMutation,
+} from './models/UpdateLevel.ts'
 export { getAllLevelsQueryKey, getAllLevelsHook, getAllLevelsQueryOptionsHook, useGetAllLevelsHook } from './hooks/all-levels/useGetAllLevelsHook.ts'
 export {
   getAllLevelsSuspenseQueryKey,
@@ -190,7 +193,7 @@ export {
 } from './hooks/all-templates/useGetAllTemplatesSuspenseHook.ts'
 export { createLevelMutationKey, createLevelHook, useCreateLevelHook } from './hooks/level/useCreateLevelHook.ts'
 export { deleteLevelMutationKey, deleteLevelHook, useDeleteLevelHook } from './hooks/level/useDeleteLevelHook.ts'
-export { putLevelOfTemplateMutationKey, putLevelOfTemplateHook, usePutLevelOfTemplateHook } from './hooks/level/usePutLevelOfTemplateHook.ts'
+export { updateLevelMutationKey, updateLevelHook, useUpdateLevelHook } from './hooks/level/useUpdateLevelHook.ts'
 export {
   getLevelByTemplateQueryKey,
   getLevelByTemplateHook,
@@ -211,8 +214,15 @@ export {
   useGetLevelSuspenseHook,
 } from './hooks/levels/useGetLevelSuspenseHook.ts'
 export { createRiddleMutationKey, createRiddleHook, useCreateRiddleHook } from './hooks/riddle/useCreateRiddleHook.ts'
-export { deleteRiddleMutationKey, deleteRiddleHook, useDeleteRiddleHook } from './hooks/riddles/useDeleteRiddleHook.ts'
-export { putRiddleMutationKey, putRiddleHook, usePutRiddleHook } from './hooks/riddles/usePutRiddleHook.ts'
+export { deleteRiddleMutationKey, deleteRiddleHook, useDeleteRiddleHook } from './hooks/riddle/useDeleteRiddleHook.ts'
+export { getRiddleByIdQueryKey, getRiddleByIdHook, getRiddleByIdQueryOptionsHook, useGetRiddleByIdHook } from './hooks/riddle/useGetRiddleByIdHook.ts'
+export {
+  getRiddleByIdSuspenseQueryKey,
+  getRiddleByIdSuspenseHook,
+  getRiddleByIdSuspenseQueryOptionsHook,
+  useGetRiddleByIdSuspenseHook,
+} from './hooks/riddle/useGetRiddleByIdSuspenseHook.ts'
+export { putRiddleMutationKey, putRiddleHook, usePutRiddleHook } from './hooks/riddle/usePutRiddleHook.ts'
 export { createSceneMutationKey, createSceneHook, useCreateSceneHook } from './hooks/scene/useCreateSceneHook.ts'
 export { getAllScenesQueryKey, getAllScenesHook, getAllScenesQueryOptionsHook, useGetAllScenesHook } from './hooks/scene/useGetAllScenesHook.ts'
 export {
@@ -240,5 +250,5 @@ export {
   useGetTemplateSuspenseHook,
 } from './hooks/template/useGetTemplateSuspenseHook.ts'
 export { putTemplateMutationKey, putTemplateHook, usePutTemplateHook } from './hooks/template/usePutTemplateHook.ts'
+export { codingLanguageEnum } from './models/CodingLanguage.ts'
 export { nodeTypeEnum } from './models/NodeType.ts'
-export { riddleTypeEnum } from './models/Riddle.ts'

@@ -44,7 +44,7 @@ public interface RiddleApi {
     }
 
     /**
-     * POST /riddle : Create a new riddle Create a riddle without linking it to a specific level
+     * POST /riddles : Create a new riddle Create a riddle without linking it to a specific level
      *
      * @param riddleCreationRequestDTO
      *            The details of the riddle to create (required)
@@ -60,7 +60,7 @@ public interface RiddleApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.POST, value = "/riddle", produces = { "application/json" }, consumes = {
+    @RequestMapping(method = RequestMethod.POST, value = "/riddles", produces = { "application/json" }, consumes = {
             "application/json" })
 
     default ResponseEntity<RiddleDTO> createRiddle(
@@ -69,7 +69,7 @@ public interface RiddleApi {
     }
 
     /**
-     * DELETE /riddle/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
+     * DELETE /riddles/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -85,7 +85,7 @@ public interface RiddleApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/riddle/{escape-room-riddle-id}", produces = {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/riddles/{escape-room-riddle-id}", produces = {
             "application/json" })
 
     default ResponseEntity<RiddleDeletionResponseDTO> deleteRiddle(
@@ -94,7 +94,7 @@ public interface RiddleApi {
     }
 
     /**
-     * GET /all-riddles : Get all riddles Retrieve all riddles that are not yet linked to any level
+     * GET /riddles : Get all riddles Retrieve all riddles that are not yet linked to any level
      *
      * @return A list of riddles (status code 200) or Internal Server Error (status code 500)
      */
@@ -103,7 +103,7 @@ public interface RiddleApi {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = RiddleDTO.class))) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/all-riddles", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/riddles", produces = { "application/json" })
 
     default ResponseEntity<List<RiddleDTO>> getAllRiddles(
 
@@ -112,7 +112,7 @@ public interface RiddleApi {
     }
 
     /**
-     * GET /riddle/{escape-room-riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
+     * GET /riddles/{escape-room-riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -124,7 +124,7 @@ public interface RiddleApi {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = RiddleDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/riddle/{escape-room-riddle-id}", produces = {
+    @RequestMapping(method = RequestMethod.GET, value = "/riddles/{escape-room-riddle-id}", produces = {
             "application/json" })
 
     default ResponseEntity<RiddleDTO> getRiddleById(
@@ -133,7 +133,7 @@ public interface RiddleApi {
     }
 
     /**
-     * PUT /riddle/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
+     * PUT /riddles/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -153,7 +153,7 @@ public interface RiddleApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/riddle/{escape-room-riddle-id}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/riddles/{escape-room-riddle-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
     default ResponseEntity<RiddleDTO> putRiddle(

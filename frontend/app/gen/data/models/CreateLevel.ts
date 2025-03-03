@@ -1,10 +1,10 @@
 // version: 0.0.1
-import type { EscapeRoomLevel } from './EscapeRoomLevel.ts'
+import type { EscapeRoomLevelDTO } from './EscapeRoomLevelDTO.ts'
 
 /**
  * @description Level created successfully
  */
-export type CreateLevel201 = EscapeRoomLevel
+export type CreateLevel201 = EscapeRoomLevelDTO
 
 /**
  * @description Bad Request
@@ -14,10 +14,6 @@ export type CreateLevel400 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -28,16 +24,12 @@ export type CreateLevel500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
  * @description The details of the new EscapeRoomLevel
  */
-export type CreateLevelMutationRequest = EscapeRoomLevel
+export type CreateLevelMutationRequest = EscapeRoomLevelDTO
 
 export type CreateLevelMutationResponse = CreateLevel201
 

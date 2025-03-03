@@ -38,6 +38,8 @@ public class RiddleCreationRequestDTO {
 
     private @Nullable String expectedOutput;
 
+    private @Nullable String levelId;
+
     public RiddleCreationRequestDTO language(CodingLanguage language) {
         this.language = language;
         return this;
@@ -143,6 +145,27 @@ public class RiddleCreationRequestDTO {
         this.expectedOutput = expectedOutput;
     }
 
+    public RiddleCreationRequestDTO levelId(String levelId) {
+        this.levelId = levelId;
+        return this;
+    }
+
+    /**
+     * The ID of the Escape Room Level this riddle belongs to
+     *
+     * @return levelId
+     */
+
+    @Schema(name = "level_id", example = "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f", description = "The ID of the Escape Room Level this riddle belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("level_id")
+    public String getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -156,12 +179,13 @@ public class RiddleCreationRequestDTO {
                 && Objects.equals(this.functionSignature, riddleCreationRequestDTO.functionSignature)
                 && Objects.equals(this.input, riddleCreationRequestDTO.input)
                 && Objects.equals(this.variableName, riddleCreationRequestDTO.variableName)
-                && Objects.equals(this.expectedOutput, riddleCreationRequestDTO.expectedOutput);
+                && Objects.equals(this.expectedOutput, riddleCreationRequestDTO.expectedOutput)
+                && Objects.equals(this.levelId, riddleCreationRequestDTO.levelId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(language, functionSignature, input, variableName, expectedOutput);
+        return Objects.hash(language, functionSignature, input, variableName, expectedOutput, levelId);
     }
 
     @Override
@@ -173,6 +197,7 @@ public class RiddleCreationRequestDTO {
         sb.append("    input: ").append(toIndentedString(input)).append("\n");
         sb.append("    variableName: ").append(toIndentedString(variableName)).append("\n");
         sb.append("    expectedOutput: ").append(toIndentedString(expectedOutput)).append("\n");
+        sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("}");
         return sb.toString();
     }

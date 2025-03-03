@@ -44,7 +44,7 @@ public interface SceneApi {
     }
 
     /**
-     * POST /scene : Create a new scene Create a Scene independently of any level
+     * POST /scenes : Create a new scene Create a Scene independently of any level
      *
      * @param sceneRequestDTO
      *            The details of the new Scene (required)
@@ -60,7 +60,7 @@ public interface SceneApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.POST, value = "/scene", produces = { "application/json" }, consumes = {
+    @RequestMapping(method = RequestMethod.POST, value = "/scenes", produces = { "application/json" }, consumes = {
             "application/json" })
 
     default ResponseEntity<SceneDTO> createScene(
@@ -94,7 +94,7 @@ public interface SceneApi {
     }
 
     /**
-     * GET /scene : Get all scenes Retrieve all scenes that are not linked to any specific level
+     * GET /scenes : Get all scenes Retrieve all scenes that are not linked to any specific level
      *
      * @return A list of scenes (status code 200) or Internal Server Error (status code 500)
      */
@@ -103,7 +103,7 @@ public interface SceneApi {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SceneDTO.class))) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/scene", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/scenes", produces = { "application/json" })
 
     default ResponseEntity<List<SceneDTO>> getAllScenes(
 

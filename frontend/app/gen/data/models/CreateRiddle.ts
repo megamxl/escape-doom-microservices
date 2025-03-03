@@ -1,12 +1,11 @@
 // version: 0.0.1
-import type { CodingRiddle } from './CodingRiddle.ts'
-import type { InputStringCompareRiddle } from './InputStringCompareRiddle.ts'
-import type { Riddle } from './Riddle.ts'
+import type { RiddleCreationRequestDTO } from './RiddleCreationRequestDTO.ts'
+import type { RiddleDTO } from './RiddleDTO.ts'
 
 /**
  * @description Riddle created successfully
  */
-export type CreateRiddle201 = Riddle
+export type CreateRiddle201 = RiddleDTO
 
 /**
  * @description Bad Request
@@ -16,10 +15,6 @@ export type CreateRiddle400 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -30,16 +25,12 @@ export type CreateRiddle500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
  * @description The details of the riddle to create
  */
-export type CreateRiddleMutationRequest = InputStringCompareRiddle | CodingRiddle
+export type CreateRiddleMutationRequest = RiddleCreationRequestDTO
 
 export type CreateRiddleMutationResponse = CreateRiddle201
 

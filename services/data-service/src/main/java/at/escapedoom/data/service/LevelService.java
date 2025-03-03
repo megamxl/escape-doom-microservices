@@ -28,7 +28,7 @@ public class LevelService {
         assert restModel != null;
 
         EscapeRoomLevel newLevel = EscapeRoomLevel.builder().levelSequence(restModel.getSequence())
-                .scenes(new ArrayList<>()).riddles(new ArrayList<>()).build();
+                .scenes(new ArrayList<>()).build();
         newLevel = repository.saveAndFlush(newLevel);
 
         return getEscapeRoomLevelDTO(restModel, newLevel);
@@ -40,10 +40,11 @@ public class LevelService {
             newLevel.getScenes().addAll(scenes);
         }
 
-        if (restModel.getRiddles() != null && !restModel.getRiddles().isEmpty()) {
-            List<Riddle> riddles = riddleService.createRiddlesForLevel(restModel.getRiddles(), newLevel);
-            newLevel.getRiddles().addAll(riddles);
-        }
+        // TODO: @Mark Change service to handle riddle as One, not list of many
+        // if (restModel.getRiddle() != null) {
+        // List<Riddle> riddles = riddleService.createRiddlesForLevel(restModel.getRiddle(), newLevel);
+        // newLevel.setRiddle(riddle); getRiddle().addAll(riddles);
+        // }
 
         newLevel = repository.saveAndFlush(newLevel);
 
@@ -60,7 +61,6 @@ public class LevelService {
         level.setLevelSequence(restModel.getSequence());
 
         level.getScenes().clear();
-        level.getRiddles().clear();
 
         return getEscapeRoomLevelDTO(restModel, level);
     }
@@ -88,9 +88,9 @@ public class LevelService {
     }
 
     private EscapeRoomLevelDTO convertToRestModel(EscapeRoomLevel entity) {
-        return EscapeRoomLevelDTO.builder().escapeRoomLevelId(entity.getEscapeRoomLevelId().toString())
+        return EscapeRoomLevelDTO.builder().levelId(entity.getEscapeRoomLevelId().toString())
                 .sequence(entity.getLevelSequence())
                 .scenes(entity.getScenes().stream().map(sceneService::toScene).toList())
-                .riddles(entity.getRiddles().stream().map(riddleService::toRestBody).toList()).build();
+                .riddle(riddleService.toRestBody(entity.getRiddle())).build();
     }
 }

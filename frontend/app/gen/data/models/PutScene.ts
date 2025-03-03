@@ -1,5 +1,6 @@
 // version: 0.0.1
-import type { Scene } from './Scene.ts'
+import type { SceneDTO } from './SceneDTO.ts'
+import type { SceneRequestDTO } from './SceneRequestDTO.ts'
 
 export type PutScenePathParams = {
   /**
@@ -12,7 +13,7 @@ export type PutScenePathParams = {
 /**
  * @description Scene updated successfully
  */
-export type PutScene200 = Scene
+export type PutScene200 = SceneDTO
 
 /**
  * @description Bad Request
@@ -22,10 +23,6 @@ export type PutScene400 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -36,10 +33,6 @@ export type PutScene404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -50,16 +43,12 @@ export type PutScene500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
  * @description The updated details of the Scene
  */
-export type PutSceneMutationRequest = Scene
+export type PutSceneMutationRequest = SceneRequestDTO
 
 export type PutSceneMutationResponse = PutScene200
 

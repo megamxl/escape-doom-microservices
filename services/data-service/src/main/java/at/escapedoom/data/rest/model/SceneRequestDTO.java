@@ -40,7 +40,7 @@ public class SceneRequestDTO {
 
     private @Nullable String name;
 
-    private @Nullable String escapeRoomLevelId;
+    private @Nullable String levelId;
 
     public SceneRequestDTO sceneSequence(Integer sceneSequence) {
         this.sceneSequence = sceneSequence;
@@ -134,25 +134,25 @@ public class SceneRequestDTO {
         this.name = name;
     }
 
-    public SceneRequestDTO escapeRoomLevelId(String escapeRoomLevelId) {
-        this.escapeRoomLevelId = escapeRoomLevelId;
+    public SceneRequestDTO levelId(String levelId) {
+        this.levelId = levelId;
         return this;
     }
 
     /**
      * The ID of the Escape Room Level this scene belongs to
      *
-     * @return escapeRoomLevelId
+     * @return levelId
      */
 
-    @Schema(name = "escape_room_level_id", example = "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f", description = "The ID of the Escape Room Level this scene belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_level_id")
-    public String getEscapeRoomLevelId() {
-        return escapeRoomLevelId;
+    @Schema(name = "level_id", example = "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f", description = "The ID of the Escape Room Level this scene belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("level_id")
+    public String getLevelId() {
+        return levelId;
     }
 
-    public void setEscapeRoomLevelId(String escapeRoomLevelId) {
-        this.escapeRoomLevelId = escapeRoomLevelId;
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
     }
 
     @Override
@@ -168,12 +168,12 @@ public class SceneRequestDTO {
                 && Objects.equals(this.nodes, sceneRequestDTO.nodes)
                 && Objects.equals(this.backgroundImageUri, sceneRequestDTO.backgroundImageUri)
                 && Objects.equals(this.name, sceneRequestDTO.name)
-                && Objects.equals(this.escapeRoomLevelId, sceneRequestDTO.escapeRoomLevelId);
+                && Objects.equals(this.levelId, sceneRequestDTO.levelId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sceneSequence, nodes, backgroundImageUri, name, escapeRoomLevelId);
+        return Objects.hash(sceneSequence, nodes, backgroundImageUri, name, levelId);
     }
 
     @Override
@@ -184,7 +184,7 @@ public class SceneRequestDTO {
         sb.append("    nodes: ").append(toIndentedString(nodes)).append("\n");
         sb.append("    backgroundImageUri: ").append(toIndentedString(backgroundImageUri)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    escapeRoomLevelId: ").append(toIndentedString(escapeRoomLevelId)).append("\n");
+        sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("}");
         return sb.toString();
     }

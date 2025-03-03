@@ -1,6 +1,6 @@
 // version: 0.0.1
-import type { EscapeRoomTemplateUpdateRequest } from './EscapeRoomTemplateUpdateRequest.ts'
-import type { EscapeRoomTemplateUpdateResult } from './EscapeRoomTemplateUpdateResult.ts'
+import type { EscapeRoomTemplateUpdateRequestDTO } from './EscapeRoomTemplateUpdateRequestDTO.ts'
+import type { EscapeRoomTemplateUpdateResultDTO } from './EscapeRoomTemplateUpdateResultDTO.ts'
 
 export type PutTemplatePathParams = {
   /**
@@ -13,7 +13,7 @@ export type PutTemplatePathParams = {
 /**
  * @description Template updated successfully
  */
-export type PutTemplate200 = EscapeRoomTemplateUpdateResult
+export type PutTemplate200 = EscapeRoomTemplateUpdateResultDTO
 
 /**
  * @description Bad Request
@@ -23,10 +23,6 @@ export type PutTemplate400 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -37,10 +33,6 @@ export type PutTemplate404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -51,16 +43,12 @@ export type PutTemplate500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
  * @description The updated data for the template
  */
-export type PutTemplateMutationRequest = EscapeRoomTemplateUpdateRequest
+export type PutTemplateMutationRequest = EscapeRoomTemplateUpdateRequestDTO
 
 export type PutTemplateMutationResponse = PutTemplate200
 

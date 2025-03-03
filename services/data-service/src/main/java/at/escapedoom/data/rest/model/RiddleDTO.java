@@ -28,9 +28,9 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class RiddleDTO {
 
-    private @Nullable String escapeRoomRiddleId;
+    private @Nullable String riddleId;
 
-    private @Nullable String escapeRoomLevelId;
+    private @Nullable String levelId;
 
     private @Nullable CodingLanguage language;
 
@@ -42,46 +42,46 @@ public class RiddleDTO {
 
     private @Nullable String expectedOutput;
 
-    public RiddleDTO escapeRoomRiddleId(String escapeRoomRiddleId) {
-        this.escapeRoomRiddleId = escapeRoomRiddleId;
+    public RiddleDTO riddleId(String riddleId) {
+        this.riddleId = riddleId;
         return this;
     }
 
     /**
      * The unique ID of the riddle
      *
-     * @return escapeRoomRiddleId
+     * @return riddleId
      */
 
-    @Schema(name = "escape_room_riddle_id", example = "5830daed-cb7f-47dd-8248-5dee9bf0aa3d", description = "The unique ID of the riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_riddle_id")
-    public String getEscapeRoomRiddleId() {
-        return escapeRoomRiddleId;
+    @Schema(name = "riddle_id", example = "5830daed-cb7f-47dd-8248-5dee9bf0aa3d", description = "The unique ID of the riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("riddle_id")
+    public String getRiddleId() {
+        return riddleId;
     }
 
-    public void setEscapeRoomRiddleId(String escapeRoomRiddleId) {
-        this.escapeRoomRiddleId = escapeRoomRiddleId;
+    public void setRiddleId(String riddleId) {
+        this.riddleId = riddleId;
     }
 
-    public RiddleDTO escapeRoomLevelId(String escapeRoomLevelId) {
-        this.escapeRoomLevelId = escapeRoomLevelId;
+    public RiddleDTO levelId(String levelId) {
+        this.levelId = levelId;
         return this;
     }
 
     /**
      * The ID of the escape room level that contains this riddle
      *
-     * @return escapeRoomLevelId
+     * @return levelId
      */
 
-    @Schema(name = "escape_room_level_id", example = "a12b34c5-6789-4def-abcd-12345678abcd", description = "The ID of the escape room level that contains this riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_level_id")
-    public String getEscapeRoomLevelId() {
-        return escapeRoomLevelId;
+    @Schema(name = "level_id", example = "a12b34c5-6789-4def-abcd-12345678abcd", description = "The ID of the escape room level that contains this riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("level_id")
+    public String getLevelId() {
+        return levelId;
     }
 
-    public void setEscapeRoomLevelId(String escapeRoomLevelId) {
-        this.escapeRoomLevelId = escapeRoomLevelId;
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
     }
 
     public RiddleDTO language(CodingLanguage language) {
@@ -198,8 +198,7 @@ public class RiddleDTO {
             return false;
         }
         RiddleDTO riddleDTO = (RiddleDTO) o;
-        return Objects.equals(this.escapeRoomRiddleId, riddleDTO.escapeRoomRiddleId)
-                && Objects.equals(this.escapeRoomLevelId, riddleDTO.escapeRoomLevelId)
+        return Objects.equals(this.riddleId, riddleDTO.riddleId) && Objects.equals(this.levelId, riddleDTO.levelId)
                 && Objects.equals(this.language, riddleDTO.language)
                 && Objects.equals(this.functionSignature, riddleDTO.functionSignature)
                 && Objects.equals(this.input, riddleDTO.input)
@@ -209,16 +208,15 @@ public class RiddleDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(escapeRoomRiddleId, escapeRoomLevelId, language, functionSignature, input, variableName,
-                expectedOutput);
+        return Objects.hash(riddleId, levelId, language, functionSignature, input, variableName, expectedOutput);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class RiddleDTO {\n");
-        sb.append("    escapeRoomRiddleId: ").append(toIndentedString(escapeRoomRiddleId)).append("\n");
-        sb.append("    escapeRoomLevelId: ").append(toIndentedString(escapeRoomLevelId)).append("\n");
+        sb.append("    riddleId: ").append(toIndentedString(riddleId)).append("\n");
+        sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("    language: ").append(toIndentedString(language)).append("\n");
         sb.append("    functionSignature: ").append(toIndentedString(functionSignature)).append("\n");
         sb.append("    input: ").append(toIndentedString(input)).append("\n");

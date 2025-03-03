@@ -1,5 +1,5 @@
 // version: 0.0.1
-import type { EscapeRoomLevel } from './EscapeRoomLevel.ts'
+import type { EscapeRoomLevelDTO } from './EscapeRoomLevelDTO.ts'
 
 export type GetLevelPathParams = {
   /**
@@ -12,7 +12,7 @@ export type GetLevelPathParams = {
 /**
  * @description Level details
  */
-export type GetLevel200 = EscapeRoomLevel
+export type GetLevel200 = EscapeRoomLevelDTO
 
 /**
  * @description Not Found
@@ -22,10 +22,6 @@ export type GetLevel404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -36,10 +32,6 @@ export type GetLevel500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type GetLevelQueryResponse = GetLevel200

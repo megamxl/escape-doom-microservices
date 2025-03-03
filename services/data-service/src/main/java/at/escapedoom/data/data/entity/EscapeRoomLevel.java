@@ -19,9 +19,11 @@ public class EscapeRoomLevel {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID escapeRoomLevelId;
 
-    @OneToMany(mappedBy = "escapeRoomLevel", cascade = { CascadeType.PERSIST,
-            CascadeType.MERGE }, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Riddle> riddles;
+    // @OneToMany(mappedBy = "escapeRoomLevel", cascade = { CascadeType.PERSIST,
+    // CascadeType.MERGE }, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "riddle_id", referencedColumnName = "escapeRoomRiddleId")
+    private Riddle riddle;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
     @JoinTable(name = "escape_room_level_scene", joinColumns = @JoinColumn(name = "escape_room_level_id"), inverseJoinColumns = @JoinColumn(name = "scene_id"))

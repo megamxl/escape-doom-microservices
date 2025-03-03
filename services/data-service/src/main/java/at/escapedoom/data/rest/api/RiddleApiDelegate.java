@@ -31,7 +31,7 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * POST /riddle : Create a new riddle Create a riddle without linking it to a specific level
+     * POST /riddles : Create a new riddle Create a riddle without linking it to a specific level
      *
      * @param riddleCreationRequestDTO
      *            The details of the riddle to create (required)
@@ -45,7 +45,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }";
+                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -66,7 +66,7 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * DELETE /riddle/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
+     * DELETE /riddles/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -101,7 +101,7 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * GET /all-riddles : Get all riddles Retrieve all riddles that are not yet linked to any level
+     * GET /riddles : Get all riddles Retrieve all riddles that are not yet linked to any level
      *
      * @return A list of riddles (status code 200) or Internal Server Error (status code 500)
      *
@@ -111,7 +111,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" } ]";
+                    String exampleString = "[ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -127,7 +127,7 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * GET /riddle/{escape-room-riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
+     * GET /riddles/{escape-room-riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -140,7 +140,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }";
+                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -156,7 +156,7 @@ public interface RiddleApiDelegate {
     }
 
     /**
-     * PUT /riddle/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
+     * PUT /riddles/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
      *
      * @param escapeRoomRiddleId
      *            The unique ID of the riddle (required)
@@ -173,7 +173,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"escape_room_riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\", \"escape_room_level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\" }";
+                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

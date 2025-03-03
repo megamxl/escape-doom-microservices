@@ -1,10 +1,10 @@
 // version: 0.0.1
-import type { EscapeRoomLevel } from './EscapeRoomLevel.ts'
+import type { EscapeRoomLevelDTO } from './EscapeRoomLevelDTO.ts'
 
 /**
  * @description A list of levels
  */
-export type GetAllLevels200 = EscapeRoomLevel[]
+export type GetAllLevels200 = EscapeRoomLevelDTO[]
 
 /**
  * @description Internal Server Error
@@ -14,10 +14,6 @@ export type GetAllLevels500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type GetAllLevelsQueryResponse = GetAllLevels200

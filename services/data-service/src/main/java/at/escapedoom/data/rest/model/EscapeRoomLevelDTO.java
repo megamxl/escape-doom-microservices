@@ -31,9 +31,9 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomLevelDTO {
 
-    private @Nullable String escapeRoomTemplateId;
+    private @Nullable String templateId;
 
-    private @Nullable String escapeRoomLevelId;
+    private @Nullable String levelId;
 
     private @Nullable Integer sequence;
 
@@ -41,50 +41,48 @@ public class EscapeRoomLevelDTO {
     @Valid
     private List<@Valid SceneDTO> scenes = new ArrayList<>();
 
-    @lombok.Builder.Default
-    @Valid
-    private List<@Valid RiddleDTO> riddles = new ArrayList<>();
+    private @Nullable RiddleDTO riddle;
 
-    public EscapeRoomLevelDTO escapeRoomTemplateId(String escapeRoomTemplateId) {
-        this.escapeRoomTemplateId = escapeRoomTemplateId;
+    public EscapeRoomLevelDTO templateId(String templateId) {
+        this.templateId = templateId;
         return this;
     }
 
     /**
      * The unique ID of the escape room template
      *
-     * @return escapeRoomTemplateId
+     * @return templateId
      */
 
-    @Schema(name = "escape_room_template_id", example = "d1087efe-41fd-42da-9110-62d35659cf1f", description = "The unique ID of the escape room template", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_template_id")
-    public String getEscapeRoomTemplateId() {
-        return escapeRoomTemplateId;
+    @Schema(name = "template_id", example = "d1087efe-41fd-42da-9110-62d35659cf1f", description = "The unique ID of the escape room template", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("template_id")
+    public String getTemplateId() {
+        return templateId;
     }
 
-    public void setEscapeRoomTemplateId(String escapeRoomTemplateId) {
-        this.escapeRoomTemplateId = escapeRoomTemplateId;
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 
-    public EscapeRoomLevelDTO escapeRoomLevelId(String escapeRoomLevelId) {
-        this.escapeRoomLevelId = escapeRoomLevelId;
+    public EscapeRoomLevelDTO levelId(String levelId) {
+        this.levelId = levelId;
         return this;
     }
 
     /**
      * The unique ID of the escape room level
      *
-     * @return escapeRoomLevelId
+     * @return levelId
      */
 
-    @Schema(name = "escape_room_level_id", example = "d1087efe-41fd-42da-9110-62d35659cf1f", description = "The unique ID of the escape room level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_level_id")
-    public String getEscapeRoomLevelId() {
-        return escapeRoomLevelId;
+    @Schema(name = "level_id", example = "d1087efe-41fd-42da-9110-62d35659cf1f", description = "The unique ID of the escape room level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("level_id")
+    public String getLevelId() {
+        return levelId;
     }
 
-    public void setEscapeRoomLevelId(String escapeRoomLevelId) {
-        this.escapeRoomLevelId = escapeRoomLevelId;
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
     }
 
     public EscapeRoomLevelDTO sequence(Integer sequence) {
@@ -137,33 +135,25 @@ public class EscapeRoomLevelDTO {
         this.scenes = scenes;
     }
 
-    public EscapeRoomLevelDTO riddles(List<@Valid RiddleDTO> riddles) {
-        this.riddles = riddles;
-        return this;
-    }
-
-    public EscapeRoomLevelDTO addRiddlesItem(RiddleDTO riddlesItem) {
-        if (this.riddles == null) {
-            this.riddles = new ArrayList<>();
-        }
-        this.riddles.add(riddlesItem);
+    public EscapeRoomLevelDTO riddle(RiddleDTO riddle) {
+        this.riddle = riddle;
         return this;
     }
 
     /**
-     * List of riddles in the level
+     * Get riddle
      *
-     * @return riddles
+     * @return riddle
      */
     @Valid
-    @Schema(name = "riddles", description = "List of riddles in the level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("riddles")
-    public List<@Valid RiddleDTO> getRiddles() {
-        return riddles;
+    @Schema(name = "riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("riddle")
+    public RiddleDTO getRiddle() {
+        return riddle;
     }
 
-    public void setRiddles(List<@Valid RiddleDTO> riddles) {
-        this.riddles = riddles;
+    public void setRiddle(RiddleDTO riddle) {
+        this.riddle = riddle;
     }
 
     @Override
@@ -175,27 +165,27 @@ public class EscapeRoomLevelDTO {
             return false;
         }
         EscapeRoomLevelDTO escapeRoomLevelDTO = (EscapeRoomLevelDTO) o;
-        return Objects.equals(this.escapeRoomTemplateId, escapeRoomLevelDTO.escapeRoomTemplateId)
-                && Objects.equals(this.escapeRoomLevelId, escapeRoomLevelDTO.escapeRoomLevelId)
+        return Objects.equals(this.templateId, escapeRoomLevelDTO.templateId)
+                && Objects.equals(this.levelId, escapeRoomLevelDTO.levelId)
                 && Objects.equals(this.sequence, escapeRoomLevelDTO.sequence)
                 && Objects.equals(this.scenes, escapeRoomLevelDTO.scenes)
-                && Objects.equals(this.riddles, escapeRoomLevelDTO.riddles);
+                && Objects.equals(this.riddle, escapeRoomLevelDTO.riddle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(escapeRoomTemplateId, escapeRoomLevelId, sequence, scenes, riddles);
+        return Objects.hash(templateId, levelId, sequence, scenes, riddle);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class EscapeRoomLevelDTO {\n");
-        sb.append("    escapeRoomTemplateId: ").append(toIndentedString(escapeRoomTemplateId)).append("\n");
-        sb.append("    escapeRoomLevelId: ").append(toIndentedString(escapeRoomLevelId)).append("\n");
+        sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+        sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("    sequence: ").append(toIndentedString(sequence)).append("\n");
         sb.append("    scenes: ").append(toIndentedString(scenes)).append("\n");
-        sb.append("    riddles: ").append(toIndentedString(riddles)).append("\n");
+        sb.append("    riddle: ").append(toIndentedString(riddle)).append("\n");
         sb.append("}");
         return sb.toString();
     }

@@ -30,10 +30,6 @@ export type DeleteLevel404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -44,10 +40,6 @@ export type DeleteLevel500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type DeleteLevelMutationResponse = DeleteLevel200

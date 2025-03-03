@@ -32,19 +32,13 @@ class LevelServiceTest {
     @Autowired
     private LevelRepository repository;
 
-    @Autowired
-    private RiddleService riddleService;
-
-    @Autowired
-    private SceneService sceneService;
-
     @Transactional
     @BeforeEach
     void setup() {
         repository.deleteAllInBatch();
         repository.flush();
 
-        EscapeRoomLevel level = EscapeRoomLevel.builder().levelSequence(1).scenes(List.of()).riddles(List.of()).build();
+        EscapeRoomLevel level = EscapeRoomLevel.builder().levelSequence(1).scenes(List.of()).build();
         VALID_LEVEL_ID = repository.save(level).getEscapeRoomLevelId().toString();
     }
 
@@ -90,12 +84,12 @@ class LevelServiceTest {
 
         final int newSequence = 2;
 
-        EscapeRoomLevelDTO levelRequest = EscapeRoomLevelDTO.builder().escapeRoomLevelId(level.getEscapeRoomLevelId())
-                .sequence(newSequence).scenes(level.getScenes()).riddles(level.getRiddles()).build();
+        EscapeRoomLevelDTO levelRequest = EscapeRoomLevelDTO.builder().levelId(level.getLevelId()).sequence(newSequence)
+                .scenes(level.getScenes()).riddle(level.getRiddle()).build();
 
-        EscapeRoomLevelDTO updatedLevel = service.updateLevel(level.getEscapeRoomLevelId(), levelRequest);
+        EscapeRoomLevelDTO updatedLevel = service.updateLevel(level.getLevelId(), levelRequest);
 
-        assertThat(updatedLevel.getEscapeRoomLevelId()).isEqualTo(level.getEscapeRoomLevelId());
+        assertThat(updatedLevel.getLevelId()).isEqualTo(level.getLevelId());
         assertThat(updatedLevel.getSequence()).isEqualTo(newSequence);
     }
 
@@ -111,8 +105,7 @@ class LevelServiceTest {
     // region POST Tests
     @Test
     void testCreateLevel() {
-        EscapeRoomLevelDTO levelRequest = EscapeRoomLevelDTO.builder().sequence(3).scenes(List.of()).riddles(List.of())
-                .build();
+        EscapeRoomLevelDTO levelRequest = EscapeRoomLevelDTO.builder().sequence(3).scenes(List.of()).build();
 
         EscapeRoomLevelDTO level = service.createLevel(levelRequest);
 

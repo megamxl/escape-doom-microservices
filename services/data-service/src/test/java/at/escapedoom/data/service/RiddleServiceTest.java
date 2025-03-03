@@ -16,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,16 +77,13 @@ class RiddleServiceTest {
         assertEquals("Riddle deleted successfully", response.getMessage());
     }
 
-    /*
-     * @Test void testDeleteRiddleNotFoundError() { assertThrows(IllegalArgumentException.class, () ->
-     * service.deleteRiddle(INVALID_RIDDLE_ID)); }
-     *
-     */
+     @Test
+    void testDeleteRiddleNotFoundError() {
+        assertThrows(NoSuchElementException.class, () -> service.deleteRiddle(INVALID_RIDDLE_ID)); }
 
-    // TODO: fix AssertionError
     @Test
     void testDeleteRiddleNullError() {
-        assertThrows(NullPointerException.class, () -> service.deleteRiddle(null));
+        assertThrows(AssertionError.class, () -> service.deleteRiddle(null));
     }
     // endregion
 
@@ -100,9 +98,9 @@ class RiddleServiceTest {
         RiddleCreationRequestDTO riddleCreationRequest = RiddleCreationRequestDTO.builder().expectedOutput(newOutput)
                 .variableName(newVariableName).build();
 
-        RiddleDTO updatedRiddle = service.updateRiddle(riddleCreationRequest, riddle.getEscapeRoomRiddleId());
+        RiddleDTO updatedRiddle = service.updateRiddle(riddleCreationRequest, riddle.getRiddleId());
 
-        assertEquals(riddle.getEscapeRoomRiddleId(), updatedRiddle.getEscapeRoomRiddleId());
+        assertEquals(riddle.getRiddleId(), updatedRiddle.getRiddleId());
         assertEquals(newOutput, updatedRiddle.getExpectedOutput());
     }
 
@@ -130,7 +128,7 @@ class RiddleServiceTest {
 
         RiddleDTO updatedRiddle = service.updateRiddle(riddleCreationRequest, VALID_RIDDLE_ID);
 
-        assertEquals(riddle.getEscapeRoomRiddleId(), updatedRiddle.getEscapeRoomRiddleId());
+        assertEquals(riddle.getRiddleId(), updatedRiddle.getRiddleId());
         assertEquals(riddle.getInput(), updatedRiddle.getInput());
     }
     // endregion

@@ -1,11 +1,11 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.data.RiddleRepository;
-import at.escapedoom.data.data.entity.EscapeRoomLevel;
 import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
+import at.escapedoom.data.utils.LoggerUtils;
 import at.escapedoom.data.utils.ReflectionUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 
 @Slf4j
 @Service
@@ -42,51 +44,47 @@ public class RiddleService {
         return toRestBody(riddle);
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public RiddleDTO createRiddle(RiddleCreationRequestDTO riddleRequest) {
-        assert riddleRequest != null;
+        assert riddleRequest != null : "Creation request cannot be null";
 
         Riddle riddle = creationRequestToRiddle(riddleRequest);
+
         repository.save(riddle);
+
+        riddleLog(LoggerUtils.LogType.CREATION, riddle.getEscapeRoomRiddleId());
         return toRestBody(riddle);
     }
 
-    public RiddleDTO createRiddle(RiddleCreationRequestDTO riddleRequest, String levelId) {
-        assert riddleRequest != null && levelId != null;
+    @Transactional(rollbackFor = Exception.class)
+    public RiddleDTO updateRiddle(RiddleCreationRequestDTO riddleDTO, String uuid) {
+        assert riddleDTO != null : "Riddle update request must not be null";
+        assert uuid != null : "Riddle UUID must not be null";
 
-        Riddle riddle = creationRequestToRiddle(riddleRequest);
-        riddle.setEscapeRoomLevel(EscapeRoomLevel.builder().escapeRoomLevelId(UUID.fromString(levelId)).build());
-        repository.save(riddle);
-        return toRestBody(riddle);
-    }
-
-    @Transactional
-    public List<Riddle> createRiddlesForLevel(List<RiddleDTO> riddles, EscapeRoomLevel level) {
-        List<Riddle> dbRiddles = new ArrayList<>();
-        for (RiddleDTO riddle : riddles) {
-            RiddleCreationRequestDTO riddleRequest = convertToRiddleCreationRequest(riddle);
-            Riddle dbRiddle = creationRequestToRiddle(riddleRequest);
-            dbRiddle.setEscapeRoomLevel(level);
-            dbRiddle = saveRiddle(dbRiddle);
-            dbRiddles.add(dbRiddle);
-        }
-        return dbRiddles;
-    }
-
-    @Transactional
-    public RiddleDTO updateRiddle(RiddleCreationRequestDTO riddle, String uuid) {
-        assert riddle != null;
-        Riddle dbRiddle = repository.findById(UUID.fromString(uuid))
+        Riddle riddle = repository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Riddle with ID: %s not found", uuid)));
 
-        ReflectionUtils.copyNonNullProperties(dbRiddle, riddle);
-        repository.save(dbRiddle);
-        return toRestBody(dbRiddle);
+        ReflectionUtils.copyNonNullProperties(riddle, riddleDTO);
+        repository.save(riddle);
+
+        riddleLog(LoggerUtils.LogType.UPDATE, riddle.getEscapeRoomRiddleId());
+
+        return toRestBody(riddle);
     }
 
     public RiddleDeletionResponseDTO deleteRiddle(String uuid) throws IllegalArgumentException {
-        repository.deleteById(UUID.fromString(uuid));
-        return new RiddleDeletionResponseDTO("Riddle deleted successfully");
+        assert uuid != null : "UUID must not be null";
+
+        UUID riddleId = UUID.fromString(uuid);
+
+        if (repository.existsById(riddleId)) {
+            repository.deleteById(riddleId);
+
+            riddleLog(LoggerUtils.LogType.DELETION, riddleId);
+            return new RiddleDeletionResponseDTO("Riddle deleted successfully");
+        }
+
+        throw new NoSuchElementException("There is no such Riddle with ID: " + uuid);
     }
 
     // region Helper Methods
@@ -98,7 +96,7 @@ public class RiddleService {
 
     public Riddle creationRequestToRiddle(RiddleCreationRequestDTO riddleRequest) {
         return Riddle.builder().input(riddleRequest.getInput()).language(riddleRequest.getLanguage())
-                .expectedOutput(riddleRequest.getExpectedOutput())
+                .expectedOutput(riddleRequest.getExpectedOutput()).variableName(riddleRequest.getVariableName())
                 .functionSignature(riddleRequest.getFunctionSignature()).variableName(riddleRequest.getVariableName())
                 .build();
     }
@@ -106,7 +104,11 @@ public class RiddleService {
     RiddleDTO toRestBody(Riddle riddle) {
         return RiddleDTO.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
                 .input(riddle.getInput()).functionSignature(riddle.getFunctionSignature())
-                .escapeRoomRiddleId(riddle.getEscapeRoomRiddleId().toString()).build();
+                .riddleId(riddle.getEscapeRoomRiddleId().toString()).build();
+    }
+
+    private void riddleLog(LoggerUtils.LogType logType, UUID uuid) {
+        logCreation(log, logType, uuid, Riddle.class);
     }
     // endregion
 }

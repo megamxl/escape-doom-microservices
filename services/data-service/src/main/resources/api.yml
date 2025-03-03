@@ -7,7 +7,24 @@ servers:
 paths:
   ### Template
 
-  /template/create:
+  /templates:
+    get:
+      operationId: getAllTemplates
+      tags:
+        - Template
+      summary: Get all EscapeRoomTemplates
+      description: Retrieve a list of all existing EscapeRoomTemplates from a Lector
+      responses:
+        '200':
+          description: A list of templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EscapeRoomTemplateDTO'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     post:
       operationId: createTemplate
       tags:
@@ -28,7 +45,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /template/delete/{escape-room-template-id}:
+  /templates/{escape-room-template-id}:
     delete:
       operationId: deleteTemplate
       tags:
@@ -52,7 +69,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /template/override/{escape-room-template-id}:
     put:
       operationId: putTemplate
       tags:
@@ -89,25 +105,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /all-templates:
-    get:
-      operationId: getAllTemplates
-      tags:
-        - Template
-      summary: Get all EscapeRoomTemplates
-      description: Retrieve a list of all existing EscapeRoomTemplates from a Lector
-      responses:
-        '200':
-          description: A list of templates
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EscapeRoomTemplateDTO'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /template/{escape-room-template-id}:
     get:
       operationId: getTemplate
       tags:
@@ -145,10 +142,8 @@ paths:
                     example: 404
         '500':
           $ref: '#/components/responses/InternalServerError'
-
-
   ### Level
-  /all-levels:
+  /levels:
     get:
       operationId: getAllLevels
       tags:
@@ -166,7 +161,6 @@ paths:
                   $ref: '#/components/schemas/EscapeRoomLevelDTO'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level:
     post:
       operationId: createLevel
       tags:
@@ -233,7 +227,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level/overide/{escape-room-level-id}:
     put:
       operationId: updateLevel
       tags:
@@ -268,7 +261,6 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level/{escape-room-level-id}:
     delete:
       operationId: deleteLevel
       tags:
@@ -304,8 +296,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
   ### Riddle
-
-  /all-riddles:
+  /riddles:
     get:
       operationId: getAllRiddles
       tags:
@@ -323,7 +314,6 @@ paths:
                   $ref: '#/components/schemas/RiddleDTO'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /riddle:
     post:
       operationId: createRiddle
       tags:
@@ -348,7 +338,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /riddle/{escape-room-riddle-id}:
+  /riddles/{escape-room-riddle-id}:
     parameters:
       - name: escape-room-riddle-id
         in: path
@@ -424,7 +414,7 @@ paths:
 
   ### Scene
 
-  /scene:
+  /scenes:
     get:
       operationId: getAllScenes
       tags:
@@ -624,7 +614,7 @@ components:
       description: The escape-room template, base for an EscapeRoom Game
       type: object
       properties:
-        escape_room_template_id:
+        template_id:
           type: string
           description: Unique ID for the Template
           example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
@@ -691,11 +681,11 @@ components:
       description: The current level of an escape-room instance
       type: object
       properties:
-        escape_room_template_id:
+        template_id:
           type: string
           description: The unique ID of the escape room template
           example: "d1087efe-41fd-42da-9110-62d35659cf1f"
-        escape_room_level_id:
+        level_id:
           type: string
           description: The unique ID of the escape room level
           example: "d1087efe-41fd-42da-9110-62d35659cf1f"
@@ -708,20 +698,17 @@ components:
           items:
             $ref: "#/components/schemas/SceneDTO"
           description: List of scenes in the level
-        riddles:
-          type: array
-          items:
-            $ref: "#/components/schemas/RiddleDTO"
-          description: List of riddles in the level
+        riddle:
+          $ref: "#/components/schemas/RiddleDTO"
     SceneDTO:
       description: A scene of an escape-room instance
       type: object
       properties:
-        escape_room_level_id:
+        level_id:
           type: string
           description: The ID of the escape room level that contains this riddle
           example: "a12b34c5-6789-4def-abcd-12345678abcd"
-        escape_room_sequence_id:
+        sequence_id:
           type: string
           description: The unique ID of the scene sequence
           example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
@@ -746,11 +733,11 @@ components:
       description: Base schema for a riddle
       type: object
       properties:
-        escape_room_riddle_id:
+        riddle_id:
           type: string
           description: The unique ID of the riddle
           example: "5830daed-cb7f-47dd-8248-5dee9bf0aa3d"
-        escape_room_level_id:
+        level_id:
           type: string
           description: The ID of the escape room level that contains this riddle
           example: "a12b34c5-6789-4def-abcd-12345678abcd"
@@ -772,6 +759,7 @@ components:
           type: string
           description: The expected output of the riddle
           example: "42"
+
     RiddleCreationRequestDTO:
       description: Base schema for riddle creation
       type: object
@@ -794,6 +782,12 @@ components:
           type: string
           description: The expected output of the riddle
           example: "42"
+        level_id:
+          type: string
+          description: The ID of the Escape Room Level this riddle belongs to
+          example: "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f"
+
+
     SceneRequestDTO:
       description: Base schema for any request to the scene API
       type: object
@@ -815,7 +809,7 @@ components:
           type: string
           description: The name of the scene
           example: "Scene 1"
-        escape_room_level_id:
+        level_id:
           type: string
           description: The ID of the Escape Room Level this scene belongs to
           example: "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f"

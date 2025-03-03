@@ -16,10 +16,6 @@ export type DeleteRiddle200 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -30,10 +26,6 @@ export type DeleteRiddle404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -44,10 +36,6 @@ export type DeleteRiddle500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type DeleteRiddleMutationResponse = DeleteRiddle200

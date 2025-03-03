@@ -14,10 +14,6 @@ export type GetAllTemplates500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type GetAllTemplatesQueryResponse = GetAllTemplates200

@@ -34,7 +34,7 @@ public interface TemplateApiDelegate {
     }
 
     /**
-     * POST /template/create : Creates a new Template for Escape Doom Game Creates a new Template for EscapeRoom
+     * POST /templates : Creates a new Template for Escape Doom Game Creates a new Template for EscapeRoom
      *
      * @param escapeRoomTemplateCreateRequestDTO
      *            Lectors ID + Name and Description for a Template (required)
@@ -70,8 +70,8 @@ public interface TemplateApiDelegate {
     }
 
     /**
-     * DELETE /template/delete/{escape-room-template-id} : Deletes an EscapeRoomTemplate Deletes an EscapeRoomTemplate
-     * by its unique ID
+     * DELETE /templates/{escape-room-template-id} : Deletes an EscapeRoomTemplate Deletes an EscapeRoomTemplate by its
+     * unique ID
      *
      * @param escapeRoomTemplateId
      *            The unique ID of the EscapeRoomTemplate to delete (required)
@@ -111,8 +111,7 @@ public interface TemplateApiDelegate {
     }
 
     /**
-     * GET /all-templates : Get all EscapeRoomTemplates Retrieve a list of all existing EscapeRoomTemplates from a
-     * Lector
+     * GET /templates : Get all EscapeRoomTemplates Retrieve a list of all existing EscapeRoomTemplates from a Lector
      *
      * @return A list of templates (status code 200) or Internal Server Error (status code 500)
      *
@@ -122,7 +121,7 @@ public interface TemplateApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" }, { \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" } ]";
+                    String exampleString = "[ { \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\", \"template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\" }, { \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\", \"template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -138,7 +137,7 @@ public interface TemplateApiDelegate {
     }
 
     /**
-     * GET /template/{escape-room-template-id} : Get a specific EscapeRoomTemplate by ID Retrieve details of a specific
+     * GET /templates/{escape-room-template-id} : Get a specific EscapeRoomTemplate by ID Retrieve details of a specific
      * EscapeRoomTemplate using its unique ID
      *
      * @param escapeRoomTemplateId
@@ -153,7 +152,7 @@ public interface TemplateApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"escape_room_template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\", \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\" }";
+                    String exampleString = "{ \"name\" : \"SDE24\", \"description\" : \"Cäsar´s Rätsel\", \"template_id\" : \"b6557071-e7fa-47bc-bdd1-5657ebd325b8\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -174,7 +173,7 @@ public interface TemplateApiDelegate {
     }
 
     /**
-     * PUT /template/override/{escape-room-template-id} : Overrides an existing EscapeRoomTemplate Override the name,
+     * PUT /templates/{escape-room-template-id} : Overrides an existing EscapeRoomTemplate Override the name,
      * description, and levels of an existing EscapeRoomTemplate
      *
      * @param escapeRoomTemplateId

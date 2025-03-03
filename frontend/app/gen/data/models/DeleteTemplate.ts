@@ -1,5 +1,5 @@
 // version: 0.0.1
-import type { EscapeRoomTemplateResult } from './EscapeRoomTemplateResult.ts'
+import type { EscapeRoomTemplateResultDTO } from './EscapeRoomTemplateResultDTO.ts'
 
 export type DeleteTemplatePathParams = {
   /**
@@ -12,7 +12,7 @@ export type DeleteTemplatePathParams = {
 /**
  * @description Operation result for EscapeRoomTemplate
  */
-export type DeleteTemplate200 = EscapeRoomTemplateResult
+export type DeleteTemplate200 = EscapeRoomTemplateResultDTO
 
 /**
  * @description Bad Request
@@ -22,10 +22,6 @@ export type DeleteTemplate400 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -36,10 +32,6 @@ export type DeleteTemplate404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -50,10 +42,6 @@ export type DeleteTemplate500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type DeleteTemplateMutationResponse = DeleteTemplate200

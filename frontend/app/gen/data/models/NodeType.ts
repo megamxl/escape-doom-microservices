@@ -11,5 +11,6 @@ export type NodeTypeEnum = (typeof nodeTypeEnum)[keyof typeof nodeTypeEnum]
 
 /**
  * @description The type of a node
+ * @example ZOOM
  */
 export type NodeType = NodeTypeEnum

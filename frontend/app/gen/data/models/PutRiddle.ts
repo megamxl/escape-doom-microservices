@@ -1,7 +1,6 @@
 // version: 0.0.1
-import type { CodingRiddle } from './CodingRiddle.ts'
-import type { InputStringCompareRiddle } from './InputStringCompareRiddle.ts'
-import type { Riddle } from './Riddle.ts'
+import type { RiddleCreationRequestDTO } from './RiddleCreationRequestDTO.ts'
+import type { RiddleDTO } from './RiddleDTO.ts'
 
 export type PutRiddlePathParams = {
   /**
@@ -14,7 +13,7 @@ export type PutRiddlePathParams = {
 /**
  * @description Riddle updated successfully
  */
-export type PutRiddle200 = Riddle
+export type PutRiddle200 = RiddleDTO
 
 /**
  * @description Bad Request
@@ -24,10 +23,6 @@ export type PutRiddle400 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -38,10 +33,6 @@ export type PutRiddle404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -52,16 +43,12 @@ export type PutRiddle500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
  * @description The override details of the riddle
  */
-export type PutRiddleMutationRequest = InputStringCompareRiddle | CodingRiddle
+export type PutRiddleMutationRequest = RiddleCreationRequestDTO
 
 export type PutRiddleMutationResponse = PutRiddle200
 

@@ -1,10 +1,11 @@
 // version: 0.0.1
-import type { Scene } from './Scene.ts'
+import type { SceneDTO } from './SceneDTO.ts'
+import type { SceneRequestDTO } from './SceneRequestDTO.ts'
 
 /**
  * @description Scene created successfully
  */
-export type CreateScene201 = Scene
+export type CreateScene201 = SceneDTO
 
 /**
  * @description Bad Request
@@ -14,10 +15,6 @@ export type CreateScene400 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -28,16 +25,12 @@ export type CreateScene500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
  * @description The details of the new Scene
  */
-export type CreateSceneMutationRequest = Scene
+export type CreateSceneMutationRequest = SceneRequestDTO
 
 export type CreateSceneMutationResponse = CreateScene201
 

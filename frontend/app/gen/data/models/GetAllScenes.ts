@@ -1,10 +1,10 @@
 // version: 0.0.1
-import type { Scene } from './Scene.ts'
+import type { SceneDTO } from './SceneDTO.ts'
 
 /**
  * @description A list of scenes
  */
-export type GetAllScenes200 = Scene[]
+export type GetAllScenes200 = SceneDTO[]
 
 /**
  * @description Internal Server Error
@@ -14,10 +14,6 @@ export type GetAllScenes500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type GetAllScenesQueryResponse = GetAllScenes200

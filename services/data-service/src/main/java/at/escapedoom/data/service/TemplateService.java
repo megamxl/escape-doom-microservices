@@ -54,7 +54,7 @@ public class TemplateService {
 
         return repository.findAll().stream()
                 .map(template -> EscapeRoomTemplateDTO.builder()
-                        .escapeRoomTemplateId(template.getEscapeRoomTemplateID().toString()).name(template.getName())
+                        .templateId(template.getEscapeRoomTemplateID().toString()).name(template.getName())
                         .description(template.getDescription()).build())
                 .toList();
     }
@@ -72,7 +72,7 @@ public class TemplateService {
             return null;
 
         EscapeRoomTemplateDTO apiTemplate = new EscapeRoomTemplateDTO();
-        apiTemplate.setEscapeRoomTemplateId(entity.getEscapeRoomTemplateID().toString());
+        apiTemplate.templateId(entity.getEscapeRoomTemplateID().toString());
         apiTemplate.setName(entity.getName());
         apiTemplate.setDescription(entity.getDescription());
 

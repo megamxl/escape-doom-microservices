@@ -1,5 +1,5 @@
 // version: 0.0.1
-import type { Scene } from './Scene.ts'
+import type { SceneDTO } from './SceneDTO.ts'
 
 export type GetScenePathParams = {
   /**
@@ -12,7 +12,7 @@ export type GetScenePathParams = {
 /**
  * @description Scene details
  */
-export type GetScene200 = Scene
+export type GetScene200 = SceneDTO
 
 /**
  * @description Not Found
@@ -22,10 +22,6 @@ export type GetScene404 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 /**
@@ -36,10 +32,6 @@ export type GetScene500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type GetSceneQueryResponse = GetScene200

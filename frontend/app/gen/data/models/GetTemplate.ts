@@ -1,5 +1,5 @@
 // version: 0.0.1
-import type { EscapeRoomTemplate } from './EscapeRoomTemplate.ts'
+import type { EscapeRoomTemplateDTO } from './EscapeRoomTemplateDTO.ts'
 
 export type GetTemplatePathParams = {
   /**
@@ -12,7 +12,7 @@ export type GetTemplatePathParams = {
 /**
  * @description Details of the specified template
  */
-export type GetTemplate200 = EscapeRoomTemplate
+export type GetTemplate200 = EscapeRoomTemplateDTO
 
 /**
  * @description Template not found
@@ -36,10 +36,6 @@ export type GetTemplate500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type GetTemplateQueryResponse = GetTemplate200

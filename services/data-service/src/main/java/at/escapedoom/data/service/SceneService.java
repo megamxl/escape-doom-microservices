@@ -101,7 +101,7 @@ public class SceneService {
     private SceneRequestDTO convertToSceneRequest(SceneDTO scene, EscapeRoomLevel level) {
         return SceneRequestDTO.builder().sceneSequence(scene.getSceneSequence()).name(scene.getName())
                 .backgroundImageUri(scene.getBackgroundImageUri()).nodes(scene.getNodes())
-                .escapeRoomLevelId(level.getEscapeRoomLevelId().toString()).build();
+                .levelId(level.getEscapeRoomLevelId().toString()).build();
     }
 
     SceneDTO toScene(Scene scene) {
@@ -114,9 +114,9 @@ public class SceneService {
         Scene scene = Scene.builder().name(sceneRequest.getName()).sceneSequence(sceneRequest.getSceneSequence())
                 .backgroundImageURI(sceneRequest.getBackgroundImageUri()).nodes(new ArrayList<>()).build();
 
-        if (sceneRequest.getEscapeRoomLevelId() != null) {
-            scene.setEscapeRoomLevel(EscapeRoomLevel.builder()
-                    .escapeRoomLevelId(UUID.fromString(sceneRequest.getEscapeRoomLevelId())).build());
+        if (sceneRequest.getLevelId() != null) {
+            scene.setEscapeRoomLevel(
+                    EscapeRoomLevel.builder().escapeRoomLevelId(UUID.fromString(sceneRequest.getLevelId())).build());
         }
 
         if (sceneRequest.getNodes() != null && !sceneRequest.getNodes().isEmpty()) {

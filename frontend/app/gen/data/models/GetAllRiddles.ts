@@ -1,10 +1,10 @@
 // version: 0.0.1
-import type { Riddle } from './Riddle.ts'
+import type { RiddleDTO } from './RiddleDTO.ts'
 
 /**
  * @description A list of riddles
  */
-export type GetAllRiddles200 = Riddle[]
+export type GetAllRiddles200 = RiddleDTO[]
 
 /**
  * @description Internal Server Error
@@ -14,10 +14,6 @@ export type GetAllRiddles500 = {
    * @type string | undefined
    */
   message?: string
-  /**
-   * @type number | undefined
-   */
-  code?: number
 }
 
 export type GetAllRiddlesQueryResponse = GetAllRiddles200

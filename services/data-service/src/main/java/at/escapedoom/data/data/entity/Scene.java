@@ -3,6 +3,7 @@ package at.escapedoom.data.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,10 +26,10 @@ public class Scene {
     private String backgroundImageURI;
 
     @ManyToOne
-    @JoinColumn(name = "escape_room_level_id", nullable = false)
+    @JoinColumn(name = "escape_room_level_id")
     private EscapeRoomLevel escapeRoomLevel;
 
-    @Column(name = "escape_room_sequence_id", nullable = false, unique = true)
+    @Column(name = "escape_room_sequence_id", unique = true)
     private UUID escapeRoomSequenceId;
 
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
