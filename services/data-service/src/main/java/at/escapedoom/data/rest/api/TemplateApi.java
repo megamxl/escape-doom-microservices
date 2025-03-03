@@ -52,13 +52,13 @@ public interface TemplateApi {
      * @param escapeRoomTemplateCreateRequestDTO
      *            Lectors ID + Name and Description for a Template (required)
      *
-     * @return Operation result for EscapeRoomTemplate (status code 200) or Bad Request (status code 400) or Internal
-     *         Server Error (status code 500)
+     * @return The basic template component (status code 200) or Bad Request (status code 400) or Internal Server Error
+     *         (status code 500)
      */
     @Operation(operationId = "createTemplate", summary = "Creates a new Template for Escape Doom Game", description = "Creates a new Template for EscapeRoom", tags = {
             "Template" }, responses = {
-                    @ApiResponse(responseCode = "200", description = "Operation result for EscapeRoomTemplate", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateResultDTO.class)) }),
+                    @ApiResponse(responseCode = "200", description = "The basic template component", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomTemplateDTO.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
@@ -66,7 +66,7 @@ public interface TemplateApi {
     @RequestMapping(method = RequestMethod.POST, value = "/templates", produces = { "application/json" }, consumes = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomTemplateResultDTO> createTemplate(
+    default ResponseEntity<EscapeRoomTemplateDTO> createTemplate(
             @Parameter(name = "EscapeRoomTemplateCreateRequestDTO", description = "Lectors ID + Name and Description for a Template", required = true) @Valid @RequestBody EscapeRoomTemplateCreateRequestDTO escapeRoomTemplateCreateRequestDTO) {
         return getDelegate().createTemplate(escapeRoomTemplateCreateRequestDTO);
     }

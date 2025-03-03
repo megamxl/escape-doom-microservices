@@ -29,10 +29,8 @@ public class Node {
     private NodeType nodeType;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "scene_id", referencedColumnName = "sceneId"),
-            @JoinColumn(name = "scene_sequence", referencedColumnName = "sceneSequence")
-    })
+    @JoinColumns({ @JoinColumn(name = "scene_id", referencedColumnName = "sceneId"),
+            @JoinColumn(name = "scene_sequence", referencedColumnName = "sceneSequence") })
     private Scene scene;
 
     @Override

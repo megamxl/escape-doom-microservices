@@ -17,8 +17,9 @@ public class TemplateApiDelegateImpl implements TemplateApiDelegate {
     private final TemplateService templateService;
 
     @Override
-    public ResponseEntity<EscapeRoomTemplateResultDTO> createTemplate(EscapeRoomTemplateCreateRequestDTO request) {
-        return new ResponseEntity<>(templateService.createTemplate(request), HttpStatus.CREATED);
+    public ResponseEntity<EscapeRoomTemplateDTO> createTemplate(
+            EscapeRoomTemplateCreateRequestDTO escapeRoomTemplateDTO) {
+        return new ResponseEntity<>(templateService.createTemplate(escapeRoomTemplateDTO), HttpStatus.CREATED);
     }
 
     @Override

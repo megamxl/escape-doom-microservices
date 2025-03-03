@@ -22,7 +22,7 @@ public class TemplateService {
         this.repository = repository;
     }
 
-    public EscapeRoomTemplateResultDTO createTemplate(@NonNull EscapeRoomTemplateCreateRequestDTO request) {
+    public EscapeRoomTemplateDTO createTemplate(@NonNull EscapeRoomTemplateCreateRequestDTO request) {
         log.debug("Creating template with name: {}", request.getName());
 
         EscapeRoomTemplate template = EscapeRoomTemplate.builder().name(request.getName())
@@ -30,8 +30,7 @@ public class TemplateService {
 
         repository.save(template);
 
-        return EscapeRoomTemplateResultDTO.builder()
-                .message("Template created successfully. Id: " + template.getEscapeRoomTemplateID().toString()).build();
+        return toApiModel(template);
     }
 
     public EscapeRoomTemplateResultDTO deleteTemplate(String escapeRoomTemplateId) {

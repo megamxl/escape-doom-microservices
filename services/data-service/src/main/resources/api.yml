@@ -37,10 +37,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EscapeRoomTemplateDTO'
+              $ref: '#/components/schemas/EscapeRoomTemplateCreateRequestDTO'
       responses:
         '200':
-          $ref: '#/components/responses/EscapeRoomTemplateResultDTO'
+          $ref: '#/components/responses/EscapeRoomTemplateDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -618,6 +618,10 @@ components:
           type: string
           description: Unique ID for the Template
           example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
+        user_id:
+          type: string
+          description: Unique ID of the user the escape room belongs to
+          example: 8437ea27-f56f-43d1-a5a1-77e2a2b57e8e
         name:
           type: string
           description: Name of the Template
@@ -626,6 +630,10 @@ components:
           type: string
           description: Description of the Template
           example: Cäsar´s Rätsel
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/EscapeRoomLevelDTO'
     EscapeRoomTemplateCreateRequestDTO:
       description: The escape-room template, base for an EscapeRoom Game
       type: object
@@ -853,3 +861,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/EscapeRoomTemplateResultDTO'
+    EscapeRoomTemplateDTO:
+      description: The basic template component
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EscapeRoomTemplateDTO'

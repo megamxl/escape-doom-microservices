@@ -2,8 +2,12 @@ package at.escapedoom.data.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
+import at.escapedoom.data.rest.model.EscapeRoomLevelDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -28,9 +32,15 @@ public class EscapeRoomTemplateDTO {
 
     private @Nullable String templateId;
 
+    private @Nullable String userId;
+
     private @Nullable String name;
 
     private @Nullable String description;
+
+    @lombok.Builder.Default
+    @Valid
+    private List<@Valid EscapeRoomLevelDTO> levels = new ArrayList<>();
 
     public EscapeRoomTemplateDTO templateId(String templateId) {
         this.templateId = templateId;
@@ -51,6 +61,27 @@ public class EscapeRoomTemplateDTO {
 
     public void setTemplateId(String templateId) {
         this.templateId = templateId;
+    }
+
+    public EscapeRoomTemplateDTO userId(String userId) {
+        this.userId = userId;
+        return this;
+    }
+
+    /**
+     * Unique ID of the user the escape room belongs to
+     *
+     * @return userId
+     */
+
+    @Schema(name = "user_id", example = "8437ea27-f56f-43d1-a5a1-77e2a2b57e8e", description = "Unique ID of the user the escape room belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("user_id")
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public EscapeRoomTemplateDTO name(String name) {
@@ -95,6 +126,35 @@ public class EscapeRoomTemplateDTO {
         this.description = description;
     }
 
+    public EscapeRoomTemplateDTO levels(List<@Valid EscapeRoomLevelDTO> levels) {
+        this.levels = levels;
+        return this;
+    }
+
+    public EscapeRoomTemplateDTO addLevelsItem(EscapeRoomLevelDTO levelsItem) {
+        if (this.levels == null) {
+            this.levels = new ArrayList<>();
+        }
+        this.levels.add(levelsItem);
+        return this;
+    }
+
+    /**
+     * Get levels
+     *
+     * @return levels
+     */
+    @Valid
+    @Schema(name = "levels", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("levels")
+    public List<@Valid EscapeRoomLevelDTO> getLevels() {
+        return levels;
+    }
+
+    public void setLevels(List<@Valid EscapeRoomLevelDTO> levels) {
+        this.levels = levels;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -105,13 +165,15 @@ public class EscapeRoomTemplateDTO {
         }
         EscapeRoomTemplateDTO escapeRoomTemplateDTO = (EscapeRoomTemplateDTO) o;
         return Objects.equals(this.templateId, escapeRoomTemplateDTO.templateId)
+                && Objects.equals(this.userId, escapeRoomTemplateDTO.userId)
                 && Objects.equals(this.name, escapeRoomTemplateDTO.name)
-                && Objects.equals(this.description, escapeRoomTemplateDTO.description);
+                && Objects.equals(this.description, escapeRoomTemplateDTO.description)
+                && Objects.equals(this.levels, escapeRoomTemplateDTO.levels);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(templateId, name, description);
+        return Objects.hash(templateId, userId, name, description, levels);
     }
 
     @Override
@@ -119,8 +181,10 @@ public class EscapeRoomTemplateDTO {
         StringBuilder sb = new StringBuilder();
         sb.append("class EscapeRoomTemplateDTO {\n");
         sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+        sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    description: ").append(toIndentedString(description)).append("\n");
+        sb.append("    levels: ").append(toIndentedString(levels)).append("\n");
         sb.append("}");
         return sb.toString();
     }
