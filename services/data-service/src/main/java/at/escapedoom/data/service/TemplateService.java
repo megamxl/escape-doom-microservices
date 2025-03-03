@@ -78,6 +78,7 @@ public class TemplateService {
         return apiTemplate;
     }
 
+    //FIXME: This only updates Name or Description
     public EscapeRoomTemplateUpdateResultDTO updateTemplate(String escapeRoomTemplateId,
             EscapeRoomTemplateUpdateRequestDTO request) {
         log.debug("Updating template with ID: {}", escapeRoomTemplateId);
