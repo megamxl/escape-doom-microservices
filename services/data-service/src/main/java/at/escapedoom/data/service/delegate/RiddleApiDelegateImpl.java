@@ -8,12 +8,14 @@ import at.escapedoom.data.service.RiddleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('LECTOR')")
 public class RiddleApiDelegateImpl implements RiddleApiDelegate {
 
     private final RiddleService service;

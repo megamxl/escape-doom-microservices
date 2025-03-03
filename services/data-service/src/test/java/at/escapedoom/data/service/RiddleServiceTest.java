@@ -77,9 +77,10 @@ class RiddleServiceTest {
         assertEquals("Riddle deleted successfully", response.getMessage());
     }
 
-     @Test
+    @Test
     void testDeleteRiddleNotFoundError() {
-        assertThrows(NoSuchElementException.class, () -> service.deleteRiddle(INVALID_RIDDLE_ID)); }
+        assertThrows(NoSuchElementException.class, () -> service.deleteRiddle(INVALID_RIDDLE_ID));
+    }
 
     @Test
     void testDeleteRiddleNullError() {

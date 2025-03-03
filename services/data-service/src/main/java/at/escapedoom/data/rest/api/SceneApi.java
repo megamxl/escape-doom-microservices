@@ -119,7 +119,7 @@ public interface SceneApi {
      *
      * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "getScene", summary = "Get details of a scene", description = "Retrieve details of a specific scene by its ID", tags = {
+    @Operation(operationId = "getSceneById", summary = "Get details of a scene", description = "Retrieve details of a specific scene by its ID", tags = {
             "Scene" }, responses = { @ApiResponse(responseCode = "200", description = "Scene details", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = SceneDTO.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
@@ -129,9 +129,9 @@ public interface SceneApi {
     @RequestMapping(method = RequestMethod.GET, value = "/scenes/{escape-room-scene-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<SceneDTO> getScene(
+    default ResponseEntity<SceneDTO> getSceneById(
             @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId) {
-        return getDelegate().getScene(escapeRoomSceneId);
+        return getDelegate().getSceneById(escapeRoomSceneId);
     }
 
     /**

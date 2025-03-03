@@ -25,8 +25,13 @@ public class EscapeRoomLevel {
     @JoinColumn(name = "riddle_id", referencedColumnName = "escapeRoomRiddleId")
     private Riddle riddle;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
-    @JoinTable(name = "escape_room_level_scene", joinColumns = @JoinColumn(name = "escape_room_level_id"), inverseJoinColumns = @JoinColumn(name = "scene_id"))
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "escape_room_level_scene",
+            joinColumns = @JoinColumn(name = "escape_room_level_id"),
+            inverseJoinColumns = {
+                @JoinColumn(name = "scene_id", referencedColumnName = "sceneId"),
+                @JoinColumn(name = "scene_sequence", referencedColumnName = "sceneSequence")
+    })
     private List<Scene> scenes;
 
     private Integer levelSequence;
@@ -40,8 +45,6 @@ public class EscapeRoomLevel {
 
     @Override
     public String toString() {
-        return "EscapeRoomLevel{" + "escapeRoomLevelId=" + escapeRoomLevelId + ", levelSequence=" + levelSequence
-                + ", version=" + version + ", template="
-                + (template != null ? template.getEscapeRoomTemplateID() : null) + '}';
+        return "EscapeRoomLevel{" + "escapeRoomLevelId=" + escapeRoomLevelId + ", levelSequence=" + levelSequence + ", version=" + version + ", template=" + (template != null ? template.getEscapeRoomTemplateID() : null) + '}';
     }
 }

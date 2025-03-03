@@ -34,8 +34,8 @@ public class SceneApiDelegateImpl implements SceneApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SceneDTO> getScene(String escapeRoomSceneId) {
-        return new ResponseEntity<>(sceneService.getScene(escapeRoomSceneId), HttpStatus.OK);
+    public ResponseEntity<SceneDTO> getSceneById(String escapeRoomSceneId) {
+        return new ResponseEntity<>(sceneService.getSceneById(escapeRoomSceneId), HttpStatus.OK);
     }
 
     @Override

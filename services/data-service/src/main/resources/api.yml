@@ -37,7 +37,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EscapeRoomTemplateCreateRequestDTO'
+              $ref: '#/components/schemas/EscapeRoomTemplateDTO'
       responses:
         '200':
           $ref: '#/components/responses/EscapeRoomTemplateResultDTO'
@@ -458,7 +458,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
   /scenes/{escape-room-scene-id}:
     get:
-      operationId: getScene
+      operationId: getSceneById
       tags:
         - Scene
       summary: Get details of a scene

@@ -14,14 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Table(name = "scene")
+@IdClass(ScenePK.class)
 public class Scene {
 
-    // TODO: SceneSequence should be part of key
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID sceneId;
 
+    @Id
     private Integer sceneSequence;
+
     private String name;
     private String backgroundImageURI;
 

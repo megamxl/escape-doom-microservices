@@ -32,10 +32,6 @@ public class RiddleService {
         return riddles.stream().map(this::toRestBody).toList();
     }
 
-    public Riddle saveRiddle(Riddle riddle) {
-        return repository.saveAndFlush(riddle);
-    }
-
     public RiddleDTO getRiddleById(@NonNull String uuid) {
 
         Riddle riddle = repository.findById(UUID.fromString(uuid))
@@ -104,7 +100,7 @@ public class RiddleService {
     RiddleDTO toRestBody(Riddle riddle) {
         return RiddleDTO.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
                 .input(riddle.getInput()).functionSignature(riddle.getFunctionSignature())
-                .riddleId(riddle.getEscapeRoomRiddleId().toString()).build();
+                .variableName(riddle.getVariableName()).riddleId(riddle.getEscapeRoomRiddleId().toString()).build();
     }
 
     private void riddleLog(LoggerUtils.LogType logType, UUID uuid) {

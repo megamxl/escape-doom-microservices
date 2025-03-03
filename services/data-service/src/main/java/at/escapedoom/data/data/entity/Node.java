@@ -29,7 +29,10 @@ public class Node {
     private NodeType nodeType;
 
     @ManyToOne
-    @JoinColumn(name = "scene_id", nullable = false)
+    @JoinColumns({
+            @JoinColumn(name = "scene_id", referencedColumnName = "sceneId"),
+            @JoinColumn(name = "scene_sequence", referencedColumnName = "sceneSequence")
+    })
     private Scene scene;
 
     @Override

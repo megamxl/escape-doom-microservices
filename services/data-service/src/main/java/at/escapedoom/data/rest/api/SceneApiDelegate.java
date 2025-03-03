@@ -134,9 +134,9 @@ public interface SceneApiDelegate {
      *
      * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      *
-     * @see SceneApi#getScene
+     * @see SceneApi#getSceneById
      */
-    default ResponseEntity<SceneDTO> getScene(String escapeRoomSceneId) {
+    default ResponseEntity<SceneDTO> getSceneById(String escapeRoomSceneId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

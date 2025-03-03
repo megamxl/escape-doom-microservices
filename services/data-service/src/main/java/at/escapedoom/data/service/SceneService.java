@@ -27,7 +27,7 @@ public class SceneService {
         return sceneRepository.findAll().stream().map(this::toScene).toList();
     }
 
-    public SceneDTO getScene(String id) {
+    public SceneDTO getSceneById(String id) {
         Optional<Scene> dbScene = sceneRepository.findById(UUID.fromString(id));
         return dbScene.map(this::toScene)
                 .orElseThrow(() -> new IllegalArgumentException("Scene with id " + id + " not found"));
@@ -40,6 +40,7 @@ public class SceneService {
         return toScene(scene);
     }
 
+    // TODO: REMOVE ME once sure it's useless
     public SceneDTO createScene(SceneRequestDTO sceneRequest, String levelId) {
         Scene scene = toDBScene(sceneRequest);
         scene.setEscapeRoomLevel(EscapeRoomLevel.builder().escapeRoomLevelId(UUID.fromString(levelId)).build()); // Only
