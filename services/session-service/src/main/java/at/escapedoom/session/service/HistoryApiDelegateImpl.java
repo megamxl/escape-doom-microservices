@@ -4,7 +4,7 @@ import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.data.repository.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.HistoryApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
-import at.escapedoom.session.util.KeycloakUserUtil;
+import at.escapedoom.spring.security.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,9 @@ public class HistoryApiDelegateImpl implements HistoryApiDelegate {
     @PreAuthorize("hasRole('LECTOR')")
     @Override
     public ResponseEntity<List<EscapeRoomSessionResponse>> getERHistory() {
-        String userName = KeycloakUserUtil.getCurrentUsername();
-        List<EscapeRoomSession> sessions = sessionService.getSessionsByUserName(userName);
+        UUID userId = KeycloakUserUtil.getCurrentUserUUID()
+                .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
+        List<EscapeRoomSession> sessions = sessionService.getSessionsByUserUUID(userId);
         List<EscapeRoomSessionResponse> response = new ArrayList<>();
 
         for (EscapeRoomSession session : sessions) {
