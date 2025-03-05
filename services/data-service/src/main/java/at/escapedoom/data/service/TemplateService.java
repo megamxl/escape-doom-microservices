@@ -87,25 +87,18 @@ public class TemplateService {
 
     // FIXME: This only updates Name or Description
     public EscapeRoomTemplateUpdateResultDTO updateTemplate(String escapeRoomTemplateId,
-            EscapeRoomTemplateUpdateRequestDTO request) {
+                                                            EscapeRoomTemplateUpdateRequestDTO request) {
         log.debug("Updating template with ID: {}", escapeRoomTemplateId);
 
         UUID id = validateUUID(escapeRoomTemplateId);
 
-        Optional<EscapeRoomTemplate> templateOpt = repository.findById(id);
+        EscapeRoomTemplate template = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Template with ID " + escapeRoomTemplateId + " not found"));
 
-        if (templateOpt.isPresent()) {
-            EscapeRoomTemplate template = templateOpt.get();
+        template.setName(request.getName());
+        template.setDescription(request.getDescription());
 
-            template.setName(request.getName());
-            template.setDescription(request.getDescription());
-
-            repository.save(template);
-
-            return EscapeRoomTemplateUpdateResultDTO.builder().message("Template updated successfully").build();
-        } else {
-            throw new EntityNotFoundException("Template with ID " + escapeRoomTemplateId + " not found");
-        }
+        repository.save(template);
+        return EscapeRoomTemplateUpdateResultDTO.builder().message("Template updated successfully").build();
     }
 
     private UUID validateUUID(String escapeRoomTemplateId) {

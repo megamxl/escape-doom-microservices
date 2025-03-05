@@ -23,7 +23,7 @@ export async function getFullExportRoomPinSuspenseHook(
   const res = await request<GetFullExportRoomPinQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
     url: `/full-export/${room_pin}`,
-    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/leaderboard-api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/leaderboard-api/v1`,
     ...requestConfig,
   })
   return res.data

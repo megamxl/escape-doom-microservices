@@ -22,7 +22,7 @@ export async function addERTagHook(
   const res = await request<AddERTagMutationResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'PUT',
     url: `/tag/${escape_room_session_id}/${tag_name}`,
-    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1`,
     ...requestConfig,
   })
   return res.data

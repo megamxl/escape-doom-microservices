@@ -19,7 +19,7 @@ export async function getERHistorySuspenseHook(config: Partial<RequestConfig> & 
   const res = await request<GetERHistoryQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
     url: `/history`,
-    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1`,
     ...requestConfig,
   })
   return res.data

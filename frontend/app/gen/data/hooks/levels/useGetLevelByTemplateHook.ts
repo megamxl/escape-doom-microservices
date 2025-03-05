@@ -23,7 +23,7 @@ export async function getLevelByTemplateHook(
   const res = await request<GetLevelByTemplateQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
     url: `/levels/${escapeRoomTemplateId}`,
-    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1`,
     ...requestConfig,
   })
   return res.data

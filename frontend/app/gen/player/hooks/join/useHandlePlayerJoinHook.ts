@@ -22,7 +22,7 @@ export async function handlePlayerJoinHook(
   const res = await request<HandlePlayerJoinMutationResponse, ResponseErrorConfig<HandlePlayerJoin500>, HandlePlayerJoinMutationRequest>({
     method: 'PUT',
     url: `/join`,
-    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1`,
     data,
     ...requestConfig,
   })

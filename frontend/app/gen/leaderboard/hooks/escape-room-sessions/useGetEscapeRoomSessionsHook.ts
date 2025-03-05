@@ -20,7 +20,7 @@ export async function getEscapeRoomSessionsHook(params?: GetEscapeRoomSessionsQu
   const res = await request<GetEscapeRoomSessionsQueryResponse, ResponseErrorConfig<GetEscapeRoomSessions404>, unknown>({
     method: 'GET',
     url: `/escape-room-sessions`,
-    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/leaderboard-api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/leaderboard-api/v1`,
     params,
     ...requestConfig,
   })

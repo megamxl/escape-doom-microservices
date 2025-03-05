@@ -23,7 +23,7 @@ export async function getLevelHook(
   const res = await request<GetLevelQueryResponse, ResponseErrorConfig<GetLevel404 | GetLevel500>, unknown>({
     method: 'GET',
     url: `/levels/${escapeRoomLevelId}`,
-    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1',
+    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1`,
     ...requestConfig,
   })
   return res.data
