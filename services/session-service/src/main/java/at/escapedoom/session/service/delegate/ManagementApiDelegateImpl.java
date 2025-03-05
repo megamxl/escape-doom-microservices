@@ -1,11 +1,11 @@
-package at.escapedoom.session.service;
+package at.escapedoom.session.service.delegate;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
-import at.escapedoom.session.data.repository.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.ManagementApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
+import at.escapedoom.session.service.EscapeRoomSessionService;
 import at.escapedoom.spring.security.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
 import lombok.RequiredArgsConstructor;

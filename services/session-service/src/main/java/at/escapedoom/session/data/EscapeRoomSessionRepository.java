@@ -1,4 +1,4 @@
-package at.escapedoom.session.data.repository;
+package at.escapedoom.session.data;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
 import org.springframework.data.jpa.repository.JpaRepository;

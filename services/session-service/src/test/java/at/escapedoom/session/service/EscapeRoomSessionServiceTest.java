@@ -1,13 +1,12 @@
-package at.escapedoom.session;
+package at.escapedoom.session.service;
 
+import at.escapedoom.session.SessionApi;
 import at.escapedoom.session.data.entity.EscapeRoomSession;
-import at.escapedoom.session.data.repository.EscapeRoomSessionRepository;
-import at.escapedoom.session.data.repository.EscapeRoomSessionService;
+import at.escapedoom.session.data.EscapeRoomSessionRepository;
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Lazy;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class EscapeRoomSessionServiceTest {
 
     @Autowired
-    @Lazy
     private EscapeRoomSessionService sessionService;
 
     @Autowired
