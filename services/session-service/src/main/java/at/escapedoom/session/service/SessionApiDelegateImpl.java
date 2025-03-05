@@ -5,7 +5,7 @@ import at.escapedoom.session.data.repository.EscapeRoomSessionService;
 import at.escapedoom.session.rest.api.SessionApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
-import at.escapedoom.session.util.KeycloakUserUtil;
+import at.escapedoom.spring.security.KeycloakUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -14,9 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
@@ -33,19 +31,21 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
     @PreAuthorize("hasRole('LECTOR')")
     @Override
     public ResponseEntity<List<EscapeRoomSessionResponse>> getERByTags(List<String> tags) {
-        String userName = KeycloakUserUtil.getCurrentUsername();
+        UUID userId = KeycloakUserUtil.getCurrentUserUUID()
+                .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
+
         List<EscapeRoomSessionResponse> response = new ArrayList<>();
-        if (userName != null && !userName.isEmpty()) {
-            try {
-                List<EscapeRoomSession> escapeRoomSessions = sessionService.getSessionsByTags(userName, tags);
-                for (EscapeRoomSession session : escapeRoomSessions) {
-                    response.add(EscapeRoomSessionMapperUtil.map(session));
-                }
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } catch (Exception e) {
-                log.debug(e.getMessage());
+
+        try {
+            List<EscapeRoomSession> escapeRoomSessions = sessionService.getSessionsByTags(userId, tags);
+            for (EscapeRoomSession session : escapeRoomSessions) {
+                response.add(EscapeRoomSessionMapperUtil.map(session));
             }
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug(e.getMessage());
         }
+
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

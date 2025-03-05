@@ -25,7 +25,7 @@ public class EscapeRoomSession {
     @Column(unique = true, nullable = false)
     private Long roomPin;
 
-    private String userId;
+    private UUID userId;
     private Long playTime;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
