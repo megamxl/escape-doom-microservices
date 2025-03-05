@@ -27,7 +27,7 @@ public class Scene {
     private String backgroundImageURI;
 
     @ManyToOne
-    @JoinColumn(name = "escape_room_level_id")
+    @JoinColumn(name = "level_id", referencedColumnName = "level_id")
     private Level escapeRoomLevel;
 
     @Column(name = "escape_room_sequence_id", unique = true)

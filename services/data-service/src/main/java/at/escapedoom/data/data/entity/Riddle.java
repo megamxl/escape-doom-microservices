@@ -30,7 +30,7 @@ public class Riddle {
     private String variableName;
 
     @ManyToOne
-    @JoinColumn(name = "escape_room_level_id")
+    @JoinColumn(name = "level_id")
     private Level escapeRoomLevel;
 
     @Override
