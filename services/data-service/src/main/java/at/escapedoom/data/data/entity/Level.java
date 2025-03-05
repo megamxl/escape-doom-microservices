@@ -12,12 +12,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "escape_room_level")
-public class EscapeRoomLevel {
+@Table(name = "level")
+public class Level {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID escapeRoomLevelId;
+    @Column(name = "level_id")
+    private UUID levelId;
 
     // @OneToMany(mappedBy = "escapeRoomLevel", cascade = { CascadeType.PERSIST,
     // CascadeType.MERGE }, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -36,13 +37,16 @@ public class EscapeRoomLevel {
     @Version
     private int version;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "escape_room_template_id", nullable = true)
-    private EscapeRoomTemplate template;
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Template.class)
+    @JoinColumn(name = "template_id", insertable = false, updatable = false)
+    private Template template;
+
+    @Column(name = "template_id")
+    private UUID templateId;
 
     @Override
     public String toString() {
-        return "EscapeRoomLevel{" + "escapeRoomLevelId=" + escapeRoomLevelId + ", levelSequence=" + levelSequence
+        return "EscapeRoomLevel{" + "escapeRoomLevelId=" + levelId + ", levelSequence=" + levelSequence
                 + ", version=" + version + ", template="
                 + (template != null ? template.getEscapeRoomTemplateID() : null) + '}';
     }

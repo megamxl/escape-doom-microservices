@@ -3,7 +3,6 @@ package at.escapedoom.data.data.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +28,7 @@ public class Scene {
 
     @ManyToOne
     @JoinColumn(name = "escape_room_level_id")
-    private EscapeRoomLevel escapeRoomLevel;
+    private Level escapeRoomLevel;
 
     @Column(name = "escape_room_sequence_id", unique = true)
     private UUID escapeRoomSequenceId;

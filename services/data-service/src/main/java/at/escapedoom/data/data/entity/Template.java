@@ -12,18 +12,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "escape_room_template")
-public class EscapeRoomTemplate {
+@Table(name = "template")
+public class Template {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "template_id")
     private UUID escapeRoomTemplateID;
 
     @Column(nullable = false)
     private UUID userId;
 
-    @OneToMany
-    private List<EscapeRoomLevel> escapeRoomLevels;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "template_id")
+    private List<Level> escapeRoomLevels;
 
     private String description;
 

@@ -4,6 +4,7 @@ import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
+import at.escapedoom.data.rest.model.EscapeRoomLevelCreationRequest;
 import at.escapedoom.data.rest.model.EscapeRoomLevelDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,7 +33,7 @@ public interface LevelApiDelegate {
     /**
      * POST /levels : Create a new level Create an EscapeRoomLevel independently of any template
      *
-     * @param escapeRoomLevelDTO
+     * @param escapeRoomLevelCreationRequest
      *            The details of the new EscapeRoomLevel (required)
      *
      * @return Level created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
@@ -40,7 +41,8 @@ public interface LevelApiDelegate {
      *
      * @see LevelApi#createLevel
      */
-    default ResponseEntity<EscapeRoomLevelDTO> createLevel(EscapeRoomLevelDTO escapeRoomLevelDTO) {
+    default ResponseEntity<EscapeRoomLevelDTO> createLevel(
+            EscapeRoomLevelCreationRequest escapeRoomLevelCreationRequest) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

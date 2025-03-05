@@ -9,6 +9,7 @@ import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
+import at.escapedoom.data.rest.model.EscapeRoomLevelCreationRequest;
 import at.escapedoom.data.rest.model.EscapeRoomLevelDTO;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,7 +46,7 @@ public interface LevelApi {
     /**
      * POST /levels : Create a new level Create an EscapeRoomLevel independently of any template
      *
-     * @param escapeRoomLevelDTO
+     * @param escapeRoomLevelCreationRequest
      *            The details of the new EscapeRoomLevel (required)
      *
      * @return Level created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
@@ -63,8 +64,8 @@ public interface LevelApi {
             "application/json" })
 
     default ResponseEntity<EscapeRoomLevelDTO> createLevel(
-            @Parameter(name = "EscapeRoomLevelDTO", description = "The details of the new EscapeRoomLevel", required = true) @Valid @RequestBody EscapeRoomLevelDTO escapeRoomLevelDTO) {
-        return getDelegate().createLevel(escapeRoomLevelDTO);
+            @Parameter(name = "EscapeRoomLevelCreationRequest", description = "The details of the new EscapeRoomLevel", required = true) @Valid @RequestBody EscapeRoomLevelCreationRequest escapeRoomLevelCreationRequest) {
+        return getDelegate().createLevel(escapeRoomLevelCreationRequest);
     }
 
     /**

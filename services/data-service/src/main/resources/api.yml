@@ -173,7 +173,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EscapeRoomLevelDTO'
+              $ref: '#/components/schemas/EscapeRoomLevelCreationRequest'
       responses:
         '201':
           description: Level created successfully
@@ -685,6 +685,26 @@ components:
           type: number
           description: A status code representing the operation result
           example: 200
+    EscapeRoomLevelCreationRequest:
+      description: The current level of an escape-room instance
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: The unique ID of the escape room template
+          example: "d1087efe-41fd-42da-9110-62d35659cf1f"
+        sequence:
+          type: integer
+          description: The sequence number of the level
+          example: 1
+        scenes:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/SceneDTO"
+          description: List of scenes in the level
+        riddle:
+          $ref: "#/components/schemas/RiddleDTO"
     EscapeRoomLevelDTO:
       description: The current level of an escape-room instance
       type: object

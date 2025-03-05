@@ -98,6 +98,8 @@ public class RiddleService {
     }
 
     RiddleDTO toRestBody(Riddle riddle) {
+        //FIXME: This is trash but it's late and riddle should like ... ask maxl :) <3
+        if (riddle == null) { return null; }
         return RiddleDTO.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
                 .input(riddle.getInput()).functionSignature(riddle.getFunctionSignature())
                 .variableName(riddle.getVariableName()).riddleId(riddle.getEscapeRoomRiddleId().toString()).build();

@@ -4,6 +4,7 @@ import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
+import at.escapedoom.data.rest.model.EscapeRoomLevelCreationRequest;
 import at.escapedoom.data.rest.model.EscapeRoomLevelDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -12,6 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
+@Table(name = "riddle")
 public class Riddle {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -30,7 +31,7 @@ public class Riddle {
 
     @ManyToOne
     @JoinColumn(name = "escape_room_level_id")
-    private EscapeRoomLevel escapeRoomLevel;
+    private Level escapeRoomLevel;
 
     @Override
     public String toString() {

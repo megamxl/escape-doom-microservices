@@ -40,27 +40,15 @@ public class SceneService {
         return toScene(scene);
     }
 
-    // TODO: REMOVE ME once sure it's useless
-    public SceneDTO createScene(SceneRequestDTO sceneRequest, String levelId) {
-        Scene scene = toDBScene(sceneRequest);
-        scene.setEscapeRoomLevel(EscapeRoomLevel.builder().escapeRoomLevelId(UUID.fromString(levelId)).build()); // Only
-        // setting
-        // ID
-        // reference
-        scene = sceneRepository.saveAndFlush(scene);
-        log.info("Created scene with sequence {} for level {}", scene.getSceneSequence(), levelId);
-        return toScene(scene);
-    }
-
     @Transactional
-    public List<Scene> createScenesForLevel(List<SceneDTO> scenes, EscapeRoomLevel level) {
+    public List<Scene> createScenesForLevel(List<SceneDTO> scenes, Level level) {
         List<Scene> sceneList = new ArrayList<>();
 
         for (SceneDTO scene : scenes) {
             SceneRequestDTO sceneRequest = convertToSceneRequest(scene, level);
             Scene dbScene = toDBScene(sceneRequest);
             dbScene.setEscapeRoomLevel(level);
-            dbScene.setEscapeRoomSequenceId(level.getEscapeRoomLevelId());
+            dbScene.setEscapeRoomSequenceId(level.getLevelId());
 
             attachNodesToScene(scene, dbScene);
 
@@ -99,10 +87,10 @@ public class SceneService {
     }
 
     // region Helper Methods
-    private SceneRequestDTO convertToSceneRequest(SceneDTO scene, EscapeRoomLevel level) {
+    private SceneRequestDTO convertToSceneRequest(SceneDTO scene, Level level) {
         return SceneRequestDTO.builder().sceneSequence(scene.getSceneSequence()).name(scene.getName())
                 .backgroundImageUri(scene.getBackgroundImageUri()).nodes(scene.getNodes())
-                .levelId(level.getEscapeRoomLevelId().toString()).build();
+                .levelId(level.getLevelId().toString()).build();
     }
 
     SceneDTO toScene(Scene scene) {
@@ -111,13 +99,19 @@ public class SceneService {
                 .nodes(scene.getNodes().stream().map(this::toNode).toList()).build();
     }
 
+    Scene toDBScene(SceneDTO sceneRequest) {
+        return Scene.builder().name(sceneRequest.getName()).sceneSequence(sceneRequest.getSceneSequence())
+                .backgroundImageURI(sceneRequest.getBackgroundImageUri())
+                .nodes(sceneRequest.getNodes().stream().map(this::toDBNode).toList()).build();
+    }
+
     Scene toDBScene(SceneRequestDTO sceneRequest) {
         Scene scene = Scene.builder().name(sceneRequest.getName()).sceneSequence(sceneRequest.getSceneSequence())
                 .backgroundImageURI(sceneRequest.getBackgroundImageUri()).nodes(new ArrayList<>()).build();
 
         if (sceneRequest.getLevelId() != null) {
             scene.setEscapeRoomLevel(
-                    EscapeRoomLevel.builder().escapeRoomLevelId(UUID.fromString(sceneRequest.getLevelId())).build());
+                    Level.builder().levelId(UUID.fromString(sceneRequest.getLevelId())).build());
         }
 
         if (sceneRequest.getNodes() != null && !sceneRequest.getNodes().isEmpty()) {
