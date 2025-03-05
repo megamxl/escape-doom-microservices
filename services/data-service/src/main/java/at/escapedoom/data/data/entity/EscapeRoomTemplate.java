@@ -19,7 +19,8 @@ public class EscapeRoomTemplate {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID escapeRoomTemplateID;
 
-    private Long userId;
+    @Column(nullable = false)
+    private UUID userId;
 
     @OneToMany
     private List<EscapeRoomLevel> escapeRoomLevels;

@@ -30,7 +30,7 @@ export async function getLevelOfSessionByPlayerSessionIDSuspenseHook(
   const res = await request<GetLevelOfSessionByPlayerSessionIDQueryResponse, ResponseErrorConfig<GetLevelOfSessionByPlayerSessionID500>, unknown>({
     method: 'GET',
     url: `/level/${player_session_id}`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1',
     ...requestConfig,
   })
   return res.data

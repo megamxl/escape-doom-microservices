@@ -23,7 +23,7 @@ export async function getRoomPinHook(
   const res = await request<GetRoomPinQueryResponse, ResponseErrorConfig<GetRoomPin404>, unknown>({
     method: 'GET',
     url: `/${room_pin}`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/leaderboard-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/leaderboard-api/v1',
     ...requestConfig,
   })
   return res.data

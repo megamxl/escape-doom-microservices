@@ -23,7 +23,7 @@ export async function getLevelResultSuspenseHook(
   const res = await request<GetLevelResultQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
     url: `/level/${player_session_id}/result`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1',
     ...requestConfig,
   })
   return res.data

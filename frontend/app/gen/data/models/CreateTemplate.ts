@@ -1,11 +1,11 @@
 // version: 0.0.1
 import type { EscapeRoomTemplateCreateRequestDTO } from './EscapeRoomTemplateCreateRequestDTO.ts'
-import type { EscapeRoomTemplateResultDTO } from './EscapeRoomTemplateResultDTO.ts'
+import type { EscapeRoomTemplateDTO } from './EscapeRoomTemplateDTO.ts'
 
 /**
- * @description Operation result for EscapeRoomTemplate
+ * @description The basic template component
  */
-export type CreateTemplate200 = EscapeRoomTemplateResultDTO
+export type CreateTemplate200 = EscapeRoomTemplateDTO
 
 /**
  * @description Bad Request

@@ -1,4 +1,5 @@
 // version: 0.0.1
+import type { EscapeRoomLevelDTO } from './EscapeRoomLevelDTO.ts'
 
 /**
  * @description The escape-room template, base for an EscapeRoom Game
@@ -8,7 +9,12 @@ export type EscapeRoomTemplateDTO = {
    * @description Unique ID for the Template
    * @type string | undefined
    */
-  escape_room_template_id?: string
+  template_id?: string
+  /**
+   * @description Unique ID of the user the escape room belongs to
+   * @type string | undefined
+   */
+  user_id?: string
   /**
    * @description Name of the Template
    * @type string | undefined
@@ -19,4 +25,8 @@ export type EscapeRoomTemplateDTO = {
    * @type string | undefined
    */
   description?: string
+  /**
+   * @type array | undefined
+   */
+  levels?: EscapeRoomLevelDTO[]
 }

@@ -23,7 +23,7 @@ export async function getERSessionByPinHook(
   const res = await request<GetERSessionByPinQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
     url: `/session/${room_pin}`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1',
     ...requestConfig,
   })
   return res.data

@@ -25,7 +25,7 @@ export async function toggleERInstanceStateHook(
   const res = await request<ToggleERInstanceStateMutationResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'PUT',
     url: `/state/${escape_room_session_id}/${state}`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1',
     ...requestConfig,
   })
   return res.data

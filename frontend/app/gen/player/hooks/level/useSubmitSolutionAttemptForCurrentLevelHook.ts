@@ -28,7 +28,7 @@ export async function submitSolutionAttemptForCurrentLevelHook(
     SubmitSolutionAttemptForCurrentLevelMutationResponse,
     ResponseErrorConfig<Error>,
     SubmitSolutionAttemptForCurrentLevelMutationRequest
-  >({ method: 'POST', url: `/level/${player_session_id}/submit`, baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1`, data, ...requestConfig })
+  >({ method: 'POST', url: `/level/${player_session_id}/submit`, baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/player-api/v1', data, ...requestConfig })
   return res.data
 }
 

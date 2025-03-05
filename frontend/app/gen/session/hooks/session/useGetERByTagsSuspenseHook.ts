@@ -19,7 +19,7 @@ export async function getERByTagsSuspenseHook(params: GetERByTagsQueryParams, co
   const res = await request<GetERByTagsQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
     url: `/session/tags`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1',
     params,
     ...requestConfig,
   })

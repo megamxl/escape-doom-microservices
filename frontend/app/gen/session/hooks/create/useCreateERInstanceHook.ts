@@ -22,7 +22,7 @@ export async function createERInstanceHook(
   const res = await request<CreateERInstanceMutationResponse, ResponseErrorConfig<Error>, CreateERInstanceMutationRequest>({
     method: 'POST',
     url: `/create`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1',
     data,
     ...requestConfig,
   })

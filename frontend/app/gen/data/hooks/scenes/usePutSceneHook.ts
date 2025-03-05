@@ -23,7 +23,7 @@ export async function putSceneHook(
   const res = await request<PutSceneMutationResponse, ResponseErrorConfig<PutScene400 | PutScene404 | PutScene500>, PutSceneMutationRequest>({
     method: 'PUT',
     url: `/scenes/${escapeRoomSceneId}`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1',
     data,
     ...requestConfig,
   })

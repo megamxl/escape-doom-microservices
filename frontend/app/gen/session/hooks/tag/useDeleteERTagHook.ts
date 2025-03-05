@@ -25,7 +25,7 @@ export async function deleteERTagHook(
   const res = await request<DeleteERTagMutationResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'DELETE',
     url: `/tag/${escape_room_session_id}/${tag_name}`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/session-api/v1',
     ...requestConfig,
   })
   return res.data

@@ -22,7 +22,7 @@ export async function deleteSceneHook(
   const res = await request<DeleteSceneMutationResponse, ResponseErrorConfig<DeleteScene404 | DeleteScene500>, unknown>({
     method: 'DELETE',
     url: `/scenes/${escapeRoomSceneId}`,
-    baseURL: `${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1`,
+    baseURL: '${process.env.NEXT_PUBLIC_GW_URI}/data-api/v1',
     ...requestConfig,
   })
   return res.data

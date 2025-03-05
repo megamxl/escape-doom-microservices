@@ -3,12 +3,14 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.TemplateRepository;
 import at.escapedoom.data.data.entity.EscapeRoomTemplate;
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.spring.security.KeycloakUserUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,12 +27,16 @@ public class TemplateService {
     public EscapeRoomTemplateDTO createTemplate(@NonNull EscapeRoomTemplateCreateRequestDTO request) {
         log.debug("Creating template with name: {}", request.getName());
 
-        EscapeRoomTemplate template = EscapeRoomTemplate.builder().name(request.getName())
+        EscapeRoomTemplate template = EscapeRoomTemplate.builder().name(request.getName()).userId(getUserIdentifier())
                 .description(request.getDescription()).build();
 
         repository.save(template);
 
         return toApiModel(template);
+    }
+
+    private static UUID getUserIdentifier() {
+        return KeycloakUserUtil.getCurrentUserUUID().orElseThrow(NoSuchElementException::new);
     }
 
     public EscapeRoomTemplateResultDTO deleteTemplate(String escapeRoomTemplateId) {
@@ -51,7 +57,7 @@ public class TemplateService {
     public List<EscapeRoomTemplateDTO> getAllTemplates() {
         log.debug("Fetching all templates");
 
-        return repository.findAll().stream()
+        return repository.findAllByUserId(getUserIdentifier()).stream()
                 .map(template -> EscapeRoomTemplateDTO.builder()
                         .templateId(template.getEscapeRoomTemplateID().toString()).name(template.getName())
                         .description(template.getDescription()).build())
@@ -74,11 +80,12 @@ public class TemplateService {
         apiTemplate.templateId(entity.getEscapeRoomTemplateID().toString());
         apiTemplate.setName(entity.getName());
         apiTemplate.setDescription(entity.getDescription());
+        apiTemplate.setUserId(entity.getUserId().toString());
 
         return apiTemplate;
     }
 
-    //FIXME: This only updates Name or Description
+    // FIXME: This only updates Name or Description
     public EscapeRoomTemplateUpdateResultDTO updateTemplate(String escapeRoomTemplateId,
             EscapeRoomTemplateUpdateRequestDTO request) {
         log.debug("Updating template with ID: {}", escapeRoomTemplateId);

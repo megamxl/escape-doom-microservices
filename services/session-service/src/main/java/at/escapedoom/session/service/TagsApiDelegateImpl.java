@@ -54,7 +54,6 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
-
         escapeRoomSession = sessionService.removeTagFromSession(userId, UUID.fromString(escapeRoomSessionId), tagName);
 
         if (escapeRoomSession != null) {
