@@ -27,6 +27,8 @@ class RiddleServiceTest {
     private String VALID_RIDDLE_ID = "";
     private final String INVALID_RIDDLE_ID = "05c48cb1-a3aa-4673-8d24-666666666666";
 
+    private UUID VALID_LEVEL_ID;
+
     @Autowired
     private RiddleService service;
     @Autowired
@@ -39,8 +41,11 @@ class RiddleServiceTest {
         repository.deleteAllInBatch();
         repository.flush(); // Ensures delete operation is executed immediately
 
+        VALID_LEVEL_ID = UUID.randomUUID();
+
         Riddle riddle = Riddle.builder().input("2, 3").language(CodingLanguage.JAVA).expectedOutput("5")
-                .functionSignature("public static int sum(int a, int b)").variableName("result").build();
+                .functionSignature("public static int sum(int a, int b)").variableName("result")
+                .levelId(VALID_LEVEL_ID).build();
 
         VALID_RIDDLE_ID = repository.save(riddle).getRiddleId().toString();
 
@@ -144,6 +149,7 @@ class RiddleServiceTest {
 
         RiddleCreationRequestDTO riddleCreationRequest = RiddleCreationRequestDTO.builder().language(EXPECTED_LANGUAGE)
                 .expectedOutput(EXPECTED_OUTPUT).input(EXPECTED_INPUT).functionSignature(EXPECTED_FUNCTION)
+                .levelId(VALID_LEVEL_ID.toString())
                 .variableName(EXPECTED_VARIABLE).build();
 
         RiddleDTO riddle = service.createRiddle(riddleCreationRequest);
