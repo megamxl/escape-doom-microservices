@@ -26,7 +26,7 @@ import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 public class RiddleService {
 
     final RiddleRepository riddleRepository;
-    final LevelRepository levelRepository; //FIXME: Use LevelService.update instead when working :)
+    final LevelRepository levelRepository; // FIXME: Use LevelService.update instead when working :)
 
     public List<RiddleDTO> getAllRiddles() {
         List<Riddle> riddles = riddleRepository.findAll();
@@ -47,12 +47,12 @@ public class RiddleService {
         assert riddleRequest != null : "Creation request cannot be null";
         assert riddleRequest.getLevelId() != null : "Level id cannot be null";
 
-        levelRepository.findById(UUID.fromString(riddleRequest.getLevelId()))
-                .ifPresent(level -> {
-                    if (level.getRiddle() != null) {
-                        throw new IllegalArgumentException(String.format("Riddle already exists on level %s", level.getLevelId()));
-                    }
-                });
+        levelRepository.findById(UUID.fromString(riddleRequest.getLevelId())).ifPresent(level -> {
+            if (level.getRiddle() != null) {
+                throw new IllegalArgumentException(
+                        String.format("Riddle already exists on level %s", level.getLevelId()));
+            }
+        });
 
         Riddle riddle = creationRequestToRiddle(riddleRequest);
 
@@ -115,8 +115,8 @@ public class RiddleService {
         }
         return RiddleDTO.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
                 .input(riddle.getInput()).functionSignature(riddle.getFunctionSignature())
-                .levelId(riddle.getLevelId().toString())
-                .variableName(riddle.getVariableName()).riddleId(riddle.getRiddleId().toString()).build();
+                .levelId(riddle.getLevelId().toString()).variableName(riddle.getVariableName())
+                .riddleId(riddle.getRiddleId().toString()).build();
     }
 
     private void riddleLog(LoggerUtils.LogType logType, UUID uuid) {

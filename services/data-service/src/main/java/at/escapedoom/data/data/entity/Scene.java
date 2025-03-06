@@ -14,7 +14,8 @@ import static at.escapedoom.data.data.entity.Constants.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "scene", uniqueConstraints = { @UniqueConstraint(name = "uniqueScenePerLevel", columnNames = { LEVEL_ID, SCENE_SEQUENCE }) })
+@Table(name = "scene", uniqueConstraints = {
+        @UniqueConstraint(name = "uniqueScenePerLevel", columnNames = { LEVEL_ID, SCENE_SEQUENCE }) })
 public class Scene {
 
     @Id

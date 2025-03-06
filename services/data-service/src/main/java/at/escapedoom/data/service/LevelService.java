@@ -25,10 +25,8 @@ public class LevelService {
         assert creationRequest != null;
         assert creationRequest.getTemplateId() != null;
 
-        Level newLevel = Level.builder()
-                .levelSequence(creationRequest.getSequence())
-                .scenes(Collections.emptyList())
-                .templateId(UUID.fromString(creationRequest.getTemplateId())).build();
+        Level newLevel = Level.builder().levelSequence(creationRequest.getLevelSequence())
+                .scenes(Collections.emptyList()).templateId(UUID.fromString(creationRequest.getTemplateId())).build();
 
         newLevel = repository.saveAndFlush(newLevel);
 
@@ -46,12 +44,6 @@ public class LevelService {
             List<Scene> scenes = sceneService.createScenesForLevel(restModel.getScenes(), newLevel);
             newLevel.getScenes().addAll(scenes);
         }
-
-        // TODO: @Mark Change service to handle riddle as One, not list of many
-        // if (restModel.getRiddle() != null) {
-        // List<Riddle> riddles = riddleService.createRiddlesForLevel(restModel.getRiddle(), newLevel);
-        // newLevel.setRiddle(riddle); getRiddle().addAll(riddles);
-        // }
 
         newLevel = repository.saveAndFlush(newLevel);
 
@@ -97,8 +89,7 @@ public class LevelService {
     private LevelDTO convertToRestModel(Level entity) {
 
         LevelDTO levelDTO = LevelDTO.builder().levelId(entity.getLevelId().toString())
-                .levelSequence(entity.getLevelSequence())
-                .templateId(entity.getTemplateId().toString())
+                .levelSequence(entity.getLevelSequence()).templateId(entity.getTemplateId().toString())
                 .scenes(entity.getScenes().stream().map(sceneService::toSceneDTO).toList()).build();
 
         if (entity.getRiddle() != null) {
