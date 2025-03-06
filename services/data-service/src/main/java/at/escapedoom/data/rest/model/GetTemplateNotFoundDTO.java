@@ -41,7 +41,7 @@ public class GetTemplateNotFoundDTO {
      * @return message
      */
 
-    @Schema(name = "message", example = "EscapeRoomTemplate with the provided ID was not found", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "message", example = "Template with the provided ID was not found", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("message")
     public String getMessage() {
         return message;

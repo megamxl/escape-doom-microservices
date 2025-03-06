@@ -24,12 +24,12 @@ public class SceneService {
 
     public List<SceneDTO> getAllScenes() {
         log.info("Getting all scenes");
-        return sceneRepository.findAll().stream().map(this::toScene).toList();
+        return sceneRepository.findAll().stream().map(this::toSceneDTO).toList();
     }
 
     public SceneDTO getSceneById(String id) {
         Optional<Scene> dbScene = sceneRepository.findById(UUID.fromString(id));
-        return dbScene.map(this::toScene)
+        return dbScene.map(this::toSceneDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Scene with id " + id + " not found"));
     }
 
@@ -37,7 +37,7 @@ public class SceneService {
         Scene scene = toDBScene(sceneRequest);
         scene = sceneRepository.saveAndFlush(scene);
         log.info("Created scene with sequence {}", scene.getSceneSequence());
-        return toScene(scene);
+        return toSceneDTO(scene);
     }
 
     @Transactional
@@ -45,10 +45,9 @@ public class SceneService {
         List<Scene> sceneList = new ArrayList<>();
 
         for (SceneDTO scene : scenes) {
-            SceneRequestDTO sceneRequest = convertToSceneRequest(scene, level);
+            SceneRequestDTO sceneRequest = toSceneRequestDTO(scene, level);
             Scene dbScene = toDBScene(sceneRequest);
-            dbScene.setEscapeRoomLevel(level);
-            dbScene.setEscapeRoomSequenceId(level.getLevelId());
+            dbScene.setLevel(level);
 
             attachNodesToScene(scene, dbScene);
 
@@ -77,7 +76,7 @@ public class SceneService {
         copyNonNullProperties(dbScene, scene);
         dbScene = sceneRepository.saveAndFlush(dbScene);
         log.info("Updated scene with sequence {}", dbScene.getSceneSequence());
-        return toScene(dbScene);
+        return toSceneDTO(dbScene);
     }
 
     public DeleteLevelResponseDTO deleteScene(String id) {
@@ -87,32 +86,34 @@ public class SceneService {
     }
 
     // region Helper Methods
-    private SceneRequestDTO convertToSceneRequest(SceneDTO scene, Level level) {
+    private SceneRequestDTO toSceneRequestDTO(SceneDTO scene, Level level) {
         return SceneRequestDTO.builder().sceneSequence(scene.getSceneSequence()).name(scene.getName())
                 .backgroundImageUri(scene.getBackgroundImageUri()).nodes(scene.getNodes())
                 .levelId(level.getLevelId().toString()).build();
     }
 
-    SceneDTO toScene(Scene scene) {
+    SceneDTO toSceneDTO(Scene scene) {
         return SceneDTO.builder().sceneSequence(scene.getSceneSequence()).name(scene.getName())
-                .backgroundImageUri(scene.getBackgroundImageURI())
-                .nodes(scene.getNodes().stream().map(this::toNode).toList()).build();
+                .sceneId(scene.getSceneId().toString()).backgroundImageUri(scene.getBackgroundImageURI())
+                .levelId(scene.getLevelId().toString()).nodes(scene.getNodes().stream().map(this::toNodeDTO).toList())
+                .build();
     }
 
     Scene toDBScene(SceneDTO sceneRequest) {
+        assert sceneRequest.getLevelId() != null;
+
         return Scene.builder().name(sceneRequest.getName()).sceneSequence(sceneRequest.getSceneSequence())
                 .backgroundImageURI(sceneRequest.getBackgroundImageUri())
+                .levelId(UUID.fromString(sceneRequest.getLevelId()))
                 .nodes(sceneRequest.getNodes().stream().map(this::toDBNode).toList()).build();
     }
 
     Scene toDBScene(SceneRequestDTO sceneRequest) {
-        Scene scene = Scene.builder().name(sceneRequest.getName()).sceneSequence(sceneRequest.getSceneSequence())
-                .backgroundImageURI(sceneRequest.getBackgroundImageUri()).nodes(new ArrayList<>()).build();
+        assert sceneRequest.getLevelId() != null;
 
-        if (sceneRequest.getLevelId() != null) {
-            scene.setEscapeRoomLevel(
-                    Level.builder().levelId(UUID.fromString(sceneRequest.getLevelId())).build());
-        }
+        Scene scene = Scene.builder().name(sceneRequest.getName()).sceneSequence(sceneRequest.getSceneSequence())
+                .backgroundImageURI(sceneRequest.getBackgroundImageUri())
+                .levelId(UUID.fromString(sceneRequest.getLevelId())).nodes(new ArrayList<>()).build();
 
         if (sceneRequest.getNodes() != null && !sceneRequest.getNodes().isEmpty()) {
             List<Node> nodes = sceneRequest.getNodes().stream().map(this::toDBNode).toList();
@@ -123,7 +124,7 @@ public class SceneService {
         return scene;
     }
 
-    private NodeDTO toNode(Node node) {
+    private NodeDTO toNodeDTO(Node node) {
         return NodeDTO.builder().nodeInfo(toNodeInfo(node.getNodeInfo())).nodeType(node.getNodeType())
                 .position(toPosition(node.getPosition())).build();
     }

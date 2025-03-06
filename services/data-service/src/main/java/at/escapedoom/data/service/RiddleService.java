@@ -1,5 +1,6 @@
 package at.escapedoom.data.service;
 
+import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
@@ -24,17 +25,18 @@ import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 @RequiredArgsConstructor
 public class RiddleService {
 
-    final RiddleRepository repository;
+    final RiddleRepository riddleRepository;
+    final LevelRepository levelRepository; //FIXME: Use LevelService.update instead when working :)
 
     public List<RiddleDTO> getAllRiddles() {
-        List<Riddle> riddles = repository.findAll();
+        List<Riddle> riddles = riddleRepository.findAll();
 
         return riddles.stream().map(this::toRestBody).toList();
     }
 
     public RiddleDTO getRiddleById(@NonNull String uuid) {
 
-        Riddle riddle = repository.findById(UUID.fromString(uuid))
+        Riddle riddle = riddleRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Riddle with ID: %s not found", uuid)));
 
         return toRestBody(riddle);
@@ -43,12 +45,25 @@ public class RiddleService {
     @Transactional(rollbackFor = Exception.class)
     public RiddleDTO createRiddle(RiddleCreationRequestDTO riddleRequest) {
         assert riddleRequest != null : "Creation request cannot be null";
+        assert riddleRequest.getLevelId() != null : "Level id cannot be null";
+
+        levelRepository.findById(UUID.fromString(riddleRequest.getLevelId()))
+                .ifPresent(level -> {
+                    if (level.getRiddle() != null) {
+                        throw new IllegalArgumentException(String.format("Riddle already exists on level %s", level.getLevelId()));
+                    }
+                });
 
         Riddle riddle = creationRequestToRiddle(riddleRequest);
 
-        repository.save(riddle);
+        riddleRepository.saveAndFlush(riddle);
 
-        riddleLog(LoggerUtils.LogType.CREATION, riddle.getEscapeRoomRiddleId());
+        levelRepository.findById(riddle.getLevelId()).ifPresent(level -> {
+            level.setRiddle(riddle);
+            levelRepository.saveAndFlush(level);
+        });
+
+        riddleLog(LoggerUtils.LogType.CREATION, riddle.getRiddleId());
         return toRestBody(riddle);
     }
 
@@ -57,13 +72,13 @@ public class RiddleService {
         assert riddleDTO != null : "Riddle update request must not be null";
         assert uuid != null : "Riddle UUID must not be null";
 
-        Riddle riddle = repository.findById(UUID.fromString(uuid))
+        Riddle riddle = riddleRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Riddle with ID: %s not found", uuid)));
 
         ReflectionUtils.copyNonNullProperties(riddle, riddleDTO);
-        repository.save(riddle);
+        riddleRepository.save(riddle);
 
-        riddleLog(LoggerUtils.LogType.UPDATE, riddle.getEscapeRoomRiddleId());
+        riddleLog(LoggerUtils.LogType.UPDATE, riddle.getRiddleId());
 
         return toRestBody(riddle);
     }
@@ -73,8 +88,8 @@ public class RiddleService {
 
         UUID riddleId = UUID.fromString(uuid);
 
-        if (repository.existsById(riddleId)) {
-            repository.deleteById(riddleId);
+        if (riddleRepository.existsById(riddleId)) {
+            riddleRepository.deleteById(riddleId);
 
             riddleLog(LoggerUtils.LogType.DELETION, riddleId);
             return new RiddleDeletionResponseDTO("Riddle deleted successfully");
@@ -84,25 +99,24 @@ public class RiddleService {
     }
 
     // region Helper Methods
-    private RiddleCreationRequestDTO convertToRiddleCreationRequest(RiddleDTO riddle) {
-        return RiddleCreationRequestDTO.builder().input(riddle.getInput()).language(riddle.getLanguage())
-                .variableName(riddle.getVariableName()).expectedOutput(riddle.getExpectedOutput())
-                .functionSignature(riddle.getFunctionSignature()).build();
-    }
-
     public Riddle creationRequestToRiddle(RiddleCreationRequestDTO riddleRequest) {
+        assert riddleRequest.getLevelId() != null;
+
         return Riddle.builder().input(riddleRequest.getInput()).language(riddleRequest.getLanguage())
                 .expectedOutput(riddleRequest.getExpectedOutput()).variableName(riddleRequest.getVariableName())
+                .levelId(UUID.fromString(riddleRequest.getLevelId()))
                 .functionSignature(riddleRequest.getFunctionSignature()).variableName(riddleRequest.getVariableName())
                 .build();
     }
 
     RiddleDTO toRestBody(Riddle riddle) {
-        //FIXME: This is trash but it's late and riddle should like ... ask maxl :) <3
-        if (riddle == null) { return null; }
+        if (riddle == null) {
+            return null;
+        }
         return RiddleDTO.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
                 .input(riddle.getInput()).functionSignature(riddle.getFunctionSignature())
-                .variableName(riddle.getVariableName()).riddleId(riddle.getEscapeRoomRiddleId().toString()).build();
+                .levelId(riddle.getLevelId().toString())
+                .variableName(riddle.getVariableName()).riddleId(riddle.getRiddleId().toString()).build();
     }
 
     private void riddleLog(LoggerUtils.LogType logType, UUID uuid) {

@@ -42,15 +42,15 @@ class LevelServiceTest {
     // region GET Tests
     @Test
     void testGetAllLevels() {
-        List<EscapeRoomLevelDTO> levels = service.getAllLevels();
+        List<LevelDTO> levels = service.getAllLevels();
         assertThat(levels).hasSize(1);
-        assertThat(levels.get(0).getSequence()).isEqualTo(1);
+        assertThat(levels.get(0).getLevelSequence()).isEqualTo(1);
     }
 
     @Test
     void testGetLevelById() {
-        EscapeRoomLevelDTO level = service.getLevel(VALID_LEVEL_ID);
-        assertThat(level.getSequence()).isEqualTo(1);
+        LevelDTO level = service.getLevel(VALID_LEVEL_ID);
+        assertThat(level.getLevelSequence()).isEqualTo(1);
     }
 
     @Test
@@ -77,22 +77,22 @@ class LevelServiceTest {
     // region PUT Tests
     @Test
     void testUpdateLevel() {
-        EscapeRoomLevelDTO level = service.getLevel(VALID_LEVEL_ID);
+        LevelDTO level = service.getLevel(VALID_LEVEL_ID);
 
         final int newSequence = 2;
 
-        EscapeRoomLevelDTO levelRequest = EscapeRoomLevelDTO.builder().levelId(level.getLevelId()).sequence(newSequence)
+        LevelDTO levelRequest = LevelDTO.builder().levelId(level.getLevelId()).levelSequence(newSequence)
                 .scenes(level.getScenes()).riddle(level.getRiddle()).build();
 
-        EscapeRoomLevelDTO updatedLevel = service.updateLevel(level.getLevelId(), levelRequest);
+        LevelDTO updatedLevel = service.updateLevel(level.getLevelId(), levelRequest);
 
         assertThat(updatedLevel.getLevelId()).isEqualTo(level.getLevelId());
-        assertThat(updatedLevel.getSequence()).isEqualTo(newSequence);
+        assertThat(updatedLevel.getLevelSequence()).isEqualTo(newSequence);
     }
 
     @Test
     void testUpdateLevelNotFoundError() {
-        EscapeRoomLevelDTO levelRequest = EscapeRoomLevelDTO.builder().sequence(2).build();
+        LevelDTO levelRequest = LevelDTO.builder().levelSequence(2).build();
 
         assertThatThrownBy(() -> service.updateLevel(INVALID_LEVEL_ID, levelRequest))
                 .isInstanceOf(NoSuchElementException.class).hasMessageContaining("Level with ID");
@@ -100,15 +100,15 @@ class LevelServiceTest {
     // endregion
 
     // region POST Tests
-    //TODO: @Mark - Comment back in when fixed to new structure
-//    @Test
-//    void testCreateLevel() {
-//        EscapeRoomLevelDTO levelRequest = EscapeRoomLevelDTO.builder().sequence(3).scenes(List.of()).build();
-//
-//        EscapeRoomLevelDTO level = service.createLevel(levelRequest);
-//
-//        assertThat(level.getSequence()).isEqualTo(3);
-//    }
+    // TODO: @Mark - Comment back in when fixed to new structure
+    // @Test
+    // void testCreateLevel() {
+    // LevelDTO levelRequest = LevelDTO.builder().sequence(3).scenes(List.of()).build();
+    //
+    // LevelDTO level = service.createLevel(levelRequest);
+    //
+    // assertThat(level.getLevelSequence()).isEqualTo(3);
+    // }
 
     @Test
     void testCreateLevelNullError() {

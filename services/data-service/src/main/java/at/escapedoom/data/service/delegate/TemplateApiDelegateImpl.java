@@ -17,30 +17,28 @@ public class TemplateApiDelegateImpl implements TemplateApiDelegate {
     private final TemplateService templateService;
 
     @Override
-    public ResponseEntity<EscapeRoomTemplateDTO> createTemplate(
-            EscapeRoomTemplateCreateRequestDTO escapeRoomTemplateDTO) {
-        return new ResponseEntity<>(templateService.createTemplate(escapeRoomTemplateDTO), HttpStatus.CREATED);
+    public ResponseEntity<TemplateDTO> createTemplate(TemplateCreateRequestDTO TemplateDTO) {
+        return new ResponseEntity<>(templateService.createTemplate(TemplateDTO), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<EscapeRoomTemplateResultDTO> deleteTemplate(String escapeRoomTemplateId) {
-        return new ResponseEntity<>(templateService.deleteTemplate(escapeRoomTemplateId), HttpStatus.OK);
+    public ResponseEntity<TemplateResultDTO> deleteTemplate(String TemplateId) {
+        return new ResponseEntity<>(templateService.deleteTemplate(TemplateId), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<EscapeRoomTemplateDTO>> getAllTemplates() {
+    public ResponseEntity<List<TemplateDTO>> getAllTemplates() {
         return new ResponseEntity<>(templateService.getAllTemplates(), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<EscapeRoomTemplateDTO> getTemplate(String escapeRoomTemplateId) {
-        EscapeRoomTemplateDTO template = templateService.getTemplate(escapeRoomTemplateId);
+    public ResponseEntity<TemplateDTO> getTemplate(String TemplateId) {
+        TemplateDTO template = templateService.getTemplate(TemplateId);
         return new ResponseEntity<>(template, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<EscapeRoomTemplateUpdateResultDTO> putTemplate(String escapeRoomTemplateId,
-            EscapeRoomTemplateUpdateRequestDTO request) {
-        return new ResponseEntity<>(templateService.updateTemplate(escapeRoomTemplateId, request), HttpStatus.OK);
+    public ResponseEntity<TemplateUpdateResultDTO> putTemplate(String TemplateId, TemplateUpdateRequestDTO request) {
+        return new ResponseEntity<>(templateService.updateTemplate(TemplateId, request), HttpStatus.OK);
     }
 }

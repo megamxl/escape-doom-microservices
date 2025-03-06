@@ -6,6 +6,8 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+import static at.escapedoom.data.data.entity.Constants.TEMPLATE_ID;
+
 @Entity
 @Getter
 @Setter
@@ -17,15 +19,15 @@ public class Template {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "template_id")
-    private UUID escapeRoomTemplateID;
+    @Column(name = TEMPLATE_ID)
+    private UUID templateId;
 
     @Column(nullable = false)
     private UUID userId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "template_id")
-    private List<Level> escapeRoomLevels;
+    @JoinColumn(name = TEMPLATE_ID)
+    private List<Level> level;
 
     private String description;
 
@@ -33,8 +35,7 @@ public class Template {
 
     @Override
     public String toString() {
-        return "EscapeRoomTemplate{" + "escapeRoomTemplateID=" + escapeRoomTemplateID + ", userId=" + userId
-                + ", escapeRoomLevels=" + escapeRoomLevels + ", description='" + description + '\'' + ", name='" + name
-                + '\'' + '}';
+        return "Template{" + "templateId=" + templateId + ", userId=" + userId + ", level=" + level + ", description='"
+                + description + '\'' + ", name='" + name + '\'' + '}';
     }
 }

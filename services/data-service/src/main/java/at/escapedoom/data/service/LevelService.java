@@ -4,16 +4,13 @@ import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
-import at.escapedoom.data.rest.model.EscapeRoomLevelCreationRequest;
-import at.escapedoom.data.rest.model.EscapeRoomLevelDTO;
+import at.escapedoom.data.rest.model.LevelCreationRequest;
+import at.escapedoom.data.rest.model.LevelDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,33 +21,27 @@ public class LevelService {
     private final RiddleService riddleService;
 
     @Transactional
-    public EscapeRoomLevelDTO createLevel(EscapeRoomLevelCreationRequest creationRequest) {
+    public LevelDTO createLevel(LevelCreationRequest creationRequest) {
         assert creationRequest != null;
         assert creationRequest.getTemplateId() != null;
 
-        if (creationRequest.getScenes() == null)
-            creationRequest.setScenes(Collections.EMPTY_LIST);
-
-        List<Scene> scenes = creationRequest.getScenes().stream().map(sceneService::toDBScene).toList();
-
         Level newLevel = Level.builder()
                 .levelSequence(creationRequest.getSequence())
-                .scenes(scenes)
-                .templateId(UUID.fromString(creationRequest.getTemplateId()))
-                .build();
+                .scenes(Collections.emptyList())
+                .templateId(UUID.fromString(creationRequest.getTemplateId())).build();
 
         newLevel = repository.saveAndFlush(newLevel);
 
-        return getEscapeRoomLevelDTO(newLevel);
+        return getLevelDTO(newLevel);
     }
 
-    private EscapeRoomLevelDTO getEscapeRoomLevelDTO(Level newLevel) {
+    private LevelDTO getLevelDTO(Level newLevel) {
         assert newLevel != null;
 
         return convertToRestModel(newLevel);
     }
 
-    private EscapeRoomLevelDTO getEscapeRoomLevelDTO(EscapeRoomLevelDTO restModel, Level newLevel) {
+    private LevelDTO getLevelDTO(LevelDTO restModel, Level newLevel) {
         if (restModel.getScenes() != null && !restModel.getScenes().isEmpty()) {
             List<Scene> scenes = sceneService.createScenesForLevel(restModel.getScenes(), newLevel);
             newLevel.getScenes().addAll(scenes);
@@ -68,51 +59,51 @@ public class LevelService {
     }
 
     @Transactional
-    public EscapeRoomLevelDTO updateLevel(String escapeRoomLevelId, EscapeRoomLevelDTO restModel) {
-        UUID levelUUID = UUID.fromString(escapeRoomLevelId);
+    public LevelDTO updateLevel(String LevelId, LevelDTO restModel) {
+        UUID levelUUID = UUID.fromString(LevelId);
 
         Level level = repository.findById(levelUUID)
-                .orElseThrow(() -> new NoSuchElementException("Level with ID " + escapeRoomLevelId + " not found"));
+                .orElseThrow(() -> new NoSuchElementException("Level with ID " + LevelId + " not found"));
 
-        level.setLevelSequence(restModel.getSequence());
+        level.setLevelSequence(restModel.getLevelSequence());
 
         level.getScenes().clear();
 
-        return getEscapeRoomLevelDTO(restModel, level);
+        return getLevelDTO(restModel, level);
     }
 
-    public EscapeRoomLevelDTO getLevel(String escapeRoomLevelId) {
-        UUID levelUUID = UUID.fromString(escapeRoomLevelId);
+    public LevelDTO getLevel(String LevelId) {
+        UUID levelUUID = UUID.fromString(LevelId);
         Level level = repository.findById(levelUUID)
-                .orElseThrow(() -> new NoSuchElementException("Level with ID " + escapeRoomLevelId + " not found"));
+                .orElseThrow(() -> new NoSuchElementException("Level with ID " + LevelId + " not found"));
         return convertToRestModel(level);
     }
 
-    public List<EscapeRoomLevelDTO> getAllLevels() {
+    public List<LevelDTO> getAllLevels() {
         List<Level> levels = repository.findAll();
         return levels.stream().map(this::convertToRestModel).toList();
     }
 
     @Transactional
-    public DeleteLevelSuccessDTO deleteLevel(String escapeRoomLevelId) {
-        UUID levelUUID = UUID.fromString(escapeRoomLevelId);
+    public DeleteLevelSuccessDTO deleteLevel(String LevelId) {
+        UUID levelUUID = UUID.fromString(LevelId);
         Level level = repository.findById(levelUUID)
-                .orElseThrow(() -> new NoSuchElementException("Level with ID " + escapeRoomLevelId + " not found"));
+                .orElseThrow(() -> new NoSuchElementException("Level with ID " + LevelId + " not found"));
 
         repository.delete(level);
         return new DeleteLevelSuccessDTO().message("Level deleted successfully");
     }
 
-    private EscapeRoomLevelDTO convertToRestModel(Level entity) {
+    private LevelDTO convertToRestModel(Level entity) {
 
-        EscapeRoomLevelDTO escapeRoomLevelDTO = EscapeRoomLevelDTO.builder()
-                .levelId(entity.getLevelId().toString())
-                .sequence(entity.getLevelSequence())
-                .scenes(entity.getScenes().stream().map(sceneService::toScene).toList()).build();
+        LevelDTO levelDTO = LevelDTO.builder().levelId(entity.getLevelId().toString())
+                .levelSequence(entity.getLevelSequence())
+                .templateId(entity.getTemplateId().toString())
+                .scenes(entity.getScenes().stream().map(sceneService::toSceneDTO).toList()).build();
 
         if (entity.getRiddle() != null) {
-            escapeRoomLevelDTO.setRiddle(riddleService.toRestBody(entity.getRiddle()));
+            levelDTO.setRiddle(riddleService.toRestBody(entity.getRiddle()));
         }
-        return escapeRoomLevelDTO;
+        return levelDTO;
     }
 }

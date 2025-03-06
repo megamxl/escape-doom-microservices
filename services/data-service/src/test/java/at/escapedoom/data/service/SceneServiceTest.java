@@ -42,7 +42,7 @@ class SceneServiceTest {
         repository.deleteAllInBatch();
         repository.flush();
 
-        Scene scene = Scene.builder().sceneSequence(1).escapeRoomSequenceId(UUID.randomUUID())
+        Scene scene = Scene.builder().sceneSequence(1)
                 .backgroundImageURI(String.valueOf(URI.create("https://example.com/background.png"))).name("Scene 1")
                 .build();
 

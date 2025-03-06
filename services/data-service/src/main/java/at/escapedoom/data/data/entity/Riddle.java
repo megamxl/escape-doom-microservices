@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.util.UUID;
 
+import static at.escapedoom.data.data.entity.Constants.LEVEL_ID;
+import static at.escapedoom.data.data.entity.Constants.RIDDLE_ID;
+
 @Entity
 @Getter
 @Setter
@@ -16,7 +19,8 @@ import java.util.UUID;
 public class Riddle {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID escapeRoomRiddleId;
+    @Column(name = RIDDLE_ID)
+    private UUID riddleId;
 
     private String expectedOutput;
 
@@ -29,13 +33,15 @@ public class Riddle {
 
     private String variableName;
 
-    @ManyToOne
-    @JoinColumn(name = "level_id")
-    private Level escapeRoomLevel;
+    @OneToOne(mappedBy = "riddle")
+    private Level level;
+
+    @Column(name = LEVEL_ID, nullable = false)
+    private UUID levelId;
 
     @Override
     public String toString() {
-        return "DBRiddle{" + "escapeRoomRiddleId=" + escapeRoomRiddleId + ", expectedOutput='" + expectedOutput + '\''
+        return "DBRiddle{" + "escapeRoomRiddleId=" + riddleId + ", expectedOutput='" + expectedOutput + '\''
                 + ", language=" + language + ", functionSignature='" + functionSignature + '\'' + ", input='" + input
                 + '\'' + ", variableName='" + variableName + '\'' + '}';
     }

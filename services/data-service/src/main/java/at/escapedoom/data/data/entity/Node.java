@@ -6,6 +6,9 @@ import lombok.*;
 
 import java.util.UUID;
 
+import static at.escapedoom.data.data.entity.Constants.NODE_ID;
+import static at.escapedoom.data.data.entity.Constants.SCENE_ID;
+
 @Entity
 @Getter
 @Setter
@@ -17,6 +20,7 @@ public class Node {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = NODE_ID)
     private UUID nodeId;
 
     @Embedded
@@ -29,9 +33,11 @@ public class Node {
     private NodeType nodeType;
 
     @ManyToOne
-    @JoinColumns({ @JoinColumn(name = "scene_id", referencedColumnName = "sceneId"),
-            @JoinColumn(name = "scene_sequence", referencedColumnName = "sceneSequence") })
+    @JoinColumn(name = SCENE_ID, insertable = false, updatable = false)
     private Scene scene;
+
+    @Column(name = SCENE_ID)
+    private UUID sceneId;
 
     @Override
     public String toString() {

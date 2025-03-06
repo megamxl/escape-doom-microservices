@@ -6,39 +6,42 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+import static at.escapedoom.data.data.entity.Constants.*;
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "scene")
-@IdClass(ScenePK.class)
+@Table(name = "scene", uniqueConstraints = { @UniqueConstraint(name = "uniqueScenePerLevel", columnNames = { LEVEL_ID, SCENE_SEQUENCE }) })
 public class Scene {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = SCENE_ID)
     private UUID sceneId;
 
-    @Id
+    @Column(name = SCENE_SEQUENCE)
     private Integer sceneSequence;
 
     private String name;
+
     private String backgroundImageURI;
 
     @ManyToOne
-    @JoinColumn(name = "level_id", referencedColumnName = "level_id")
-    private Level escapeRoomLevel;
+    @JoinColumn(name = LEVEL_ID, insertable = false, updatable = false)
+    private Level level;
 
-    @Column(name = "escape_room_sequence_id", unique = true)
-    private UUID escapeRoomSequenceId;
+    @Column(name = LEVEL_ID)
+    private UUID levelId;
 
     @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Node> nodes;
 
     @Override
     public String toString() {
-        return "Scene{" + "escapeRoomSequenceId=" + escapeRoomSequenceId + ", sceneSequence=" + sceneSequence
-                + ", name='" + name + '\'' + ", backgroundImageURI=" + backgroundImageURI + ", nodes=lazyLoaded" + '}';
+        return "Scene{" + "sceneId=" + sceneId + ", sceneSequence=" + sceneSequence + ", name='" + name + '\''
+                + ", backgroundImageURI='" + backgroundImageURI + '\'' + ", level=" + level + ", nodes=" + nodes + '}';
     }
 }

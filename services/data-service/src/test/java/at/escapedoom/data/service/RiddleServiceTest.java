@@ -7,7 +7,6 @@ import at.escapedoom.data.rest.model.CodingLanguage;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
-import at.escapedoom.data.service.RiddleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ class RiddleServiceTest {
         Riddle riddle = Riddle.builder().input("2, 3").language(CodingLanguage.JAVA).expectedOutput("5")
                 .functionSignature("public static int sum(int a, int b)").variableName("result").build();
 
-        VALID_RIDDLE_ID = repository.save(riddle).getEscapeRoomRiddleId().toString();
+        VALID_RIDDLE_ID = repository.save(riddle).getRiddleId().toString();
 
     }
 
