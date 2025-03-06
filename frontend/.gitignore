@@ -3,7 +3,7 @@
 .idea
 
 # dependencies
-/node_modules
+/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -26,7 +26,7 @@ pnpm-lock.yaml
 # production
 /build
 
-# misc
+# misclevel
 .DS_Store
 *.pem
 
@@ -50,3 +50,4 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 playwright/.auth
+/app/gen/

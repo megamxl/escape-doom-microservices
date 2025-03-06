@@ -1,10 +1,11 @@
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequest;
-import at.escapedoom.data.rest.model.CreateInternalServerError;
-import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.DeleteLevelResponse;
-import at.escapedoom.data.rest.model.Scene;
+import at.escapedoom.data.rest.model.CreateBadRequestDTO;
+import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
+import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.DeleteLevelResponseDTO;
+import at.escapedoom.data.rest.model.SceneDTO;
+import at.escapedoom.data.rest.model.SceneRequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +31,9 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * POST /scene : Create a new scene Create a Scene independently of any level
+     * POST /scenes : Create a new scene Create a Scene independently of any level
      *
-     * @param scene
+     * @param sceneRequestDTO
      *            The details of the new Scene (required)
      *
      * @return Scene created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
@@ -40,21 +41,21 @@ public interface SceneApiDelegate {
      *
      * @see SceneApi#createScene
      */
-    default ResponseEntity<Scene> createScene(Scene scene) {
+    default ResponseEntity<SceneDTO> createScene(SceneRequestDTO sceneRequestDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
+                    String exampleString = "{ \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"scene_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"name\" : \"Scene 1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -75,21 +76,21 @@ public interface SceneApiDelegate {
      *
      * @see SceneApi#deleteScene
      */
-    default ResponseEntity<DeleteLevelResponse> deleteScene(String escapeRoomSceneId) {
+    default ResponseEntity<DeleteLevelResponseDTO> deleteScene(String escapeRoomSceneId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 200, \"message\" : \"Scene deleted successfully\" }";
+                    String exampleString = "{ \"message\" : \"Scene deleted successfully\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -100,22 +101,22 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * GET /scene : Get all scenes Retrieve all scenes that are not linked to any specific level
+     * GET /scenes : Get all scenes Retrieve all scenes that are not linked to any specific level
      *
      * @return A list of scenes (status code 200) or Internal Server Error (status code 500)
      *
      * @see SceneApi#getAllScenes
      */
-    default ResponseEntity<List<Scene>> getAllScenes() {
+    default ResponseEntity<List<SceneDTO>> getAllScenes() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" } ]";
+                    String exampleString = "[ { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"scene_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"name\" : \"Scene 1\", \"background_image_uri\" : \"https://example.com/background.png\" }, { \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"scene_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"name\" : \"Scene 1\", \"background_image_uri\" : \"https://example.com/background.png\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -133,23 +134,23 @@ public interface SceneApiDelegate {
      *
      * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      *
-     * @see SceneApi#getScene
+     * @see SceneApi#getSceneById
      */
-    default ResponseEntity<Scene> getScene(String escapeRoomSceneId) {
+    default ResponseEntity<SceneDTO> getSceneById(String escapeRoomSceneId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
+                    String exampleString = "{ \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"scene_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"name\" : \"Scene 1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -164,7 +165,7 @@ public interface SceneApiDelegate {
      *
      * @param escapeRoomSceneId
      *            The unique ID of the Scene (required)
-     * @param scene
+     * @param sceneRequestDTO
      *            The updated details of the Scene (required)
      *
      * @return Scene updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
@@ -172,26 +173,26 @@ public interface SceneApiDelegate {
      *
      * @see SceneApi#putScene
      */
-    default ResponseEntity<Scene> putScene(String escapeRoomSceneId, Scene scene) {
+    default ResponseEntity<SceneDTO> putScene(String escapeRoomSceneId, SceneRequestDTO sceneRequestDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"name\" : \"Scene 1\", \"escape_room_sequence_id\" : \"1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
+                    String exampleString = "{ \"scene_sequence\" : 1, \"nodes\" : [ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"position\" : { \"top\" : 50.5, \"left\" : 22 } } ], \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"scene_id\" : \"241a70fe-47d6-4756-9ac7-330f1b199e84\", \"name\" : \"Scene 1\", \"background_image_uri\" : \"https://example.com/background.png\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 400, \"message\" : \"Invalid data provided\" }";
+                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 404, \"message\" : \"The requested resource was not found\" }";
+                    String exampleString = "{ \"message\" : \"The requested resource was not found\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : 500, \"message\" : \"An unexpected error occurred on the server\" }";
+                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

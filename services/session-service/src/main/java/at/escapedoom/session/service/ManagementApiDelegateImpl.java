@@ -40,17 +40,16 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
         Random random = new Random();
         Integer roomPin = 100000 + random.nextInt(900000);
 
-            try {
+        try {
+            escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
+                    escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userId);
+        } catch (Exception e) {
+            if (e instanceof DataIntegrityViolationException) {
+                roomPin = 100000 + random.nextInt(900000);
                 escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
                         escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userId);
-            } catch (Exception e) {
-                if (e instanceof DataIntegrityViolationException) {
-                    roomPin = 100000 + random.nextInt(900000);
-                    escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
-                            escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userId);
-                }
             }
-
+        }
 
         if (escapeRoomSession != null) {
             response = EscapeRoomSessionMapperUtil.map(escapeRoomSession);

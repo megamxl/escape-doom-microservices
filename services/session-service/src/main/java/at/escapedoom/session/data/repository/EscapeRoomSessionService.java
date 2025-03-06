@@ -28,7 +28,7 @@ public class EscapeRoomSessionService {
 
     public EscapeRoomSession addTagToSession(UUID userId, UUID sessionId, String tag) {
         EscapeRoomSession session = getSessionById(sessionId);
-        if(!session.getUserId().equals(userId)) {
+        if (!session.getUserId().equals(userId)) {
             throw new RuntimeException("Session user id does not match session user id");
         }
         if (!session.getTags().contains(tag)) {
@@ -42,7 +42,7 @@ public class EscapeRoomSessionService {
 
     public EscapeRoomSession removeTagFromSession(UUID userId, UUID sessionId, String tag) {
         EscapeRoomSession session = getSessionById(sessionId);
-        if(!session.getUserId().equals(userId)) {
+        if (!session.getUserId().equals(userId)) {
             throw new RuntimeException("Session user id does not match session user id");
         }
         if (session.getTags().contains(tag)) {
