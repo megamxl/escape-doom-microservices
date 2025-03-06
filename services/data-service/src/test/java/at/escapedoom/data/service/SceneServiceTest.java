@@ -25,42 +25,42 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class SceneServiceTest {
     // TODO @Thommy Fix test
 
-//    @Autowired
-//    private SceneService service;
-//    @Autowired
-//    private SceneRepository repository;
-//
-//    @Transactional
-//
-//    @BeforeEach
-//    void setup() {
-//
-//        repository.deleteAllInBatch();
-//        repository.flush();
-//
-//        Scene scene = Scene.builder().sceneSequence(1)
-//                .backgroundImageURI(String.valueOf(URI.create("https://example.com/background.png"))).name("Scene 1")
-//                .build();
-//
-//        List<Node> nodes = Arrays.asList(Node.builder().position(new Position(20.5, 40.0)).nodeType(NodeType.CONSOLE)
-//                .nodeInfo(NodeInfo.builder().description("This is a console node")
-//                        .imageURI("https://example.com/image.png").title("I like cheese").build())
-//                .scene(scene).build());
-//
-//        scene.setNodes(nodes);
-//
-//        VALID_SCENE_ID = repository.save(scene).getSceneId().toString();
-//    }
-//
-//    // region GET Tests
-//
-//    @Test
-//    void testGetAllScenes() {
-//        List<SceneDTO> scenes = service.getAllScenes();
-//
-//        assertEquals(1, scenes.size());
-//        assertEquals(NodeType.CONSOLE, scenes.get(0).getNodes().get(0).getNodeType());
-//    }
-//    // endregion
+    // @Autowired
+    // private SceneService service;
+    // @Autowired
+    // private SceneRepository repository;
+    //
+    // @Transactional
+    //
+    // @BeforeEach
+    // void setup() {
+    //
+    // repository.deleteAllInBatch();
+    // repository.flush();
+    //
+    // Scene scene = Scene.builder().sceneSequence(1)
+    // .backgroundImageURI(String.valueOf(URI.create("https://example.com/background.png"))).name("Scene 1")
+    // .build();
+    //
+    // List<Node> nodes = Arrays.asList(Node.builder().position(new Position(20.5, 40.0)).nodeType(NodeType.CONSOLE)
+    // .nodeInfo(NodeInfo.builder().description("This is a console node")
+    // .imageURI("https://example.com/image.png").title("I like cheese").build())
+    // .scene(scene).build());
+    //
+    // scene.setNodes(nodes);
+    //
+    // VALID_SCENE_ID = repository.save(scene).getSceneId().toString();
+    // }
+    //
+    // // region GET Tests
+    //
+    // @Test
+    // void testGetAllScenes() {
+    // List<SceneDTO> scenes = service.getAllScenes();
+    //
+    // assertEquals(1, scenes.size());
+    // assertEquals(NodeType.CONSOLE, scenes.get(0).getNodes().get(0).getNodeType());
+    // }
+    // // endregion
 
 }
