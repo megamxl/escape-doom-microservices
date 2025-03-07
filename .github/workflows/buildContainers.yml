@@ -15,10 +15,16 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Fix Permissions
-        run: sudo chmod -R 777 $GITHUB_WORKSPACE
       - name: Build with Maven
         run: mvn clean install --file pom.xml
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: kubb it
+        working-directory: ./frontend
+        run: npm run gen
       - name: Build and Push Image with Jib
         run: mvn compile  -Djib.to.auth.username=${{ github.actor }} -Djib.to.auth.password=${{ secrets.GITHUB_TOKEN }} jib:build -pl services/gateway-service,services/data-service,services/session-service,services/player-service,services/leaderboard-service --file pom.xml
       - name: Log in to GitHub Container Registry
