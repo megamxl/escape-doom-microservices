@@ -10,7 +10,6 @@ public class WSController {
     @SendTo("/topic/greetings")
     public TestMessage respond(TestMessage message) throws Exception {
         Thread.sleep(1000);
-        System.out.println(message.getMessage());
         return new TestMessage("Hello, " + message.getMessage() + "!");
     }
 }
