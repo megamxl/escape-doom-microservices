@@ -21,7 +21,7 @@ export default function WebSocketComponent() {
                     console.log("Connected:", frame);
 
                     client.subscribe("/topic/greetings", (message) => {
-                        const content: string = JSON.parse(message.body).content;
+                        const content: string = JSON.parse(message.body).message;
                         setMessages((prevMessages) => [...prevMessages, content]);
                     });
                 };
@@ -58,7 +58,7 @@ export default function WebSocketComponent() {
 
         stompClient.publish({
             destination: "/app/hello",
-            body: JSON.stringify({ name: "Next.js User" }),
+            body: JSON.stringify({ message: "Anas" }),
         });
     };
 

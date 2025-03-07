@@ -3,14 +3,14 @@ package at.escapedoom.player.ws;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.util.HtmlUtils;
 
 @Controller
 public class WSController {
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")
-    public TestMessage resond(TestMessage message) throws Exception {
+    public TestMessage respond(TestMessage message) throws Exception {
         Thread.sleep(1000);
-        return new TestMessage("Hello, " + HtmlUtils.htmlEscape(message.getMessage()) + "!");
+        System.out.println(message.getMessage());
+        return new TestMessage("Hello, " + message.getMessage() + "!");
     }
 }
