@@ -28,7 +28,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
 
     const {data, isError, error} = useLobbyStatus(sessionID)
 
-    const [connected, setConnected] = useState<boolean>(false);
+    const [subscribed, setSubscribed] = useState<boolean>(false);
 
     const createWebSockets =  async () => {
         /*
@@ -84,10 +84,10 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
 
 
     useEffect(() => {
-        if (stompClient && connected) {
+        if (stompClient && subscribed) {
             sendMessage();
         }
-    }, [connected]);
+    }, [subscribed]);
 
     useEffect(() => {
         //@ts-ignore
@@ -124,21 +124,21 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
         useEffect(() => {
             const setupWebSocket = async () => {
                 try {
-                    console.log("bin do")
                     const client = await initializeStompClient();
                     if (!client) return;
 
                     setStompClient(client);
-                    console.log("jz do")
                     client.onConnect = (frame) => {
-                        setConnected(true);
-                        client.subscribe("/topic/greetings", (message) => {
-                            const content: string = JSON.parse(message.body).message;
-                            console.log("ill connect")
-                            setLobbyState(prevState => ({
-                                ...prevState,
-                                users: [...prevState.users, content]
-                            }));
+                        client.subscribe("/topic/greetings/"+lobbyID, (message) => {
+                            const data = JSON.parse(message.body);
+                            console.log("i recieved " + message.body)
+                            setSubscribed(true);
+                            if (data.message && Array.isArray(data.message)) {
+                                setLobbyState(prevState => ({
+                                    ...prevState,
+                                    users: data.message
+                                }));
+                            }
                         });
                     };
 
@@ -171,10 +171,10 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                 return;
             }
 
-            stompClient.publish({
-                destination: "/app/hello",
-                body: JSON.stringify({ message: "Anas" }),
-            });
+            // stompClient.publish({
+            //     destination: "/app/hello",
+            //     body: JSON.stringify({ message: "Anas" }),
+            // });
         };
 
     return (

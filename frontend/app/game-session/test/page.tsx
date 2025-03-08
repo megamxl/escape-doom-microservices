@@ -20,8 +20,9 @@ export default function WebSocketComponent() {
                     setConnected(true);
                     console.log("Connected:", frame);
 
-                    client.subscribe("/topic/greetings", (message) => {
+                    client.subscribe("/topic/greetings/123", (message) => {
                         const content: string = JSON.parse(message.body).message;
+                        console.log("recieved your message")
                         setMessages((prevMessages) => [...prevMessages, content]);
                     });
                 };
