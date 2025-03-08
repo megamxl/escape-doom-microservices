@@ -6,7 +6,7 @@ import at.escapedoom.session.rest.api.ManagementApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
 import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
-import at.escapedoom.session.util.KeycloakUserUtil;
+import at.escapedoom.spring.security.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -34,21 +34,20 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
     public ResponseEntity<EscapeRoomSessionResponse> createERInstance(EscapeRoomCreation escapeRoomCreation) {
         EscapeRoomSession escapeRoomSession = null;
         EscapeRoomSessionResponse response = null;
-        String userName = KeycloakUserUtil.getCurrentUsername();
+        UUID userId = KeycloakUserUtil.getCurrentUserUUID()
+                .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
         Random random = new Random();
         Integer roomPin = 100000 + random.nextInt(900000);
 
-        if (userName != null && !userName.isEmpty()) {
-            try {
+        try {
+            escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
+                    escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userId);
+        } catch (Exception e) {
+            if (e instanceof DataIntegrityViolationException) {
+                roomPin = 100000 + random.nextInt(900000);
                 escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
-                        escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
-            } catch (Exception e) {
-                if (e instanceof DataIntegrityViolationException) {
-                    roomPin = 100000 + random.nextInt(900000);
-                    escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
-                            escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userName);
-                }
+                        escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userId);
             }
         }
 
@@ -68,7 +67,7 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
 
         if (escapeRoomSession == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else if (!escapeRoomSession.getUserId().equals(KeycloakUserUtil.getCurrentUsername())) {
+        } else if (!escapeRoomSession.getUserId().equals(KeycloakUserUtil.getCurrentUserUUID())) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         escapeRoomSession = sessionService.changeSessionStatus(escapeRoomSessionId, state);

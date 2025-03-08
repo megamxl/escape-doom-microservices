@@ -22,15 +22,18 @@ public class EscapeRoomSessionService {
     private final EscapeRoomSessionRepository repository;
     private final SessionViewRepository sessionViewRepository;
 
-    public EscapeRoomSession createSession(UUID templateId, Long playTime, Long roomPin, String userId) {
+    public EscapeRoomSession createSession(UUID templateId, Long playTime, Long roomPin, UUID userId) {
         EscapeRoomSession session = EscapeRoomSession.builder().escapeRoomSessionId(UUID.randomUUID())
                 .escapeRoomTemplateId(templateId).userId(userId).roomPin(roomPin).playTime(playTime)
                 .state(EscapeRoomState.OPEN).build();
         return saveAndChacheSession(session);
     }
 
-    public EscapeRoomSession addTagToSession(UUID sessionId, String tag) {
+    public EscapeRoomSession addTagToSession(UUID userId, UUID sessionId, String tag) {
         EscapeRoomSession session = getSessionById(sessionId);
+        if (!session.getUserId().equals(userId)) {
+            throw new RuntimeException("Session user id does not match session user id");
+        }
         if (!session.getTags().contains(tag)) {
             session.getTags().add(tag);
             return repository.save(session);
@@ -40,8 +43,11 @@ public class EscapeRoomSessionService {
         return session;
     }
 
-    public EscapeRoomSession removeTagFromSession(UUID sessionId, String tag) {
+    public EscapeRoomSession removeTagFromSession(UUID userId, UUID sessionId, String tag) {
         EscapeRoomSession session = getSessionById(sessionId);
+        if (!session.getUserId().equals(userId)) {
+            throw new RuntimeException("Session user id does not match session user id");
+        }
         if (session.getTags().contains(tag)) {
             session.getTags().remove(tag);
             return repository.save(session);
@@ -69,13 +75,13 @@ public class EscapeRoomSessionService {
         return sessionOptional.orElseThrow(() -> new RuntimeException("Session not found for ID: " + sessionId));
     }
 
-    public List<EscapeRoomSession> getSessionsByUserName(String userName) {
-        List<EscapeRoomSession> sessions = repository.getEscapeRoomSessionsByUserIdOrderByStartTimeDesc(userName);
+    public List<EscapeRoomSession> getSessionsByUserUUID(UUID userId) {
+        List<EscapeRoomSession> sessions = repository.getEscapeRoomSessionsByUserIdOrderByStartTimeDesc(userId);
         return sessions;
     }
 
-    public List<EscapeRoomSession> getSessionsByTags(String userName, List<String> tags) {
-        return repository.getEscapeRoomSessionsByUserIdAndTagsContains(userName, tags);
+    public List<EscapeRoomSession> getSessionsByTags(UUID userId, List<String> tags) {
+        return repository.getEscapeRoomSessionsByUserIdAndTagsContains(userId, tags);
     }
 
     public EscapeRoomSession getSessionByRoomPin(Long roomPin) {

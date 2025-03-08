@@ -5,11 +5,12 @@
  */
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequest;
-import at.escapedoom.data.rest.model.CreateInternalServerError;
-import at.escapedoom.data.rest.model.CreateNotFound;
-import at.escapedoom.data.rest.model.DeleteLevelSuccess;
-import at.escapedoom.data.rest.model.EscapeRoomLevel;
+import at.escapedoom.data.rest.model.CreateBadRequestDTO;
+import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
+import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
+import at.escapedoom.data.rest.model.LevelCreationRequest;
+import at.escapedoom.data.rest.model.LevelDTO;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,94 +44,93 @@ public interface LevelApi {
     }
 
     /**
-     * POST /level : Create a new level Create an EscapeRoomLevel independently of any template
+     * POST /levels : Create a new level Create an Level independently of any template
      *
-     * @param escapeRoomLevel
-     *            The details of the new EscapeRoomLevel (required)
+     * @param levelCreationRequest
+     *            The details of the new Level (required)
      *
      * @return Level created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
      *         (status code 500)
      */
-    @Operation(operationId = "createLevel", summary = "Create a new level", description = "Create an EscapeRoomLevel independently of any template", tags = {
+    @Operation(operationId = "createLevel", summary = "Create a new level", description = "Create an Level independently of any template", tags = {
             "Level" }, responses = {
                     @ApiResponse(responseCode = "201", description = "Level created successfully", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomLevel.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = LevelDTO.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
-    @RequestMapping(method = RequestMethod.POST, value = "/level", produces = { "application/json" }, consumes = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.POST, value = "/levels", produces = { "application/json" }, consumes = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomLevel> createLevel(
-            @Parameter(name = "EscapeRoomLevel", description = "The details of the new EscapeRoomLevel", required = true) @Valid @RequestBody EscapeRoomLevel escapeRoomLevel) {
-        return getDelegate().createLevel(escapeRoomLevel);
+    default ResponseEntity<LevelDTO> createLevel(
+            @Parameter(name = "LevelCreationRequest", description = "The details of the new Level", required = true) @Valid @RequestBody LevelCreationRequest levelCreationRequest) {
+        return getDelegate().createLevel(levelCreationRequest);
     }
 
     /**
-     * DELETE /level/{escape-room-level-id} : Delete a level Delete a EscapeRoomLevel by its ID
+     * DELETE /levels/{escape-room-level-id} : Delete a level Delete a Level by its ID
      *
      * @param escapeRoomLevelId
-     *            The unique ID of the EscapeRoomLevel to delete (required)
+     *            The unique ID of the Level to delete (required)
      *
      * @return Level deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
      *         (status code 500)
      */
-    @Operation(operationId = "deleteLevel", summary = "Delete a level", description = "Delete a EscapeRoomLevel by its ID", tags = {
+    @Operation(operationId = "deleteLevel", summary = "Delete a level", description = "Delete a Level by its ID", tags = {
             "Level" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Level deleted successfully", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteLevelSuccess.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = DeleteLevelSuccessDTO.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/level/{escape-room-level-id}", produces = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/levels/{escape-room-level-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<DeleteLevelSuccess> deleteLevel(
-            @Parameter(name = "escape-room-level-id", description = "The unique ID of the EscapeRoomLevel to delete", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId) {
+    default ResponseEntity<DeleteLevelSuccessDTO> deleteLevel(
+            @Parameter(name = "escape-room-level-id", description = "The unique ID of the Level to delete", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId) {
         return getDelegate().deleteLevel(escapeRoomLevelId);
     }
 
     /**
-     * GET /all-levels : Retrieve all levels by a specific user Retrieve all levels by a specific user
+     * GET /levels : Retrieve all levels by a specific user Retrieve all levels by a specific user
      *
      * @return A list of levels (status code 200) or Internal Server Error (status code 500)
      */
     @Operation(operationId = "getAllLevels", summary = "Retrieve all levels by a specific user", description = "Retrieve all levels by a specific user", tags = {
             "Level" }, responses = { @ApiResponse(responseCode = "200", description = "A list of levels", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomLevel.class))) }),
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LevelDTO.class))) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/all-levels", produces = { "application/json" })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/levels", produces = { "application/json" })
 
-    default ResponseEntity<List<EscapeRoomLevel>> getAllLevels(
+    default ResponseEntity<List<LevelDTO>> getAllLevels(
 
     ) {
         return getDelegate().getAllLevels();
     }
 
     /**
-     * GET /levels/{escape-room-level-id} : Get details of a level Retrieve details of a specific EscapeRoomLevel by its
-     * ID
+     * GET /levels/{escape-room-level-id} : Get details of a level Retrieve details of a specific Level by its ID
      *
      * @param escapeRoomLevelId
-     *            The unique ID of the EscapeRoomLevel (required)
+     *            The unique ID of the Level (required)
      *
      * @return Level details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "getLevel", summary = "Get details of a level", description = "Retrieve details of a specific EscapeRoomLevel by its ID", tags = {
+    @Operation(operationId = "getLevel", summary = "Get details of a level", description = "Retrieve details of a specific Level by its ID", tags = {
             "Level" }, responses = { @ApiResponse(responseCode = "200", description = "Level details", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomLevel.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = LevelDTO.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/levels/{escape-room-level-id}", produces = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomLevel> getLevel(
-            @Parameter(name = "escape-room-level-id", description = "The unique ID of the EscapeRoomLevel", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId) {
+    default ResponseEntity<LevelDTO> getLevel(
+            @Parameter(name = "escape-room-level-id", description = "The unique ID of the Level", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId) {
         return getDelegate().getLevel(escapeRoomLevelId);
     }
 
@@ -152,33 +152,33 @@ public interface LevelApi {
     }
 
     /**
-     * PUT /level/overide/{escape-room-level-id} : Override a level Override the details of a EscapeRoomLevel
+     * PUT /levels/{escape-room-level-id} : Override a level Override the details of a Level
      *
      * @param escapeRoomLevelId
-     *            The unique ID of the EscapeRoomLevel (required)
-     * @param escapeRoomLevel
-     *            The overriden details of the EscapeRoomLevel (required)
+     *            The unique ID of the Level (required)
+     * @param levelDTO
+     *            The overridden details of the Level (required)
      *
      * @return Level updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "putLevelOfTemplate", summary = "Override a level", description = "Override the details of a EscapeRoomLevel", tags = {
+    @Operation(operationId = "updateLevel", summary = "Override a level", description = "Override the details of a Level", tags = {
             "Level" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Level updated successfully", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomLevel.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = LevelDTO.class)) }),
                     @ApiResponse(responseCode = "400", description = "Bad Request", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequest.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
                     @ApiResponse(responseCode = "404", description = "Not Found", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFound.class)) }),
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
-                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerError.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/level/overide/{escape-room-level-id}", produces = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.PUT, value = "/levels/{escape-room-level-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<EscapeRoomLevel> putLevelOfTemplate(
-            @Parameter(name = "escape-room-level-id", description = "The unique ID of the EscapeRoomLevel", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId,
-            @Parameter(name = "EscapeRoomLevel", description = "The overriden details of the EscapeRoomLevel", required = true) @Valid @RequestBody EscapeRoomLevel escapeRoomLevel) {
-        return getDelegate().putLevelOfTemplate(escapeRoomLevelId, escapeRoomLevel);
+    default ResponseEntity<LevelDTO> updateLevel(
+            @Parameter(name = "escape-room-level-id", description = "The unique ID of the Level", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId,
+            @Parameter(name = "LevelDTO", description = "The overridden details of the Level", required = true) @Valid @RequestBody LevelDTO levelDTO) {
+        return getDelegate().updateLevel(escapeRoomLevelId, levelDTO);
     }
 
 }
