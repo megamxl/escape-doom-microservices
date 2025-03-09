@@ -26,16 +26,16 @@ class EscapeRoomSessionServiceTest {
     @Test
     void testCreateSessionSuccessfully() {
         UUID templateId = UUID.randomUUID();
-        String userName = "testUser";
+        UUID userId = UUID.randomUUID();
         Long roomPin = 123L;
         Long playTime = 60L;
 
-        EscapeRoomSession session = sessionService.createSession(templateId, playTime, roomPin, userName);
+        EscapeRoomSession session = sessionService.createSession(templateId, playTime, roomPin, userId);
 
         assertThat(session).isNotNull();
         assertThat(session.getEscapeRoomTemplateId()).isEqualTo(templateId);
         assertThat(session.getRoomPin()).isEqualTo(roomPin);
-        assertThat(session.getUserId()).isEqualTo(userName);
+        assertThat(session.getUserId()).isEqualTo(userId);
         assertThat(session.getPlayTime()).isEqualTo(playTime);
         assertThat(session.getState()).isEqualTo(EscapeRoomState.OPEN);
     }
@@ -54,51 +54,53 @@ class EscapeRoomSessionServiceTest {
     @Test
     void testChangeSessionStatus() {
         UUID templateId = UUID.randomUUID();
-        String userName = "player1";
+        UUID userId = UUID.randomUUID();
         Long roomPin = 65L;
         Long playTime = 90L;
 
-        EscapeRoomSession session = sessionService.createSession(templateId, playTime, roomPin, userName);
+        EscapeRoomSession session = sessionService.createSession(templateId, playTime, roomPin, userId);
 
-        EscapeRoomSession updatedSession = sessionService.changeSessionStatus(session.getEscapeRoomSessionId(), EscapeRoomState.STARTED);
+        EscapeRoomSession updatedSession = sessionService.changeSessionStatus(session.getEscapeRoomSessionId(),
+                EscapeRoomState.STARTED);
         assertThat(updatedSession.getState()).isEqualTo(EscapeRoomState.STARTED);
 
-        EscapeRoomSession closedSession = sessionService.changeSessionStatus(session.getEscapeRoomSessionId(), EscapeRoomState.CLOSED);
+        EscapeRoomSession closedSession = sessionService.changeSessionStatus(session.getEscapeRoomSessionId(),
+                EscapeRoomState.CLOSED);
         assertThat(closedSession.getState()).isEqualTo(EscapeRoomState.CLOSED);
     }
 
     @Test
     void testGetSessionsByUserName() {
-        String userName = "testUser2";
-        sessionService.createSession(UUID.randomUUID(), 60L, 12L, userName);
-        sessionService.createSession(UUID.randomUUID(), 75L, 23L, userName);
+        UUID uuid = UUID.randomUUID();
+        sessionService.createSession(UUID.randomUUID(), 60L, 12L, uuid);
+        sessionService.createSession(UUID.randomUUID(), 75L, 23L, uuid);
 
-        List<EscapeRoomSession> sessions = sessionService.getSessionsByUserName(userName);
+        List<EscapeRoomSession> sessions = sessionService.getSessionsByUserUUID(uuid);
         assertThat(sessions).isNotEmpty();
         assertThat(sessions.size()).isEqualTo(2);
     }
 
     @Test
     void testGetSessionsByTags() {
-        String userName = "testUser3";
-        EscapeRoomSession session = sessionService.createSession(UUID.randomUUID(), 60L, 34L, userName);
-        sessionService.addTagToSession(session.getEscapeRoomSessionId(), "VZ25");
+        UUID uuid = UUID.randomUUID();
+        EscapeRoomSession session = sessionService.createSession(UUID.randomUUID(), 60L, 34L, uuid);
+        sessionService.addTagToSession(uuid, session.getEscapeRoomSessionId(), "VZ25");
 
-        List<EscapeRoomSession> sessions = sessionService.getSessionsByTags(userName, List.of("VZ25"));
+        List<EscapeRoomSession> sessions = sessionService.getSessionsByTags(uuid, List.of("VZ25"));
         assertThat(sessions).isNotEmpty();
         assertThat(sessions.get(0).getTags()).contains("VZ25");
     }
 
     @Test
     void testAddAndRemoveTags() {
-        String userName = "testUser4";
-        EscapeRoomSession session = sessionService.createSession(UUID.randomUUID(), 60L, 98L, userName);
+        UUID userId = UUID.randomUUID();
+        EscapeRoomSession session = sessionService.createSession(UUID.randomUUID(), 60L, 98L, userId);
 
-        sessionService.addTagToSession(session.getEscapeRoomSessionId(), "SDE26");
+        sessionService.addTagToSession(userId, session.getEscapeRoomSessionId(), "SDE26");
         EscapeRoomSession updatedSession = sessionService.getSessionById(session.getEscapeRoomSessionId());
         assertThat(updatedSession.getTags()).contains("SDE26");
 
-        sessionService.removeTagFromSession(session.getEscapeRoomSessionId(), "SDE26");
+        sessionService.removeTagFromSession(userId, session.getEscapeRoomSessionId(), "SDE26");
         updatedSession = sessionService.getSessionById(session.getEscapeRoomSessionId());
         assertThat(updatedSession.getTags()).doesNotContain("SDE26");
     }
