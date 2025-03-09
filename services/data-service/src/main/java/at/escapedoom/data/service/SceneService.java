@@ -3,6 +3,7 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.*;
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.utils.LoggerUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 
 @Slf4j
 @Service
@@ -27,6 +30,8 @@ public class SceneService {
 
     public SceneDTO getSceneById(String id) {
         assert id != null : "Scene id is null";
+
+        log.info("Getting scene by id: {}", id);
 
         Optional<Scene> dbScene = sceneRepository.findById(UUID.fromString(id));
         return dbScene.map(this::toSceneDTO)
@@ -48,6 +53,8 @@ public class SceneService {
     public List<Scene> createScenesForLevel(List<SceneDTO> scenes, Level level) {
         List<Scene> sceneList = new ArrayList<>();
 
+        log.debug("Creating scenes for level {}", level);
+
         for (SceneDTO scene : scenes) {
             SceneRequestDTO sceneRequest = toSceneRequestDTO(scene, level);
             Scene dbScene = toDBScene(sceneRequest);
@@ -58,18 +65,28 @@ public class SceneService {
             dbScene = sceneRepository.saveAndFlush(dbScene);
             sceneList.add(dbScene);
         }
+
+        log.info("Created scenes for level {}", level);
+
         return sceneList;
     }
 
     private void attachNodesToScene(SceneDTO scene, Scene dbScene) {
         if (scene.getNodes() != null && !scene.getNodes().isEmpty()) {
+
             List<Node> nodes = new ArrayList<>();
+
+            log.debug("Attaching nodes to scene {}", dbScene);
+
             for (NodeDTO node : scene.getNodes()) {
                 Node dbNode = toDBNode(node);
                 dbNode.setScene(dbScene);
                 nodes.add(dbNode);
             }
+
             dbScene.setNodes(nodes);
+
+            log.info("Attached nodes to scene {}", dbScene);
         }
     }
 
