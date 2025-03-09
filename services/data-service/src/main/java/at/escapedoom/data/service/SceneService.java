@@ -101,7 +101,8 @@ public class SceneService {
         dbScene.setSceneSequence(scene.getSceneSequence());
         dbScene.setName(scene.getName());
         dbScene.setBackgroundImageURI(scene.getBackgroundImageUri());
-        if (scene.getLevelId() != null) dbScene.setLevelId(UUID.fromString(scene.getLevelId()));
+        if (scene.getLevelId() != null)
+            dbScene.setLevelId(UUID.fromString(scene.getLevelId()));
 
         dbScene = sceneRepository.saveAndFlush(dbScene);
         log.info("Updated scene with sequence {}", dbScene.getSceneSequence());
