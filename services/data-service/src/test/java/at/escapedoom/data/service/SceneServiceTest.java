@@ -1,66 +1,241 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.DataApi;
+import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
+import at.escapedoom.data.data.TemplateRepository;
 import at.escapedoom.data.data.entity.*;
-import at.escapedoom.data.rest.model.NodeType;
-import at.escapedoom.data.rest.model.SceneDTO;
+import at.escapedoom.data.rest.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.URI;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
 class SceneServiceTest {
-    // TODO @Thommy Fix test
 
-    // @Autowired
-    // private SceneService service;
-    // @Autowired
-    // private SceneRepository repository;
-    //
-    // @Transactional
-    //
-    // @BeforeEach
-    // void setup() {
-    //
-    // repository.deleteAllInBatch();
-    // repository.flush();
-    //
-    // Scene scene = Scene.builder().sceneSequence(1)
-    // .backgroundImageURI(String.valueOf(URI.create("https://example.com/background.png"))).name("Scene 1")
-    // .build();
-    //
-    // List<Node> nodes = Arrays.asList(Node.builder().position(new Position(20.5, 40.0)).nodeType(NodeType.CONSOLE)
-    // .nodeInfo(NodeInfo.builder().description("This is a console node")
-    // .imageURI("https://example.com/image.png").title("I like cheese").build())
-    // .scene(scene).build());
-    //
-    // scene.setNodes(nodes);
-    //
-    // VALID_SCENE_ID = repository.save(scene).getSceneId().toString();
-    // }
-    //
-    // // region GET Tests
-    //
-    // @Test
-    // void testGetAllScenes() {
-    // List<SceneDTO> scenes = service.getAllScenes();
-    //
-    // assertEquals(1, scenes.size());
-    // assertEquals(NodeType.CONSOLE, scenes.get(0).getNodes().get(0).getNodeType());
-    // }
-    // // endregion
+    private final UUID USER_ID = UUID.randomUUID();
+    private final String INVALID_SCENE_ID = UUID.randomUUID().toString();
+
+    private String sceneId;
+    private UUID LEVEL_ID;
+
+    @Autowired
+    private SceneService service;
+    @Autowired
+    private SceneRepository repository;
+
+    @Autowired
+    private TemplateRepository templateRepository;
+
+    @Autowired
+    private LevelRepository levelRepository;
+
+    @Transactional
+    @BeforeEach
+    void setup() {
+
+        repository.deleteAllInBatch();
+        repository.flush();
+
+        Template template = Template.builder()
+                .name("Test Template")
+                .description("Test Template")
+                .userId(USER_ID)
+                .build();
+
+        templateRepository.save(template);
+
+        Level level = Level.builder()
+                .templateId(template.getTemplateId())
+                .levelSequence(1)
+                .build();
+
+        LEVEL_ID = levelRepository.save(level).getLevelId();
+
+        Scene scene = Scene.builder().sceneSequence(1)
+                .backgroundImageURI(String.valueOf(URI.create("https://example.com/background.png")))
+                .name("Scene 1")
+                .levelId(LEVEL_ID)
+                .build();
+
+        sceneId = repository.save(scene).getSceneId().toString();
+
+        List<Node> nodes = Collections.singletonList(Node.builder().position(new Position(20.5, 40.0)).nodeType(NodeType.CONSOLE)
+                .nodeInfo(NodeInfo.builder().description("This is a console node")
+                        .imageURI("https://example.com/image.png")
+                        .title("I like cheese").build())
+                .scene(scene).build());
+
+        scene.setNodes(nodes);
+
+        repository.save(scene);
+    }
+
+    // region GET Tests
+
+    @Test
+    void testGetAllScenes() {
+        List<SceneDTO> scenes = service.getAllScenes();
+
+        assertEquals(1, scenes.size());
+        assertEquals(sceneId, scenes.getFirst().getSceneId());
+    }
+
+    @Test
+    void testGetSceneById() {
+        SceneDTO scene = service.getSceneById(sceneId);
+
+        assertEquals(sceneId, scene.getSceneId());
+        assertEquals(LEVEL_ID.toString(), scene.getLevelId());
+    }
+
+    @Test
+    void testGetSceneByIdNotFoundError() {
+        assertThrows(IllegalArgumentException.class, () -> service.getSceneById(INVALID_SCENE_ID));
+    }
+
+    @Test
+    void testGetSceneByIdNullError() {
+        assertThrows(AssertionError.class, () -> service.getSceneById(null));
+    }
+    // endregion
+
+    // region POST Tests
+    @Test
+    void testCreateScene() {
+        final int SCENE_SEQUENCE = 2;
+        final String BG_IMAGE = "https://example.com/background.png";
+        final String NAME = "Test Scene";
+        final NodeDTO NODE = NodeDTO.builder().position(new PositionDTO(20.5, 40.0)).nodeType(NodeType.CONSOLE)
+                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something").imageURI("https://example.com/background.png").build())
+                .build();
+
+        SceneRequestDTO requestDTO = SceneRequestDTO.builder()
+                .sceneSequence(SCENE_SEQUENCE)
+                .levelId(LEVEL_ID.toString())
+                .backgroundImageUri(BG_IMAGE)
+                .name(NAME)
+                .nodes(Collections.singletonList(NODE))
+                .build();
+
+        SceneDTO creationResponse = service.createScene(requestDTO);
+
+        assertEquals(SCENE_SEQUENCE, creationResponse.getSceneSequence());
+        assertEquals(LEVEL_ID.toString(), creationResponse.getLevelId());
+        assertEquals(NodeType.CONSOLE, creationResponse.getNodes().getFirst().getNodeType());
+    }
+
+    @Test
+    void testCreateSceneDuplicateSequenceError() {
+        final int SCENE_SEQUENCE = 1;
+        final String BG_IMAGE = "https://example.com/background.png";
+        final String NAME = "Test Scene";
+        final NodeDTO NODE = NodeDTO.builder().position(new PositionDTO(20.5, 40.0)).nodeType(NodeType.CONSOLE)
+                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something").imageURI("https://example.com/background.png").build())
+                .build();
+
+        SceneRequestDTO requestDTO = SceneRequestDTO.builder()
+                .sceneSequence(SCENE_SEQUENCE)
+                .levelId(LEVEL_ID.toString())
+                .backgroundImageUri(BG_IMAGE)
+                .name(NAME)
+                .nodes(Collections.singletonList(NODE))
+                .build();
+
+        assertThrows(DataIntegrityViolationException.class, () -> service.createScene(requestDTO));
+    }
+
+    @Test
+    void testCreateSceneDTOIsNullError() {
+        assertThrows(AssertionError.class, () -> service.createScene(null));
+    }
+    // endregion
+
+    // region PUT Tests
+    @Test
+    void testUpdateScene() {
+        SceneRequestDTO sceneRequest = createSceneRequestDTO(null);
+
+        SceneDTO updateResponse = service.updateScene(sceneId, sceneRequest);
+
+        assertEquals(sceneRequest.getSceneSequence(), updateResponse.getSceneSequence());
+        assertEquals(sceneRequest.getName(), updateResponse.getName());
+        assertEquals(NodeType.STORY, updateResponse.getNodes().getFirst().getNodeType());
+    }
+
+    @Test
+    void testUpdateSceneDuplicateSequenceError() {
+
+        String uuid = service.createScene(createSceneRequestDTO(2)).getSceneId();
+
+        SceneRequestDTO sceneRequest = createSceneRequestDTO(1);
+
+        assertThrows(DataIntegrityViolationException.class, () -> service.updateScene(uuid, sceneRequest));
+    }
+
+    @Test
+    void testUpdateSceneDTOIsNullError() {
+        assertThrows(AssertionError.class, () -> service.updateScene(null, null));
+    }
+
+    // endregion
+
+    // region DELETE Tests
+    @Test
+    void testDeleteScene() {
+
+        service.deleteScene(sceneId);
+
+        assertEquals(0, repository.count());
+    }
+
+    @Test
+    void testDeleteSceneNullError() {
+        assertThrows(AssertionError.class, () -> service.deleteScene(null));
+    }
+
+    @Test
+    void testDeleteSceneInvalidUUIDError() {
+        assertThrows(IllegalArgumentException.class, () -> service.deleteScene("-1"));
+    }
+
+    @Test
+    void testDeleteSceneNotFound() {
+        assertDoesNotThrow(() -> service.deleteScene(INVALID_SCENE_ID));
+    }
+    // endregion
+
+    // region Utils
+    private SceneRequestDTO createSceneRequestDTO(Integer sceneSequence) {
+        int SCENE_SEQUENCE = sceneSequence != null ? sceneSequence :  2;
+        String BG_IMAGE = "https://example.com/background.png";
+        String NAME = "Updated Test Scene";
+        NodeDTO NODE = NodeDTO.builder().position(new PositionDTO(20.5, 40.0)).nodeType(NodeType.STORY)
+                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something").imageURI("https://example.com/background.png").build())
+                .build();
+
+        SceneRequestDTO requestDTO = SceneRequestDTO.builder()
+                .sceneSequence(SCENE_SEQUENCE)
+                .levelId(LEVEL_ID.toString())
+                .backgroundImageUri(BG_IMAGE)
+                .name(NAME)
+                .nodes(Collections.singletonList(NODE))
+                .build();
+
+        return requestDTO;
+    }
+    // endregion
 
 }

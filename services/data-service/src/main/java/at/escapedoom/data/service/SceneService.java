@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static at.escapedoom.data.utils.ReflectionUtils.copyNonNullProperties;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -28,14 +26,20 @@ public class SceneService {
     }
 
     public SceneDTO getSceneById(String id) {
+        assert id != null : "Scene id is null";
+
         Optional<Scene> dbScene = sceneRepository.findById(UUID.fromString(id));
         return dbScene.map(this::toSceneDTO)
                 .orElseThrow(() -> new IllegalArgumentException("Scene with id " + id + " not found"));
     }
 
     public SceneDTO createScene(SceneRequestDTO sceneRequest) {
+        assert sceneRequest != null : "Scene request is null";
+
         Scene scene = toDBScene(sceneRequest);
+
         scene = sceneRepository.saveAndFlush(scene);
+
         log.info("Created scene with sequence {}", scene.getSceneSequence());
         return toSceneDTO(scene);
     }
@@ -70,16 +74,26 @@ public class SceneService {
     }
 
     public SceneDTO updateScene(String escapeRoomSceneId, SceneRequestDTO scene) {
+        assert escapeRoomSceneId != null : "Escape room scene id is null";
+        assert scene != null : "Scene request is null";
+
         Scene dbScene = sceneRepository.findById(UUID.fromString(escapeRoomSceneId))
                 .orElseThrow(() -> new IllegalArgumentException("Scene with id " + escapeRoomSceneId + " not found"));
 
-        copyNonNullProperties(dbScene, scene);
+        dbScene.setNodes(scene.getNodes().stream().map(this::toDBNode).toList());
+        dbScene.setSceneSequence(scene.getSceneSequence());
+        dbScene.setName(scene.getName());
+        dbScene.setBackgroundImageURI(scene.getBackgroundImageUri());
+        if (scene.getLevelId() != null) dbScene.setLevelId(UUID.fromString(scene.getLevelId()));
+
         dbScene = sceneRepository.saveAndFlush(dbScene);
         log.info("Updated scene with sequence {}", dbScene.getSceneSequence());
         return toSceneDTO(dbScene);
     }
 
     public DeleteLevelResponseDTO deleteScene(String id) {
+        assert id != null : "Scene id is null";
+
         sceneRepository.deleteById(UUID.fromString(id));
         log.info("Deleted scene with id {}", id);
         return new DeleteLevelResponseDTO("Deleted scene successfully");
