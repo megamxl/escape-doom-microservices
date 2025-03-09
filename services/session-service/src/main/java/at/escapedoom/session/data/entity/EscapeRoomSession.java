@@ -33,7 +33,7 @@ public class EscapeRoomSession {
     @Enumerated(EnumType.STRING)
     private EscapeRoomState state;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "escape_room_tags", joinColumns = @JoinColumn(name = "escape_room_session_id"))
     @Column(name = "tag")
     private List<String> tags;

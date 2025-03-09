@@ -1,9 +1,11 @@
-package at.escapedoom.session.data.repository;
+package at.escapedoom.session.service;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
+import at.escapedoom.session.data.EscapeRoomSessionRepository;
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +28,7 @@ public class EscapeRoomSessionService {
         return repository.save(session);
     }
 
+    @Transactional
     public EscapeRoomSession addTagToSession(UUID userId, UUID sessionId, String tag) {
         EscapeRoomSession session = getSessionById(sessionId);
         if (!session.getUserId().equals(userId)) {
@@ -40,6 +43,7 @@ public class EscapeRoomSessionService {
         return session;
     }
 
+    @Transactional
     public EscapeRoomSession removeTagFromSession(UUID userId, UUID sessionId, String tag) {
         EscapeRoomSession session = getSessionById(sessionId);
         if (!session.getUserId().equals(userId)) {
@@ -77,6 +81,7 @@ public class EscapeRoomSessionService {
         return sessions;
     }
 
+    @Transactional
     public List<EscapeRoomSession> getSessionsByTags(UUID userId, List<String> tags) {
         return repository.getEscapeRoomSessionsByUserIdAndTagsContains(userId, tags);
     }
