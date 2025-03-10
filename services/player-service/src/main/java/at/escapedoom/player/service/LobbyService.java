@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.EnumSet;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class LobbyService {
             throw new IllegalArgumentException("The roomPin you entered is Not Open or Started");
         }
 
-        UserProgress newUser = createAndInitializeAUserObject(roomPin, playerName);
+        UserProgress newUser = createAndInitializeAUserObject(roomPin, playerName, sessionView.getEscapeRoomTemplateId());
 
         UserProgress persistedUser = userProgressRepository.save(newUser);
 
@@ -62,9 +63,9 @@ public class LobbyService {
                 .playerSessionId(persistedUser.getUserIdentifier()).playerName(persistedUser.getUserName()).build();
     }
 
-    private static UserProgress createAndInitializeAUserObject(Long roomPin, String playerName) {
+    private static UserProgress createAndInitializeAUserObject(Long roomPin, String playerName, UUID templateId) {
         return UserProgress.builder().userName(playerName).currentPoints(0L).roomPin(roomPin).currentEscapeRoomLevel(0L)
-                .currentPoints(0L).build();
+                .currentPoints(0L).templateID(templateId).build();
     }
 
     private void publishJoin(UserProgress userProgress) throws JsonProcessingException {

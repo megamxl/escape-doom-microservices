@@ -32,4 +32,6 @@ public class UserProgress {
 
     private Long currentPoints;
 
+    private UUID templateID;
+
 }
