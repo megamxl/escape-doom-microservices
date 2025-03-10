@@ -5,67 +5,83 @@ info:
 servers:
   - url: https://api.server.test/v1/
 paths:
-### Template
+  ### Template
 
-  /template/create:
+  /templates:
+    get:
+      operationId: getAllTemplates
+      tags:
+        - Template
+      summary: Get all Templates
+      description: Retrieve a list of all existing Templates from a Lector
+      responses:
+        '200':
+          description: A list of templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TemplateDTO'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     post:
       operationId: createTemplate
       tags:
         - Template
       summary: Creates a new Template for Escape Doom Game
-      description: Creates a new Template for EscapeRoom
+      description: Creates a new Template for 
       requestBody:
         description: Lectors ID + Name and Description for a Template
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EscapeRoomTemplateCreateRequest'
+              $ref: '#/components/schemas/TemplateCreateRequestDTO'
       responses:
         '200':
-          $ref: '#/components/responses/EscapeRoomTemplateResult'
+          $ref: '#/components/responses/TemplateDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /template/delete/{escape-room-template-id}:
+  /templates/{escape-room-template-id}:
     delete:
       operationId: deleteTemplate
       tags:
         - Template
-      summary: Deletes an EscapeRoomTemplate
-      description: Deletes an EscapeRoomTemplate by its unique ID
+      summary: Deletes an Template
+      description: Deletes an Template by its unique ID
       parameters:
         - name: escape-room-template-id
           in: path
           required: true
-          description: The unique ID of the EscapeRoomTemplate to delete
+          description: The unique ID of the Template to delete
           schema:
             type: string
             example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
       responses:
         '200':
-          $ref: '#/components/responses/EscapeRoomTemplateResult'
+          $ref: '#/components/responses/TemplateResultDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /template/override/{escape-room-template-id}:
     put:
       operationId: putTemplate
       tags:
         - Template
-      summary: Overrides an existing EscapeRoomTemplate
+      summary: Overrides an existing Template
       description: >-
         Override the name, description, and levels of an existing
-        EscapeRoomTemplate
+        Template
       parameters:
         - name: escape-room-template-id
           in: path
           required: true
-          description: The unique ID of the EscapeRoomTemplate to update
+          description: The unique ID of the Template to update
           schema:
             type: string
             example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
@@ -75,50 +91,31 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EscapeRoomTemplateUpdateRequest'
+              $ref: '#/components/schemas/TemplateUpdateRequestDTO'
       responses:
         '200':
           description: Template updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EscapeRoomTemplateUpdateResult'
+                $ref: '#/components/schemas/TemplateUpdateResultDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /all-templates:
-    get:
-      operationId: getAllTemplates
-      tags:
-        - Template
-      summary: Get all EscapeRoomTemplates
-      description: Retrieve a list of all existing EscapeRoomTemplates from a Lector
-      responses:
-        '200':
-          description: A list of templates
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EscapeRoomTemplateDTO'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /template/{escape-room-template-id}:
     get:
       operationId: getTemplate
       tags:
         - Template
-      summary: Get a specific EscapeRoomTemplate by ID
-      description: Retrieve details of a specific EscapeRoomTemplate using its unique ID
+      summary: Get a specific Template by ID
+      description: Retrieve details of a specific Template using its unique ID
       parameters:
         - name: escape-room-template-id
           in: path
           required: true
-          description: The unique ID of the EscapeRoomTemplate
+          description: The unique ID of the Template
           schema:
             type: string
             example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
@@ -128,27 +125,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EscapeRoomTemplate'
+                $ref: '#/components/schemas/TemplateDTO'
         '404':
           description: Template not found
           content:
             application/json:
               schema:
                 type: object
-                title: GetTemplateNotFound
+                title: GetTemplateNotFoundDTO
                 properties:
                   message:
                     type: string
-                    example: "EscapeRoomTemplate with the provided ID was not found"
+                    example: "Template with the provided ID was not found"
                   code:
                     type: number
                     example: 404
         '500':
           $ref: '#/components/responses/InternalServerError'
-          
-
-### Level
-  /all-levels:
+  ### Level
+  /levels:
     get:
       operationId: getAllLevels
       tags:
@@ -163,30 +158,29 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/EscapeRoomLevel'
+                  $ref: '#/components/schemas/LevelDTO'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level:
     post:
       operationId: createLevel
       tags:
         - Level
       summary: Create a new level
-      description: Create an EscapeRoomLevel independently of any template
+      description: Create an Level independently of any template
       requestBody:
-        description: The details of the new EscapeRoomLevel
+        description: The details of the new Level
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EscapeRoomLevel'
+              $ref: '#/components/schemas/LevelCreationRequest'
       responses:
         '201':
           description: Level created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EscapeRoomLevel'
+                $ref: '#/components/schemas/LevelDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -213,12 +207,12 @@ paths:
       tags:
         - Level
       summary: Get details of a level
-      description: Retrieve details of a specific EscapeRoomLevel by its ID
+      description: Retrieve details of a specific Level by its ID
       parameters:
         - name: escape-room-level-id
           in: path
           required: true
-          description: The unique ID of the EscapeRoomLevel
+          description: The unique ID of the Level
           schema:
             type: string
             example: b6557071-e7fa-47bc-bdd1-565f564gh325b8
@@ -228,58 +222,56 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EscapeRoomLevel'
+                $ref: '#/components/schemas/LevelDTO'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level/overide/{escape-room-level-id}:        
     put:
-      operationId: putLevelOfTemplate
+      operationId: updateLevel
       tags:
         - Level
       summary: Override a level
-      description: Override the details of a EscapeRoomLevel
+      description: Override the details of a Level
       parameters:
         - name: escape-room-level-id
           in: path
           required: true
-          description: The unique ID of the EscapeRoomLevel
+          description: The unique ID of the Level
           schema:
             type: string
             example: b6557071-e7fa-47bc-bdd1-565f564gh325b8
       requestBody:
-        description: The overriden details of the EscapeRoomLevel
+        description: The overridden details of the Level
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EscapeRoomLevel'
+              $ref: '#/components/schemas/LevelDTO'
       responses:
         '200':
           description: Level updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EscapeRoomLevel'
+                $ref: '#/components/schemas/LevelDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /level/{escape-room-level-id}:   
     delete:
       operationId: deleteLevel
       tags:
         - Level
       summary: Delete a level
-      description: Delete a EscapeRoomLevel by its ID
+      description: Delete a Level by its ID
       parameters:
         - name: escape-room-level-id
           in: path
           required: true
-          description: The unique ID of the EscapeRoomLevel to delete
+          description: The unique ID of the Level to delete
           schema:
             type: string
             example: b6557071-e7fa-47bc-bdd1-565f564gh325b8
@@ -290,7 +282,7 @@ paths:
             application/json:
               schema:
                 type: object
-                title: DeleteLevelSuccess
+                title: DeleteLevelSuccessDTO
                 properties:
                   message:
                     type: string
@@ -302,10 +294,9 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-          
-### Riddle
 
-  /all-riddles:
+  ### Riddle
+  /riddles:
     get:
       operationId: getAllRiddles
       tags:
@@ -320,10 +311,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Riddle'
+                  $ref: '#/components/schemas/RiddleDTO'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /riddle:
     post:
       operationId: createRiddle
       tags:
@@ -336,16 +326,14 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/InputStringCompareRiddle'
-                - $ref: '#/components/schemas/CodingRiddle'
+              $ref: '#/components/schemas/RiddleCreationRequestDTO'
       responses:
         '201':
           description: Riddle created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Riddle'
+                $ref: '#/components/schemas/RiddleDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
@@ -359,6 +347,21 @@ paths:
         schema:
           type: string
           example: riddle123
+    get:
+      operationId: getRiddleById
+      tags:
+        - Riddle
+      summary: Get one riddle by id
+      description: Retrieve riddle that matches the UUID
+      responses:
+        '200':
+          description: The riddle
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RiddleDTO'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
     put:
       operationId: putRiddle
       tags:
@@ -371,16 +374,14 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/InputStringCompareRiddle'
-                - $ref: '#/components/schemas/CodingRiddle'
+              $ref: '#/components/schemas/RiddleCreationRequestDTO'
       responses:
         '200':
           description: Riddle updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Riddle'
+                $ref: '#/components/schemas/RiddleDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -400,23 +401,20 @@ paths:
             application/json:
               schema:
                 type: object
-                title: DeleteRiddleRequest
+                title: RiddleDeletionResponseDTO
                 properties:
                   message:
                     type: string
                     example: Riddle deleted successfully
-                  code:
-                    type: number
-                    example: 200
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 
 
-### Scene
+  ### Scene
 
-  /scene:
+  /scenes:
     get:
       operationId: getAllScenes
       tags:
@@ -431,7 +429,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Scene'
+                  $ref: '#/components/schemas/SceneDTO'
         '500':
           $ref: '#/components/responses/InternalServerError'
     post:
@@ -446,21 +444,21 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Scene'
+              $ref: '#/components/schemas/SceneRequestDTO'
       responses:
         '201':
           description: Scene created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Scene'
+                $ref: '#/components/schemas/SceneDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
   /scenes/{escape-room-scene-id}:
     get:
-      operationId: getScene
+      operationId: getSceneById
       tags:
         - Scene
       summary: Get details of a scene
@@ -479,7 +477,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Scene'
+                $ref: '#/components/schemas/SceneDTO'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -504,14 +502,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Scene'
+              $ref: '#/components/schemas/SceneRequestDTO'
       responses:
         '200':
           description: Scene updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Scene'
+                $ref: '#/components/schemas/SceneDTO'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -539,14 +537,11 @@ paths:
             application/json:
               schema:
                 type: object
-                title: DeleteLevelResponse
+                title: DeleteLevelResponseDTO
                 properties:
                   message:
                     type: string
                     example: Scene deleted successfully
-                  code:
-                    type: number
-                    example: 200
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
@@ -555,140 +550,6 @@ paths:
 
 components:
   schemas:
-    EscapeRoomTemplateDTO:
-      description: The escape-room template, base for an EscapeRoom Game
-      type: object
-      properties:
-        escape_room_template_id:
-          type: string
-          description: Unique ID for the Template
-          example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
-        name:
-          type: string
-          description: Name of the Template
-          example: SDE24
-        description:
-          type: string
-          description: Description of the Template
-          example: Cäsar´s Rätsel
-    EscapeRoomTemplate:
-      description: The escape-room template, base for an EscapeRoom Game
-      type: object
-      properties:
-        escape_room_template_id:
-          type: string
-          description: Unique ID for the Template
-          example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
-        EscapeRoomLevel:
-          type: object
-          description: Levels for the EscapeDoom Game
-          example: []
-        name:
-          type: string
-          description: Name of the Template
-          example: SDE24
-        description:
-          type: string
-          description: Description of the Template
-          example: Cäsar´s Rätsel
-    EscapeRoomTemplateCreateRequest:
-      description: The escape-room template, base for an EscapeRoom Game
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the Template
-          example: SDE24
-        description:
-          type: string
-          description: Description of the Template
-          example: Cäsar´s Rätsel
-    EscapeRoomTemplateResult:
-      description: The result of an operation on an EscapeRoomTemplate
-      type: object
-      properties:
-        message:
-          type: string
-          description: >-
-            A message indicating the result of the operation (e.g., creation or
-            deletion)
-          example: Operation successful
-        code:
-          type: number
-          description: A status code representing the operation result
-          example: 200
-    EscapeRoomTemplateUpdateRequest:
-      description: The payload for updating an EscapeRoomTemplate
-      type: object
-      properties:
-        name:
-          type: string
-          description: The updated name of the template
-          example: SDE25
-        description:
-          type: string
-          description: The updated description of the template
-          example: Updated description for Caesar's Riddle
-        levels:
-          type: array
-          items:
-            $ref: '#/components/schemas/EscapeRoomLevel'
-          description: The updated levels for the escape-room template
-    EscapeRoomTemplateUpdateResult:
-      description: The result of updating an EscapeRoomTemplate
-      type: object
-      properties:
-        message:
-          type: string
-          description: A message indicating the result of the update operation
-          example: Template updated successfully
-        code:
-          type: number
-          description: A status code representing the operation result
-          example: 200
-    EscapeRoomLevel:
-      description: The current level of an escape-room instance
-      type: object
-      properties:
-        escape_room_level_id:
-          type: string
-          description: The unique ID of the escape room level
-          example: "d1087efe-41fd-42da-9110-62d35659cf1f"
-        sequence:
-          type: number
-          description: The sequence number of the level
-          example: 1
-        scenes:
-          type: array
-          items:
-            $ref: "#/components/schemas/Scene"
-          description: List of scenes in the level
-        riddles:
-          type: array
-          items:
-            $ref: "#/components/schemas/Riddle"
-          description: List of riddles in the level
-    Scene:
-      description: A scene of an escape-room instance
-      type: object
-      properties:
-        escape_room_sequence_id:
-          type: string
-          description: The unique ID of the scene sequence
-          example: "1"
-        nodes:
-          type: array
-          items:
-            $ref: "#/components/schemas/Node"
-          description: The nodes of the scene
-        background_image_uri:
-          type: string
-          description: The URI of the background image
-          example: "https://example.com/background.png"
-        name:
-          type: string
-          description: The name of the scene
-          example: "Scene 1"
     NodeType:
       description: The type of a node
       type: string
@@ -697,17 +558,18 @@ components:
         - CONSOLE
         - DETAIL
         - STORY
-    Node:
+      example: "ZOOM"
+    NodeDTO:
       description: A node of an escape-room instance
       type: object
       properties:
         node_type:
           $ref: '#/components/schemas/NodeType'
         node_info:
-          $ref: '#/components/schemas/NodeInfo'
+          $ref: '#/components/schemas/NodeInfoDTO'
         position:
-          $ref: '#/components/schemas/Position'
-    NodeInfo:
+          $ref: '#/components/schemas/PositionDTO'
+    NodeInfoDTO:
       description: The information of a node
       type: object
       properties:
@@ -723,7 +585,8 @@ components:
           type: string
           description: The URI of the image to display
           example: https://example.com/image.png
-    Position:
+
+    PositionDTO:
       description: The position of a node
       type: object
       properties:
@@ -737,59 +600,237 @@ components:
           format: double
           description: The relative left position of the node
           example: 22
-    Riddle:
+
+
+    # Enums
+    CodingLanguage:
+      type: string
+      enum:
+        - JAVA
+        - TYPESCRIPT
+      example: "JAVA"
+    # Classes
+    TemplateDTO:
+      description: The escape-room template, base for an  Game
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: Unique ID for the Template
+          example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
+        user_id:
+          type: string
+          description: Unique ID of the user the escape room belongs to
+          example: 8437ea27-f56f-43d1-a5a1-77e2a2b57e8e
+        name:
+          type: string
+          description: Name of the Template
+          example: SDE24
+        description:
+          type: string
+          description: Description of the Template
+          example: Cäsar´s Rätsel
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/LevelDTO'
+    TemplateCreateRequestDTO:
+      description: The escape-room template, base for an  Game
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the Template
+          example: SDE24
+        description:
+          type: string
+          description: Description of the Template
+          example: Cäsar´s Rätsel
+    TemplateResultDTO:
+      description: The result of an operation on an Template
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message indicating the result of the operation (e.g., creation or deletion)
+          example: Operation successful
+    TemplateUpdateRequestDTO:
+      description: The payload for updating an Template
+      type: object
+      properties:
+        name:
+          type: string
+          description: The updated name of the template
+          example: SDE25
+        description:
+          type: string
+          description: The updated description of the template
+          example: Updated description for Caesar's Riddle
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/LevelDTO'
+          description: The updated levels for the escape-room template
+    TemplateUpdateResultDTO:
+      description: The result of updating an Template
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message indicating the result of the update operation
+          example: Template updated successfully
+        code:
+          type: number
+          description: A status code representing the operation result
+          example: 200
+    LevelCreationRequest:
+      description: The current level of an escape-room instance
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: The unique ID of the escape room template
+          example: "d1087efe-41fd-42da-9110-62d35659cf1f"
+        level_sequence:
+          type: integer
+          description: The sequence number of the level
+          example: 1
+    LevelDTO:
+      description: The current level of an escape-room instance
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: The unique ID of the escape room template
+          example: "d1087efe-41fd-42da-9110-62d35659cf1f"
+        level_id:
+          type: string
+          description: The unique ID of the escape room level
+          example: "d1087efe-41fd-42da-9110-62d35659cf1f"
+        level_sequence:
+          type: integer
+          description: The sequence number of the level
+          example: 1
+        scenes:
+          type: array
+          items:
+            $ref: "#/components/schemas/SceneDTO"
+          description: List of scenes in the level
+        riddle:
+          $ref: "#/components/schemas/RiddleDTO"
+    SceneDTO:
+      description: A scene of an escape-room instance
+      type: object
+      properties:
+        scene_id:
+          type: string
+          description: The unique ID of the scene
+          example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
+        scene_sequence:
+          type: integer
+          description: Defines the "position" of the scene in the escape room
+          example: 1
+        level_id:
+          type: string
+          description: The ID of the escape room level that contains this riddle
+          example: "a12b34c5-6789-4def-abcd-12345678abcd"
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeDTO"
+          description: The nodes of the scene
+        background_image_uri:
+          type: string
+          description: The URI of the background image
+          example: "https://example.com/background.png"
+        name:
+          type: string
+          description: The name of the scene
+          example: "Scene 1"
+    RiddleDTO:
       description: Base schema for a riddle
       type: object
       properties:
-        escape_room_riddle_id:
+        riddle_id:
           type: string
           description: The unique ID of the riddle
           example: "5830daed-cb7f-47dd-8248-5dee9bf0aa3d"
-        type:
+        level_id:
           type: string
-          enum:
-            - InputStringCompareRiddle
-            - CodingRiddle
-          description: The type of the riddle
+          description: The ID of the escape room level that contains this riddle
+          example: "a12b34c5-6789-4def-abcd-12345678abcd"
+        language:
+          $ref: "#/components/schemas/CodingLanguage"
+        function_signature:
+          type: string
+          description: The function signature
+          example: "public static int sum(int a, int b)"
+        input:
+          type: string
+          description: The input values for the function
+          example: "2, 3"
+        variable_name:
+          type: string
+          description: The name of the variable to compare
+          example: "result"
         expected_output:
           type: string
           description: The expected output of the riddle
           example: "42"
-    CodingRiddle:
-      allOf:
-        - $ref: "#/components/schemas/Riddle"
-        - type: object
-          properties:
-            language:
-              type: string
-              description: The programming language used in the riddle
-              example: "Java"
-            function_signature:
-              type: string
-              description: The function signature
-              example: "public static int sum(int a, int b)"
-            input:
-              type: string
-              description: The input values for the function
-              example: "2, 3"
-            variable_name:
-              type: string
-              description: The name of the variable to compare
-              example: "result"
-            expected_output:
-              type: string
-              description: The expected output of the function
-              example: "5"
-    InputStringCompareRiddle:
-      allOf:
-        - $ref: "#/components/schemas/Riddle"
-        - type: object
-          properties:
-            expected_output:
-              type: string
-              description: The expected output to compare against
-              example: "CorrectAnswer"
 
+    RiddleCreationRequestDTO:
+      description: Base schema for riddle creation
+      type: object
+      properties:
+        language:
+          $ref: "#/components/schemas/CodingLanguage"
+        function_signature:
+          type: string
+          description: The function signature
+          example: "public static int sum(int a, int b)"
+        input:
+          type: string
+          description: The input values for the function
+          example: "2, 3"
+        variable_name:
+          type: string
+          description: The name of the variable to compare
+          example: "result"
+        expected_output:
+          type: string
+          description: The expected output of the riddle
+          example: "42"
+        level_id:
+          type: string
+          description: The ID of the Escape Room Level this riddle belongs to
+          example: "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f"
+
+
+    SceneRequestDTO:
+      description: Base schema for any request to the scene API
+      type: object
+      properties:
+        scene_sequence:
+          type: integer
+          description: Defines the "position" of the scene in the escape room
+          example: 1
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeDTO"
+          description: The nodes of the scene
+        background_image_uri:
+          type: string
+          description: The URI of the background image
+          example: "https://example.com/background.png"
+        name:
+          type: string
+          description: The name of the scene
+          example: "Scene 1"
+        level_id:
+          type: string
+          description: The ID of the Escape Room Level this scene belongs to
+          example: "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f"
   responses:
     BadRequest:
       description: Bad Request
@@ -797,45 +838,42 @@ components:
         application/json:
           schema:
             type: object
-            title: CreateBadRequest
+            title: CreateBadRequestDTO
             properties:
               message:
                 type: string
                 example: Invalid data provided
-              code:
-                type: number
-                example: 400
     NotFound:
       description: Not Found
       content:
         application/json:
           schema:
             type: object
-            title: CreateNotFound
+            title: CreateNotFoundDTO
             properties:
               message:
                 type: string
                 example: The requested resource was not found
-              code:
-                type: number
-                example: 404
     InternalServerError:
       description: Internal Server Error
       content:
         application/json:
           schema:
             type: object
-            title: CreateInternalServerError
+            title: CreateInternalServerErrorDTO
             properties:
               message:
                 type: string
                 example: An unexpected error occurred on the server
-              code:
-                type: number
-                example: 500
-    EscapeRoomTemplateResult:
-      description: Operation result for EscapeRoomTemplate
+    TemplateResultDTO:
+      description: Operation result for Template
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/EscapeRoomTemplateResult'
+            $ref: '#/components/schemas/TemplateResultDTO'
+    TemplateDTO:
+      description: The basic template component
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TemplateDTO'
