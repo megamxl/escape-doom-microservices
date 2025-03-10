@@ -31,6 +31,8 @@ public class RiddleService {
     public List<RiddleDTO> getAllRiddles() {
         List<Riddle> riddles = riddleRepository.findAll();
 
+        log.info("{} riddles found", riddles.size());
+
         return riddles.stream().map(this::toRestBody).toList();
     }
 
@@ -38,6 +40,8 @@ public class RiddleService {
 
         Riddle riddle = riddleRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new IllegalArgumentException(String.format("Riddle with ID: %s not found", uuid)));
+
+        log.info("Riddle {} found", riddle.getRiddleId());
 
         return toRestBody(riddle);
     }
