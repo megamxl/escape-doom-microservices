@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,7 +33,10 @@ public class TemplateService {
     public TemplateDTO createTemplate(@NonNull TemplateCreateRequestDTO request) {
         log.debug("Creating template with name: {}", request.getName());
 
-        Template template = Template.builder().name(request.getName()).userId(getUserId())
+        Template template = Template.builder()
+                .name(request.getName())
+                .userId(getUserId())
+                .level(Collections.EMPTY_LIST)
                 .description(request.getDescription()).build();
 
         repository.save(template);
@@ -67,25 +71,24 @@ public class TemplateService {
                 .toList();
     }
 
-    public TemplateDTO getTemplate(String TemplateId) {
-        UUID id = validateUUID(TemplateId);
+    public TemplateDTO getTemplateById(String templateId) {
+        UUID id = validateUUID(templateId);
 
         Optional<Template> entityOpt = repository.findById(id);
         assert entityOpt.isPresent();
+
         return toApiModel(entityOpt.get());
     }
 
-    private TemplateDTO toApiModel(Template entity) {
-        if (entity == null)
+    private TemplateDTO toApiModel(Template template) {
+        if (template == null)
             return null;
 
-        TemplateDTO apiTemplate = new TemplateDTO();
-        apiTemplate.templateId(entity.getTemplateId().toString());
-        apiTemplate.setName(entity.getName());
-        apiTemplate.setDescription(entity.getDescription());
-        apiTemplate.setUserId(entity.getUserId().toString());
-
-        return apiTemplate;
+        return TemplateDTO.builder().userId(template.getUserId().toString())
+                .templateId(template.getTemplateId().toString()).name(template.getName())
+                .description(template.getDescription())
+                .levels(template.getLevel().stream().map(this::toApiModel).toList()).name(template.getName())
+                .build();
     }
 
     // FIXME: This only updates Name or Description

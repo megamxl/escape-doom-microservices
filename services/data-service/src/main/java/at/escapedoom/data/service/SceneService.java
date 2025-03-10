@@ -3,7 +3,6 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.*;
 import at.escapedoom.data.rest.model.*;
-import at.escapedoom.data.utils.LoggerUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 
 @Slf4j
 @Service

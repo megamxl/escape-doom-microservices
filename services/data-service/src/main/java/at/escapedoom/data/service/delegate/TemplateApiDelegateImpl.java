@@ -32,8 +32,8 @@ public class TemplateApiDelegateImpl implements TemplateApiDelegate {
     }
 
     @Override
-    public ResponseEntity<TemplateDTO> getTemplate(String TemplateId) {
-        TemplateDTO template = templateService.getTemplate(TemplateId);
+    public ResponseEntity<TemplateDTO> getTemplate(String templateId) {
+        TemplateDTO template = templateService.getTemplateById(templateId);
         return new ResponseEntity<>(template, HttpStatus.OK);
     }
 
