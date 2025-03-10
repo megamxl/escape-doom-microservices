@@ -84,6 +84,7 @@ public class TemplateService {
         apiTemplate.setName(entity.getName());
         apiTemplate.setDescription(entity.getDescription());
         apiTemplate.setUserId(entity.getUserId().toString());
+        apiTemplate.setLevels(entity.getLevel().stream().map(this::toApiModel).toList());
 
         return apiTemplate;
     }

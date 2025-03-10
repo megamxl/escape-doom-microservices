@@ -28,7 +28,7 @@ public class EscapeRoomSessionService {
         EscapeRoomSession session = EscapeRoomSession.builder().escapeRoomSessionId(UUID.randomUUID())
                 .escapeRoomTemplateId(templateId).userId(userId).roomPin(roomPin).playTime(playTime)
                 .state(EscapeRoomState.OPEN).build();
-      return saveAndChacheSession(session);
+        return saveAndChacheSession(session);
     }
 
     @Transactional
@@ -103,16 +103,14 @@ public class EscapeRoomSessionService {
 
     public void sessionViewPublisher(EscapeRoomSession session) {
 
-        SessionView sessionView = SessionView.builder()
-                .roomPin(session.getRoomPin())
+        SessionView sessionView = SessionView.builder().roomPin(session.getRoomPin())
                 .roomState(at.escapedoom.spring.redis.data.models.EscapeRoomState.valueOf(session.getState().name()))
-                .escapeRoomTemplateId(session.getEscapeRoomTemplateId())
-                .build();
+                .escapeRoomTemplateId(session.getEscapeRoomTemplateId()).build();
 
         try {
             sessionViewRepository.save(sessionView);
-        }catch (Exception e) {
-            log.error("can't publish to redis -> no showstopper but check it: exception -> {}",e.getMessage());
+        } catch (Exception e) {
+            log.error("can't publish to redis -> no showstopper but check it: exception -> {}", e.getMessage());
         }
     }
 }

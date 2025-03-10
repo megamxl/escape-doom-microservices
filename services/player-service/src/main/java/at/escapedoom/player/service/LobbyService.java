@@ -32,7 +32,10 @@ public class LobbyService {
         SessionView sessionView = escapeRoomSessionRepositoryService.getSessionInfoByRoomPin(roomPin)
                 .orElseThrow(() -> new NoSuchElementException("No Session with this roomPin found"));
 
-        if (!EnumSet.of(at.escapedoom.spring.redis.data.models.EscapeRoomState.OPEN, at.escapedoom.spring.redis.data.models.EscapeRoomState.STARTED).contains(sessionView.getRoomState())) {
+        if (!EnumSet
+                .of(at.escapedoom.spring.redis.data.models.EscapeRoomState.OPEN,
+                        at.escapedoom.spring.redis.data.models.EscapeRoomState.STARTED)
+                .contains(sessionView.getRoomState())) {
             throw new IllegalArgumentException("The roomPin you entered is Not Open or Started");
         }
 
@@ -49,7 +52,8 @@ public class LobbyService {
             log.error("Could not publish join event", e);
         }
 
-        return buildResponseFromPersistedUser(persistedUser, MapperFunctions.stateRedisToRedisRest( sessionView.getRoomState()));
+        return buildResponseFromPersistedUser(persistedUser,
+                MapperFunctions.stateRedisToRedisRest(sessionView.getRoomState()));
     }
 
     private static EscapeRoomJoinResponse buildResponseFromPersistedUser(UserProgress persistedUser,

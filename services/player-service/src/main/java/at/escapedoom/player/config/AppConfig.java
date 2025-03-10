@@ -1,6 +1,7 @@
 package at.escapedoom.player.config;
 
 import at.escapedoom.player.service.RedisReceiver;
+import at.escapedoom.spring.communication.data.api.TemplateApi;
 import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.player.service.SessionCommunicationService;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
@@ -38,6 +39,12 @@ public class AppConfig {
     }
 
     @Bean
+    public TemplateApi getTemplateApi(@Autowired OkHttpClient client) {
+        return new TemplateApi(new at.escapedoom.spring.communication.data.invoker.ApiClient(client)
+                .setBasePath("http://localhost:8081/data-api/v1"));
+    }
+
+    @Bean
     public MessageListenerAdapter listenerAdapter(RedisReceiver redisReceiver) {
         return new MessageListenerAdapter(redisReceiver, "receiveMessage");
     }
@@ -48,7 +55,7 @@ public class AppConfig {
 
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
-                                            MessageListenerAdapter listenerAdapter) {
+            MessageListenerAdapter listenerAdapter) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, new PatternTopic(nameChangeChannel()));
