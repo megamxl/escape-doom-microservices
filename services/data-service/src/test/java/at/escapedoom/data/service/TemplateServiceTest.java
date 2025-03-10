@@ -66,13 +66,13 @@ class TemplateServiceTest {
 
     @Test
     void testGetTemplateById() {
-        TemplateDTO template = service.getTemplate(VALID_TEMPLATE_ID);
+        TemplateDTO template = service.getTemplateById(VALID_TEMPLATE_ID);
         assertThat(template.getName()).isEqualTo("Test Template");
     }
 
     @Test
     void testGetTemplateByIdError() {
-        assertThatThrownBy(() -> service.getTemplate(INVALID_TEMPLATE_ID)).isInstanceOf(AssertionError.class);
+        assertThatThrownBy(() -> service.getTemplateById(INVALID_TEMPLATE_ID)).isInstanceOf(AssertionError.class);
     }
     // endregion
 
@@ -95,7 +95,7 @@ class TemplateServiceTest {
     // region PUT Tests
     @Test
     void testUpdateTemplate() {
-        TemplateDTO template = service.getTemplate(VALID_TEMPLATE_ID);
+        TemplateDTO template = service.getTemplateById(VALID_TEMPLATE_ID);
         final String newName = "Updated Template";
 
         TemplateUpdateRequestDTO updateRequest = TemplateUpdateRequestDTO.builder().name(newName)
@@ -106,7 +106,7 @@ class TemplateServiceTest {
         assertThat(updateResult).isNotNull();
         assertThat(updateResult.getMessage()).isEqualTo("Template updated successfully");
 
-        TemplateDTO updatedTemplate = service.getTemplate(template.getTemplateId());
+        TemplateDTO updatedTemplate = service.getTemplateById(template.getTemplateId());
         assertThat(updatedTemplate.getName()).isEqualTo(newName);
     }
 

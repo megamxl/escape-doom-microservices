@@ -23,8 +23,7 @@ public class TemplateService {
     private final TemplateRepository repository;
     private final TemplateMapper templateMapper;
 
-    public TemplateService(TemplateRepository repository,
-            TemplateMapper templateMapper) {
+    public TemplateService(TemplateRepository repository, TemplateMapper templateMapper) {
         this.repository = repository;
         this.templateMapper = templateMapper;
     }
@@ -33,10 +32,7 @@ public class TemplateService {
         assert request != null;
         log.debug("Creating template with name: {}", request.getName());
 
-        Template template = Template.builder()
-                .name(request.getName())
-                .userId(getUserId())
-                .level(Collections.EMPTY_LIST)
+        Template template = Template.builder().name(request.getName()).userId(getUserId()).level(Collections.EMPTY_LIST)
                 .description(request.getDescription()).build();
 
         repository.save(template);
@@ -62,9 +58,7 @@ public class TemplateService {
     public List<TemplateDTO> getAllTemplates() {
         log.debug("Fetching all templates");
 
-        return repository.findAllByUserId(getUserId()).stream()
-                .map(templateMapper::toDTO)
-                .toList();
+        return repository.findAllByUserId(getUserId()).stream().map(templateMapper::toDTO).toList();
     }
 
     public TemplateDTO getTemplateById(String templateId) {

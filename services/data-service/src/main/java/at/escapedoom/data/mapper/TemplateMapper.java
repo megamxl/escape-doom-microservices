@@ -10,7 +10,6 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = LevelMapper.class)
 public interface TemplateMapper {
@@ -39,12 +38,12 @@ public interface TemplateMapper {
 
     @Named("levelListToDTOList")
     static List<LevelDTO> levelListToDTOList(List<at.escapedoom.data.data.entity.Level> levels) {
-        return levels != null ? levels.stream().map(LevelMapper.INSTANCE::toDTO).collect(Collectors.toList()) : null;
+        return levels != null ? levels.stream().map(LevelMapper.INSTANCE::toDTO).toList() : null;
     }
 
     @Named("dtoListToLevelList")
     static List<at.escapedoom.data.data.entity.Level> dtoListToLevelList(List<LevelDTO> levelDTOs) {
-        return levelDTOs != null ? levelDTOs.stream().map(LevelMapper.INSTANCE::toEntity).collect(Collectors.toList())
+        return levelDTOs != null ? levelDTOs.stream().map(LevelMapper.INSTANCE::toEntity).toList()
                 : null;
     }
 }

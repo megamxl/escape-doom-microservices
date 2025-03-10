@@ -2,6 +2,7 @@ package at.escapedoom.data.service;
 
 import at.escapedoom.data.DataApi;
 import at.escapedoom.data.data.LevelRepository;
+import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.TemplateRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Template;
@@ -33,20 +34,23 @@ class LevelServiceTest {
     private LevelService service;
 
     @Autowired
-    private LevelRepository repository;
+    private LevelRepository levelRepository;
 
     @Autowired
     private TemplateRepository templateRepository;
 
-    @Transactional
+    @Autowired
+    private SceneRepository sceneRepository;
+
     @BeforeEach
     void setup() {
-        repository.deleteAllInBatch();
-        repository.flush();
+        sceneRepository.deleteAllInBatch();
+        levelRepository.deleteAllInBatch();
+        templateRepository.deleteAllInBatch();
+        levelRepository.flush();
 
         Level level = Level.builder().levelSequence(1).scenes(List.of()).build();
-
-        VALID_LEVEL_ID = repository.save(level).getLevelId().toString();
+        VALID_LEVEL_ID = levelRepository.save(level).getLevelId().toString();
     }
     // region GET Tests
 
