@@ -1,8 +1,8 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.data.TemplateRepository;
-import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Template;
+import at.escapedoom.data.mapper.TemplateMapper;
 import at.escapedoom.data.rest.model.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.NonNull;
@@ -21,16 +21,16 @@ import static at.escapedoom.data.utils.KeyCloakUtils.getUserId;
 public class TemplateService {
 
     private final TemplateRepository repository;
-    private final RiddleService riddleService;
-    private final SceneService sceneService;
+    private final TemplateMapper templateMapper;
 
-    public TemplateService(TemplateRepository repository, RiddleService riddleService, SceneService sceneService) {
+    public TemplateService(TemplateRepository repository,
+            TemplateMapper templateMapper) {
         this.repository = repository;
-        this.riddleService = riddleService;
-        this.sceneService = sceneService;
+        this.templateMapper = templateMapper;
     }
 
     public TemplateDTO createTemplate(@NonNull TemplateCreateRequestDTO request) {
+        assert request != null;
         log.debug("Creating template with name: {}", request.getName());
 
         Template template = Template.builder()
@@ -41,20 +41,20 @@ public class TemplateService {
 
         repository.save(template);
 
-        return toApiModel(template);
+        return templateMapper.toDTO(template);
     }
 
-    public TemplateResultDTO deleteTemplate(String TemplateId) {
-        log.debug("Deleting template with ID: {}", TemplateId);
+    public TemplateResultDTO deleteTemplate(String templateId) {
+        log.debug("Deleting template with ID: {}", templateId);
 
-        UUID id = validateUUID(TemplateId);
+        UUID id = validateUUID(templateId);
 
         if (!repository.existsById(id)) {
             return TemplateResultDTO.builder().message("Template not found").build();
         }
 
         repository.deleteById(id);
-        log.debug("Template with ID {} successfully deleted", TemplateId);
+        log.debug("Template with ID {} successfully deleted", templateId);
 
         return TemplateResultDTO.builder().message("Template deleted successfully").build();
     }
@@ -63,11 +63,7 @@ public class TemplateService {
         log.debug("Fetching all templates");
 
         return repository.findAllByUserId(getUserId()).stream()
-                .map(template -> TemplateDTO.builder().userId(template.getUserId().toString())
-                        .templateId(template.getTemplateId().toString()).name(template.getName())
-                        .description(template.getDescription())
-                        .levels(template.getLevel().stream().map(this::toApiModel).toList()).name(template.getName())
-                        .build())
+                .map(templateMapper::toDTO)
                 .toList();
     }
 
@@ -76,49 +72,36 @@ public class TemplateService {
 
         Optional<Template> entityOpt = repository.findById(id);
         assert entityOpt.isPresent();
-
-        return toApiModel(entityOpt.get());
+        return templateMapper.toDTO(entityOpt.get());
     }
 
-    private TemplateDTO toApiModel(Template template) {
-        if (template == null)
-            return null;
+    public TemplateUpdateResultDTO updateTemplate(String templateId, TemplateUpdateRequestDTO request) {
+        log.debug("Updating template with ID: {}", templateId);
 
-        return TemplateDTO.builder().userId(template.getUserId().toString())
-                .templateId(template.getTemplateId().toString()).name(template.getName())
-                .description(template.getDescription())
-                .levels(template.getLevel().stream().map(this::toApiModel).toList()).name(template.getName())
-                .build();
-    }
-
-    // FIXME: This only updates Name or Description
-    public TemplateUpdateResultDTO updateTemplate(String TemplateId, TemplateUpdateRequestDTO request) {
-        log.debug("Updating template with ID: {}", TemplateId);
-
-        UUID id = validateUUID(TemplateId);
+        UUID id = validateUUID(templateId);
 
         Template template = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Template with ID " + TemplateId + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Template with ID " + templateId + " not found"));
 
-        template.setName(request.getName());
-        template.setDescription(request.getDescription());
+        if (request.getName() != null) {
+            template.setName(request.getName());
+        }
+
+        if (request.getDescription() != null) {
+            template.setDescription(request.getDescription());
+        }
 
         repository.save(template);
+
         return TemplateUpdateResultDTO.builder().message("Template updated successfully").build();
     }
 
-    private UUID validateUUID(String TemplateId) {
+    private UUID validateUUID(String templateId) {
         try {
-            return UUID.fromString(TemplateId);
+            return UUID.fromString(templateId);
         } catch (IllegalArgumentException e) {
-            log.error("Invalid UUID format: {}", TemplateId);
+            log.error("Invalid UUID format: {}", templateId);
             throw new IllegalArgumentException("Invalid UUID format");
         }
-    }
-
-    private LevelDTO toApiModel(Level entity) {
-        return LevelDTO.builder().templateId(entity.getTemplateId().toString()).levelId(entity.getLevelId().toString())
-                .riddle(riddleService.toRestBody(entity.getRiddle())).levelSequence(entity.getLevelSequence())
-                .scenes(entity.getScenes().stream().map(sceneService::toSceneDTO).toList()).build();
     }
 }

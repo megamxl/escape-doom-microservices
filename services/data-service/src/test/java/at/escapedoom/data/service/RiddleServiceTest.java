@@ -39,7 +39,7 @@ class RiddleServiceTest {
     void setup() {
 
         repository.deleteAllInBatch();
-        repository.flush(); // Ensures delete operation is executed immediately
+        repository.flush();
 
         VALID_LEVEL_ID = UUID.randomUUID();
 
@@ -48,7 +48,6 @@ class RiddleServiceTest {
                 .build();
 
         VALID_RIDDLE_ID = repository.save(riddle).getRiddleId().toString();
-
     }
 
     // region GET Tests
@@ -126,7 +125,6 @@ class RiddleServiceTest {
 
     @Test
     void testUpdateRiddleEmptyRequest() {
-
         RiddleDTO riddle = service.getRiddleById(VALID_RIDDLE_ID);
 
         RiddleCreationRequestDTO riddleCreationRequest = RiddleCreationRequestDTO.builder().build();
@@ -135,6 +133,19 @@ class RiddleServiceTest {
 
         assertEquals(riddle.getRiddleId(), updatedRiddle.getRiddleId());
         assertEquals(riddle.getInput(), updatedRiddle.getInput());
+    }
+
+    @Test
+    void testUpdateRiddleValidRequest() {
+        RiddleDTO riddle = service.getRiddleById(VALID_RIDDLE_ID);
+
+        RiddleCreationRequestDTO riddleCreationRequest = RiddleCreationRequestDTO.builder().levelId(riddle.getLevelId())
+                .input("Updated input").build();
+
+        RiddleDTO updatedRiddle = service.updateRiddle(riddleCreationRequest, VALID_RIDDLE_ID);
+
+        assertEquals(riddle.getRiddleId(), updatedRiddle.getRiddleId());
+        assertEquals("Updated input", updatedRiddle.getInput());
     }
     // endregion
 

@@ -3,6 +3,7 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.entity.Riddle;
+import at.escapedoom.data.mapper.RiddleMapper;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
@@ -25,25 +26,22 @@ import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 @RequiredArgsConstructor
 public class RiddleService {
 
-    final RiddleRepository riddleRepository;
-    final LevelRepository levelRepository; // FIXME: Use LevelService.update instead when working :)
+    private final RiddleRepository riddleRepository;
+    private final LevelService levelService;
+    private final RiddleMapper riddleMapper;
+    private final LevelRepository levelRepository;
 
     public List<RiddleDTO> getAllRiddles() {
-        List<Riddle> riddles = riddleRepository.findAll();
-
-        log.info("{} riddles found", riddles.size());
-
-        return riddles.stream().map(this::toRestBody).toList();
+        return riddleRepository.findAll().stream().map(riddleMapper::toDTO).toList();
     }
 
     public RiddleDTO getRiddleById(@NonNull String uuid) {
-
         Riddle riddle = riddleRepository.findById(UUID.fromString(uuid))
-                .orElseThrow(() -> new IllegalArgumentException(String.format("Riddle with ID: %s not found", uuid)));
+                .orElseThrow(() -> new IllegalArgumentException("Riddle with ID: " + uuid + " not found"));
 
         log.info("Riddle {} found", riddle.getRiddleId());
 
-        return toRestBody(riddle);
+        return riddleMapper.toDTO(riddle);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -58,7 +56,7 @@ public class RiddleService {
             }
         });
 
-        Riddle riddle = creationRequestToRiddle(riddleRequest);
+        Riddle riddle = riddleMapper.toEntity(riddleRequest);
 
         riddleRepository.saveAndFlush(riddle);
 
@@ -68,7 +66,7 @@ public class RiddleService {
         });
 
         riddleLog(LoggerUtils.LogType.CREATION, riddle.getRiddleId());
-        return toRestBody(riddle);
+        return riddleMapper.toDTO(riddle);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -84,7 +82,7 @@ public class RiddleService {
 
         riddleLog(LoggerUtils.LogType.UPDATE, riddle.getRiddleId());
 
-        return toRestBody(riddle);
+        return riddleMapper.toDTO(riddle);
     }
 
     public RiddleDeletionResponseDTO deleteRiddle(String uuid) throws IllegalArgumentException {
@@ -102,29 +100,7 @@ public class RiddleService {
         throw new NoSuchElementException("There is no such Riddle with ID: " + uuid);
     }
 
-    // region Helper Methods
-    public Riddle creationRequestToRiddle(RiddleCreationRequestDTO riddleRequest) {
-        assert riddleRequest.getLevelId() != null;
-
-        return Riddle.builder().input(riddleRequest.getInput()).language(riddleRequest.getLanguage())
-                .expectedOutput(riddleRequest.getExpectedOutput()).variableName(riddleRequest.getVariableName())
-                .levelId(UUID.fromString(riddleRequest.getLevelId()))
-                .functionSignature(riddleRequest.getFunctionSignature()).variableName(riddleRequest.getVariableName())
-                .build();
-    }
-
-    RiddleDTO toRestBody(Riddle riddle) {
-        if (riddle == null) {
-            return null;
-        }
-        return RiddleDTO.builder().expectedOutput(riddle.getExpectedOutput()).language(riddle.getLanguage())
-                .input(riddle.getInput()).functionSignature(riddle.getFunctionSignature())
-                .levelId(riddle.getLevelId().toString()).variableName(riddle.getVariableName())
-                .riddleId(riddle.getRiddleId().toString()).build();
-    }
-
     private void riddleLog(LoggerUtils.LogType logType, UUID uuid) {
         logCreation(log, logType, uuid, Riddle.class);
     }
-    // endregion
 }
