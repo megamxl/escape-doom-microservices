@@ -34,7 +34,7 @@ class SceneServiceTest {
     @Autowired
     private SceneService service;
     @Autowired
-    private SceneRepository repository;
+    private SceneRepository sceneRepository;
 
     @Autowired
     private TemplateRepository templateRepository;
@@ -42,37 +42,27 @@ class SceneServiceTest {
     @Autowired
     private LevelRepository levelRepository;
 
-    @Transactional
     @BeforeEach
     void setup() {
-
-        repository.deleteAllInBatch();
-        repository.flush();
+        sceneRepository.deleteAllInBatch();
+        levelRepository.deleteAllInBatch();
+        templateRepository.deleteAllInBatch();
+        templateRepository.flush();
 
         Template template = Template.builder().name("Test Template").description("Test Template").userId(USER_ID)
                 .build();
 
         templateRepository.save(template);
 
-        Level level = Level.builder().templateId(template.getTemplateId()).levelSequence(1).build();
+        Level level = Level.builder().template(template)
+                .templateId(template.getTemplateId()).levelSequence(1).build();
 
         LEVEL_ID = levelRepository.save(level).getLevelId();
 
-        Scene scene = Scene.builder().sceneSequence(1)
-                .backgroundImageURI(String.valueOf(URI.create("https://example.com/background.png"))).name("Scene 1")
-                .levelId(LEVEL_ID).build();
+        Scene scene = Scene.builder().sceneSequence(1).backgroundImageURI("https://example.com/background.png")
+                .name("Scene 1").levelId(LEVEL_ID).build();
 
-        sceneId = repository.save(scene).getSceneId().toString();
-
-        List<Node> nodes = Collections
-                .singletonList(Node.builder().position(new Position(20.5, 40.0)).nodeType(NodeType.CONSOLE)
-                        .nodeInfo(NodeInfo.builder().description("This is a console node")
-                                .imageURI("https://example.com/image.png").title("I like cheese").build())
-                        .scene(scene).build());
-
-        scene.setNodes(nodes);
-
-        repository.save(scene);
+        sceneId = sceneRepository.save(scene).getSceneId().toString();
     }
 
     // region GET Tests
@@ -184,7 +174,7 @@ class SceneServiceTest {
 
         service.deleteScene(sceneId);
 
-        assertEquals(0, repository.count());
+        assertEquals(0, sceneRepository.count());
     }
 
     @Test

@@ -6,6 +6,7 @@ import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
 import at.escapedoom.data.utils.KeyCloakUtils;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ class TemplateServiceTest {
     private TemplateService service;
 
     @Autowired
-    private TemplateRepository repository;
+    private TemplateRepository templateRepository;
 
     private static MockedStatic<KeyCloakUtils> mockedKeycloak;
 
@@ -47,13 +48,13 @@ class TemplateServiceTest {
 
     @BeforeEach
     void setup() {
-        repository.deleteAllInBatch();
-        repository.flush();
+        templateRepository.deleteAllInBatch();
+        templateRepository.flush();
 
         Template template = Template.builder().name("Test Template").description("A test template").userId(MOCK_USER_ID)
                 .build();
 
-        VALID_TEMPLATE_ID = repository.save(template).getTemplateId().toString();
+        VALID_TEMPLATE_ID = templateRepository.save(template).getTemplateId().toString();
     }
 
     // region GET Tests
@@ -66,26 +67,28 @@ class TemplateServiceTest {
 
     @Test
     void testGetTemplateById() {
-        TemplateDTO template = service.getTemplate(VALID_TEMPLATE_ID);
+        TemplateDTO template = service.getTemplateById(VALID_TEMPLATE_ID);
         assertThat(template.getName()).isEqualTo("Test Template");
     }
 
     @Test
     void testGetTemplateByIdError() {
-        assertThatThrownBy(() -> service.getTemplate(INVALID_TEMPLATE_ID)).isInstanceOf(AssertionError.class);
+        assertThatThrownBy(() -> service.getTemplateById(INVALID_TEMPLATE_ID)).isInstanceOf(AssertionError.class);
     }
     // endregion
 
     // region DELETE Tests
     @Test
+    @Transactional
     void testDeleteTemplate() {
-        TemplateResultDTO response = service.deleteTemplate(VALID_TEMPLATE_ID);
-        assertThat(response.getMessage()).isEqualTo("Template deleted successfully");
+        TemplateResultDTO response = service.deleteTemplate(UUID.fromString(VALID_TEMPLATE_ID));
+        assertThat(response.getMessage()).isEqualTo("Template deleted successfully, id: " + VALID_TEMPLATE_ID);
     }
 
     @Test
+    @Transactional
     void testDeleteTemplateNotFoundError() {
-        TemplateResultDTO result = service.deleteTemplate(INVALID_TEMPLATE_ID);
+        TemplateResultDTO result = service.deleteTemplate(UUID.fromString(INVALID_TEMPLATE_ID));
 
         assertThat(result).isNotNull();
         assertThat(result.getMessage()).isEqualTo("Template not found");
@@ -94,8 +97,9 @@ class TemplateServiceTest {
 
     // region PUT Tests
     @Test
+    @Transactional
     void testUpdateTemplate() {
-        TemplateDTO template = service.getTemplate(VALID_TEMPLATE_ID);
+        TemplateDTO template = service.getTemplateById(VALID_TEMPLATE_ID);
         final String newName = "Updated Template";
 
         TemplateUpdateRequestDTO updateRequest = TemplateUpdateRequestDTO.builder().name(newName)
@@ -106,11 +110,12 @@ class TemplateServiceTest {
         assertThat(updateResult).isNotNull();
         assertThat(updateResult.getMessage()).isEqualTo("Template updated successfully");
 
-        TemplateDTO updatedTemplate = service.getTemplate(template.getTemplateId());
+        TemplateDTO updatedTemplate = service.getTemplateById(template.getTemplateId());
         assertThat(updatedTemplate.getName()).isEqualTo(newName);
     }
 
     @Test
+    @Transactional
     void testUpdateTemplateNotFoundError() {
         TemplateUpdateRequestDTO updateRequest = TemplateUpdateRequestDTO.builder().name("New Name").build();
 
@@ -122,6 +127,7 @@ class TemplateServiceTest {
 
     // region POST Tests
     @Test
+    @Transactional
     void testCreateTemplate() {
         TemplateCreateRequestDTO createRequest = TemplateCreateRequestDTO.builder().name("New Template")
                 .description("This is a new template").build();

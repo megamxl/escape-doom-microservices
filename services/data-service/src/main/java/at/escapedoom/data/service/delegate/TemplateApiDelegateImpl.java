@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -17,13 +18,13 @@ public class TemplateApiDelegateImpl implements TemplateApiDelegate {
     private final TemplateService templateService;
 
     @Override
-    public ResponseEntity<TemplateDTO> createTemplate(TemplateCreateRequestDTO TemplateDTO) {
-        return new ResponseEntity<>(templateService.createTemplate(TemplateDTO), HttpStatus.CREATED);
+    public ResponseEntity<TemplateDTO> createTemplate(TemplateCreateRequestDTO templateId) {
+        return new ResponseEntity<>(templateService.createTemplate(templateId), HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<TemplateResultDTO> deleteTemplate(String TemplateId) {
-        return new ResponseEntity<>(templateService.deleteTemplate(TemplateId), HttpStatus.OK);
+    public ResponseEntity<TemplateResultDTO> deleteTemplate(String templateId) {
+        return new ResponseEntity<>(templateService.deleteTemplate(UUID.fromString(templateId)), HttpStatus.OK);
     }
 
     @Override
@@ -38,7 +39,7 @@ public class TemplateApiDelegateImpl implements TemplateApiDelegate {
     }
 
     @Override
-    public ResponseEntity<TemplateUpdateResultDTO> putTemplate(String TemplateId, TemplateUpdateRequestDTO request) {
-        return new ResponseEntity<>(templateService.updateTemplate(TemplateId, request), HttpStatus.OK);
+    public ResponseEntity<TemplateUpdateResultDTO> putTemplate(String templateId, TemplateUpdateRequestDTO request) {
+        return new ResponseEntity<>(templateService.updateTemplate(templateId, request), HttpStatus.OK);
     }
 }
