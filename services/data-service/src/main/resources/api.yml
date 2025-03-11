@@ -563,6 +563,14 @@ components:
       description: A node of an escape-room instance
       type: object
       properties:
+        node_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the node
+        scene_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the scene the node belongs to
         node_type:
           $ref: '#/components/schemas/NodeType'
         node_info:
