@@ -4,7 +4,6 @@ import at.escapedoom.data.rest.api.LevelApiDelegate;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
-import at.escapedoom.data.rest.model.TemplateCreateRequestDTO;
 import at.escapedoom.data.service.LevelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,20 +19,20 @@ public class LevelApiDelegateImpl implements LevelApiDelegate {
     private final LevelService levelService;
 
     @Override
-    public ResponseEntity<LevelDTO> createLevel(LevelCreationRequest LevelCreationRequest) {
-        LevelDTO createdLevel = levelService.createLevel(LevelCreationRequest);
+    public ResponseEntity<LevelDTO> createLevel(LevelCreationRequest levelCreationRequest) {
+        LevelDTO createdLevel = levelService.createLevel(levelCreationRequest);
         return new ResponseEntity<>(createdLevel, HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<LevelDTO> updateLevel(String LevelId, LevelDTO request) {
-        LevelDTO updatedLevel = levelService.updateLevel(LevelId, request);
+    public ResponseEntity<LevelDTO> updateLevel(String levelId, LevelDTO request) {
+        LevelDTO updatedLevel = levelService.updateLevel(levelId, request);
         return new ResponseEntity<>(updatedLevel, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<LevelDTO> getLevel(String LevelId) {
-        LevelDTO level = levelService.getLevel(LevelId);
+    public ResponseEntity<LevelDTO> getLevel(String levelId) {
+        LevelDTO level = levelService.getLevel(levelId);
         return new ResponseEntity<>(level, HttpStatus.OK);
     }
 
@@ -44,8 +43,8 @@ public class LevelApiDelegateImpl implements LevelApiDelegate {
     }
 
     @Override
-    public ResponseEntity<DeleteLevelSuccessDTO> deleteLevel(String LevelId) {
-        DeleteLevelSuccessDTO deleteResult = levelService.deleteLevel(LevelId);
+    public ResponseEntity<DeleteLevelSuccessDTO> deleteLevel(String levelId) {
+        DeleteLevelSuccessDTO deleteResult = levelService.deleteLevel(levelId);
         return new ResponseEntity<>(deleteResult, HttpStatus.OK);
     }
 }

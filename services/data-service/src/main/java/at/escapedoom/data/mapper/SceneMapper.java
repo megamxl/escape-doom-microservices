@@ -1,8 +1,11 @@
 package at.escapedoom.data.mapper;
 
-import at.escapedoom.data.data.entity.*;
-import at.escapedoom.data.rest.model.*;
-import org.mapstruct.*;
+import at.escapedoom.data.data.entity.Scene;
+import at.escapedoom.data.rest.model.SceneDTO;
+import at.escapedoom.data.rest.model.SceneRequestDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

@@ -1,10 +1,13 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.data.SceneRepository;
-import at.escapedoom.data.data.entity.*;
+import at.escapedoom.data.data.entity.Level;
+import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.mapper.SceneMapper;
-import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.rest.model.DeleteLevelResponseDTO;
+import at.escapedoom.data.rest.model.SceneDTO;
+import at.escapedoom.data.rest.model.SceneRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
