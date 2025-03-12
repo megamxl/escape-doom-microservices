@@ -18,18 +18,17 @@ public interface SceneMapper {
 
     @Mapping(source = "sceneId", target = "sceneId", qualifiedByName = "sceneUuidToString")
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "sceneUuidToString")
-    @Mapping(source = "backgroundImageURI", target = "backgroundImageUri")
     SceneDTO toDTO(Scene scene);
 
     @Mapping(source = "sceneId", target = "sceneId", qualifiedByName = "sceneStringToUUID")
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "sceneStringToUUID")
-    @Mapping(source = "backgroundImageUri", target = "backgroundImageURI")
     Scene toEntity(SceneDTO sceneDTO);
 
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "sceneUuidToString")
     SceneRequestDTO toSceneRequestDTO(SceneDTO sceneDTO);
 
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "sceneStringToUUID")
+    @Mapping(source = "backgroundImageUri", target = "backgroundImageUri")
     Scene toEntity(SceneRequestDTO sceneRequest);
 
     @Named("sceneUuidToString")

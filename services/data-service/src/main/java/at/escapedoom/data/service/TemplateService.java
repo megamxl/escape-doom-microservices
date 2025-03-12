@@ -11,6 +11,7 @@ import at.escapedoom.data.rest.model.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +24,13 @@ import static at.escapedoom.data.utils.KeyCloakUtils.getUserId;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TemplateService {
 
     private final TemplateRepository templateRepository;
     private final LevelRepository levelRepository;
     private final SceneRepository sceneRepository;
     private final TemplateMapper templateMapper;
-
-    public TemplateService(TemplateRepository repository, LevelRepository levelRepository,
-            SceneRepository sceneRepository, TemplateMapper templateMapper) {
-        this.templateRepository = repository;
-        this.levelRepository = levelRepository;
-        this.sceneRepository = sceneRepository;
-        this.templateMapper = templateMapper;
-    }
 
     public TemplateDTO createTemplate(@NonNull TemplateCreateRequestDTO request) {
         assert request != null;

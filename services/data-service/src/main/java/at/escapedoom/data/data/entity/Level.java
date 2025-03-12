@@ -46,7 +46,6 @@ public class Level {
 
     @Override
     public String toString() {
-        return "Level{" + "levelId=" + levelId + ", levelSequence=" + levelSequence + ", riddle=" + riddle + ", scenes="
-                + scenes + ", version=" + version + ", template=" + template + ", templateId=" + templateId + '}';
+        return "Level{" + "levelId=" + levelId + ", levelSequence=" + levelSequence + '}';
     }
 }

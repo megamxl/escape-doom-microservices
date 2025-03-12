@@ -20,6 +20,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class LevelService {
+    //TODO: @Mark Add Logging pls
 
     private final LevelRepository repository;
     private final SceneService sceneService;
@@ -31,9 +32,7 @@ public class LevelService {
         assert creationRequest.getTemplateId() != null;
 
         Level newLevel = Level.builder().levelSequence(creationRequest.getLevelSequence())
-                .scenes(Collections.emptyList())
-                .templateId(UUID.fromString(creationRequest.getTemplateId()))
-                .build();
+                .scenes(Collections.emptyList()).templateId(UUID.fromString(creationRequest.getTemplateId())).build();
 
         newLevel = repository.saveAndFlush(newLevel);
 

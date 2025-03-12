@@ -28,7 +28,8 @@ public class Scene {
 
     private String name;
 
-    private String backgroundImageURI;
+    @Column(name = "background_image_uri")
+    private String backgroundImageUri;
 
     @ManyToOne
     @JoinColumn(name = LEVEL_ID, insertable = false, updatable = false)
@@ -43,6 +44,6 @@ public class Scene {
     @Override
     public String toString() {
         return "Scene{" + "sceneId=" + sceneId + ", sceneSequence=" + sceneSequence + ", name='" + name + '\''
-                + ", backgroundImageURI='" + backgroundImageURI + '\'' + ", level=" + level + ", nodes=" + nodes + '}';
+                + ", backgroundImageURI='" + backgroundImageUri + '\'' + ", level=" + level + ", nodes=" + nodes + '}';
     }
 }

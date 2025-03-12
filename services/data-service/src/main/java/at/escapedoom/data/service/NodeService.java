@@ -6,7 +6,6 @@ import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
 import at.escapedoom.data.rest.model.NodeDeletionResponseDTO;
-import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import static at.escapedoom.spring.security.KeycloakUserUtil.getCurrentUserUUID;
 
 @Service
 @RequiredArgsConstructor
@@ -29,22 +30,34 @@ public class NodeService {
         assert creationRequest != null;
         assert creationRequest.getSceneId() != null;
 
+        log.debug("Received NodeCreationRequest: {}", creationRequest);
+
         Node newNode = nodeMapper.toEntity(creationRequest);
 
         newNode = nodeRepository.saveAndFlush(newNode);
+
+        log.info("Created Node with id: {} for user {}", newNode.getNodeId(), getCurrentUserUUID().get());
 
         return nodeMapper.toDTO(newNode);
     }
 
     public List<NodeDTO> getAllNodes() {
         List<Node> nodes = nodeRepository.findAll();
+
+        log.debug("Found: {} nodes", nodes.size());
+
         return nodes.stream().map(nodeMapper::toDTO).toList();
     }
 
     public NodeDTO getNodeById(String nodeId) {
         assert nodeId != null;
 
-        return nodeMapper.toDTO(nodeRepository.findById(UUID.fromString(nodeId)).orElse(null));
+        var node = nodeRepository.findById(UUID.fromString(nodeId)).orElse(null);
+        if (node == null) { throw new NoSuchElementException(); }
+
+        log.debug("Found NodeId: {}", nodeId);
+
+        return nodeMapper.toDTO(node);
     }
 
     public NodeDTO updateNode(String nodeId, NodeDTO updatedNode) {
@@ -56,7 +69,11 @@ public class NodeService {
         nodeRepository.findById(nodeUUID)
                 .orElseThrow(() -> new NoSuchElementException("Node with id " + nodeUUID + " not found"));
 
+        log.debug("Found node: {} for update request", nodeId);
+
         Node node = nodeMapper.toEntity(updatedNode);
+
+        log.info("Updated Node with id: {} by {}", node.getNodeId(), getCurrentUserUUID().get());
 
         return nodeMapper.toDTO(nodeRepository.save(node));
     }

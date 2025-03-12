@@ -3,7 +3,6 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
-import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.mapper.SceneMapper;
 import at.escapedoom.data.rest.model.DeleteLevelResponseDTO;
 import at.escapedoom.data.rest.model.SceneDTO;
@@ -78,7 +77,7 @@ public class SceneService {
         sceneMapper.toEntity(sceneRequest);
         dbScene.setSceneSequence(sceneRequest.getSceneSequence());
         dbScene.setName(sceneRequest.getName());
-        dbScene.setBackgroundImageURI(sceneRequest.getBackgroundImageUri());
+        dbScene.setBackgroundImageUri(sceneRequest.getBackgroundImageUri());
 
         if (sceneRequest.getLevelId() != null) {
             dbScene.setLevelId(UUID.fromString(sceneRequest.getLevelId()));
