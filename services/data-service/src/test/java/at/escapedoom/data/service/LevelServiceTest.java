@@ -9,6 +9,7 @@ import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,15 +46,33 @@ class LevelServiceTest {
     @BeforeEach
     @Transactional
     void setup() {
+        levelRepository.deleteAll();
+        sceneRepository.deleteAll();
+        templateRepository.deleteAll();
+
+        levelRepository.flush();
+
         Level level = Level.builder().levelSequence(1).scenes(List.of()).build();
-        VALID_LEVEL_ID = levelRepository.save(level).getLevelId().toString();
+        VALID_LEVEL_ID = levelRepository.saveAndFlush(level).getLevelId().toString();
     }
     // region GET Tests
+
+    @AfterEach
+    @Transactional
+    void tearDown() {
+        levelRepository.deleteAll();
+    }
 
     @Test
     @Transactional
     void testGetAllLevels() {
         List<LevelDTO> levels = service.getAllLevels();
+
+        System.out.println("Levels found: " + levels.size());
+        for (LevelDTO level : levels) {
+            System.out.println(level);
+        }
+
         assertThat(levels).hasSize(1);
         assertThat(levels.get(0).getLevelSequence()).isEqualTo(1);
     }
@@ -66,6 +85,7 @@ class LevelServiceTest {
     }
 
     @Test
+    @Transactional
     void testGetLevelByIdError() {
         assertThatThrownBy(() -> service.getLevel(INVALID_LEVEL_ID)).isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Level with ID");
