@@ -2,12 +2,8 @@ package at.escapedoom.data.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.data.rest.model.NodeDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -32,15 +28,11 @@ public class SceneRequestDTO {
 
     private @Nullable Integer sceneSequence;
 
-    @lombok.Builder.Default
-    @Valid
-    private List<@Valid NodeDTO> nodes = new ArrayList<>();
+    private @Nullable String levelId;
 
     private @Nullable String backgroundImageUri;
 
     private @Nullable String name;
-
-    private @Nullable String levelId;
 
     public SceneRequestDTO sceneSequence(Integer sceneSequence) {
         this.sceneSequence = sceneSequence;
@@ -63,33 +55,25 @@ public class SceneRequestDTO {
         this.sceneSequence = sceneSequence;
     }
 
-    public SceneRequestDTO nodes(List<@Valid NodeDTO> nodes) {
-        this.nodes = nodes;
-        return this;
-    }
-
-    public SceneRequestDTO addNodesItem(NodeDTO nodesItem) {
-        if (this.nodes == null) {
-            this.nodes = new ArrayList<>();
-        }
-        this.nodes.add(nodesItem);
+    public SceneRequestDTO levelId(String levelId) {
+        this.levelId = levelId;
         return this;
     }
 
     /**
-     * The nodes of the scene
+     * The ID of the Escape Room Level this scene belongs to
      *
-     * @return nodes
+     * @return levelId
      */
-    @Valid
-    @Schema(name = "nodes", description = "The nodes of the scene", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("nodes")
-    public List<@Valid NodeDTO> getNodes() {
-        return nodes;
+
+    @Schema(name = "level_id", example = "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f", description = "The ID of the Escape Room Level this scene belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("level_id")
+    public String getLevelId() {
+        return levelId;
     }
 
-    public void setNodes(List<@Valid NodeDTO> nodes) {
-        this.nodes = nodes;
+    public void setLevelId(String levelId) {
+        this.levelId = levelId;
     }
 
     public SceneRequestDTO backgroundImageUri(String backgroundImageUri) {
@@ -134,27 +118,6 @@ public class SceneRequestDTO {
         this.name = name;
     }
 
-    public SceneRequestDTO levelId(String levelId) {
-        this.levelId = levelId;
-        return this;
-    }
-
-    /**
-     * The ID of the Escape Room Level this scene belongs to
-     *
-     * @return levelId
-     */
-
-    @Schema(name = "level_id", example = "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f", description = "The ID of the Escape Room Level this scene belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("level_id")
-    public String getLevelId() {
-        return levelId;
-    }
-
-    public void setLevelId(String levelId) {
-        this.levelId = levelId;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -165,15 +128,14 @@ public class SceneRequestDTO {
         }
         SceneRequestDTO sceneRequestDTO = (SceneRequestDTO) o;
         return Objects.equals(this.sceneSequence, sceneRequestDTO.sceneSequence)
-                && Objects.equals(this.nodes, sceneRequestDTO.nodes)
+                && Objects.equals(this.levelId, sceneRequestDTO.levelId)
                 && Objects.equals(this.backgroundImageUri, sceneRequestDTO.backgroundImageUri)
-                && Objects.equals(this.name, sceneRequestDTO.name)
-                && Objects.equals(this.levelId, sceneRequestDTO.levelId);
+                && Objects.equals(this.name, sceneRequestDTO.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sceneSequence, nodes, backgroundImageUri, name, levelId);
+        return Objects.hash(sceneSequence, levelId, backgroundImageUri, name);
     }
 
     @Override
@@ -181,10 +143,9 @@ public class SceneRequestDTO {
         StringBuilder sb = new StringBuilder();
         sb.append("class SceneRequestDTO {\n");
         sb.append("    sceneSequence: ").append(toIndentedString(sceneSequence)).append("\n");
-        sb.append("    nodes: ").append(toIndentedString(nodes)).append("\n");
+        sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("    backgroundImageUri: ").append(toIndentedString(backgroundImageUri)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("}");
         return sb.toString();
     }

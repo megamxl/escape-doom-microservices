@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,7 +25,6 @@ public class SceneService {
 
     private final SceneRepository sceneRepository;
     private final SceneMapper sceneMapper;
-    private final NodeMapper nodeMapper;
 
     public List<SceneDTO> getAllScenes() {
         log.info("Getting all scenes");
@@ -45,6 +45,7 @@ public class SceneService {
         assert sceneRequest != null : "Scene request is null";
 
         Scene scene = sceneMapper.toEntity(sceneRequest);
+        scene.setNodes(Collections.EMPTY_LIST);
 
         scene = sceneRepository.saveAndFlush(scene);
 
@@ -78,7 +79,6 @@ public class SceneService {
         dbScene.setSceneSequence(sceneRequest.getSceneSequence());
         dbScene.setName(sceneRequest.getName());
         dbScene.setBackgroundImageURI(sceneRequest.getBackgroundImageUri());
-        dbScene.setNodes(nodeMapper.toEntityList(sceneRequest.getNodes()));
 
         if (sceneRequest.getLevelId() != null) {
             dbScene.setLevelId(UUID.fromString(sceneRequest.getLevelId()));

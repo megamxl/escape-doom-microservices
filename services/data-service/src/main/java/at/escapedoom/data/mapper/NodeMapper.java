@@ -1,6 +1,7 @@
 package at.escapedoom.data.mapper;
 
 import at.escapedoom.data.data.entity.Node;
+import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,6 +21,9 @@ public interface NodeMapper {
 
     @Mapping(source = "nodeId", target = "nodeId", qualifiedByName = "stringToUUID")
     Node toEntity(NodeDTO nodeDTO);
+
+    @Mapping(source = "sceneId", target = "sceneId", qualifiedByName = "stringToUUID")
+    Node toEntity(NodeCreationRequest creationRequest);
 
     @Named("uuidToString")
     static String uuidToString(UUID uuid) {

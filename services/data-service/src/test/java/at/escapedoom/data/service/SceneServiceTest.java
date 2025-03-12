@@ -105,8 +105,7 @@ class SceneServiceTest {
                 .build();
 
         SceneRequestDTO requestDTO = SceneRequestDTO.builder().sceneSequence(SCENE_SEQUENCE)
-                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME)
-                .nodes(Collections.singletonList(NODE)).build();
+                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME).build();
 
         SceneDTO creationResponse = service.createScene(requestDTO);
 
@@ -126,8 +125,7 @@ class SceneServiceTest {
                 .build();
 
         SceneRequestDTO requestDTO = SceneRequestDTO.builder().sceneSequence(SCENE_SEQUENCE)
-                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME)
-                .nodes(Collections.singletonList(NODE)).build();
+                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME).build();
 
         assertThrows(DataIntegrityViolationException.class, () -> service.createScene(requestDTO));
     }
@@ -203,8 +201,7 @@ class SceneServiceTest {
                 .build();
 
         SceneRequestDTO requestDTO = SceneRequestDTO.builder().sceneSequence(SCENE_SEQUENCE)
-                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME)
-                .nodes(Collections.singletonList(NODE)).build();
+                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME).build();
 
         return requestDTO;
     }
