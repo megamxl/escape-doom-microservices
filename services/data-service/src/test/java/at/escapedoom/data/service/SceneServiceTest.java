@@ -58,7 +58,7 @@ class SceneServiceTest {
 
         LEVEL_ID = levelRepository.save(level).getLevelId();
 
-        Scene scene = Scene.builder().sceneSequence(1).backgroundImageURI("https://example.com/background.png")
+        Scene scene = Scene.builder().sceneSequence(1).backgroundImageUri("https://example.com/background.png")
                 .name("Scene 1").levelId(LEVEL_ID).build();
 
         sceneId = sceneRepository.save(scene).getSceneId().toString();
