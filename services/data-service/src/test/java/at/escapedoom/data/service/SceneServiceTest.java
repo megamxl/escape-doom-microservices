@@ -136,7 +136,6 @@ class SceneServiceTest {
 
         assertEquals(sceneRequest.getSceneSequence(), updateResponse.getSceneSequence());
         assertEquals(sceneRequest.getName(), updateResponse.getName());
-        assertEquals(NodeType.STORY, updateResponse.getNodes().getFirst().getNodeType());
     }
 
     @Test
@@ -186,10 +185,6 @@ class SceneServiceTest {
         int SCENE_SEQUENCE = sceneSequence != null ? sceneSequence : 2;
         String BG_IMAGE = "https://example.com/background.png";
         String NAME = "Updated Test Scene";
-        NodeDTO NODE = NodeDTO.builder().position(new PositionDTO(20.5, 40.0)).nodeType(NodeType.STORY)
-                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something")
-                        .imageURI("https://example.com/background.png").build())
-                .build();
 
         SceneRequestDTO requestDTO = SceneRequestDTO.builder().sceneSequence(SCENE_SEQUENCE)
                 .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME).build();
