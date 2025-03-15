@@ -8,6 +8,7 @@ import at.escapedoom.data.rest.model.PositionDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.UUID;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -30,11 +31,57 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class NodeDTO {
 
+    private @Nullable UUID nodeId;
+
+    private @Nullable UUID sceneId;
+
     private @Nullable NodeType nodeType;
 
     private @Nullable NodeInfoDTO nodeInfo;
 
     private @Nullable PositionDTO position;
+
+    public NodeDTO nodeId(UUID nodeId) {
+        this.nodeId = nodeId;
+        return this;
+    }
+
+    /**
+     * The unique identifier of the node
+     *
+     * @return nodeId
+     */
+    @Valid
+    @Schema(name = "node_id", description = "The unique identifier of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("node_id")
+    public UUID getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(UUID nodeId) {
+        this.nodeId = nodeId;
+    }
+
+    public NodeDTO sceneId(UUID sceneId) {
+        this.sceneId = sceneId;
+        return this;
+    }
+
+    /**
+     * The unique identifier of the scene the node belongs to
+     *
+     * @return sceneId
+     */
+    @Valid
+    @Schema(name = "scene_id", description = "The unique identifier of the scene the node belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("scene_id")
+    public UUID getSceneId() {
+        return sceneId;
+    }
+
+    public void setSceneId(UUID sceneId) {
+        this.sceneId = sceneId;
+    }
 
     public NodeDTO nodeType(NodeType nodeType) {
         this.nodeType = nodeType;
@@ -108,19 +155,22 @@ public class NodeDTO {
             return false;
         }
         NodeDTO nodeDTO = (NodeDTO) o;
-        return Objects.equals(this.nodeType, nodeDTO.nodeType) && Objects.equals(this.nodeInfo, nodeDTO.nodeInfo)
+        return Objects.equals(this.nodeId, nodeDTO.nodeId) && Objects.equals(this.sceneId, nodeDTO.sceneId)
+                && Objects.equals(this.nodeType, nodeDTO.nodeType) && Objects.equals(this.nodeInfo, nodeDTO.nodeInfo)
                 && Objects.equals(this.position, nodeDTO.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nodeType, nodeInfo, position);
+        return Objects.hash(nodeId, sceneId, nodeType, nodeInfo, position);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class NodeDTO {\n");
+        sb.append("    nodeId: ").append(toIndentedString(nodeId)).append("\n");
+        sb.append("    sceneId: ").append(toIndentedString(sceneId)).append("\n");
         sb.append("    nodeType: ").append(toIndentedString(nodeType)).append("\n");
         sb.append("    nodeInfo: ").append(toIndentedString(nodeInfo)).append("\n");
         sb.append("    position: ").append(toIndentedString(position)).append("\n");

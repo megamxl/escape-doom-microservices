@@ -4,7 +4,9 @@ import at.escapedoom.data.DataApi;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.TemplateRepository;
-import at.escapedoom.data.data.entity.*;
+import at.escapedoom.data.data.entity.Level;
+import at.escapedoom.data.data.entity.Scene;
+import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +34,7 @@ class SceneServiceTest {
     @Autowired
     private SceneService service;
     @Autowired
-    private SceneRepository repository;
+    private SceneRepository sceneRepository;
 
     @Autowired
     private TemplateRepository templateRepository;
@@ -42,37 +42,26 @@ class SceneServiceTest {
     @Autowired
     private LevelRepository levelRepository;
 
-    @Transactional
     @BeforeEach
     void setup() {
-
-        repository.deleteAllInBatch();
-        repository.flush();
+        sceneRepository.deleteAllInBatch();
+        levelRepository.deleteAllInBatch();
+        templateRepository.deleteAllInBatch();
+        templateRepository.flush();
 
         Template template = Template.builder().name("Test Template").description("Test Template").userId(USER_ID)
                 .build();
 
         templateRepository.save(template);
 
-        Level level = Level.builder().templateId(template.getTemplateId()).levelSequence(1).build();
+        Level level = Level.builder().template(template).templateId(template.getTemplateId()).levelSequence(1).build();
 
         LEVEL_ID = levelRepository.save(level).getLevelId();
 
-        Scene scene = Scene.builder().sceneSequence(1)
-                .backgroundImageURI(String.valueOf(URI.create("https://example.com/background.png"))).name("Scene 1")
-                .levelId(LEVEL_ID).build();
+        Scene scene = Scene.builder().sceneSequence(1).backgroundImageUri("https://example.com/background.png")
+                .name("Scene 1").levelId(LEVEL_ID).build();
 
-        sceneId = repository.save(scene).getSceneId().toString();
-
-        List<Node> nodes = Collections
-                .singletonList(Node.builder().position(new Position(20.5, 40.0)).nodeType(NodeType.CONSOLE)
-                        .nodeInfo(NodeInfo.builder().description("This is a console node")
-                                .imageURI("https://example.com/image.png").title("I like cheese").build())
-                        .scene(scene).build());
-
-        scene.setNodes(nodes);
-
-        repository.save(scene);
+        sceneId = sceneRepository.save(scene).getSceneId().toString();
     }
 
     // region GET Tests
@@ -110,20 +99,14 @@ class SceneServiceTest {
         final int SCENE_SEQUENCE = 2;
         final String BG_IMAGE = "https://example.com/background.png";
         final String NAME = "Test Scene";
-        final NodeDTO NODE = NodeDTO.builder().position(new PositionDTO(20.5, 40.0)).nodeType(NodeType.CONSOLE)
-                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something")
-                        .imageURI("https://example.com/background.png").build())
-                .build();
 
         SceneRequestDTO requestDTO = SceneRequestDTO.builder().sceneSequence(SCENE_SEQUENCE)
-                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME)
-                .nodes(Collections.singletonList(NODE)).build();
+                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME).build();
 
         SceneDTO creationResponse = service.createScene(requestDTO);
 
         assertEquals(SCENE_SEQUENCE, creationResponse.getSceneSequence());
         assertEquals(LEVEL_ID.toString(), creationResponse.getLevelId());
-        assertEquals(NodeType.CONSOLE, creationResponse.getNodes().getFirst().getNodeType());
     }
 
     @Test
@@ -131,14 +114,9 @@ class SceneServiceTest {
         final int SCENE_SEQUENCE = 1;
         final String BG_IMAGE = "https://example.com/background.png";
         final String NAME = "Test Scene";
-        final NodeDTO NODE = NodeDTO.builder().position(new PositionDTO(20.5, 40.0)).nodeType(NodeType.CONSOLE)
-                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something")
-                        .imageURI("https://example.com/background.png").build())
-                .build();
 
         SceneRequestDTO requestDTO = SceneRequestDTO.builder().sceneSequence(SCENE_SEQUENCE)
-                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME)
-                .nodes(Collections.singletonList(NODE)).build();
+                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME).build();
 
         assertThrows(DataIntegrityViolationException.class, () -> service.createScene(requestDTO));
     }
@@ -158,7 +136,6 @@ class SceneServiceTest {
 
         assertEquals(sceneRequest.getSceneSequence(), updateResponse.getSceneSequence());
         assertEquals(sceneRequest.getName(), updateResponse.getName());
-        assertEquals(NodeType.STORY, updateResponse.getNodes().getFirst().getNodeType());
     }
 
     @Test
@@ -184,7 +161,7 @@ class SceneServiceTest {
 
         service.deleteScene(sceneId);
 
-        assertEquals(0, repository.count());
+        assertEquals(0, sceneRepository.count());
     }
 
     @Test
@@ -208,14 +185,9 @@ class SceneServiceTest {
         int SCENE_SEQUENCE = sceneSequence != null ? sceneSequence : 2;
         String BG_IMAGE = "https://example.com/background.png";
         String NAME = "Updated Test Scene";
-        NodeDTO NODE = NodeDTO.builder().position(new PositionDTO(20.5, 40.0)).nodeType(NodeType.STORY)
-                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something")
-                        .imageURI("https://example.com/background.png").build())
-                .build();
 
         SceneRequestDTO requestDTO = SceneRequestDTO.builder().sceneSequence(SCENE_SEQUENCE)
-                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME)
-                .nodes(Collections.singletonList(NODE)).build();
+                .levelId(LEVEL_ID.toString()).backgroundImageUri(BG_IMAGE).name(NAME).build();
 
         return requestDTO;
     }

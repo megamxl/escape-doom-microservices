@@ -26,50 +26,50 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class PositionDTO {
 
-    private @Nullable Double top;
+    private @Nullable Double topPercentage;
 
-    private @Nullable Double left;
+    private @Nullable Double leftPercentage;
 
-    public PositionDTO top(Double top) {
-        this.top = top;
+    public PositionDTO topPercentage(Double topPercentage) {
+        this.topPercentage = topPercentage;
         return this;
     }
 
     /**
      * The relative top position of the node
      *
-     * @return top
+     * @return topPercentage
      */
 
-    @Schema(name = "top", example = "50.5", description = "The relative top position of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("top")
-    public Double getTop() {
-        return top;
+    @Schema(name = "top_percentage", example = "50.5", description = "The relative top position of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("top_percentage")
+    public Double getTopPercentage() {
+        return topPercentage;
     }
 
-    public void setTop(Double top) {
-        this.top = top;
+    public void setTopPercentage(Double topPercentage) {
+        this.topPercentage = topPercentage;
     }
 
-    public PositionDTO left(Double left) {
-        this.left = left;
+    public PositionDTO leftPercentage(Double leftPercentage) {
+        this.leftPercentage = leftPercentage;
         return this;
     }
 
     /**
      * The relative left position of the node
      *
-     * @return left
+     * @return leftPercentage
      */
 
-    @Schema(name = "left", example = "22", description = "The relative left position of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("left")
-    public Double getLeft() {
-        return left;
+    @Schema(name = "left_percentage", example = "22", description = "The relative left position of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("left_percentage")
+    public Double getLeftPercentage() {
+        return leftPercentage;
     }
 
-    public void setLeft(Double left) {
-        this.left = left;
+    public void setLeftPercentage(Double leftPercentage) {
+        this.leftPercentage = leftPercentage;
     }
 
     @Override
@@ -81,20 +81,21 @@ public class PositionDTO {
             return false;
         }
         PositionDTO positionDTO = (PositionDTO) o;
-        return Objects.equals(this.top, positionDTO.top) && Objects.equals(this.left, positionDTO.left);
+        return Objects.equals(this.topPercentage, positionDTO.topPercentage)
+                && Objects.equals(this.leftPercentage, positionDTO.leftPercentage);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(top, left);
+        return Objects.hash(topPercentage, leftPercentage);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class PositionDTO {\n");
-        sb.append("    top: ").append(toIndentedString(top)).append("\n");
-        sb.append("    left: ").append(toIndentedString(left)).append("\n");
+        sb.append("    topPercentage: ").append(toIndentedString(topPercentage)).append("\n");
+        sb.append("    leftPercentage: ").append(toIndentedString(leftPercentage)).append("\n");
         sb.append("}");
         return sb.toString();
     }

@@ -547,6 +547,118 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /nodes:
+    get:
+      operationId: getAllNodes
+      tags:
+        - Node
+      summary: Get all nodes
+      description: Retrieve all nodes from a Lector
+      responses:
+        '200':
+          description: A list of nodes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NodeDTO'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      operationId: createNode
+      tags:
+        - Node
+      summary: Creates node for level
+      description: Creates a new node for a specific level
+      requestBody:
+        description: Lectors ID + Name and Description for a Node
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodeCreationRequest'
+      responses:
+        '201':
+          description: Node created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeDTO'
+  /nodes/{escape-room-node-id}:
+    parameters:
+      - name: escape-room-node-id
+        in: path
+        required: true
+        description: The unique ID of the node
+        schema:
+          type: string
+          example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
+    get:
+      operationId: getNode
+      tags:
+        - Node
+      summary: Get details of a node
+      description: Retrieve details of a specific node by its ID
+      responses:
+        '200':
+          description: Node details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeDTO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      operationId: updateNode
+      tags:
+        - Node
+      summary: Override a node
+      description: Override the details of a node
+      requestBody:
+        description: The overridden details of the node
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodeDTO'
+      responses:
+        '200':
+          description: Node updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeDTO'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      operationId: deleteNode
+      tags:
+        - Node
+      summary: Delete a node
+      description: Delete a node by its ID
+      responses:
+        '200':
+          description: Node deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                title: NodeDeletionResponseDTO
+                properties:
+                  message:
+                    type: string
+                    example: Node deleted successfully
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   schemas:
@@ -563,6 +675,14 @@ components:
       description: A node of an escape-room instance
       type: object
       properties:
+        node_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the node
+        scene_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the scene the node belongs to
         node_type:
           $ref: '#/components/schemas/NodeType'
         node_info:
@@ -585,21 +705,34 @@ components:
           type: string
           description: The URI of the image to display
           example: https://example.com/image.png
-
     PositionDTO:
       description: The position of a node
       type: object
       properties:
-        top:
+        top_percentage:
           type: number
           format: double
           description: The relative top position of the node
           example: 50.5
-        left:
+        left_percentage:
           type: number
           format: double
           description: The relative left position of the node
           example: 22
+    NodeCreationRequest:
+      description: The payload for creating a node
+      type: object
+      properties:
+        scene_id:
+          type: string
+          description: The unique ID of the scene the node belongs to
+          example: 241a70fe-47d6-4756-9ac7-330f1b199e84
+        node_type:
+          $ref: '#/components/schemas/NodeType'
+        node_info:
+          $ref: '#/components/schemas/NodeInfoDTO'
+        position:
+          $ref: '#/components/schemas/PositionDTO'
 
 
     # Enums
@@ -805,7 +938,6 @@ components:
           description: The ID of the Escape Room Level this riddle belongs to
           example: "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f"
 
-
     SceneRequestDTO:
       description: Base schema for any request to the scene API
       type: object
@@ -814,11 +946,10 @@ components:
           type: integer
           description: Defines the "position" of the scene in the escape room
           example: 1
-        nodes:
-          type: array
-          items:
-            $ref: "#/components/schemas/NodeDTO"
-          description: The nodes of the scene
+        level_id:
+          type: string
+          description: The ID of the Escape Room Level this scene belongs to
+          example: "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f"
         background_image_uri:
           type: string
           description: The URI of the background image
@@ -827,10 +958,6 @@ components:
           type: string
           description: The name of the scene
           example: "Scene 1"
-        level_id:
-          type: string
-          description: The ID of the Escape Room Level this scene belongs to
-          example: "c2d1a3b4-5e6f-47b8-9c9d-0a1b2c3d4e5f"
   responses:
     BadRequest:
       description: Bad Request

@@ -26,18 +26,10 @@ public class Level {
     @Column(name = LEVEL_SEQUENCE)
     private Integer levelSequence;
 
-    // @OneToMany(mappedBy = "escapeRoomLevel", cascade = { CascadeType.PERSIST,
-    // CascadeType.MERGE }, orphanRemoval = true, fetch = FetchType.EAGER)
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = RIDDLE_ID)
     private Riddle riddle;
 
-    // @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.EAGER)
-    // @JoinTable(name = "escape_room_level_scene", joinColumns = @JoinColumn(name = "escape_room_level_id"),
-    // inverseJoinColumns = {
-    // @JoinColumn(name = "scene_id", referencedColumnName = "sceneId"),
-    // @JoinColumn(name = "scene_sequence", referencedColumnName = "sceneSequence")
-    // })
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JoinColumn(name = LEVEL_ID)
     private List<Scene> scenes;
@@ -54,7 +46,6 @@ public class Level {
 
     @Override
     public String toString() {
-        return "Level{" + "levelId=" + levelId + ", levelSequence=" + levelSequence + ", riddle=" + riddle + ", scenes="
-                + scenes + ", version=" + version + ", template=" + template + ", templateId=" + templateId + '}';
+        return "Level{" + "levelId=" + levelId + ", levelSequence=" + levelSequence + '}';
     }
 }
