@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -95,6 +95,7 @@ class SceneServiceTest {
 
     // region POST Tests
     @Test
+    @Transactional
     void testCreateScene() {
         final int SCENE_SEQUENCE = 2;
         final String BG_IMAGE = "https://example.com/background.png";
@@ -110,6 +111,7 @@ class SceneServiceTest {
     }
 
     @Test
+    @Transactional
     void testCreateSceneDuplicateSequenceError() {
         final int SCENE_SEQUENCE = 1;
         final String BG_IMAGE = "https://example.com/background.png";
@@ -129,6 +131,7 @@ class SceneServiceTest {
 
     // region PUT Tests
     @Test
+    @Transactional
     void testUpdateScene() {
         SceneRequestDTO sceneRequest = createSceneRequestDTO(null);
 
@@ -139,6 +142,7 @@ class SceneServiceTest {
     }
 
     @Test
+    @Transactional
     void testUpdateSceneDuplicateSequenceError() {
 
         String uuid = service.createScene(createSceneRequestDTO(2)).getSceneId();
@@ -149,6 +153,7 @@ class SceneServiceTest {
     }
 
     @Test
+    @Transactional
     void testUpdateSceneDTOIsNullError() {
         assertThrows(AssertionError.class, () -> service.updateScene(null, null));
     }
@@ -157,6 +162,7 @@ class SceneServiceTest {
 
     // region DELETE Tests
     @Test
+    @Transactional
     void testDeleteScene() {
 
         service.deleteScene(sceneId);
@@ -165,16 +171,19 @@ class SceneServiceTest {
     }
 
     @Test
+    @Transactional
     void testDeleteSceneNullError() {
         assertThrows(AssertionError.class, () -> service.deleteScene(null));
     }
 
     @Test
+    @Transactional
     void testDeleteSceneInvalidUUIDError() {
         assertThrows(IllegalArgumentException.class, () -> service.deleteScene("-1"));
     }
 
     @Test
+    @Transactional
     void testDeleteSceneNotFound() {
         assertDoesNotThrow(() -> service.deleteScene(INVALID_SCENE_ID));
     }
