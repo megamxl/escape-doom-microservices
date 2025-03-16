@@ -56,7 +56,7 @@ const StudentJoin = () => {
                     case escapeRoomStateEnum.open:
                         setSession(response.player_session_id!)
                         console.log("should redirect ", `${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
-                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
+                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.SESSION}/${response.player_session_id}`)
                         break;
                     case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:
                         setSession("")
