@@ -1,6 +1,7 @@
 package at.escapedoom.data.utils;
 
 import at.escapedoom.spring.security.KeycloakUserUtil;
+
 import java.util.NoSuchElementException;
 import java.util.UUID;
 

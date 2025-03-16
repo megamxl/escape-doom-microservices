@@ -35,7 +35,6 @@ public class Template {
 
     @Override
     public String toString() {
-        return "Template{" + "templateId=" + templateId + ", userId=" + userId + ", level=" + level + ", description='"
-                + description + '\'' + ", name='" + name + '\'' + '}';
+        return "Template{" + "templateId=" + templateId + ", userId=" + userId + '}';
     }
 }
