@@ -40,7 +40,8 @@ public class LobbyService {
             throw new IllegalArgumentException("The roomPin you entered is Not Open or Started");
         }
 
-        UserProgress newUser = createAndInitializeAUserObject(roomPin, playerName, sessionView.getEscapeRoomTemplateId());
+        UserProgress newUser = createAndInitializeAUserObject(roomPin, playerName,
+                sessionView.getEscapeRoomTemplateId());
 
         UserProgress persistedUser = userProgressRepository.save(newUser);
 

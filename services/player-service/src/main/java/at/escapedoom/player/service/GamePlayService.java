@@ -18,7 +18,7 @@ public class GamePlayService {
 
     private final UserProgressRepository userProgressRepository;
 
-     private final EscapeRoomTemplateRepositoryService escapeRoomTemplateRepositoryService;
+    private final EscapeRoomTemplateRepositoryService escapeRoomTemplateRepositoryService;
 
     public EscapeRoomLevel getCurrentLevelByUserIdentifier(UUID userIdentifier) {
 
@@ -26,17 +26,15 @@ public class GamePlayService {
         UserProgress user = userProgressRepository.findById(userIdentifier)
                 .orElseThrow(() -> new NoSuchElementException("Can't find user with identifier " + userIdentifier));
 
-         String completeTemplateById =
-        escapeRoomTemplateRepositoryService.getCompleteTemplateById(user.getTemplateID());
+        EscapeRoomLevel level = escapeRoomTemplateRepositoryService.getCompleteTemplateById(user.getTemplateID(),
+                (int) (long) user.getCurrentEscapeRoomLevel());
         //
         //
-         log.info("completeTemplateById : {}", completeTemplateById);
-
         // TODO get escapeRoom Session via roomPin
 
         // TODO if playable get the level and return the EscapeRoom Level
 
-        return EscapeRoomLevel.builder().build();
+        return level;
     }
 
 }

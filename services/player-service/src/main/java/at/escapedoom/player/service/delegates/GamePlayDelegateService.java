@@ -28,9 +28,9 @@ public class GamePlayDelegateService implements LevelApiDelegate {
     @Override
     public ResponseEntity<EscapeRoomLevel> getLevelOfSessionByPlayerSessionID(UUID playerSessionId) {
 
-        gamePlayService.getCurrentLevelByUserIdentifier(playerSessionId);
+        EscapeRoomLevel currentLevelByUserIdentifier = gamePlayService.getCurrentLevelByUserIdentifier(playerSessionId);
 
-        return new ResponseEntity<>(EscapeRoomLevel.builder().build(), HttpStatus.OK);
+        return new ResponseEntity<>(currentLevelByUserIdentifier, HttpStatus.OK);
     }
 
     @Override
