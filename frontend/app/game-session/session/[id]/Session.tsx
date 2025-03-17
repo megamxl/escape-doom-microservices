@@ -115,7 +115,8 @@ const handleEditorMount = (editor: any) => {
  monacoEditorRef.current = editor
 }
 
-return (
+// @ts-ignore
+    return (
  isFetchingStageInformation ? <LoadingDisplay /> :
 
  <Stack direction="row" alignItems="center" height="100vh">
@@ -186,7 +187,8 @@ return (
 
      <div className="relative w-full mx-auto">
          <img
-             src={`${stageState.stageScene?.bgImg}`}
+             //@ts-ignore
+             src={`${stageInformation?.scenes[0].background_image_uri}`}
              alt="Background"
              className="w-full bg-no-repeat bg-contain"
          />

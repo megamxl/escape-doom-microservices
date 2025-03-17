@@ -3,6 +3,7 @@ package at.escapedoom.player.service;
 import at.escapedoom.player.data.postgres.entity.UserProgress;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
+import at.escapedoom.player.rest.model.LevelDTO;
 import at.escapedoom.player.service.interfaces.EscapeRoomTemplateRepositoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +21,13 @@ public class GamePlayService {
 
     private final EscapeRoomTemplateRepositoryService escapeRoomTemplateRepositoryService;
 
-    public EscapeRoomLevel getCurrentLevelByUserIdentifier(UUID userIdentifier) {
+    public LevelDTO getCurrentLevelByUserIdentifier(UUID userIdentifier) {
 
         // check if user with this identifier is registered
         UserProgress user = userProgressRepository.findById(userIdentifier)
                 .orElseThrow(() -> new NoSuchElementException("Can't find user with identifier " + userIdentifier));
 
-        EscapeRoomLevel level = escapeRoomTemplateRepositoryService.getCompleteTemplateById(user.getTemplateID(),
+        LevelDTO level = escapeRoomTemplateRepositoryService.getCompleteTemplateById(user.getTemplateID(),
                 (int) (long) user.getCurrentEscapeRoomLevel());
         //
         //

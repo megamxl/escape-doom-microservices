@@ -53,7 +53,9 @@ public class NodeService {
         assert nodeId != null;
 
         var node = nodeRepository.findById(UUID.fromString(nodeId)).orElse(null);
-        if (node == null) { throw new NoSuchElementException(); }
+        if (node == null) {
+            throw new NoSuchElementException();
+        }
 
         log.debug("Found NodeId: {}", nodeId);
 

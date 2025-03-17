@@ -21,7 +21,8 @@ public class TemplateRepoService implements EscapeRoomTemplateRepositoryService 
     private final LevelDtoToRestResponse levelDtoToRestResponse;
 
     @Override
-    public EscapeRoomLevel getCompleteTemplateById(UUID templateId, int level) throws NoSuchElementException {
+    public at.escapedoom.player.rest.model.LevelDTO getCompleteTemplateById(UUID templateId, int level)
+            throws NoSuchElementException {
 
         try {
             TemplateDTO template = templateApi.getTemplate(templateId.toString());

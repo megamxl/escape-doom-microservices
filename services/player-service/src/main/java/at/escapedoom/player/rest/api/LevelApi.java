@@ -5,9 +5,9 @@
  */
 package at.escapedoom.player.rest.api;
 
-import at.escapedoom.player.rest.model.EscapeRoomLevel;
 import at.escapedoom.player.rest.model.EscapeRoomResult;
 import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
+import at.escapedoom.player.rest.model.LevelDTO;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,11 +52,11 @@ public interface LevelApi {
      */
     @Operation(operationId = "getLevelOfSessionByPlayerSessionID", summary = "Get the current level of the escape-room instance", description = "Get the current level of the escape-room instance", tags = {
             "level" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomLevel.class)) }),
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = LevelDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error") })
     @RequestMapping(method = RequestMethod.GET, value = "/level/{player_session_id}", produces = { "application/json" })
 
-    default ResponseEntity<EscapeRoomLevel> getLevelOfSessionByPlayerSessionID(
+    default ResponseEntity<LevelDTO> getLevelOfSessionByPlayerSessionID(
             @Parameter(name = "player_session_id", description = "The session-id of the player", required = true, in = ParameterIn.PATH) @PathVariable("player_session_id") UUID playerSessionId) {
         return getDelegate().getLevelOfSessionByPlayerSessionID(playerSessionId);
     }

@@ -4,6 +4,7 @@ import at.escapedoom.player.rest.api.LevelApiDelegate;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
 import at.escapedoom.player.rest.model.EscapeRoomResult;
 import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
+import at.escapedoom.player.rest.model.LevelDTO;
 import at.escapedoom.player.service.GamePlayService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,9 @@ public class GamePlayDelegateService implements LevelApiDelegate {
     }
 
     @Override
-    public ResponseEntity<EscapeRoomLevel> getLevelOfSessionByPlayerSessionID(UUID playerSessionId) {
+    public ResponseEntity<LevelDTO> getLevelOfSessionByPlayerSessionID(UUID playerSessionId) {
 
-        EscapeRoomLevel currentLevelByUserIdentifier = gamePlayService.getCurrentLevelByUserIdentifier(playerSessionId);
+        LevelDTO currentLevelByUserIdentifier = gamePlayService.getCurrentLevelByUserIdentifier(playerSessionId);
 
         return new ResponseEntity<>(currentLevelByUserIdentifier, HttpStatus.OK);
     }

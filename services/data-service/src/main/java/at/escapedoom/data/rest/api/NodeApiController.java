@@ -1,9 +1,11 @@
-package at.escapedoom.player.rest.api;
+package at.escapedoom.data.rest.api;
 
-import at.escapedoom.player.rest.model.EscapeRoomResult;
-import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
-import at.escapedoom.player.rest.model.LevelDTO;
-import java.util.UUID;
+import at.escapedoom.data.rest.model.CreateBadRequestDTO;
+import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
+import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.NodeCreationRequest;
+import at.escapedoom.data.rest.model.NodeDTO;
+import at.escapedoom.data.rest.model.NodeDeletionResponseDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,18 +31,18 @@ import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 @Controller
-@RequestMapping("${openapi.player.base-path:/v1}")
-public class LevelApiController implements LevelApi {
+@RequestMapping("${openapi.escapeDoomData.base-path:/v1}")
+public class NodeApiController implements NodeApi {
 
-    private final LevelApiDelegate delegate;
+    private final NodeApiDelegate delegate;
 
-    public LevelApiController(@Autowired(required = false) LevelApiDelegate delegate) {
-        this.delegate = Optional.ofNullable(delegate).orElse(new LevelApiDelegate() {
+    public NodeApiController(@Autowired(required = false) NodeApiDelegate delegate) {
+        this.delegate = Optional.ofNullable(delegate).orElse(new NodeApiDelegate() {
         });
     }
 
     @Override
-    public LevelApiDelegate getDelegate() {
+    public NodeApiDelegate getDelegate() {
         return delegate;
     }
 

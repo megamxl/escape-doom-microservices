@@ -54,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EscapeRoomLevel"
+                $ref: "#/components/schemas/LevelDTO"
         "500":
           description: Internal Server Error
 
