@@ -22,11 +22,11 @@ public class RedisReceiver {
 
         if (jsonString != null) {
             PlayerJoinedEvent playerJoinedEvent = new Gson().fromJson(jsonString, PlayerJoinedEvent.class);
-            controller.greet(playerJoinedEvent.getUserName(),playerJoinedEvent.getUserIdentifier(), playerJoinedEvent.getRoomPin());
+            controller.greet(playerJoinedEvent.getUserName(), playerJoinedEvent.getUserIdentifier(),
+                    playerJoinedEvent.getRoomPin());
         }
-        //controller.greet();
+        // controller.greet();
     }
-
 
     private static String extractJson(String text) {
         Pattern pattern = Pattern.compile("\\{.*\\}");
