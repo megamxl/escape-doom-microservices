@@ -37,7 +37,6 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
-        System.out.println("create " + userId.toString());
         Random random = new Random();
         Integer roomPin = 100000 + random.nextInt(900000);
 
