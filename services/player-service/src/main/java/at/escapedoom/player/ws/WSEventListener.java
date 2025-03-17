@@ -27,12 +27,12 @@ public class WSEventListener {
     @EventListener
     private void handleSessionConnected(SessionConnectEvent event) {
         log.info("AnasTest Received a session connected event" + event.toString());
-//        UUID userId = KeycloakUserUtil.getCurrentUserUUID()
-//                .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
-//        Long roomPin = userProgressRepository.getRoomPinByUserName(userId.toString())
-//                .orElseThrow(() -> new NoSuchElementException("No Lobby found"));
+        // UUID userId = KeycloakUserUtil.getCurrentUserUUID()
+        // .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
+        // Long roomPin = userProgressRepository.getRoomPinByUserName(userId.toString())
+        // .orElseThrow(() -> new NoSuchElementException("No Lobby found"));
 
-//        this.controller.greet("ich schick aus backend", event.getUser().getName(), String.valueOf(roomPin));
+        // this.controller.greet("ich schick aus backend", event.getUser().getName(), String.valueOf(roomPin));
     }
 
     @EventListener
@@ -42,13 +42,11 @@ public class WSEventListener {
         String roomPin = topic.substring("/topic/greetings/".length());
         List<UserProgress> userProgressResult = userProgressRepository.getUserNamesByRoomPin(Long.valueOf(roomPin));
 
-        List<String> playerNames = userProgressResult.stream()
-                .map(UserProgress::getUserName)
-                .toList();
+        List<String> playerNames = userProgressResult.stream().map(UserProgress::getUserName).toList();
 
         PlayerNamesMessage message = new PlayerNamesMessage(playerNames);
 
-        this.controller.update(message,topic);
+        this.controller.update(message, topic);
     }
 
     @EventListener

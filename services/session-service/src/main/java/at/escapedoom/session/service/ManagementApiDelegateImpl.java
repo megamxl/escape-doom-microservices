@@ -37,6 +37,7 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
+        System.out.println("create " + userId.toString());
         Random random = new Random();
         Integer roomPin = 100000 + random.nextInt(900000);
 
@@ -65,9 +66,12 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
 
         EscapeRoomSession escapeRoomSession = sessionService.getSessionById(escapeRoomSessionId);
 
+        UUID userId = KeycloakUserUtil.getCurrentUserUUID()
+                .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
+
         if (escapeRoomSession == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else if (!escapeRoomSession.getUserId().equals(KeycloakUserUtil.getCurrentUserUUID())) {
+        } else if (!escapeRoomSession.getUserId().equals(userId)) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         escapeRoomSession = sessionService.changeSessionStatus(escapeRoomSessionId, state);
