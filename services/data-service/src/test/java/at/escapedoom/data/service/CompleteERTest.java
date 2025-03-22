@@ -45,7 +45,6 @@ public class CompleteERTest {
     private static final UUID MOCK_USER_ID = UUID.randomUUID();
     private static MockedStatic<KeyCloakUtils> mockedKeycloak;
 
-
     @BeforeAll
     static void init() {
         mockedKeycloak = mockStatic(KeyCloakUtils.class);
@@ -55,34 +54,21 @@ public class CompleteERTest {
     @Transactional
     @BeforeEach
     void setUp() {
-        TemplateCreateRequestDTO templateCreateRequestDTO = TemplateCreateRequestDTO.builder()
-                .name("Test Template")
-                .description("Test Description")
-                .build();
+        TemplateCreateRequestDTO templateCreateRequestDTO = TemplateCreateRequestDTO.builder().name("Test Template")
+                .description("Test Description").build();
         templateId = templateService.createTemplate(templateCreateRequestDTO).getTemplateId();
 
-        LevelCreationRequest levelCreationRequest = LevelCreationRequest.builder()
-                .templateId(templateId)
-                .levelSequence(1)
-                .build();
-         levelId = levelService.createLevel(levelCreationRequest).getLevelId();
+        LevelCreationRequest levelCreationRequest = LevelCreationRequest.builder().templateId(templateId)
+                .levelSequence(1).build();
+        levelId = levelService.createLevel(levelCreationRequest).getLevelId();
 
-        SceneRequestDTO sceneRequestDTO = SceneRequestDTO.builder()
-                .sceneSequence(1)
-                .backgroundImageUri("https://example.com/background.png")
-                .name("Scene 1")
-                .levelId(levelId)
-                .build();
+        SceneRequestDTO sceneRequestDTO = SceneRequestDTO.builder().sceneSequence(1)
+                .backgroundImageUri("https://example.com/background.png").name("Scene 1").levelId(levelId).build();
         sceneId = sceneService.createScene(sceneRequestDTO).getSceneId();
 
-        RiddleCreationRequestDTO riddleCreationRequestDTO = RiddleCreationRequestDTO.builder()
-                .levelId(levelId)
-                .language(CodingLanguage.JAVA)
-                .functionSignature("public static int sum(int a, int b)")
-                .input("2, 3")
-                .variableName("result")
-                .expectedOutput("42")
-                .build();
+        RiddleCreationRequestDTO riddleCreationRequestDTO = RiddleCreationRequestDTO.builder().levelId(levelId)
+                .language(CodingLanguage.JAVA).functionSignature("public static int sum(int a, int b)").input("2, 3")
+                .variableName("result").expectedOutput("42").build();
         riddleId = riddleService.createRiddle(riddleCreationRequestDTO).getRiddleId();
 
         final NodeCreationRequest nodeCreationRequest = NodeCreationRequest.builder().sceneId(sceneId)
