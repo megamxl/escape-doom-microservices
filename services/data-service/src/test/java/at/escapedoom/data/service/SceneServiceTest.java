@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +55,7 @@ class SceneServiceTest {
 
         templateRepository.save(template);
 
-        Level level = Level.builder().template(template).templateId(template.getTemplateId()).levelSequence(1).build();
+        Level level = Level.builder().template(template).levelSequence(1).build();
 
         LEVEL_ID = levelRepository.save(level).getLevelId();
 
@@ -84,7 +85,7 @@ class SceneServiceTest {
 
     @Test
     void testGetSceneByIdNotFoundError() {
-        assertThrows(IllegalArgumentException.class, () -> service.getSceneById(INVALID_SCENE_ID));
+        assertThrows(NoSuchElementException.class, () -> service.getSceneById(INVALID_SCENE_ID));
     }
 
     @Test

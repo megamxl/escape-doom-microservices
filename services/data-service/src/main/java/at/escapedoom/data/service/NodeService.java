@@ -55,7 +55,7 @@ public class NodeService {
 
         var node = nodeRepository.findById(UUID.fromString(nodeId)).orElse(null);
         if (node == null) {
-            throw new NoSuchElementException();
+            throw new NoSuchElementException("Riddle with ID: " + nodeId + " not found");
         }
 
         log.debug("Found NodeId: {}", nodeId);

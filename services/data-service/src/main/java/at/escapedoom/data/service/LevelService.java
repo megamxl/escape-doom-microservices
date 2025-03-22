@@ -64,7 +64,7 @@ public class LevelService {
         return getLevelDTO(restModel, level);
     }
 
-    public LevelDTO getLevel(String levelId) {
+    public LevelDTO getLevelById(String levelId) {
         UUID levelUUID = UUID.fromString(levelId);
         Level level = repository.findById(levelUUID)
                 .orElseThrow(() -> new NoSuchElementException("Level with ID " + levelId + " not found"));
