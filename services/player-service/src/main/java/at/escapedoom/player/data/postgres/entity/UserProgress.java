@@ -1,4 +1,4 @@
-package at.escapedoom.player.data.entity;
+package at.escapedoom.player.data.postgres.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -31,5 +31,7 @@ public class UserProgress {
     private LocalDateTime lastRiddleSolvedAt;
 
     private Long currentPoints;
+
+    private UUID templateID;
 
 }

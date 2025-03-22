@@ -36,7 +36,6 @@ public class NodeService {
 
         newNode = nodeRepository.saveAndFlush(newNode);
 
-        // log.info("Created Node with id: {} for user {}", newNode.getNodeId(), getCurrentUserUUID().get());
         log.info("Created Node with id: {}", newNode.getNodeId());
 
         return nodeMapper.toDTO(newNode);

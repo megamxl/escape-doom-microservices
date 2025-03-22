@@ -1,8 +1,8 @@
 package at.escapedoom.player.rest.api;
 
-import at.escapedoom.player.rest.model.EscapeRoomLevel;
 import at.escapedoom.player.rest.model.EscapeRoomResult;
 import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
+import at.escapedoom.player.rest.model.LevelDTO;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;

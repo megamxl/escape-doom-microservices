@@ -1,6 +1,6 @@
 package at.escapedoom.player.service.interfaces;
 
-import at.escapedoom.player.data.domain.SessionView;
+import at.escapedoom.spring.redis.data.models.SessionView;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Optional;
