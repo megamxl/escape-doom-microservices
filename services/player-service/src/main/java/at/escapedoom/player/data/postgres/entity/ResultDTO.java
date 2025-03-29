@@ -1,4 +1,4 @@
-package at.escapedoom.player.data.entity;
+package at.escapedoom.player.data.postgres.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,5 +1,7 @@
 package at.escapedoom.player.config;
 
+import at.escapedoom.player.service.RedisReceiver;
+import at.escapedoom.spring.communication.data.api.TemplateApi;
 import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.player.service.SessionCommunicationService;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
@@ -11,6 +13,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
 @Profile("!test")
@@ -26,6 +36,31 @@ public class AppConfig {
     @Bean
     public SessionApi getSessionApi(@Autowired OkHttpClient client) {
         return new SessionApi(new ApiClient(client).setBasePath("http://localhost:8081/session-api/v1"));
+    }
+
+    @Bean
+    public TemplateApi getTemplateApi(@Autowired OkHttpClient client) {
+        return new TemplateApi(new at.escapedoom.spring.communication.data.invoker.ApiClient(client)
+                .setBasePath("http://localhost:8081/data-api/v1"));
+    }
+
+    @Bean
+    public MessageListenerAdapter listenerAdapter(RedisReceiver redisReceiver) {
+        return new MessageListenerAdapter(redisReceiver, "receiveMessage");
+    }
+
+    public static String nameChangeChannel() {
+        return "nameChangeChannel";
+    }
+
+    @Bean
+    RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
+            MessageListenerAdapter listenerAdapter) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.addMessageListener(listenerAdapter, new PatternTopic(nameChangeChannel()));
+
+        return container;
     }
 
 }

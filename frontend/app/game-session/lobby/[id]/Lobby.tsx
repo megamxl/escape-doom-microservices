@@ -11,6 +11,7 @@ import {LobbyState} from "@/app/types/lobby/LobbyState";
 import {GAME_SESSION_APP_PATHS, GAME_SESSION_WEB_SOCKETS} from "@/app/constants/paths";
 import {createWebSocket} from "@/app/utils/websockets";
 import {RoomState} from "@/app/enums/RoomState";
+import {initializeStompClient} from "@/app/game-session/test/stompClient.tsx";
 
 const Lobby = ({lobbyID}: { lobbyID: number }) => {
 
@@ -21,46 +22,52 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
         isStarted: false
     })
 
+    const [stompClient, setStompClient] = useState<any>(null);
+
     const [sessionID, setSessionID] = useSession();
 
     const {data, isError, error} = useLobbyStatus(sessionID)
 
-    const createWebSockets = () => {
-        createWebSocket({
-            url: GAME_SESSION_WEB_SOCKETS.YOUR_NAME + "?sessionID=" + sessionID,
-            onMessage: (event) => {
-                console.log(event?.data);
-                setLobbyState((prevState) => ({
-                    ...prevState,
-                    name: event?.data
-                }));
-            }
-        });
-    
-        createWebSocket({
-            url: GAME_SESSION_WEB_SOCKETS.ALL_NAMES + "?sessionID=" + sessionID,
-            onMessage: (event) => {
-                try {
-                    const data = JSON.parse(event?.data);
-                    setLobbyState((prevState) => ({
-                        ...prevState,
-                        users: data.players || []
-                    }));
-                } catch (error) {
-                    console.error("Error parsing WebSocket message:", error);
-                }
-            }
-        });
-    
-        createWebSocket({
-            url: GAME_SESSION_WEB_SOCKETS.STARTED + "?sessionID=" + sessionID,
-            onMessage: () => {
-                setLobbyState((prevState) => ({
-                    ...prevState,
-                    isStarted: true
-                }));
-            }
-        });
+    const [subscribed, setSubscribed] = useState<boolean>(false);
+
+    const createWebSockets =  async () => {
+        /*
+               createWebSocket({
+                   url: GAME_SESSION_WEB_SOCKETS.YOUR_NAME + "?sessionID=" + sessionID,
+                   onMessage: (event) => {
+                       console.log(event?.data);
+                       setLobbyState((prevState) => ({
+                           ...prevState,
+                           name: event?.data
+                       }));
+                   }
+               });
+
+           createWebSocket({
+               url: GAME_SESSION_WEB_SOCKETS.ALL_NAMES + "?sessionID=" + sessionID,
+               onMessage: (event) => {
+                   try {
+                       const data = JSON.parse(event?.data);
+                       setLobbyState((prevState) => ({
+                           ...prevState,
+                           users: data.players || []
+                       }));
+                   } catch (error) {
+                       console.error("Error parsing WebSocket message:", error);
+                   }
+               }
+           });
+
+           createWebSocket({
+               url: GAME_SESSION_WEB_SOCKETS.STARTED + "?sessionID=" + sessionID,
+               onMessage: () => {
+                   setLobbyState((prevState) => ({
+                       ...prevState,
+                       isStarted: true
+                   }));
+               }
+           });
+    */
     };
 
     useEffect(() => {
@@ -73,9 +80,14 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                 redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${sessionID}`);
             }
         }
-
-        createWebSockets()
     }, [])
+
+
+    useEffect(() => {
+        if (stompClient && subscribed) {
+            sendMessage();
+        }
+    }, [subscribed]);
 
     useEffect(() => {
         //@ts-ignore
@@ -107,6 +119,63 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
             document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
     }, [lobbyState.countdown, lobbyState.isStarted]);
+
+
+        useEffect(() => {
+            const setupWebSocket = async () => {
+                try {
+                    const client = await initializeStompClient();
+                    if (!client) return;
+
+                    setStompClient(client);
+                    client.onConnect = (frame) => {
+                        client.subscribe("/topic/greetings/"+lobbyID, (message) => {
+                            const data = JSON.parse(message.body);
+                            console.log("i recieved " + message.body)
+                            setSubscribed(true);
+                            if (data.message && Array.isArray(data.message)) {
+                                setLobbyState(prevState => ({
+                                    ...prevState,
+                                    users: data.message
+                                }));
+                            }
+                        });
+                    };
+
+                    client.onWebSocketError = (error) => {
+                        console.error("WebSocket Error:", error);
+                    };
+
+                    client.onStompError = (frame) => {
+                        console.error("STOMP Error:", frame.headers["message"]);
+                    };
+
+                    client.activate();
+                } catch (error) {
+                    console.error("Error initializing WebSocket:", error);
+                }
+            };
+
+            setupWebSocket();
+
+            return () => {
+                if (stompClient) {
+                    stompClient.deactivate();
+                }
+            };
+        }, []);
+
+        const sendMessage = () => {
+            if (!stompClient) {
+                console.error("STOMP client is not initialized");
+                return;
+            }
+
+            // stompClient.publish({
+            //     destination: "/app/hello",
+            //     body: JSON.stringify({ message: "Anas" }),
+            // });
+        };
 
     return (
         <>

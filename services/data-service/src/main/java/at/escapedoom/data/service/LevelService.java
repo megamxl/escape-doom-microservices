@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class LevelService {
-    //TODO: @Mark Add Logging pls
+    // TODO: @Mark Add Logging pls
 
     private final LevelRepository repository;
     private final SceneService sceneService;

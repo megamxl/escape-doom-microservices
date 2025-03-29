@@ -1,13 +1,9 @@
 package at.escapedoom.player.mock;
 
-import at.escapedoom.player.data.domain.SessionView;
-import at.escapedoom.player.rest.model.EscapeRoomState;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
+import at.escapedoom.spring.redis.data.models.EscapeRoomState;
+import at.escapedoom.spring.redis.data.models.SessionView;
 import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
-import okhttp3.OkHttpClient;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
