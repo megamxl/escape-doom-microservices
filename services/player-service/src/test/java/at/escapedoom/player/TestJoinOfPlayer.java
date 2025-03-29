@@ -26,9 +26,7 @@ class TestJoinOfPlayer {
 
     @SuppressWarnings("resource")
     @Container
-    static GenericContainer<?> redisContainer = new GenericContainer<>("redis:7.0.0")
-            .withExposedPorts(6379);
-
+    static GenericContainer<?> redisContainer = new GenericContainer<>("redis:7.0.0").withExposedPorts(6379);
 
     @DynamicPropertySource
     static void redisProperties(DynamicPropertyRegistry registry) {

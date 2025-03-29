@@ -22,7 +22,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-
 @Testcontainers
 @SpringBootTest
 @EntityScan("at.escapedoom.player.data.postgres.entity")
@@ -31,9 +30,7 @@ class TestUserProgressRepository {
 
     @SuppressWarnings("resource")
     @Container
-    static GenericContainer<?> redisContainer = new GenericContainer<>("redis:7.0.0")
-            .withExposedPorts(6379);
-
+    static GenericContainer<?> redisContainer = new GenericContainer<>("redis:7.0.0").withExposedPorts(6379);
 
     @DynamicPropertySource
     static void redisProperties(DynamicPropertyRegistry registry) {
