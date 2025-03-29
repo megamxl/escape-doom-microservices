@@ -14,8 +14,6 @@ import java.util.UUID;
 @Mapper(componentModel = "spring", uses = { NodeMapper.class })
 public interface SceneMapper {
 
-    SceneMapper INSTANCE = Mappers.getMapper(SceneMapper.class);
-
     @Mapping(source = "sceneId", target = "sceneId", qualifiedByName = "sceneUuidToString")
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "sceneUuidToString")
     SceneDTO toDTO(Scene scene);
@@ -32,12 +30,12 @@ public interface SceneMapper {
     Scene toEntity(SceneRequestDTO sceneRequest);
 
     @Named("sceneUuidToString")
-    static String sceneUuidToString(UUID uuid) {
+    default String sceneUuidToString(UUID uuid) {
         return uuid != null ? uuid.toString() : null;
     }
 
     @Named("sceneStringToUUID")
-    static UUID sceneStringToUUID(String uuid) {
+    default UUID sceneStringToUUID(String uuid) {
         return uuid != null && !uuid.isEmpty() ? UUID.fromString(uuid) : null;
     }
 

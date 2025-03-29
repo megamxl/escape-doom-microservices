@@ -15,8 +15,6 @@ import java.util.UUID;
 @Mapper(componentModel = "spring")
 public interface NodeMapper {
 
-    NodeMapper INSTANCE = Mappers.getMapper(NodeMapper.class);
-
     @Mapping(source = "nodeId", target = "nodeId", qualifiedByName = "uuidToString")
     NodeDTO toDTO(Node node);
 
@@ -27,12 +25,12 @@ public interface NodeMapper {
     Node toEntity(NodeCreationRequest creationRequest);
 
     @Named("uuidToString")
-    static String uuidToString(UUID uuid) {
+    default String uuidToString(UUID uuid) {
         return uuid != null ? uuid.toString() : null;
     }
 
     @Named("stringToUUID")
-    static UUID stringToUUID(String uuid) {
+    default UUID stringToUUID(String uuid) {
         return uuid != null && !uuid.isEmpty() ? UUID.fromString(uuid) : null;
     }
 
