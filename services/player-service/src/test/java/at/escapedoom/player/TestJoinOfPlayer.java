@@ -2,9 +2,12 @@ package at.escapedoom.player;
 
 import at.escapedoom.player.rest.model.EscapeRoomJoinResponse;
 import at.escapedoom.player.service.LobbyService;
+import at.escapedoom.spring.communication.data.api.TemplateApi;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -12,11 +15,15 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@TestPropertySource(properties = { "escapedoom.redis.host=localhost", "escapedoom.redis.port=6379" })
 @SpringBootTest(classes = PlayerApi.class)
-public class TestJoinOfPlayer {
+class TestJoinOfPlayer {
 
     @Autowired
     private LobbyService lobbyService;
+
+    @MockBean
+    private TemplateApi templateApi;
 
     @Test
     void testJoinOfSessionNotPossibleBecauseOfState() {
