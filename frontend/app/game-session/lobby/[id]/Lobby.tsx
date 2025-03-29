@@ -87,6 +87,14 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
         if (stompClient && subscribed) {
             sendMessage();
         }
+        const storedName = localStorage.getItem("player_name") ?? "";
+        setLobbyState(prevState => ({
+            ...prevState,
+            name: storedName
+        }));
+        console.log("storedName: " + storedName);
+        console.log("lobbystate Name: " + lobbyState.name)
+
     }, [subscribed]);
 
     useEffect(() => {
