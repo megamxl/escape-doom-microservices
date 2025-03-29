@@ -36,7 +36,7 @@ public class NodeService {
 
         newNode = nodeRepository.saveAndFlush(newNode);
 
-        log.info("Created Node with id: {} for user {}", newNode.getNodeId(), getCurrentUserUUID().get());
+        log.info("Created Node with id: {}", newNode.getNodeId());
 
         return nodeMapper.toDTO(newNode);
     }
@@ -53,16 +53,19 @@ public class NodeService {
         assert nodeId != null;
 
         var node = nodeRepository.findById(UUID.fromString(nodeId)).orElse(null);
-        if (node == null) { throw new NoSuchElementException(); }
+        if (node == null) {
+            throw new NoSuchElementException("Riddle with ID: " + nodeId + " not found");
+        }
 
         log.debug("Found NodeId: {}", nodeId);
 
         return nodeMapper.toDTO(node);
     }
 
+    @Transactional
     public NodeDTO updateNode(String nodeId, NodeDTO updatedNode) {
-        assert updatedNode != null;
-        assert nodeId != null;
+        assert updatedNode != null : "Updated node is null";
+        assert nodeId != null : "NodeId is null";
 
         UUID nodeUUID = UUID.fromString(nodeId);
 
@@ -73,11 +76,13 @@ public class NodeService {
 
         Node node = nodeMapper.toEntity(updatedNode);
 
-        log.info("Updated Node with id: {} by {}", node.getNodeId(), getCurrentUserUUID().get());
+        // log.info("Updated Node with id: {} by {}", node.getNodeId(), getCurrentUserUUID().get());
+        log.info("Updated Node with id: {}", node.getNodeId());
 
         return nodeMapper.toDTO(nodeRepository.save(node));
     }
 
+    @Transactional
     public NodeDeletionResponseDTO deleteNode(String nodeId) {
         assert nodeId != null : "UUID must not be null";
 
@@ -85,6 +90,7 @@ public class NodeService {
 
         if (nodeRepository.existsById(nodeUUID)) {
             nodeRepository.deleteById(nodeUUID);
+            nodeRepository.flush();
 
             log.info("Deleted node with id " + nodeUUID);
             return new NodeDeletionResponseDTO("Deleted node with id " + nodeUUID);

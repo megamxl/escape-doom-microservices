@@ -20,7 +20,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class LevelService {
-    //TODO: @Mark Add Logging pls
+    // TODO: @Mark Add Logging pls
 
     private final LevelRepository repository;
     private final SceneService sceneService;
@@ -64,7 +64,7 @@ public class LevelService {
         return getLevelDTO(restModel, level);
     }
 
-    public LevelDTO getLevel(String levelId) {
+    public LevelDTO getLevelById(String levelId) {
         UUID levelUUID = UUID.fromString(levelId);
         Level level = repository.findById(levelUUID)
                 .orElseThrow(() -> new NoSuchElementException("Level with ID " + levelId + " not found"));

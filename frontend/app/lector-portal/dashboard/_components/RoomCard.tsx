@@ -20,6 +20,7 @@ import {AccessTime, Circle, Close, OpenInBrowser, PlayArrow} from "@mui/icons-ma
 import {useChangeRoomState} from "@/app/hooks/lector-portal/useGetEscapeRooms";
 import {RoomState} from "@/app/enums/RoomState";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
+import {TemplateDTO} from "@/app/gen/data";
 
 type RoomCardCreationProps = {
     name: string,
@@ -36,7 +37,7 @@ export type RoomCardState = {
     Time: number
 }
 
-const RoomCard = ({name, topic, imgUrl, time, id, escapeRoomState}: RoomCardCreationProps) => {
+const RoomCard = ({name, topic, imgUrl, time, id, escapeRoomState}: TemplateDTO) => {
 
     const [roomInfo, setRoomInfo] = useState<RoomCardState>({
         Status: escapeRoomState,

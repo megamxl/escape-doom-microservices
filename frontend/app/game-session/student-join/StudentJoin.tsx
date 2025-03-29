@@ -20,7 +20,7 @@ const StudentJoin = () => {
 
     const [roomJoin, setRoomJoin] = useState<EscapeRoomJoin>()
 
-    const [openSnackbar, setOpenOpenSnackbar] = useState(false);
+    const [openSnackbar, setOpenOpenSnackbar] = useState({state :false, message:"The given lobby is either closed or doesn't exist"});
 
     const [session, setSession] = useSession();
 
@@ -45,7 +45,7 @@ const StudentJoin = () => {
         playerJoinCall({data: roomJoin},{
             onSuccess: (response) => {
                 if (response.player_session_id === undefined){
-                    setOpenOpenSnackbar(true)
+                    setOpenOpenSnackbar(prev => ({ ...prev, state: true }))
                     return
                 }
                 switch (response.escape_room_state) {
@@ -56,11 +56,12 @@ const StudentJoin = () => {
                     case escapeRoomStateEnum.open:
                         setSession(response.player_session_id!)
                         console.log("should redirect ", `${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
+                        localStorage.setItem("player_name", response.player_name != null ? response.player_name : "");
                         appRouterInstance.push(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
                         break;
                     case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:
                         setSession("")
-                        setOpenOpenSnackbar(true)
+                        setOpenOpenSnackbar(prev => ({ ...prev, state: true }))
                         break;
                     default:
                         console.log("Lobby is in an unknown state");
@@ -69,8 +70,7 @@ const StudentJoin = () => {
             },
             onError: (error) =>{
                 // @ts-ignore
-                console.log(error.response.data)
-                setOpenOpenSnackbar(true)
+                setOpenOpenSnackbar(prev => ({ ...prev, state: true, message: error.response.data.message }))
                 return
             }
         })
@@ -120,9 +120,9 @@ const StudentJoin = () => {
                 </Card>
             </Grid2>
 
-            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={() => setOpenOpenSnackbar(false)}>
-                <Alert onClose={() => setOpenOpenSnackbar(false)} severity="error" sx={{width: '100%'}}>
-                    The given lobby is either closed or doesn't exist
+            <Snackbar open={openSnackbar.state} autoHideDuration={6000} onClose={() => setOpenOpenSnackbar(prev => ({ ...prev, state: false }))}>
+                <Alert onClose={() => setOpenOpenSnackbar(prev => ({ ...prev, state: false }))} severity="error" sx={{width: '100%'}}>
+                    {openSnackbar.message}
                 </Alert>
             </Snackbar>
         </>

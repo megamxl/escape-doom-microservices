@@ -54,7 +54,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EscapeRoomLevel"
+                $ref: "#/components/schemas/LevelDTO"
         "500":
           description: Internal Server Error
 
@@ -222,14 +222,6 @@ components:
           type: string
           description: The name of the scene
           example: Scene 1
-    NodeType:
-      description: The type of a node
-      type: string
-      enum:
-        - ZOOM
-        - CONSOLE
-        - DETAIL
-        - STORY
     Node:
       description: A node of an escape-room instance
       type: object
@@ -291,3 +283,149 @@ components:
           type: string
           description: The error message
           example: The error message
+    LevelDTO:
+      description: The current level of an escape-room instance
+      type: object
+      properties:
+        template_id:
+          type: string
+          description: The unique ID of the escape room template
+          example: "d1087efe-41fd-42da-9110-62d35659cf1f"
+        level_id:
+          type: string
+          description: The unique ID of the escape room level
+          example: "d1087efe-41fd-42da-9110-62d35659cf1f"
+        level_sequence:
+          type: integer
+          description: The sequence number of the level
+          example: 1
+        scenes:
+          type: array
+          items:
+            $ref: "#/components/schemas/SceneDTO"
+          description: List of scenes in the level
+        riddle:
+          $ref: "#/components/schemas/RiddleDTO"
+    SceneDTO:
+      description: A scene of an escape-room instance
+      type: object
+      properties:
+        scene_id:
+          type: string
+          description: The unique ID of the scene
+          example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
+        scene_sequence:
+          type: integer
+          description: Defines the "position" of the scene in the escape room
+          example: 1
+        level_id:
+          type: string
+          description: The ID of the escape room level that contains this riddle
+          example: "a12b34c5-6789-4def-abcd-12345678abcd"
+        nodes:
+          type: array
+          items:
+            $ref: "#/components/schemas/NodeDTO"
+          description: The nodes of the scene
+        background_image_uri:
+          type: string
+          description: The URI of the background image
+          example: "https://example.com/background.png"
+        name:
+          type: string
+          description: The name of the scene
+          example: "Scene 1"
+    RiddleDTO:
+      description: Base schema for a riddle
+      type: object
+      properties:
+        riddle_id:
+          type: string
+          description: The unique ID of the riddle
+          example: "5830daed-cb7f-47dd-8248-5dee9bf0aa3d"
+        level_id:
+          type: string
+          description: The ID of the escape room level that contains this riddle
+          example: "a12b34c5-6789-4def-abcd-12345678abcd"
+        language:
+          $ref: "#/components/schemas/CodingLanguage"
+        function_signature:
+          type: string
+          description: The function signature
+          example: "public static int sum(int a, int b)"
+        input:
+          type: string
+          description: The input values for the function
+          example: "2, 3"
+        variable_name:
+          type: string
+          description: The name of the variable to compare
+          example: "result"
+        expected_output:
+          type: string
+          description: The expected output of the riddle
+          example: "42"
+    # Enums
+    CodingLanguage:
+      type: string
+      enum:
+        - JAVA
+        - TYPESCRIPT
+      example: "JAVA"
+    NodeType:
+      description: The type of a node
+      type: string
+      enum:
+        - ZOOM
+        - CONSOLE
+        - DETAIL
+        - STORY
+      example: "ZOOM"
+    NodeDTO:
+      description: A node of an escape-room instance
+      type: object
+      properties:
+        node_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the node
+        scene_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the scene the node belongs to
+        node_type:
+          $ref: '#/components/schemas/NodeType'
+        node_info:
+          $ref: '#/components/schemas/NodeInfoDTO'
+        position:
+          $ref: '#/components/schemas/PositionDTO'
+    NodeInfoDTO:
+      description: The information of a node
+      type: object
+      properties:
+        description:
+          type: string
+          description: The description of the node
+          example: This is a story node
+        title:
+          type: string
+          description: The display title of the node
+          example: I like cheese
+        imageURI:
+          type: string
+          description: The URI of the image to display
+          example: https://example.com/image.png
+    PositionDTO:
+      description: The position of a node
+      type: object
+      properties:
+        top_percentage:
+          type: number
+          format: double
+          description: The relative top position of the node
+          example: 50.5
+        left_percentage:
+          type: number
+          format: double
+          description: The relative left position of the node
+          example: 22

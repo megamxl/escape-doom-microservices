@@ -36,7 +36,7 @@ public class RiddleService {
 
     public RiddleDTO getRiddleById(@NonNull String uuid) {
         Riddle riddle = riddleRepository.findById(UUID.fromString(uuid))
-                .orElseThrow(() -> new IllegalArgumentException("Riddle with ID: " + uuid + " not found"));
+                .orElseThrow(() -> new NoSuchElementException("Riddle with ID: " + uuid + " not found"));
 
         log.info("Riddle {} found", riddle.getRiddleId());
 

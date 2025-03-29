@@ -1,12 +1,17 @@
 package at.escapedoom.session.service;
 
 import at.escapedoom.session.SessionApi;
-import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.data.EscapeRoomSessionRepository;
+import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
 import java.util.UUID;
@@ -14,6 +19,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@Testcontainers
 @SpringBootTest(classes = SessionApi.class)
 class EscapeRoomSessionServiceTest {
 
@@ -22,6 +28,16 @@ class EscapeRoomSessionServiceTest {
 
     @Autowired
     private EscapeRoomSessionRepository sessionRepository;
+
+    @SuppressWarnings("resource")
+    @Container
+    static GenericContainer<?> redisContainer = new GenericContainer<>("redis:7.0.0").withExposedPorts(6379);
+
+    @DynamicPropertySource
+    static void redisProperties(DynamicPropertyRegistry registry) {
+        registry.add("escapedoom.redis.host", redisContainer::getHost);
+        registry.add("escapedoom.redis.port", () -> redisContainer.getMappedPort(6379));
+    }
 
     @Test
     void testCreateSessionSuccessfully() {

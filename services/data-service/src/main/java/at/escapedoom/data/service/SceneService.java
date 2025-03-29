@@ -1,5 +1,6 @@
 package at.escapedoom.data.service;
 
+import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
@@ -12,10 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -37,7 +35,7 @@ public class SceneService {
 
         Optional<Scene> dbScene = sceneRepository.findById(UUID.fromString(id));
         return dbScene.map(sceneMapper::toDTO)
-                .orElseThrow(() -> new IllegalArgumentException("Scene with id " + id + " not found"));
+                .orElseThrow(() -> new NoSuchElementException("Scene with id " + id + " not found"));
     }
 
     public SceneDTO createScene(SceneRequestDTO sceneRequest) {
