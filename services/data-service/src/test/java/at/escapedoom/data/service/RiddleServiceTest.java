@@ -69,7 +69,7 @@ class RiddleServiceTest {
 
     @Test
     void testGetRiddleByIdError() {
-        assertThrows(IllegalArgumentException.class, () -> service.getRiddleById(UUID.randomUUID().toString()));
+        assertThrows(NoSuchElementException.class, () -> service.getRiddleById(UUID.randomUUID().toString()));
     }
     // endregion
 

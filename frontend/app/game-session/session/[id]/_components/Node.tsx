@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {AutoStories, Search, Settings, Visibility} from "@mui/icons-material";
-import {Backdrop, Box, Button, Card, CardContent, Divider, IconButton, Stack, Typography} from "@mui/material";
+import {Backdrop, Box, Card, CardContent, IconButton, Stack, Typography} from "@mui/material";
 import {amber, blue, deepPurple, purple} from "@mui/material/colors";
-import {NodeInstance, NodeState} from "@/app/types/game-session/NodeState";
-import {NodeType} from "@/app/types/game-session/NodeType";
+import {NodeDTO, PositionDTO} from "@/app/gen/player";
+
+//TODO: Refactor this class to adhere to DRY principle
 
 interface IconButtonInt {
-    pos: { x: number, y: number },
+    pos: PositionDTO,
     color: string,
     icon: any,
     openfunction: React.Dispatch<React.SetStateAction<boolean>>
@@ -24,8 +25,8 @@ const IconButtonProp: React.FC<IconButtonInt> = ({pos, color, icon, openfunction
             sx={{
                 color: color,
                 position: "absolute",
-                top: `${pos.y * 100}%`,
-                left: `${pos.x * 100}%`,
+                top: `${pos.top_percentage}%`,
+                left: `${pos.left_percentage}%`,
                 width: iconSize,
                 height: iconSize,
                 border: 2,
@@ -37,14 +38,16 @@ const IconButtonProp: React.FC<IconButtonInt> = ({pos, color, icon, openfunction
 }
 
 export const ConsoleNode = ({
-                                pos,
-                                nodeInfos
-                            }: NodeInstance, codeSetter: React.Dispatch<React.SetStateAction<string>>) => {
+                                node_type,
+                                node_info,
+                                position
+                            }: NodeDTO, /*codeSetter: React.Dispatch<React.SetStateAction<string>>*/) => {
     const [isOpen, setIsOpen] = useState(false)
+
     return (
         <>
             <IconButtonProp
-                pos={pos}
+                pos={position!}
                 color={amber[600]}
                 icon={<Settings fontSize='small'/>}
                 openfunction={setIsOpen}
@@ -63,25 +66,25 @@ export const ConsoleNode = ({
                             color={"black"}
                             fontWeight={"bold"}
                         >
-                            {nodeInfos.title}
+                            {node_info?.title}
                         </Typography>
                     </Stack>
                     <CardContent>
                         <Typography color={"grey"}> Object Description </Typography>
-                        <Typography mb={2}> {nodeInfos.desc} </Typography>
+                        <Typography mb={2}> {node_info?.description} </Typography>
 
-                        <Box sx={{backgroundColor: '#2c2c2c', p: 1, mb: 2}}>
-                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Return </Typography>
-                            <Typography> {nodeInfos.returnType} </Typography>
-                            <Divider sx={{flexGrow: 1, borderBottomWidth: 2, my: 2}} orientation="horizontal"/>
-                            <Typography fontWeight={"bold"} fontSize={14} mb={1}> Non-real example </Typography>
-                            <Typography> {nodeInfos.exampleInput} </Typography>
-                        </Box>
-                        <Stack direction={"row"} justifyContent={"end"}>
-                            <Button sx={{backgroundColor: amber[600]}} variant="contained" onClick={() => {
-                                codeSetter(nodeInfos.codeSnipped)
-                            }}> Connect </Button>
-                        </Stack>
+                        {/*<Box sx={{backgroundColor: '#2c2c2c', p: 1, mb: 2}}>*/}
+                        {/*    <Typography fontWeight={"bold"} fontSize={14} mb={1}> Return </Typography>*/}
+                        {/*    <Typography> {node_info.returnType} </Typography>*/}
+                        {/*    <Divider sx={{flexGrow: 1, borderBottomWidth: 2, my: 2}} orientation="horizontal"/>*/}
+                        {/*    <Typography fontWeight={"bold"} fontSize={14} mb={1}> Non-real example </Typography>*/}
+                        {/*    <Typography> {nodeInfos.exampleInput} </Typography>*/}
+                        {/*</Box>*/}
+                        {/*<Stack direction={"row"} justifyContent={"end"}>*/}
+                        {/*    <Button sx={{backgroundColor: amber[600]}} variant="contained" onClick={() => {*/}
+                        {/*        codeSetter(nodeInfos.codeSnipped)*/}
+                        {/*    }}> Connect </Button>*/}
+                        {/*</Stack>*/}
                     </CardContent>
                 </Card>
             </Backdrop>
@@ -89,7 +92,7 @@ export const ConsoleNode = ({
     )
 }
 
-export const StoryNode = ({pos, nodeInfos}: NodeInstance) => {
+export const StoryNode = ({node_type, node_info, position}: NodeDTO) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const mainColor = purple[400];
@@ -97,7 +100,7 @@ export const StoryNode = ({pos, nodeInfos}: NodeInstance) => {
     return (
         <>
             <IconButtonProp
-                pos={pos}
+                pos={position!}
                 color={mainColor}
                 icon={<AutoStories fontSize="small"/>}
                 openfunction={setIsOpen}
@@ -116,11 +119,11 @@ export const StoryNode = ({pos, nodeInfos}: NodeInstance) => {
                             color={"black"}
                             fontWeight={"bold"}
                         >
-                            {nodeInfos.title}
+                            {node_info?.title}
                         </Typography>
                     </Stack>
                     <CardContent>
-                        <Typography mb={2}> {nodeInfos.desc} </Typography>
+                        <Typography mb={2}> {node_info?.description} </Typography>
                     </CardContent>
                 </Card>
             </Backdrop>
@@ -128,7 +131,7 @@ export const StoryNode = ({pos, nodeInfos}: NodeInstance) => {
     )
 }
 
-export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
+export const DetailsNode = ({node_info, node_type, position}: NodeDTO) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const mainColor = blue[600]
@@ -136,7 +139,7 @@ export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
     return (
         <>
             <IconButtonProp
-                pos={pos}
+                pos={position!}
                 color={mainColor}
                 icon={<Search fontSize='small'/>}
                 openfunction={setIsOpen}
@@ -155,18 +158,18 @@ export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
                             color={"black"}
                             fontWeight={"bold"}
                         >
-                            {nodeInfos.title}
+                            {node_info?.title}
                         </Typography>
                     </Stack>
                     <CardContent>
                         <Stack direction="row" height="400px" gap={2}>
                             <Box width="80%" height="100%"
                                  sx={{
-                                     backgroundImage: `url(${nodeInfos.png})`,
+                                     backgroundImage: `url(${node_info?.imageURI})`,
                                      backgroundSize: "contain",
                                      backgroundRepeat: "no-repeat"
                                  }}/>
-                            <Typography mb={2}> {nodeInfos.desc} </Typography>
+                            <Typography mb={2}> {node_info?.description} </Typography>
                         </Stack>
                     </CardContent>
                 </Card>
@@ -175,7 +178,7 @@ export const DetailsNode = ({pos, nodeInfos}: NodeInstance) => {
     )
 }
 
-export const ZoomNode = ({pos, nodeInfos}: NodeInstance) => {
+export const ZoomNode = ({node_info, node_type, position}: NodeDTO) => {
     return (
         <IconButton
             size="small"
@@ -184,8 +187,8 @@ export const ZoomNode = ({pos, nodeInfos}: NodeInstance) => {
             }}
             sx={{
                 position: "relative",
-                left: pos.x,
-                top: pos.y,
+                left: position?.left_percentage,
+                top: position?.top_percentage,
                 color: deepPurple[400],
                 width: iconSize,
                 height: iconSize,
@@ -197,25 +200,26 @@ export const ZoomNode = ({pos, nodeInfos}: NodeInstance) => {
     )
 }
 
-const renderNodeType = ({type, pos, nodeInfos, codeSetter}: NodeState) => {
-    switch (type) {
-        case NodeType.CONSOLE:
-            return ConsoleNode({pos, nodeInfos}, codeSetter)
-        case NodeType.DETAILS:
-            return StoryNode({pos, nodeInfos})
-        case NodeType.STORY:
-            return DetailsNode({pos, nodeInfos})
-        case NodeType.ZOOM:
-            return ZoomNode({pos, nodeInfos})
+const renderNodeType = ({node_info, node_type, position}: NodeDTO) => {
+    if (position === undefined || node_type === undefined || node_info === undefined) return;
+    switch (node_type) {
+        case "CONSOLE":
+            return ConsoleNode({node_info, node_type, position})
+        case "STORY":
+            return StoryNode({node_info, node_type, position})
+        case "DETAIL":
+            return DetailsNode({node_info, node_type, position})
+        case "ZOOM":
+            return ZoomNode({node_info, node_type, position})
         default:
-            console.error(`Invalid Node Type: ${type}`)
+            console.error(`Invalid Node Type: ${node_type}`)
             return <></>
     }
 }
 
-const Node = ({type, pos, nodeInfos, codeSetter}: NodeState) => {
+const Node = ({node_info, node_type, position}: NodeDTO) => {
     return (
-        renderNodeType({type, pos, nodeInfos, codeSetter})
+        renderNodeType({node_info, node_type, position})
     );
 };
 

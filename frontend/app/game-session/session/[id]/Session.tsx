@@ -23,6 +23,7 @@ import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import CodeExectuionDisplay from "@/app/game-session/session/[id]/_components/CodeExectuionDisplay";
 import {useSessionIdToRoomPin} from "@/app/hooks/game-session/useSessionIdToRoomPin";
 import {useGetLevelOfSessionByPlayerSessionIDHook} from "@/app/gen/player";
+import NodeV2 from "@/app/game-session/session/[id]/_components/NodeV2.tsx";
 
 const Session = ({sessionID}: { sessionID: string }) => {
 
@@ -193,21 +194,10 @@ const handleEditorMount = (editor: any) => {
              className="w-full bg-no-repeat bg-contain"
          />
          {
-             // //TODO: Replace with new Nodes when structure is reworked
-             // nodes.map(({type, position, nodeInfos}, idx) => {
-             //     return (
-             //         <NodeV2 key={idx} type={type} position={position} nodeInfos={nodeInfos} />
-             //     )
-             // })
-             stageState.stageScene?.nodes.map((node, idx) => {
+             //@ts-ignore
+             stageInformation?.scenes[0]?.nodes.map((node) => {
                  return (
-                     <Node
-                         key={idx}
-                         pos={node.pos}
-                         nodeInfos={node.nodeInfos}
-                         type={node.type}
-                         codeSetter={setCode}
-                     />
+                     <NodeV2 key={node.node_id} node={node} codeSetter={setCode} />
                  )
              })
          }

@@ -1,16 +1,9 @@
 import React, {useState} from 'react';
-import {NodeType} from "@/app/types/game-session/NodeType";
 import IconButton from "@mui/material/IconButton";
 import {AutoStories, Search, Settings, SvgIconComponent, Visibility} from "@mui/icons-material";
 import {Card, CardContent, Dialog, Stack, Typography} from "@mui/material";
 import {amber, blue, purple, teal} from "@mui/material/colors";
-import {NodeInfo} from "@/app/types/game-session/StageNode";
-
-export type NodeV2Props = {
-    type: NodeType,
-    position: { top: string, left: string },
-    nodeInfos: NodeInfo
-}
+import {NodeDTO, NodeType} from "@/app/gen/player";
 
 type NodeTypeConfig = {
     styling: {
@@ -19,8 +12,14 @@ type NodeTypeConfig = {
     icon: SvgIconComponent
 }
 
-const NodeV2 = ({type, position, nodeInfos}: NodeV2Props) => {
-    const {icon: Icon, styling} = nodeTypeClassMapper[type]
+type NodeV2Props = {
+    node: NodeDTO
+    codeSetter: React.Dispatch<React.SetStateAction<string>>
+}
+
+const NodeV2 = ({node, codeSetter}: NodeV2Props) => {
+    const { node_info, node_type, position } = node;
+    const {icon: Icon, styling} = nodeTypeClassMapper[node_type!]
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -29,8 +28,8 @@ const NodeV2 = ({type, position, nodeInfos}: NodeV2Props) => {
                 onClick={() => setIsOpen(true)}
                 style={{
                     position: "absolute",
-                    top: position.top,
-                    left: position.left,
+                    top: `${position?.top_percentage}%`,
+                    left: `${position?.left_percentage}%`,
                     color: "#fff",
                     backgroundColor: styling.color,
                     borderRadius: "50%",
@@ -44,10 +43,10 @@ const NodeV2 = ({type, position, nodeInfos}: NodeV2Props) => {
                     <CardContent>
                         <Stack>
                             <Typography sx={{verticalAlign: "center"}} fontWeight={"bold"}>
-                                {nodeInfos.title}
+                                {node_info?.title}
                             </Typography>
                         </Stack>
-                        <Typography mb={2}> {nodeInfos.desc} </Typography>
+                        <Typography mb={2}> {node_info?.description} </Typography>
                     </CardContent>
                 </Card>
             </Dialog>
@@ -56,25 +55,25 @@ const NodeV2 = ({type, position, nodeInfos}: NodeV2Props) => {
 };
 
 const nodeTypeClassMapper: Record<NodeType, NodeTypeConfig> = {
-    [NodeType.STORY]: {
+    STORY: {
         styling: {
             color: purple[400]
         },
         icon: AutoStories,
     },
-    [NodeType.DETAILS]: {
+    DETAIL: {
         styling: {
             color: blue[600]
         },
         icon: Search,
     },
-    [NodeType.CONSOLE]: {
+    CONSOLE: {
         styling: {
             color: amber[600]
         },
         icon: Settings,
     },
-    [NodeType.ZOOM]: {
+    ZOOM: {
         styling: {
             color: teal[500]
         },

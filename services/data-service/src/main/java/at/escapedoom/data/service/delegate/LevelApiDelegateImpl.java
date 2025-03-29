@@ -32,7 +32,7 @@ public class LevelApiDelegateImpl implements LevelApiDelegate {
 
     @Override
     public ResponseEntity<LevelDTO> getLevel(String levelId) {
-        LevelDTO level = levelService.getLevel(levelId);
+        LevelDTO level = levelService.getLevelById(levelId);
         return new ResponseEntity<>(level, HttpStatus.OK);
     }
 

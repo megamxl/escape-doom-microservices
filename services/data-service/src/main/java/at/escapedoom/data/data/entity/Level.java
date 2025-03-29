@@ -30,7 +30,7 @@ public class Level {
     @JoinColumn(name = RIDDLE_ID)
     private Riddle riddle;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = LEVEL_ID)
     private List<Scene> scenes;
 

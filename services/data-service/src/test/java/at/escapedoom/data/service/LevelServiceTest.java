@@ -79,15 +79,15 @@ class LevelServiceTest {
 
     @Test
     @Transactional
-    void testGetLevelById() {
-        LevelDTO level = service.getLevel(VALID_LEVEL_ID);
+    void testGetLevelByIdById() {
+        LevelDTO level = service.getLevelById(VALID_LEVEL_ID);
         assertThat(level.getLevelSequence()).isEqualTo(1);
     }
 
     @Test
     @Transactional
-    void testGetLevelByIdError() {
-        assertThatThrownBy(() -> service.getLevel(INVALID_LEVEL_ID)).isInstanceOf(NoSuchElementException.class)
+    void testGetLevelByIdByIdError() {
+        assertThatThrownBy(() -> service.getLevelById(INVALID_LEVEL_ID)).isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Level with ID");
     }
     // endregion
@@ -112,7 +112,7 @@ class LevelServiceTest {
     @Test
     @Transactional
     void testUpdateLevel() {
-        LevelDTO level = service.getLevel(VALID_LEVEL_ID);
+        LevelDTO level = service.getLevelById(VALID_LEVEL_ID);
         final int newSequence = 2;
 
         LevelDTO levelRequest = LevelDTO.builder().levelId(level.getLevelId()).levelSequence(newSequence)
