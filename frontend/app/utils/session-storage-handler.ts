@@ -8,8 +8,7 @@ export const getSessionStorageItem = (key: string): string | null => {
     if (!isBrowser()) return null
 
     try {
-        const item = sessionStorage.getItem(key);
-        return item ?? null;
+        return sessionStorage.getItem(key);
     } catch (error) {
         console.error("Error reading sessionStorage key:", error);
         return null ;

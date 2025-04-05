@@ -15,6 +15,7 @@ import {
     useHandlePlayerJoinHook
 } from "@/app/gen/player";
 import {setSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
+import {player_name_key} from "@/app/utils/Constants.ts";
 
 const StudentJoin = () => {
     const appRouterInstance = useRouter();
@@ -57,7 +58,7 @@ const StudentJoin = () => {
                     case escapeRoomStateEnum.open:
                         setSession(response.player_session_id!)
                         //TODO failure Handle
-                        setSessionStorageItem("player_name", response.player_name != null ? response.player_name : "");
+                        setSessionStorageItem(player_name_key , response.player_name != null ? response.player_name : "");
                         appRouterInstance.push(`${GAME_SESSION_APP_PATHS.LOBBY}/${roomJoin?.room_pin}`)
                         break;
                     case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:

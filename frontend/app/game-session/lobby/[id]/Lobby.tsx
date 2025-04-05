@@ -12,10 +12,10 @@ import {GAME_SESSION_APP_PATHS, GAME_SESSION_WEB_SOCKETS} from "@/app/constants/
 import {RoomState} from "@/app/enums/RoomState";
 import {initializeStompClient} from "@/app/utils/stompClient.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
+import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
+import {escapeRoomStateEnum} from "@/app/gen/session";
 
 const Lobby = ({lobbyID}: { lobbyID: number }) => {
-    const appRouterInstance = useRouter();
-
     const [lobbyState, setLobbyState] = useState<LobbyState>({
         name: '',
         users: [],
@@ -34,7 +34,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
         if (stompClient && subscribed) {
             sendMessage();
         }
-        const storedName = getSessionStorageItem("player_name");
+        const storedName = getSessionStorageItem(player_name_key);
         if (storedName === null)
         {
             console.error("make popup playerName empty")
@@ -92,14 +92,16 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                         client.subscribe("/topic/player-names/"+lobbyID, (message) => {
                             const data = JSON.parse(message.body);
 
-                            if (data.state === "STARTED"){
-                                console.log()
-                                var playerId = getSessionStorageItem("sessionId");
+                            if (data.state === escapeRoomStateEnum.started.toUpperCase()){
+                                var playerId = getSessionStorageItem(session_id_key);
 
                                 if (playerId ===  null){
                                     console.error("No Player SessionSet !!!! make pop up")
                                 }
-                                appRouterInstance.push(`${GAME_SESSION_APP_PATHS.SESSION}/${playerId}`)
+                                setLobbyState(prev => ({
+                                    ...prev,
+                                    isStarted : true,
+                                }))
                                 return
                             }
 
@@ -141,11 +143,6 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                 console.error("STOMP client is not initialized");
                 return;
             }
-
-            // stompClient.publish({
-            //     destination: "/app/hello",
-            //     body: JSON.stringify({ message: "Anas" }),
-            // });
         };
 
     return (
