@@ -70,7 +70,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
 
         if (lobbyState.countdown === 0) {
             setLobbyState({...lobbyState, isStarted: false, countdown: 5})
-            redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${sessionID}`);
+            redirect(`${GAME_SESSION_APP_PATHS.SESSION}`);
         }
 
         return () => {

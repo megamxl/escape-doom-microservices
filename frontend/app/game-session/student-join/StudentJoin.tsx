@@ -1,7 +1,7 @@
 'use client'
 
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {Alert, Button, Card, CardContent, Grid2, Snackbar, Stack, TextField, Typography} from "@mui/material";
+import {Alert, Button, Card, CardContent, Grid2, Link, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import BackgroundImage from '@/public/images/StudentJoin.jpg'
 import {common} from '@mui/material/colors';
 import {redirect, useRouter} from "next/navigation";
@@ -14,8 +14,8 @@ import {
     HandlePlayerJoinMutationResponse,
     useHandlePlayerJoinHook
 } from "@/app/gen/player";
-import {setSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
-import {player_name_key} from "@/app/utils/Constants.ts";
+import {getSessionStorageItem, setSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
+import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
 
 const StudentJoin = () => {
     const appRouterInstance = useRouter();
@@ -53,7 +53,7 @@ const StudentJoin = () => {
                 switch (response.escape_room_state) {
                     case escapeRoomStateEnum.started:
                         setSession(response.player_session_id!)
-                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.SESSION}/${response.player_session_id}`)
+                        appRouterInstance.push(GAME_SESSION_APP_PATHS.SESSION)
                         break;
                     case escapeRoomStateEnum.open:
                         setSession(response.player_session_id!)
@@ -76,6 +76,19 @@ const StudentJoin = () => {
                 return
             }
         })
+    }
+
+    const handleReconnect = () => {
+       const sessionStorageItem = getSessionStorageItem(session_id_key);
+       const playerNameItem = getSessionStorageItem(player_name_key);
+
+       if(sessionStorageItem === null || playerNameItem === null){
+           setOpenOpenSnackbar(prev => ({ ...prev, state: true, message: "No session_id or player_name found can't reconnect " }))
+           return
+       }
+
+        redirect(GAME_SESSION_APP_PATHS.SESSION)
+
     }
 
     return (
@@ -117,6 +130,17 @@ const StudentJoin = () => {
                                 fullWidth
                             />
                             <Button sx={{height: 56}} variant="contained" type="submit" fullWidth>JOIN</Button>
+                        </Stack>
+                        <Stack>
+                        <Link
+                            component="button"
+                            variant="body2"
+                            onClick={() => {
+                                handleReconnect()
+                            }}
+                        >
+                            I want to reconnect
+                        </Link>
                         </Stack>
                     </CardContent>
                 </Card>
