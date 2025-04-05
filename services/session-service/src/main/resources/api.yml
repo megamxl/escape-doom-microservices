@@ -73,7 +73,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/EscapeRoomSessionResponse"
-  /session/tags:
+  /session/{tags}:
     get:
       tags:
         - session
