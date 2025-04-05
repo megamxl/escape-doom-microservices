@@ -1,27 +1,17 @@
 'use client'
 
 import React, {useRef, useState} from 'react';
-import {useGetStageInformation} from "@/app/hooks/game-session/useGetStageInformation";
 import {StageState} from "@/app/types/game-session/StageState";
 import {CodeExecResponse} from "@/app/types/game-session/CodeExecResponse";
 import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody";
 import {CodeLanguage} from "@/app/enums/CodeLanguage";
-import Node from './_components/Node';
-import {parseStage} from "@/app/utils/parseJsonString";
-import {RoomState} from "@/app/enums/RoomState";
 import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/[id]/_components/EditorContainer";
 import {PlayArrow} from "@mui/icons-material";
 import Editor from '@monaco-editor/react';
 import {LoadingButton} from '@mui/lab';
-import {useSubmitCode} from "@/app/hooks/game-session/useSubmitCode";
-import {useGetCodeResult} from "@/app/hooks/game-session/useGetCodeResult";
 import {CompileStatus} from "@/app/enums/CompileStatus";
-import {removeGameSession} from "@/app/utils/game-session-handler";
-import {redirect} from "next/navigation";
-import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import CodeExectuionDisplay from "@/app/game-session/session/[id]/_components/CodeExectuionDisplay";
-import {useSessionIdToRoomPin} from "@/app/hooks/game-session/useSessionIdToRoomPin";
 import {useGetLevelOfSessionByPlayerSessionIDHook} from "@/app/gen/player";
 import NodeV2 from "@/app/game-session/session/[id]/_components/NodeV2.tsx";
 

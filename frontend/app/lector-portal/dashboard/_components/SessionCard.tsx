@@ -1,19 +1,38 @@
 'use client'
 
-import React from 'react';
-import {Button, Chip, Fab, Paper, Stack, Typography} from "@mui/material";
-import {EscapeRoomSessionResponse} from "@/app/gen/session";
-import SettingsIcon from '@mui/icons-material/Settings';
+import React, {useState} from 'react';
+import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, Typography} from "@mui/material";
+import {EscapeRoomSessionResponse, EscapeRoomStateEnum, useToggleERInstanceStateHook} from "@/app/gen/session";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import CloseIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
 import SessionStateDisplay from "@/app/lector-portal/dashboard/_components/SessionStateDisplay.tsx";
+import {redirect, useRouter} from "next/navigation";
+import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 const SessionCard = ({session}: { session: EscapeRoomSessionResponse }) => {
-    const {state, room_pin, tags} = session;
+    const [cardInfo, setCardInfo] = useState<EscapeRoomSessionResponse>(session);
+    const [open, setOpen] = React.useState(false);
 
-    const handleSessionStateChange = () => {
-        console.log("I have been clicked")
+    const router = useRouter()
+    const {mutate, isPending, isSuccess, isError, error} = useToggleERInstanceStateHook()
+
+    const handleSessionStateChange = (state: EscapeRoomStateEnum) => {
+        mutate({
+            // @ts-ignore
+            state: state.toUpperCase(),
+            escape_room_session_id: cardInfo.escape_room_session_id!
+        })
+        if (isError) {
+            setOpen(true)
+        } else {
+            setCardInfo({...cardInfo, state: state})
+        }
+    }
+
+    const redirectToEdit = () => {
+        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.escape_room_template_id}`)
     }
 
     const handleDeleteTag = (tag: string) => {
@@ -29,30 +48,39 @@ const SessionCard = ({session}: { session: EscapeRoomSessionResponse }) => {
                 flexDirection: 'column',
                 marginBottom: '0.5rem'
             }}>
-                <Stack spacing={1} direction={"row"} justifyContent={"right"}>
-                    <Button startIcon={<OpenInBrowserIcon/>}> Open </Button>
-                    <Button startIcon={<PlayArrowIcon/>}> Start </Button>
-                    <Button startIcon={<CloseIcon/>}> Close </Button>
+                <Fab style={{position: "absolute", top: '10px', left: '10px'}} size="small" color="primary"
+                     aria-label="change-state" onClick={redirectToEdit}>
+                    <EditIcon/>
+                </Fab>
+                <Stack style={{position: "absolute", bottom: '5px', left: "50%", transform: "translate(-50%, 0)"}}
+                       spacing={1} direction={"row"}>
+                    <Button size={"small"} startIcon={<OpenInBrowserIcon/>}
+                            onClick={() => handleSessionStateChange("open")}> Open </Button>
+                    <Button size={"small"} startIcon={<PlayArrowIcon/>}
+                            onClick={() => handleSessionStateChange("started")}> Start </Button>
+                    <Button size={"small"} startIcon={<CloseIcon/>}
+                            onClick={() => handleSessionStateChange("closed")}> Close </Button>
                 </Stack>
-                {/*<Fab style={{position: "absolute", top: '10px', right: '10px'}} size="small" color="primary"*/}
-                {/*     aria-label="change-state" onClick={handleSessionStateChange}>*/}
-                {/*    <SettingsIcon/>*/}
-                {/*</Fab>*/}
                 <Stack style={{flexGrow: 1, height: '100%'}} justifyContent={"center"} alignItems={"center"}>
-                    <Typography textAlign={"center"} variant="h4"> PIN: {room_pin} </Typography>
+                    <Typography textAlign={"center"} variant="h4"> PIN: {cardInfo.room_pin} </Typography>
                 </Stack>
             </Paper>
             <Stack direction={"row"} justifyContent={"space-between"}>
-                <SessionStateDisplay state={state!}/>
+                <SessionStateDisplay state={cardInfo.state!}/>
                 <Stack direction={"row"} spacing={2}>
                     <Button size={"small"}> + Add Tags </Button>
-                    {tags?.map(tag => {
+                    {cardInfo.tags?.map(tag => {
                         return (
                             <Chip key={tag} label={tag} variant={"outlined"} onDelete={() => handleDeleteTag(tag)}/>
                         )
                     })}
                 </Stack>
             </Stack>
+            <Snackbar open={open} autoHideDuration={5000}  onClose={() => setOpen(false)}>
+                <Alert onClose={() => setOpen(false)} severity={"error"} variant={"filled"} sx={{width: "100%"}}>
+                    You can't do this!
+                </Alert>
+            </Snackbar>
         </div>
     );
 };

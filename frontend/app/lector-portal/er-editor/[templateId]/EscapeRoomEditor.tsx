@@ -5,7 +5,11 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const EscapeRoomEditor = () => {
+type EditorProps = {
+    templateId: string
+}
+
+const EscapeRoomEditor = ({templateId}: {templateId: string}) => {
     return (
         <Grid container gap={4} height={'100vh'} style={{backgroundColor: '#121212'}}>
             <Grid size={{ xs: 12, md: 3}}>
@@ -13,6 +17,7 @@ const EscapeRoomEditor = () => {
                     <Stack direction={'row'} justifyContent={"space-between"} >
                         <Typography variant={"h6"}> EscapeRooomName </Typography>
                         <Typography variant={"h6"}> Topic </Typography>
+                        <Typography> {templateId} </Typography>
                     </Stack>
 
                     <Stack>

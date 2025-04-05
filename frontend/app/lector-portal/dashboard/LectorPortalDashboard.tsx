@@ -1,26 +1,26 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Box, Button, Divider, Grid2, InputBase, Paper, Stack, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
-import {redirect} from "next/navigation";
 import IconButton from "@mui/material/IconButton";
-import {EscapeRoomState, escapeRoomStateEnum, useGetERHistoryHook} from "@/app/gen/session";
+import {useGetERHistoryHook} from "@/app/gen/session";
 import SessionCard from "@/app/lector-portal/dashboard/_components/SessionCard.tsx";
 import SessionCardSkeleton from "@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx";
+import AddSessionFromTemplateCard from "@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx";
 
 const LectorPortalDashboard = () => {
 
-    const {data, isPending, isError, error} = useGetERHistoryHook()
+    const {data, isPending, isError, error, refetch} = useGetERHistoryHook()
     const [selected, setSelected] = useState(new Map([
         ['open', true],
-        ['started', false],
+        ['started', true],
         ['finished', false],
         ['closed', false]
     ]));
 
-    const handleFilterSelection = (state: EscapeRoomState) => {
+    const handleFilterSelection = (state: string) => {
         setSelected(prev => {
             const newSelection = new Map(prev)
             newSelection.set(state, !prev.get(state))
@@ -32,24 +32,11 @@ const LectorPortalDashboard = () => {
         setSelected(prev => {
             const newSelection = new Map();
             for (let key of prev.keys()) {
-                newSelection.set(key, false);
+                newSelection.set(key, true);
             }
             return newSelection;
         });
     }
-
-    useEffect(() => {
-        console.log(`Received templates: ${data}`)
-        console.log(data)
-    }, [data]);
-
-    useEffect(() => {
-        // @ts-ignore
-        if (error?.status === 403 && !isPending) {
-            console.error("Error", error)
-            redirect("/lector-portal/login")
-        }
-    }, [isError]);
 
     return (
         <>
@@ -62,7 +49,7 @@ const LectorPortalDashboard = () => {
                     <Stack direction="row" gap="4" justifyContent={"space-between"}>
                         <div>
                             {
-                                Object.values(escapeRoomStateEnum).map((state) => {
+                                selected.keys().map((state) => {
                                     return (
                                         <Button
                                             key={state}
@@ -97,6 +84,9 @@ const LectorPortalDashboard = () => {
                     </Stack>
                     <Grid2 container spacing={3}>
                         {/*@ts-ignore*/}
+                        <Grid2 size={{lg: 4, md: 6, sm: 12}}>
+                            <AddSessionFromTemplateCard onDone={refetch} />
+                        </Grid2>
                         {data ? data.map((session, index) => {
                                 if (selected.get(session.state!)) {
                                     return (
