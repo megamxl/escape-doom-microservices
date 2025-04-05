@@ -1,6 +1,7 @@
 package at.escapedoom.player.ws;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -15,6 +16,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class WSController {
 
     private SimpMessagingTemplate template;
@@ -27,23 +29,9 @@ public class WSController {
         this.template = template;
     }
 
-    @RequestMapping(path = "/old/greetings/{lobbyId}", method = POST)
-    public void greet(String greeting, String user, String lobbyId) {
-        System.out.println("bin im greeting: " + greeting);
-        this.template.convertAndSend("/topic/greetings/" + lobbyId, new TestMessage(greeting));
-    }
-
-    @RequestMapping(path = "/greetings/{lobbyId}", method = POST)
+    @RequestMapping(path = "/player-names/{lobbyId}", method = POST)
     public void update(PlayerNamesMessage message, String topic) {
-        System.out.println("bin im update: " + message);
+        log.debug("Update player-names via WS as: " + message + " topic: " + topic);
         this.template.convertAndSend(topic, message);
-    }
-
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public TestMessage respond(TestMessage message) throws Exception {
-        Thread.sleep(1000);
-        System.out.println("im in respond " + message.message);
-        return new TestMessage("Hello, " + message.getMessage() + "!");
     }
 }
