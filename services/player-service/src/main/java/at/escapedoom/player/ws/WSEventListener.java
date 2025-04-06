@@ -26,20 +26,14 @@ public class WSEventListener {
 
     @EventListener
     private void handleSessionConnected(SessionConnectEvent event) {
-        log.info("AnasTest Received a session connected event" + event.toString());
-        // UUID userId = KeycloakUserUtil.getCurrentUserUUID()
-        // .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
-        // Long roomPin = userProgressRepository.getRoomPinByUserName(userId.toString())
-        // .orElseThrow(() -> new NoSuchElementException("No Lobby found"));
-
-        // this.controller.greet("ich schick aus backend", event.getUser().getName(), String.valueOf(roomPin));
+        log.debug("WS Received a session connected event" + event.toString());
     }
 
     @EventListener
     private void handleSessionSubscribed(SessionSubscribeEvent event) {
-        log.info("AnasTest Received a session sub event" + event.toString());
+        log.debug("WS Received a session sub event" + event.toString());
         String topic = (String) event.getMessage().getHeaders().get("simpDestination");
-        String roomPin = topic.substring("/topic/greetings/".length());
+        String roomPin = topic.substring("/topic/player-names/".length());
         List<UserProgress> userProgressResult = userProgressRepository.getUserNamesByRoomPin(Long.valueOf(roomPin));
 
         List<String> playerNames = userProgressResult.stream().map(UserProgress::getUserName).toList();
@@ -51,6 +45,6 @@ public class WSEventListener {
 
     @EventListener
     private void handleSessionDisconnect(SessionDisconnectEvent event) {
-        log.info("AnasTest Received a session disconnect event" + event.toString());
+        log.debug("WS Received a session disconnect event" + event.toString());
     }
 }
