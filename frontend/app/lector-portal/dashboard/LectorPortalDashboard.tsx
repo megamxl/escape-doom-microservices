@@ -1,24 +1,32 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Divider, Grid2, InputBase, Paper, Stack, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from "@mui/material/IconButton";
-import {useGetERHistoryHook} from "@/app/gen/session";
+import {EscapeRoomSessionResponse, useGetERHistoryHook} from "@/app/gen/session";
 import SessionCard from "@/app/lector-portal/dashboard/_components/SessionCard.tsx";
 import SessionCardSkeleton from "@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx";
 import AddSessionFromTemplateCard from "@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx";
 
 const LectorPortalDashboard = () => {
 
-    const {data, isPending, isError, error, refetch} = useGetERHistoryHook()
+    const { data, isLoading } = useGetERHistoryHook()
+    const [sessions, setSessions] = useState<EscapeRoomSessionResponse[]>([]);
+
     const [selected, setSelected] = useState(new Map([
         ['open', true],
         ['started', true],
         ['finished', false],
         ['closed', false]
     ]));
+
+    useEffect(() => {
+        if (data) {
+            setSessions(data);
+        }
+    }, [data]);
 
     const handleFilterSelection = (state: string) => {
         setSelected(prev => {
@@ -38,6 +46,16 @@ const LectorPortalDashboard = () => {
         });
     }
 
+    const updateSession = (updated: EscapeRoomSessionResponse) => {
+        setSessions(prev =>
+            prev.map(s => s.escape_room_session_id === updated.escape_room_session_id ? updated : s)
+        );
+    };
+
+    const addSession = (newSession: EscapeRoomSessionResponse) => {
+        setSessions(prev => [...prev, newSession])
+    }
+
     return (
         <>
             <Box width="70vw" margin="auto" mt={6}>
@@ -49,7 +67,7 @@ const LectorPortalDashboard = () => {
                     <Stack direction="row" gap="4" justifyContent={"space-between"}>
                         <div>
                             {
-                                selected.keys().map((state) => {
+                                [...selected.keys()].map((state) => {
                                     return (
                                         <Button
                                             key={state}
@@ -85,13 +103,13 @@ const LectorPortalDashboard = () => {
                     <Grid2 container spacing={3}>
                         {/*@ts-ignore*/}
                         <Grid2 size={{lg: 4, md: 6, sm: 12}}>
-                            <AddSessionFromTemplateCard onDone={refetch} />
+                            <AddSessionFromTemplateCard onDone={addSession} />
                         </Grid2>
-                        {data ? data.map((session, index) => {
+                        {!isLoading ? sessions.map((session, index) => {
                                 if (selected.get(session.state!)) {
                                     return (
                                         <Grid2 key={index} size={{lg: 4, md: 6, sm: 12}}>
-                                            <SessionCard session={session}/>
+                                            <SessionCard session={session} onSessionUpdate={updateSession} />
                                         </Grid2>
                                     )
                                 }

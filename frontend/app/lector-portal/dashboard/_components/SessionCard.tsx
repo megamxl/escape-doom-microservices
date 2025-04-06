@@ -8,27 +8,36 @@ import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import SessionStateDisplay from "@/app/lector-portal/dashboard/_components/SessionStateDisplay.tsx";
-import {redirect, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
-const SessionCard = ({session}: { session: EscapeRoomSessionResponse }) => {
+type SessionCardProps = {
+    session: EscapeRoomSessionResponse,
+    onSessionUpdate: (s: EscapeRoomSessionResponse) => void
+}
+
+const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     const [cardInfo, setCardInfo] = useState<EscapeRoomSessionResponse>(session);
     const [open, setOpen] = React.useState(false);
 
     const router = useRouter()
-    const {mutate, isPending, isSuccess, isError, error} = useToggleERInstanceStateHook()
+    const {mutate} = useToggleERInstanceStateHook()
 
     const handleSessionStateChange = (state: EscapeRoomStateEnum) => {
         mutate({
             // @ts-ignore
             state: state.toUpperCase(),
             escape_room_session_id: cardInfo.escape_room_session_id!
+        }, {
+            onSuccess: () => {
+                const updated = {...cardInfo, state: state}
+                setCardInfo(updated)
+                onSessionUpdate(updated)
+            },
+            onError: () => {
+                setOpen(true)
+            }
         })
-        if (isError) {
-            setOpen(true)
-        } else {
-            setCardInfo({...cardInfo, state: state})
-        }
     }
 
     const redirectToEdit = () => {
@@ -76,7 +85,7 @@ const SessionCard = ({session}: { session: EscapeRoomSessionResponse }) => {
                     })}
                 </Stack>
             </Stack>
-            <Snackbar open={open} autoHideDuration={5000}  onClose={() => setOpen(false)}>
+            <Snackbar open={open} autoHideDuration={5000} onClose={() => setOpen(false)}>
                 <Alert onClose={() => setOpen(false)} severity={"error"} variant={"filled"} sx={{width: "100%"}}>
                     You can't do this!
                 </Alert>
