@@ -39,8 +39,8 @@ public interface SessionApi {
     }
 
     /**
-     * GET /session/tags : Get all escape-room instances having specific tags Retrieves a list of escape-room instances
-     * filtered by tags
+     * GET /session/{tags} : Get all escape-room instances having specific tags Retrieves a list of escape-room
+     * instances filtered by tags
      *
      * @param tags
      *            List of tags to filter by (required)
@@ -50,10 +50,10 @@ public interface SessionApi {
     @Operation(operationId = "getERByTags", summary = "Get all escape-room instances having specific tags", description = "Retrieves a list of escape-room instances filtered by tags", tags = {
             "session" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomSessionResponse.class))) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/session/tags", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/session/{tags}", produces = { "application/json" })
 
     default ResponseEntity<List<EscapeRoomSessionResponse>> getERByTags(
-            @NotNull @Parameter(name = "tags", description = "List of tags to filter by", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tags", required = true) List<String> tags) {
+            @Parameter(name = "tags", description = "List of tags to filter by", required = true, in = ParameterIn.PATH) @PathVariable("tags") List<String> tags) {
         return getDelegate().getERByTags(tags);
     }
 

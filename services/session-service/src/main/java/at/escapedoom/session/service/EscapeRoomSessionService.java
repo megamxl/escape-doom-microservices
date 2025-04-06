@@ -114,7 +114,8 @@ public class EscapeRoomSessionService {
 
         try {
             sessionViewRepository.save(sessionView);
-            redisTemplate.convertAndSend(RedisConfig.sessionStateChangeTopic(), objectMapper.writeValueAsString(sessionView));
+            redisTemplate.convertAndSend(RedisConfig.sessionStateChangeTopic(),
+                    objectMapper.writeValueAsString(sessionView));
         } catch (Exception e) {
             log.error("can't publish to redis -> no showstopper but check it: exception -> {}", e.getMessage());
         }

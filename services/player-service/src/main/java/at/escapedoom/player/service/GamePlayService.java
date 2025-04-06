@@ -32,10 +32,12 @@ public class GamePlayService {
         UserProgress user = userProgressRepository.findById(userIdentifier)
                 .orElseThrow(() -> new NoSuchElementException("Can't find user with identifier " + userIdentifier));
 
-        SessionView sessionView = sessionViewRepository.findById(user.getRoomPin()).orElseThrow(() -> new NoSuchElementException("Can't find session with identifier " + user.getRoomPin()));
+        SessionView sessionView = sessionViewRepository.findById(user.getRoomPin()).orElseThrow(
+                () -> new NoSuchElementException("Can't find session with identifier " + user.getRoomPin()));
 
-        if(sessionView.getRoomState() != EscapeRoomState.STARTED){
-            throw new IllegalArgumentException("Can't play the room since the state is set to  " + sessionView.getRoomState());
+        if (sessionView.getRoomState() != EscapeRoomState.STARTED) {
+            throw new IllegalArgumentException(
+                    "Can't play the room since the state is set to  " + sessionView.getRoomState());
         }
 
         return escapeRoomTemplateRepositoryService.getCompleteTemplateById(user.getTemplateID(),

@@ -82,7 +82,7 @@ paths:
       operationId: getERByTags
       parameters:
         - name: tags
-          in: query
+          in: path
           description: List of tags to filter by
           required: true
           schema:

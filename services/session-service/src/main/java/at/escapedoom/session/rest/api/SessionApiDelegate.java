@@ -26,8 +26,8 @@ public interface SessionApiDelegate {
     }
 
     /**
-     * GET /session/tags : Get all escape-room instances having specific tags Retrieves a list of escape-room instances
-     * filtered by tags
+     * GET /session/{tags} : Get all escape-room instances having specific tags Retrieves a list of escape-room
+     * instances filtered by tags
      *
      * @param tags
      *            List of tags to filter by (required)

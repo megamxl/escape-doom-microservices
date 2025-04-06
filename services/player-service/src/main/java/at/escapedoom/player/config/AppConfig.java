@@ -62,9 +62,7 @@ public class AppConfig {
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
             @Qualifier("nameChange") MessageListenerAdapter nameChange,
-            @Qualifier("stateChange") MessageListenerAdapter stateChange
-    )
-    {
+            @Qualifier("stateChange") MessageListenerAdapter stateChange) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(nameChange, new PatternTopic(nameChangeChannel()));
