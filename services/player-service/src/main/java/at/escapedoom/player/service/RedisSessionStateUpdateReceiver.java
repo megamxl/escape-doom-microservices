@@ -34,8 +34,8 @@ public class RedisSessionStateUpdateReceiver {
 
         log.debug("Received message from Redis: {}", jsonString);
 
-        controller.sendStart(StateChange.builder().state(sessionView.getRoomState()).build(), "/topic/player-names/" + sessionView.getRoomPin());
+        controller.sendStart(StateChange.builder().state(sessionView.getRoomState()).build(),
+                "/topic/player-names/" + sessionView.getRoomPin());
     }
-
 
 }

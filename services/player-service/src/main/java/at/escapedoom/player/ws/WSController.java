@@ -35,7 +35,8 @@ public class WSController {
     }
 
     public void sendStart(StateChange message, String topic) {
-        log.debug("Update state to {} via WS as: to {} players", message.getState().getValue(), simpUserRegistry.getUsers().size());
+        log.debug("Update state to {} via WS as: to {} players", message.getState().getValue(),
+                simpUserRegistry.getUsers().size());
         this.template.convertAndSend(topic, message);
     }
 }

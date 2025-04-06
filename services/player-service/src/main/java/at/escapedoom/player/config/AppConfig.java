@@ -5,7 +5,6 @@ import at.escapedoom.player.service.RedisSessionStateUpdateReceiver;
 import at.escapedoom.player.data.postgres.repository.SolutionAttemptRepository;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
 import at.escapedoom.player.service.CodeCompilerApiInterfaceImpl;
-import at.escapedoom.player.service.RedisReceiver;
 import at.escapedoom.player.service.interfaces.CodeCompilerInterface;
 import at.escapedoom.spring.communication.data.api.TemplateApi;
 import at.escapedoom.spring.communication.session.api.SessionApi;
@@ -67,9 +66,7 @@ public class AppConfig {
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
             @Qualifier("nameChange") MessageListenerAdapter nameChange,
-            @Qualifier("stateChange") MessageListenerAdapter stateChange
-    )
-    {
+            @Qualifier("stateChange") MessageListenerAdapter stateChange) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(nameChange, new PatternTopic(nameChangeChannel()));

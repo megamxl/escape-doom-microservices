@@ -59,36 +59,28 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
     }
 
     private void sendSolutionToCodeExec(SolutionAttempt attempt) {
-        //TODO currently only java hardcoded somehow we need to map
-        //SolutionAttempt.LanguageEnum to language tags supported by the api
-        // can be queried from GET  https://emkc.org/api/v2/piston/runtimes
-        PistonRequest pistonRequest = PistonRequest.builder()
-                .language("java")
-                .version("15.0.2")
+        // TODO currently only java hardcoded somehow we need to map
+        // SolutionAttempt.LanguageEnum to language tags supported by the api
+        // can be queried from GET https://emkc.org/api/v2/piston/runtimes
+        PistonRequest pistonRequest = PistonRequest.builder().language("java").version("15.0.2")
                 .files(List.of(
-                        PistonRequest.CodeFile.builder()
-                                .name("Main.java")
-                                .content(attempt.getCodeSubmition())
-                                .build()
-                ))
+                        PistonRequest.CodeFile.builder().name("Main.java").content(attempt.getCodeSubmition()).build()))
                 .build();
 
         RequestBody body = RequestBody.create(gson.toJson(pistonRequest), MediaType.get("application/json"));
 
-        Request request = new Request.Builder()
-                .url(API_URL)
-                .post(body)
-                .build();
+        Request request = new Request.Builder().url(API_URL).post(body).build();
 
         try (Response response = client.newCall(request).execute()) {
 
-            if (!response.isSuccessful()) throw new IOException("Call failed" + response);
+            if (!response.isSuccessful())
+                throw new IOException("Call failed" + response);
 
             assert response.body() != null;
             String responseBody = response.body().string();
             PistonResponse result = gson.fromJson(responseBody, PistonResponse.class);
 
-            if(result.getRun().getCode() == 0){
+            if (result.getRun().getCode() == 0) {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.SUCCESS);
                 attempt.setOutput(result.getRun().getOutput());
             } else {
