@@ -2,8 +2,9 @@ package at.escapedoom.player.service;
 
 import at.escapedoom.player.data.postgres.entity.UserProgress;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
-import at.escapedoom.player.rest.model.EscapeRoomLevel;
+import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
 import at.escapedoom.player.rest.model.LevelDTO;
+import at.escapedoom.player.service.interfaces.CodeCompilerInterface;
 import at.escapedoom.player.service.interfaces.EscapeRoomTemplateRepositoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,8 +19,8 @@ import java.util.UUID;
 public class GamePlayService {
 
     private final UserProgressRepository userProgressRepository;
-
     private final EscapeRoomTemplateRepositoryService escapeRoomTemplateRepositoryService;
+    private final CodeCompilerInterface codeCompilerInterface;
 
     public LevelDTO getCurrentLevelByUserIdentifier(UUID userIdentifier) {
 
@@ -36,6 +37,10 @@ public class GamePlayService {
         // TODO if playable get the level and return the EscapeRoom Level
 
         return level;
+    }
+
+    public void submitSolutionAttempt(UUID userIdentifier, EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
+        codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
     }
 
 }

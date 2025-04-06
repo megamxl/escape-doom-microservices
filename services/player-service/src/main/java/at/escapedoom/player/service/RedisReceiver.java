@@ -28,7 +28,8 @@ public class RedisReceiver {
         log.debug("Received message from Redis: {}", jsonString);
         if (jsonString != null) {
             PlayerJoinedEvent playerJoinedEvent = new Gson().fromJson(jsonString, PlayerJoinedEvent.class);
-            List<UserProgress> userProgressResult = userProgressRepository.getUserNamesByRoomPin(Long.valueOf(playerJoinedEvent.getRoomPin()));
+            List<UserProgress> userProgressResult = userProgressRepository
+                    .getUserNamesByRoomPin(Long.valueOf(playerJoinedEvent.getRoomPin()));
             List<String> playerNames = userProgressResult.stream().map(UserProgress::getUserName).toList();
             PlayerNamesMessage playerNamesMessage = new PlayerNamesMessage(playerNames);
 

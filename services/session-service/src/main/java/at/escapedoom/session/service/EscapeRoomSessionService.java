@@ -25,9 +25,8 @@ public class EscapeRoomSessionService {
     private final SessionViewRepository sessionViewRepository;
 
     public EscapeRoomSession createSession(UUID templateId, Long playTime, Long roomPin, UUID userId) {
-        EscapeRoomSession session = EscapeRoomSession.builder().escapeRoomSessionId(UUID.randomUUID())
-                .escapeRoomTemplateId(templateId).userId(userId).roomPin(roomPin).playTime(playTime)
-                .state(EscapeRoomState.OPEN).build();
+        EscapeRoomSession session = EscapeRoomSession.builder().sessionId(UUID.randomUUID()).templateId(templateId)
+                .userId(userId).roomPin(roomPin).playTime(playTime).state(EscapeRoomState.OPEN).build();
         return saveAndChacheSession(session);
     }
 
@@ -105,7 +104,7 @@ public class EscapeRoomSessionService {
 
         SessionView sessionView = SessionView.builder().roomPin(session.getRoomPin())
                 .roomState(at.escapedoom.spring.redis.data.models.EscapeRoomState.valueOf(session.getState().name()))
-                .escapeRoomTemplateId(session.getEscapeRoomTemplateId()).build();
+                .escapeRoomTemplateId(session.getTemplateId()).build();
 
         try {
             sessionViewRepository.save(sessionView);
