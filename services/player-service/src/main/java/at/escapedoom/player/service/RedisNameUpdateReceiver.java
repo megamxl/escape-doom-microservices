@@ -36,11 +36,9 @@ public class RedisNameUpdateReceiver {
             PlayerNamesMessage playerNamesMessage = new PlayerNamesMessage(playerNames);
 
             controller.update(playerNamesMessage, "/topic/player-names/" + playerJoinedEvent.getRoomPin());
-        } else{
+        } else {
             log.error("Received message from Redis at Name Update and Json String was null: {}", message);
         }
     }
-
-
 
 }
