@@ -1,9 +1,9 @@
 import React from 'react';
-import EditorContainer from "@/app/game-session/session/[id]/_components/EditorContainer";
+import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
 import {Box, Button, Stack, Typography} from "@mui/material";
-import {CodeExecResponse} from "@/app/types/game-session/CodeExecResponse";
+import {CodeExecResponse} from "@/app/types/game-session/CodeExecResponse.ts";
 import {green} from "@mui/material/colors";
-import {CompileStatus} from "@/app/enums/CompileStatus";
+import {CompileStatus} from "@/app/enums/CompileStatus.ts";
 
 type CodeExecutionDisplayProps = {
     codeExecResponse: CodeExecResponse

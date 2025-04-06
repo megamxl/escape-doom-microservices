@@ -1,39 +1,49 @@
 'use client'
 
-import React, {useRef, useState} from 'react';
-import {useGetStageInformation} from "@/app/hooks/game-session/useGetStageInformation";
-import {StageState} from "@/app/types/game-session/StageState";
-import {CodeExecResponse} from "@/app/types/game-session/CodeExecResponse";
-import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody";
-import {CodeLanguage} from "@/app/enums/CodeLanguage";
-import Node from './_components/Node';
-import {parseStage} from "@/app/utils/parseJsonString";
-import {RoomState} from "@/app/enums/RoomState";
-import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
-import EditorContainer from "@/app/game-session/session/[id]/_components/EditorContainer";
+import React, {useEffect, useRef, useState} from 'react';
+import {useGetStageInformation} from "@/app/hooks/game-session/useGetStageInformation.ts";
+import {StageState} from "@/app/types/game-session/StageState.ts";
+import {CodeExecResponse} from "@/app/types/game-session/CodeExecResponse.ts";
+import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody.ts";
+import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
+import Node from './_components/Node.tsx';
+import {parseStage} from "@/app/utils/parseJsonString.ts";
+import {RoomState} from "@/app/enums/RoomState.ts";
+import {Alert, CircularProgress, FormControl, MenuItem, Select, Snackbar, Stack, Typography} from "@mui/material";
+import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
 import {PlayArrow} from "@mui/icons-material";
 import Editor from '@monaco-editor/react';
 import {LoadingButton} from '@mui/lab';
-import {useSubmitCode} from "@/app/hooks/game-session/useSubmitCode";
-import {useGetCodeResult} from "@/app/hooks/game-session/useGetCodeResult";
-import {CompileStatus} from "@/app/enums/CompileStatus";
-import {removeGameSession} from "@/app/utils/game-session-handler";
+import {useSubmitCode} from "@/app/hooks/game-session/useSubmitCode.ts";
+import {useGetCodeResult} from "@/app/hooks/game-session/useGetCodeResult.ts";
+import {CompileStatus} from "@/app/enums/CompileStatus.ts";
+import {removeGameSession} from "@/app/utils/game-session-handler.ts";
 import {redirect} from "next/navigation";
-import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
-import CodeExectuionDisplay from "@/app/game-session/session/[id]/_components/CodeExectuionDisplay";
-import {useSessionIdToRoomPin} from "@/app/hooks/game-session/useSessionIdToRoomPin";
+import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths.ts";
+import CodeExectuionDisplay from "@/app/game-session/session/_components/CodeExectuionDisplay.tsx";
+import {useSessionIdToRoomPin} from "@/app/hooks/game-session/useSessionIdToRoomPin.ts";
 import {useGetLevelOfSessionByPlayerSessionIDHook} from "@/app/gen/player";
-import NodeV2 from "@/app/game-session/session/[id]/_components/NodeV2.tsx";
+import NodeV2 from "@/app/game-session/session/_components/NodeV2.tsx";
+import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
+import {session_id_key} from "@/app/utils/Constants.ts";
+import ErrorDisplayCard, {ErrorDetails} from "@/app/game-session/session/_components/ErrorDisplayCard.tsx";
 
-const Session = ({sessionID}: { sessionID: string }) => {
+const Session = () => {
 
-    // TODO: Thommy - Mit Backend Team absprechen das wir die neue Struktur bekommen, dann hauts auch hin
-    // const nodes: NodeV2Props[] = [
-    //     { type: NodeType.STORY, position: { top: "20%", left: "30%" }, nodeInfos: { desc: "Story Node", title: "Story" } },
-    //     { type: NodeType.CONSOLE, position: { top: "50%", left: "60%" }, nodeInfos: { desc: "Story Node", title: "Story" } },
-    //     { type: NodeType.DETAILS, position: { top: "70%", left: "40%" }, nodeInfos: { desc: "Story Node", title: "Story" } },
-    //     { type: NodeType.ZOOM, position: { top: "50%", left: "40%" }, nodeInfos: { desc: "Story Node", title: "Story" } },
-    // ];
+    const [sessionID, setSessionID] = useState("")
+
+    useEffect(() =>{
+
+        const sessionStorageItem = getSessionStorageItem(session_id_key);
+
+        if (sessionStorageItem !== null){
+            setSessionID(sessionStorageItem)
+            return
+        }
+
+        redirect(GAME_SESSION_APP_PATHS.STUDENT_JOIN)
+
+    }, [])
 
     const [stageState, setStageState] = useState<StageState>({
         language: CodeLanguage.JAVA,
@@ -55,11 +65,8 @@ const Session = ({sessionID}: { sessionID: string }) => {
     })
 
     /* TanStack Query Calls */
-    //const {data: stageInformation, isFetching: isFetchingStageInformation} = useGetStageInformation(sessionID)
-    const {data: stageInformation, isFetching: isFetchingStageInformation} = useGetLevelOfSessionByPlayerSessionIDHook({player_session_id : sessionID});
-    // const {refetch: refetchCodeResult, data: codeResultData, isFetching: isFetchingCodeResult} = useGetCodeResult(sessionID);
-    // const {refetch: reSubmitCode} = useSubmitCode(submittedCodeBody);
-    // const {data: roomPinOfSession} = useSessionIdToRoomPin(sessionID);
+    const {data: stageInformation, isFetching: isFetchingStageInformation, isError : errorState , error: errorObject} = useGetLevelOfSessionByPlayerSessionIDHook({player_session_id : sessionID});
+
 
     const monacoEditorRef = useRef()
 
@@ -116,9 +123,32 @@ const handleEditorMount = (editor: any) => {
  monacoEditorRef.current = editor
 }
 
-// @ts-ignore
-    return (
- isFetchingStageInformation ? <LoadingDisplay /> :
+// Error and loading display before returning the content
+    if (isFetchingStageInformation) {
+        return <LoadingDisplay />;
+    }
+
+
+    if (errorState) {
+        const errorDetails: ErrorDetails = errorObject?.response?.data || {
+            timestamp: new Date().toISOString(),
+            status: 500,
+            error: "Internal Server Error",
+            message: "Something went wrong",
+            path: "unknown",
+        };
+
+        return (
+            <ErrorDisplayCard
+                errorDetails={errorDetails}
+                onRetry={() => console.log("retry")}
+                onBack={() => console.log("To Join")}
+            />
+        );
+
+    }
+
+return (
 
  <Stack direction="row" alignItems="center" height="100vh">
      <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>

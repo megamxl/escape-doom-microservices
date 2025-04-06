@@ -3,11 +3,14 @@ package at.escapedoom.session.service;
 import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.data.EscapeRoomSessionRepository;
 import at.escapedoom.session.rest.model.EscapeRoomState;
+import at.escapedoom.spring.redis.RedisConfig;
 import at.escapedoom.spring.redis.data.models.SessionView;
 import at.escapedoom.spring.redis.data.repositories.SessionViewRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ public class EscapeRoomSessionService {
 
     private final EscapeRoomSessionRepository repository;
     private final SessionViewRepository sessionViewRepository;
+    private final RedisTemplate<String, String> redisTemplate;
+    private final ObjectMapper objectMapper;
 
     public EscapeRoomSession createSession(UUID templateId, Long playTime, Long roomPin, UUID userId) {
         EscapeRoomSession session = EscapeRoomSession.builder().escapeRoomSessionId(UUID.randomUUID())
@@ -109,6 +114,7 @@ public class EscapeRoomSessionService {
 
         try {
             sessionViewRepository.save(sessionView);
+            redisTemplate.convertAndSend(RedisConfig.sessionStateChangeTopic(), objectMapper.writeValueAsString(sessionView));
         } catch (Exception e) {
             log.error("can't publish to redis -> no showstopper but check it: exception -> {}", e.getMessage());
         }

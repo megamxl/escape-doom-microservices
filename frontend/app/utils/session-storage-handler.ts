@@ -4,23 +4,24 @@ import {SetStateAction} from "react";
 // while sessionStorage is only available on client
 const isBrowser = (): boolean => typeof window !== "undefined";
 
-export const getSessionStorageItem = (key: string) => {
-    if (!isBrowser()) return
+export const getSessionStorageItem = (key: string): string | null => {
+    if (!isBrowser()) return null
 
     try {
-        const item = sessionStorage.getItem(key);
-        return item ?? "";
+        return sessionStorage.getItem(key);
     } catch (error) {
         console.error("Error reading sessionStorage key:", error);
-        return "";
+        return null ;
     }
 };
 
-export const setSessionStorageItem = (key: string, value: string, fun: (action: SetStateAction<string>) => void) => {
+export const setSessionStorageItem = (key: string, value: string, fun?: (action: SetStateAction<string>) => void)  => {
     if (!isBrowser()) return
 
     try {
-        fun(value);
+        if (fun) {
+            fun(value);
+        }
         sessionStorage.setItem(key, value);
     } catch (error) {
         console.error("Error setting sessionStorage key:", error);

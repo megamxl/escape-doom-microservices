@@ -1,26 +1,25 @@
 package at.escapedoom.player.config;
 
-import at.escapedoom.player.service.RedisReceiver;
+import at.escapedoom.player.service.RedisNameUpdateReceiver;
+import at.escapedoom.player.service.RedisSessionStateUpdateReceiver;
 import at.escapedoom.spring.communication.data.api.TemplateApi;
 import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.player.service.SessionCommunicationService;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
 import at.escapedoom.spring.communication.session.invoker.ApiClient;
 
+import at.escapedoom.spring.redis.RedisConfig;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
-import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
 @Profile("!test")
@@ -45,8 +44,15 @@ public class AppConfig {
     }
 
     @Bean
-    public MessageListenerAdapter listenerAdapter(RedisReceiver redisReceiver) {
-        return new MessageListenerAdapter(redisReceiver, "receiveMessage");
+    @Qualifier("nameChange")
+    public MessageListenerAdapter listenerAdapter(RedisNameUpdateReceiver redisNameUpdateReceiver) {
+        return new MessageListenerAdapter(redisNameUpdateReceiver, "receiveMessage");
+    }
+
+    @Bean
+    @Qualifier("stateChange")
+    public MessageListenerAdapter listenerAdapterSessionUpdateChange(RedisSessionStateUpdateReceiver stateChange) {
+        return new MessageListenerAdapter(stateChange, "receiveMessage");
     }
 
     public static String nameChangeChannel() {
@@ -55,12 +61,15 @@ public class AppConfig {
 
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
-            MessageListenerAdapter listenerAdapter) {
+            @Qualifier("nameChange") MessageListenerAdapter nameChange,
+            @Qualifier("stateChange") MessageListenerAdapter stateChange
+    )
+    {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, new PatternTopic(nameChangeChannel()));
+        container.addMessageListener(nameChange, new PatternTopic(nameChangeChannel()));
+        container.addMessageListener(stateChange, new PatternTopic(RedisConfig.sessionStateChangeTopic()));
 
         return container;
     }
-
 }

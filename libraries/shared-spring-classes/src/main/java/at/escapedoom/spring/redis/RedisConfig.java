@@ -32,4 +32,8 @@ public class RedisConfig {
         return template;
     }
 
+    public static String sessionStateChangeTopic(){
+        return "session-state-change";
+    }
+
 }
