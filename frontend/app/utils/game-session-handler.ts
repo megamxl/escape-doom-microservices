@@ -4,20 +4,20 @@ import {
     removeSessionStorageItem,
     setSessionStorageItem
 } from "@/app/utils/session-storage-handler";
+import {session_id_key} from "@/app/utils/Constants.ts";
 
-const sessionString = 'sessionId'
 
 export const useSession = () => {
     const [session, setSession] = useState<string>((): string => {
-        return getSessionStorageItem(sessionString) || ""
+        return getSessionStorageItem(session_id_key) || ""
     })
 
     const setGameSession = (newSession: string) => {
-        setSessionStorageItem(sessionString, newSession, setSession)
+        setSessionStorageItem(session_id_key, newSession, setSession)
     }
     return [session, setGameSession] as const;
 }
 
 export const removeGameSession = () => {
-    removeSessionStorageItem(sessionString)
+    removeSessionStorageItem(session_id_key)
 }

@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from 'react';
 import {Backdrop, CircularProgress, Divider, Grid2, Grow, Paper, Stack, Typography} from "@mui/material";
 import {common} from "@mui/material/colors";
-import {redirect} from 'next/navigation'
+import {redirect, useRouter} from 'next/navigation'
 import UserCard from "./_components/UserCard";
 import {useSession} from "@/app/utils/game-session-handler";
 import {useLobbyStatus} from "@/app/hooks/student-join/useLobbyStatus";
@@ -11,9 +11,11 @@ import {LobbyState} from "@/app/types/lobby/LobbyState";
 import {GAME_SESSION_APP_PATHS, GAME_SESSION_WEB_SOCKETS} from "@/app/constants/paths";
 import {RoomState} from "@/app/enums/RoomState";
 import {initializeStompClient} from "@/app/utils/stompClient.tsx";
+import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
+import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
+import {escapeRoomStateEnum} from "@/app/gen/session";
 
 const Lobby = ({lobbyID}: { lobbyID: number }) => {
-
     const [lobbyState, setLobbyState] = useState<LobbyState>({
         name: '',
         users: [],
@@ -25,28 +27,19 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
 
     const [sessionID, setSessionID] = useSession();
 
-    const {data, isError, error} = useLobbyStatus(sessionID)
-
     const [subscribed, setSubscribed] = useState<boolean>(false);
-
-    useEffect(() => {
-
-        if (isError) {
-
-        } else if (data) {
-
-            if (data.state !== RoomState.JOINABLE) {
-                redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${sessionID}`);
-            }
-        }
-    }, [])
 
 
     useEffect(() => {
         if (stompClient && subscribed) {
             sendMessage();
         }
-        const storedName = localStorage.getItem("player_name") ?? "";
+        const storedName = getSessionStorageItem(player_name_key);
+        if (storedName === null)
+        {
+            console.error("make popup playerName empty")
+            return
+        }
         setLobbyState(prevState => ({
             ...prevState,
             name: storedName
@@ -77,7 +70,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
 
         if (lobbyState.countdown === 0) {
             setLobbyState({...lobbyState, isStarted: false, countdown: 5})
-            redirect(`${GAME_SESSION_APP_PATHS.SESSION}/${sessionID}`);
+            redirect(`${GAME_SESSION_APP_PATHS.SESSION}`);
         }
 
         return () => {
@@ -98,7 +91,20 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                     client.onConnect = (frame) => {
                         client.subscribe("/topic/player-names/"+lobbyID, (message) => {
                             const data = JSON.parse(message.body);
-                            console.log("i recieved " + message.body)
+
+                            if (data.state === escapeRoomStateEnum.started.toUpperCase()){
+                                var playerId = getSessionStorageItem(session_id_key);
+
+                                if (playerId ===  null){
+                                    console.error("No Player SessionSet !!!! make pop up")
+                                }
+                                setLobbyState(prev => ({
+                                    ...prev,
+                                    isStarted : true,
+                                }))
+                                return
+                            }
+
                             setSubscribed(true);
                             if (data.message && Array.isArray(data.message)) {
                                 setLobbyState(prevState => ({
@@ -137,11 +143,6 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                 console.error("STOMP client is not initialized");
                 return;
             }
-
-            // stompClient.publish({
-            //     destination: "/app/hello",
-            //     body: JSON.stringify({ message: "Anas" }),
-            // });
         };
 
     return (
