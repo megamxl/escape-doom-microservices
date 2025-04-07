@@ -21,6 +21,8 @@ import {
     useCreateERInstanceHook
 } from "@/app/gen/session";
 import {useGetAllTemplatesHook} from "@/app/gen/data";
+import green from '@mui/material/colors/green';
+import {red} from "@mui/material/colors";
 
 type AddSessionCardProps = {
     onDone: (newSession: SessionResponse) => void;
@@ -83,10 +85,10 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
             <Typography variant={"subtitle1"} align={"center"}> Create new session from template </Typography>
             <Dialog
                 open={open}
-                onClose={() => setOpen(false)}
                 sx={{'& .MuiDialog-paper': {width: '80%', maxHeight: 435}}}
+                slotProps={{ paper: {component: 'form', onSubmit: createNewSession} }}
             >
-                <DialogTitle> Create new Escape Room </DialogTitle>
+                <DialogTitle> Create new Escape Room session </DialogTitle>
                 <DialogContent dividers>
                     <Stack spacing={2}>
                         <TextField
@@ -124,8 +126,8 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}> Cancel </Button>
-                    <Button onClick={createNewSession}> Create </Button>
+                    <Button variant={"contained"} onClick={handleClose} sx={{ backgroundColor: red[300] }}> Cancel </Button>
+                    <Button variant={"contained"} type={"submit"} sx={{ backgroundColor: green[300] }}> Create </Button>
                 </DialogActions>
             </Dialog>
             <Snackbar

@@ -23,6 +23,9 @@ public class Level {
     @Column(name = LEVEL_ID)
     private UUID levelId;
 
+    @Column(nullable = false)
+    private String name;
+
     @Column(name = LEVEL_SEQUENCE)
     private Integer levelSequence;
 

@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import {type CreateTemplateMutationRequest, useCreateTemplateHook} from "@/app/gen/data";
-import {green} from "@mui/material/colors";
+import {green, red} from "@mui/material/colors";
 import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
@@ -69,8 +69,8 @@ const CreateTemplateButton = () => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant={"contained"} onClick={closeDialog}> Cancel </Button>
-                    <Button variant={"contained"} type={"submit"} sx={{backgroundColor: green[500]}}> Create </Button>
+                    <Button variant={"contained"} onClick={closeDialog} sx={{ backgroundColor: red[300] }}> Cancel </Button>
+                    <Button variant={"contained"} type={"submit"} sx={{backgroundColor: green[300]}}> Create </Button>
                 </DialogActions>
             </Dialog>
 

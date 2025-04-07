@@ -52,7 +52,7 @@ class LevelServiceTest {
 
         levelRepository.flush();
 
-        Level level = Level.builder().levelSequence(1).scenes(List.of()).build();
+        Level level = Level.builder().levelSequence(1).scenes(List.of()).name("Classroom").build();
         VALID_LEVEL_ID = levelRepository.saveAndFlush(level).getLevelId().toString();
     }
     // region GET Tests
@@ -116,7 +116,7 @@ class LevelServiceTest {
         final int newSequence = 2;
 
         LevelDTO levelRequest = LevelDTO.builder().levelId(level.getLevelId()).levelSequence(newSequence)
-                .scenes(level.getScenes()).riddle(level.getRiddle()).build();
+                .scenes(level.getScenes()).riddle(level.getRiddle()).name("Classroom").build();
 
         LevelDTO updatedLevel = service.updateLevel(level.getLevelId(), levelRequest);
 
@@ -144,7 +144,7 @@ class LevelServiceTest {
         UUID templateId = template.getTemplateId();
 
         LevelCreationRequest request = LevelCreationRequest.builder().levelSequence(3).templateId(templateId.toString())
-                .build();
+                .name("Test Template").build();
 
         LevelDTO level = service.createLevel(request);
 
