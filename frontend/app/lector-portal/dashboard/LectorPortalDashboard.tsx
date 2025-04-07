@@ -5,7 +5,7 @@ import {Box, Button, Divider, Grid2, InputBase, Paper, Stack, Typography} from "
 import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from "@mui/material/IconButton";
-import {EscapeRoomSessionResponse, useGetERHistoryHook} from "@/app/gen/session";
+import {SessionResponse, useGetERHistoryHook} from "@/app/gen/session";
 import SessionCard from "@/app/lector-portal/dashboard/_components/SessionCard.tsx";
 import SessionCardSkeleton from "@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx";
 import AddSessionFromTemplateCard from "@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx";
@@ -14,7 +14,7 @@ import CreateTemplateButton from "@/app/lector-portal/dashboard/_components/Crea
 const LectorPortalDashboard = () => {
 
     const {data, isLoading} = useGetERHistoryHook()
-    const [sessions, setSessions] = useState<EscapeRoomSessionResponse[]>([]);
+    const [sessions, setSessions] = useState<SessionResponse[]>([]);
 
     const [selected, setSelected] = useState(new Map([
         ['open', true],
@@ -47,13 +47,13 @@ const LectorPortalDashboard = () => {
         });
     }
 
-    const updateSession = (updated: EscapeRoomSessionResponse) => {
+    const updateSession = (updated: SessionResponse) => {
         setSessions(prev =>
-            prev.map(s => s.escape_room_session_id === updated.escape_room_session_id ? updated : s)
+            prev.map(s => s.session_id === updated.session_id ? updated : s)
         );
     };
 
-    const addSession = (newSession: EscapeRoomSessionResponse) => {
+    const addSession = (newSession: SessionResponse) => {
         setSessions(prev => [...prev, newSession])
     }
 

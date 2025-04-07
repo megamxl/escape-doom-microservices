@@ -45,7 +45,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
 
                         {template.levels?.map(level => {
                             return (
-                                <Level title={level.name!} onRemove={removeLevel}/>
+                                <Level name={level.name!} onRemove={removeLevel}/>
                             )
                         })}
 
