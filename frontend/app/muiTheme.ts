@@ -9,7 +9,7 @@ export const muiTheme = createTheme({
     typography: {
         fontFamily: 'var(--font-roboto)',
         button: {
-            textTransform: "none"
+            textTransform: "none",
         }
     },
 })

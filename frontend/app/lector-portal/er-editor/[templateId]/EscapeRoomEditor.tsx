@@ -3,9 +3,13 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Grid2 as Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import {TemplateDTO, useDeleteLevelHook, useGetTemplateHook} from "@/app/gen/data";
+import {TemplateDTO, useDeleteLevelHook, useGetTemplateHook, usePutTemplateHook} from "@/app/gen/data";
 import Level from "@/app/lector-portal/er-editor/[templateId]/_components/Level.tsx";
 import {grey} from "@mui/material/colors";
+import {useRouter} from "next/navigation";
+import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import SaveIcon from '@mui/icons-material/Save';
 
 type EditorProps = {
     templateId: string
@@ -13,7 +17,11 @@ type EditorProps = {
 
 const EscapeRoomEditor = ({templateId}: EditorProps) => {
     const {data, isError, isLoading} = useGetTemplateHook({templateId: templateId})
+
+    const {mutate: updateTemplate} = usePutTemplateHook()
     const {mutate} = useDeleteLevelHook()
+
+    const router = useRouter();
 
     const [template, setTemplate] = useState<TemplateDTO>()
 
@@ -34,6 +42,12 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         })
     }
 
+    const saveTemplate = () => {
+        updateTemplate({templateId: template?.template_id!, data: {
+
+            }})
+    }
+
     const openLevelPopup = () => {
 
     }
@@ -41,9 +55,9 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     if (isLoading || !template) return <Skeleton variant="rectangular" width="100%" height="100vh"/>;
 
     return (
-        <Grid container gap={4} p={2} height={'100vh'} style={{backgroundColor: '#121212'}}>
-            <Grid size={{xs: 12, md: 3}}>
-                <Stack gap={4} style={{backgroundColor: '#1e1e1e'}} height={"100%"} px={4} py={2}>
+        <Grid spacing={4} container p={2} height={'100vh'} style={{backgroundColor: '#121212'}}>
+            <Grid spacing={4} size={{xs: 12, md: 3}}>
+                <Stack style={{backgroundColor: '#1e1e1e'}} height={"100%"} px={4} py={2}>
                     <Stack direction={'row'} justifyContent={"space-between"}>
                         <Typography variant={"h6"}> {template.name} </Typography>
                     </Stack>
@@ -57,16 +71,25 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                             )
                         })}
 
-                        <Button onClick={openLevelPopup} fullWidth sx={{ color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem' }}>
-                            <Stack direction={"row"} spacing={1} sx={{ color: grey[600] }} alignItems={"center"}>
-                                <AddBoxOutlinedIcon sx={{marginTop: "auto"}} />
+                        <Button onClick={openLevelPopup} fullWidth
+                                sx={{color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem'}}>
+                            <Stack direction={"row"} spacing={1} sx={{color: grey[600]}} alignItems={"center"}>
+                                <AddBoxOutlinedIcon sx={{marginTop: "auto"}}/>
                                 <Typography variant={"h6"} fontWeight={"bold"}> Add Level </Typography>
                             </Stack>
                         </Button>
                     </Stack>
 
+                    <Stack direction={"row"} spacing={2} mt={"auto"}>
+                        <Button onClick={saveTemplate} fullWidth variant={"contained"} startIcon={<SaveIcon/>}>
+                            <strong> Save </strong>
+                        </Button>
+                        <Button size={"large"} onClick={() => router.push(LECTOR_PORTAL_APP_PATHS.DASHBOARD)} fullWidth
+                                variant={"contained"} startIcon={<DirectionsRunIcon/>}>
+                            <strong> Leave </strong>
+                        </Button>
+                    </Stack>
                 </Stack>
-
             </Grid>
             <Grid size='grow' style={{backgroundColor: '#1e1e1e'}}>
 
