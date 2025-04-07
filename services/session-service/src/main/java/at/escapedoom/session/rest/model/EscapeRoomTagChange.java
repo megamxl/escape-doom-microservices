@@ -29,7 +29,7 @@ public class EscapeRoomTagChange {
 
     private @Nullable String tagName;
 
-    private @Nullable UUID escapeRoomSessionId;
+    private @Nullable UUID sessionId;
 
     public EscapeRoomTagChange tagName(String tagName) {
         this.tagName = tagName;
@@ -52,25 +52,25 @@ public class EscapeRoomTagChange {
         this.tagName = tagName;
     }
 
-    public EscapeRoomTagChange escapeRoomSessionId(UUID escapeRoomSessionId) {
-        this.escapeRoomSessionId = escapeRoomSessionId;
+    public EscapeRoomTagChange sessionId(UUID sessionId) {
+        this.sessionId = sessionId;
         return this;
     }
 
     /**
      * The id of the escape-room instance
      *
-     * @return escapeRoomSessionId
+     * @return sessionId
      */
     @Valid
-    @Schema(name = "escape_room_session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_session_id")
-    public UUID getEscapeRoomSessionId() {
-        return escapeRoomSessionId;
+    @Schema(name = "session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("session_id")
+    public UUID getSessionId() {
+        return sessionId;
     }
 
-    public void setEscapeRoomSessionId(UUID escapeRoomSessionId) {
-        this.escapeRoomSessionId = escapeRoomSessionId;
+    public void setSessionId(UUID sessionId) {
+        this.sessionId = sessionId;
     }
 
     @Override
@@ -83,12 +83,12 @@ public class EscapeRoomTagChange {
         }
         EscapeRoomTagChange escapeRoomTagChange = (EscapeRoomTagChange) o;
         return Objects.equals(this.tagName, escapeRoomTagChange.tagName)
-                && Objects.equals(this.escapeRoomSessionId, escapeRoomTagChange.escapeRoomSessionId);
+                && Objects.equals(this.sessionId, escapeRoomTagChange.sessionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tagName, escapeRoomSessionId);
+        return Objects.hash(tagName, sessionId);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class EscapeRoomTagChange {
         StringBuilder sb = new StringBuilder();
         sb.append("class EscapeRoomTagChange {\n");
         sb.append("    tagName: ").append(toIndentedString(tagName)).append("\n");
-        sb.append("    escapeRoomSessionId: ").append(toIndentedString(escapeRoomSessionId)).append("\n");
+        sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
         sb.append("}");
         return sb.toString();
     }

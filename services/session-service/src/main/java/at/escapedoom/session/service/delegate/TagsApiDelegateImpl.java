@@ -2,10 +2,10 @@ package at.escapedoom.session.service.delegate;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.rest.api.TagsApiDelegate;
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
+import at.escapedoom.session.rest.model.SessionResponse;
 import at.escapedoom.session.service.EscapeRoomSessionService;
-import at.escapedoom.spring.security.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
+import at.escapedoom.spring.security.KeycloakUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +30,9 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<EscapeRoomSessionResponse> addERTag(String escapeRoomSessionId, String tagName) {
+    public ResponseEntity<SessionResponse> addERTag(String escapeRoomSessionId, String tagName) {
         EscapeRoomSession escapeRoomSession = null;
-        EscapeRoomSessionResponse response = null;
+        SessionResponse response = null;
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
@@ -48,9 +48,9 @@ public class TagsApiDelegateImpl implements TagsApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<EscapeRoomSessionResponse> deleteERTag(String escapeRoomSessionId, String tagName) {
-        EscapeRoomSession escapeRoomSession = null;
-        EscapeRoomSessionResponse response = null;
+    public ResponseEntity<SessionResponse> deleteERTag(String escapeRoomSessionId, String tagName) {
+        EscapeRoomSession escapeRoomSession;
+        SessionResponse response = null;
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 

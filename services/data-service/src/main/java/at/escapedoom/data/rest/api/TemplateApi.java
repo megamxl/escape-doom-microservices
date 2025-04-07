@@ -72,9 +72,9 @@ public interface TemplateApi {
     }
 
     /**
-     * DELETE /templates/{escape-room-template-id} : Deletes an Template Deletes an Template by its unique ID
+     * DELETE /templates/{template-id} : Deletes an Template Deletes an Template by its unique ID
      *
-     * @param escapeRoomTemplateId
+     * @param templateId
      *            The unique ID of the Template to delete (required)
      *
      * @return Operation result for Template (status code 200) or Bad Request (status code 400) or Not Found (status
@@ -90,12 +90,12 @@ public interface TemplateApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/templates/{escape-room-template-id}", produces = {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/templates/{template-id}", produces = {
             "application/json" })
 
     default ResponseEntity<TemplateResultDTO> deleteTemplate(
-            @Parameter(name = "escape-room-template-id", description = "The unique ID of the Template to delete", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId) {
-        return getDelegate().deleteTemplate(escapeRoomTemplateId);
+            @Parameter(name = "template-id", description = "The unique ID of the Template to delete", required = true, in = ParameterIn.PATH) @PathVariable("template-id") String templateId) {
+        return getDelegate().deleteTemplate(templateId);
     }
 
     /**
@@ -118,10 +118,10 @@ public interface TemplateApi {
     }
 
     /**
-     * GET /templates/{escape-room-template-id} : Get a specific Template by ID Retrieve details of a specific Template
-     * using its unique ID
+     * GET /templates/{template-id} : Get a specific Template by ID Retrieve details of a specific Template using its
+     * unique ID
      *
-     * @param escapeRoomTemplateId
+     * @param templateId
      *            The unique ID of the Template (required)
      *
      * @return Details of the specified template (status code 200) or Template not found (status code 404) or Internal
@@ -135,19 +135,18 @@ public interface TemplateApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = GetTemplateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/templates/{escape-room-template-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/templates/{template-id}", produces = { "application/json" })
 
     default ResponseEntity<TemplateDTO> getTemplate(
-            @Parameter(name = "escape-room-template-id", description = "The unique ID of the Template", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId) {
-        return getDelegate().getTemplate(escapeRoomTemplateId);
+            @Parameter(name = "template-id", description = "The unique ID of the Template", required = true, in = ParameterIn.PATH) @PathVariable("template-id") String templateId) {
+        return getDelegate().getTemplate(templateId);
     }
 
     /**
-     * PUT /templates/{escape-room-template-id} : Overrides an existing Template Override the name, description, and
-     * levels of an existing Template
+     * PUT /templates/{template-id} : Overrides an existing Template Override the name, description, and levels of an
+     * existing Template
      *
-     * @param escapeRoomTemplateId
+     * @param templateId
      *            The unique ID of the Template to update (required)
      * @param templateUpdateRequestDTO
      *            The updated data for the template (required)
@@ -165,13 +164,13 @@ public interface TemplateApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/templates/{escape-room-template-id}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/templates/{template-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
     default ResponseEntity<TemplateUpdateResultDTO> putTemplate(
-            @Parameter(name = "escape-room-template-id", description = "The unique ID of the Template to update", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId,
+            @Parameter(name = "template-id", description = "The unique ID of the Template to update", required = true, in = ParameterIn.PATH) @PathVariable("template-id") String templateId,
             @Parameter(name = "TemplateUpdateRequestDTO", description = "The updated data for the template", required = true) @Valid @RequestBody TemplateUpdateRequestDTO templateUpdateRequestDTO) {
-        return getDelegate().putTemplate(escapeRoomTemplateId, templateUpdateRequestDTO);
+        return getDelegate().putTemplate(templateId, templateUpdateRequestDTO);
     }
 
 }

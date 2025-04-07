@@ -2,7 +2,7 @@ package at.escapedoom.session.service.delegate;
 
 import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.rest.api.SessionApiDelegate;
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
+import at.escapedoom.session.rest.model.SessionResponse;
 import at.escapedoom.session.service.EscapeRoomSessionService;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
 import at.escapedoom.spring.security.KeycloakUserUtil;
@@ -30,11 +30,11 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<List<EscapeRoomSessionResponse>> getERByTags(List<String> tags) {
+    public ResponseEntity<List<SessionResponse>> getERByTags(List<String> tags) {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
-        List<EscapeRoomSessionResponse> response = new ArrayList<>();
+        List<SessionResponse> response = new ArrayList<>();
 
         try {
             List<EscapeRoomSession> escapeRoomSessions = sessionService.getSessionsByTags(userId, tags);
@@ -51,7 +51,7 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<EscapeRoomSessionResponse> getERSessionByPin(Integer roomPin) {
+    public ResponseEntity<SessionResponse> getERSessionByPin(Integer roomPin) {
         try {
             EscapeRoomSession escapeRoomSession = sessionService.getSessionByRoomPin(roomPin.longValue());
             return new ResponseEntity<>(EscapeRoomSessionMapperUtil.map(escapeRoomSession), HttpStatus.OK);

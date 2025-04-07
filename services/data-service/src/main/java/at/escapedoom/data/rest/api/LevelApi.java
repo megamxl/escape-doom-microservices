@@ -69,9 +69,9 @@ public interface LevelApi {
     }
 
     /**
-     * DELETE /levels/{escape-room-level-id} : Delete a level Delete a Level by its ID
+     * DELETE /levels/{level-id} : Delete a level Delete a Level by its ID
      *
-     * @param escapeRoomLevelId
+     * @param levelId
      *            The unique ID of the Level to delete (required)
      *
      * @return Level deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
@@ -85,12 +85,11 @@ public interface LevelApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/levels/{escape-room-level-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/levels/{level-id}", produces = { "application/json" })
 
     default ResponseEntity<DeleteLevelSuccessDTO> deleteLevel(
-            @Parameter(name = "escape-room-level-id", description = "The unique ID of the Level to delete", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId) {
-        return getDelegate().deleteLevel(escapeRoomLevelId);
+            @Parameter(name = "level-id", description = "The unique ID of the Level to delete", required = true, in = ParameterIn.PATH) @PathVariable("level-id") String levelId) {
+        return getDelegate().deleteLevel(levelId);
     }
 
     /**
@@ -112,9 +111,9 @@ public interface LevelApi {
     }
 
     /**
-     * GET /levels/{escape-room-level-id} : Get details of a level Retrieve details of a specific Level by its ID
+     * GET /levels/{level-id} : Get details of a level Retrieve details of a specific Level by its ID
      *
-     * @param escapeRoomLevelId
+     * @param levelId
      *            The unique ID of the Level (required)
      *
      * @return Level details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
@@ -126,35 +125,35 @@ public interface LevelApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/levels/{escape-room-level-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/levels/{level-id}", produces = { "application/json" })
 
     default ResponseEntity<LevelDTO> getLevel(
-            @Parameter(name = "escape-room-level-id", description = "The unique ID of the Level", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId) {
-        return getDelegate().getLevel(escapeRoomLevelId);
+            @Parameter(name = "level-id", description = "The unique ID of the Level", required = true, in = ParameterIn.PATH) @PathVariable("level-id") String levelId) {
+        return getDelegate().getLevel(levelId);
     }
 
     /**
-     * GET /levels/{escape-room-template-id} : Retrieve levels Retrieve all levels associated with a specific template
+     * GET /levels/{template-id} : Retrieve levels Retrieve all levels associated with a specific template
      *
-     * @param escapeRoomTemplateId
+     * @param templateId
      *            (required)
      *
-     * @return Success (status code 200)
+     * @return A list of levels (status code 200)
      */
     @Operation(operationId = "getLevelByTemplate", summary = "Retrieve levels", description = "Retrieve all levels associated with a specific template", tags = {
-            "Level" }, responses = { @ApiResponse(responseCode = "200", description = "Success") })
-    @RequestMapping(method = RequestMethod.GET, value = "/levels/{escape-room-template-id}")
+            "Level" }, responses = { @ApiResponse(responseCode = "200", description = "A list of levels", content = {
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LevelDTO.class))) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/levels/{template-id}", produces = { "application/json" })
 
-    default ResponseEntity<Void> getLevelByTemplate(
-            @Parameter(name = "escape-room-template-id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-template-id") String escapeRoomTemplateId) {
-        return getDelegate().getLevelByTemplate(escapeRoomTemplateId);
+    default ResponseEntity<List<LevelDTO>> getLevelByTemplate(
+            @Parameter(name = "template-id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("template-id") String templateId) {
+        return getDelegate().getLevelByTemplate(templateId);
     }
 
     /**
-     * PUT /levels/{escape-room-level-id} : Override a level Override the details of a Level
+     * PUT /levels/{level-id} : Override a level Override the details of a Level
      *
-     * @param escapeRoomLevelId
+     * @param levelId
      *            The unique ID of the Level (required)
      * @param levelDTO
      *            The overridden details of the Level (required)
@@ -172,13 +171,13 @@ public interface LevelApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/levels/{escape-room-level-id}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/levels/{level-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
     default ResponseEntity<LevelDTO> updateLevel(
-            @Parameter(name = "escape-room-level-id", description = "The unique ID of the Level", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-level-id") String escapeRoomLevelId,
+            @Parameter(name = "level-id", description = "The unique ID of the Level", required = true, in = ParameterIn.PATH) @PathVariable("level-id") String levelId,
             @Parameter(name = "LevelDTO", description = "The overridden details of the Level", required = true) @Valid @RequestBody LevelDTO levelDTO) {
-        return getDelegate().updateLevel(escapeRoomLevelId, levelDTO);
+        return getDelegate().updateLevel(levelId, levelDTO);
     }
 
 }

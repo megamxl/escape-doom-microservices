@@ -33,7 +33,7 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class UserProgress {
 
-    private @Nullable UUID escapeRoomSessionId;
+    private @Nullable UUID sessionId;
 
     private @Nullable String playerName;
 
@@ -48,25 +48,25 @@ public class UserProgress {
     @Valid
     private List<@Valid Result> results = new ArrayList<>();
 
-    public UserProgress escapeRoomSessionId(UUID escapeRoomSessionId) {
-        this.escapeRoomSessionId = escapeRoomSessionId;
+    public UserProgress sessionId(UUID sessionId) {
+        this.sessionId = sessionId;
         return this;
     }
 
     /**
      * The session the user participated in.
      *
-     * @return escapeRoomSessionId
+     * @return sessionId
      */
     @Valid
-    @Schema(name = "escape_room_session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The session the user participated in.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_session_id")
-    public UUID getEscapeRoomSessionId() {
-        return escapeRoomSessionId;
+    @Schema(name = "session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The session the user participated in.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("session_id")
+    public UUID getSessionId() {
+        return sessionId;
     }
 
-    public void setEscapeRoomSessionId(UUID escapeRoomSessionId) {
-        this.escapeRoomSessionId = escapeRoomSessionId;
+    public void setSessionId(UUID sessionId) {
+        this.sessionId = sessionId;
     }
 
     public UserProgress playerName(String playerName) {
@@ -191,7 +191,7 @@ public class UserProgress {
             return false;
         }
         UserProgress userProgress = (UserProgress) o;
-        return Objects.equals(this.escapeRoomSessionId, userProgress.escapeRoomSessionId)
+        return Objects.equals(this.sessionId, userProgress.sessionId)
                 && Objects.equals(this.playerName, userProgress.playerName)
                 && Objects.equals(this.currentEscapeRoomLevel, userProgress.currentEscapeRoomLevel)
                 && Objects.equals(this.lastRiddleSolvedAt, userProgress.lastRiddleSolvedAt)
@@ -200,15 +200,14 @@ public class UserProgress {
 
     @Override
     public int hashCode() {
-        return Objects.hash(escapeRoomSessionId, playerName, currentEscapeRoomLevel, lastRiddleSolvedAt, score,
-                results);
+        return Objects.hash(sessionId, playerName, currentEscapeRoomLevel, lastRiddleSolvedAt, score, results);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class UserProgress {\n");
-        sb.append("    escapeRoomSessionId: ").append(toIndentedString(escapeRoomSessionId)).append("\n");
+        sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
         sb.append("    playerName: ").append(toIndentedString(playerName)).append("\n");
         sb.append("    currentEscapeRoomLevel: ").append(toIndentedString(currentEscapeRoomLevel)).append("\n");
         sb.append("    lastRiddleSolvedAt: ").append(toIndentedString(lastRiddleSolvedAt)).append("\n");

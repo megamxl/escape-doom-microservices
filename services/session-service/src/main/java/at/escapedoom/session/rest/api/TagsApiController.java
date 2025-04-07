@@ -1,6 +1,6 @@
 package at.escapedoom.session.rest.api;
 
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
+import at.escapedoom.session.rest.model.SessionResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

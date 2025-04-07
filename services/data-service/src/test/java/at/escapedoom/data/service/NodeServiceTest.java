@@ -59,7 +59,7 @@ public class NodeServiceTest {
 
         templateRepository.save(template);
 
-        Level level = Level.builder().template(template).levelSequence(1).build();
+        Level level = Level.builder().template(template).levelSequence(1).name("Classroom").build();
 
         var levelId = levelRepository.save(level).getLevelId();
 

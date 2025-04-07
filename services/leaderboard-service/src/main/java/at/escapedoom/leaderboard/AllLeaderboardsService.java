@@ -22,8 +22,7 @@ public class AllLeaderboardsService implements AllLeaderboardsApiDelegate {
     @Override
     public ResponseEntity<List<FullExportRoomPinGet200ResponseInner>> escapeRoomSessionsGet(List<String> tags) {
         FullExportRoomPinGet200ResponseInner fullExportRoomPinGet200ResponseInner = new FullExportRoomPinGet200ResponseInner();
-        fullExportRoomPinGet200ResponseInner
-                .setSession(new EscapeRoomSessionResponse().escapeRoomSessionId(UUID.randomUUID()));
+        fullExportRoomPinGet200ResponseInner.setSession(new EscapeRoomSessionResponse().sessionId(UUID.randomUUID()));
         return ResponseEntity.of(Optional.of(List.of(fullExportRoomPinGet200ResponseInner)));
     }
 }

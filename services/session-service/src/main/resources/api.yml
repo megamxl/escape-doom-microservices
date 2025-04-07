@@ -25,9 +25,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                $ref: "#/components/schemas/SessionResponse"
 
-  /state/{escape_room_session_id}/{state}:
+  /state/{session_id}/{state}:
     put:
       tags:
         - management
@@ -35,7 +35,7 @@ paths:
       description: Starts or stops an escape-room instance
       operationId: toggleERInstanceState
       parameters:
-        - name: escape_room_session_id
+        - name: session_id
           in: path
           description: The id of the escape-room instance
           required: true
@@ -56,7 +56,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                $ref: "#/components/schemas/SessionResponse"
   /history:
     get:
       tags:
@@ -72,7 +72,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                  $ref: "#/components/schemas/SessionResponse"
   /session/{tags}:
     get:
       tags:
@@ -97,7 +97,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                  $ref: "#/components/schemas/SessionResponse"
 
   /session/{room_pin}:
     get:
@@ -121,8 +121,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EscapeRoomSessionResponse"
-  /tag/{escape_room_session_id}/{tag_name}:
+                $ref: "#/components/schemas/SessionResponse"
+  /tag/{session_id}/{tag_name}:
     delete:
       tags:
         - tags
@@ -130,7 +130,7 @@ paths:
       description: Remove a tag from an escape-room instance
       operationId: deleteERTag
       parameters:
-        - name: escape_room_session_id
+        - name: session_id
           in: path
           description: The ID of the escape room session
           required: true
@@ -150,7 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                $ref: "#/components/schemas/SessionResponse"
     put:
       tags:
         - tags
@@ -158,7 +158,7 @@ paths:
       description: Add a tag to an escape-room instance
       operationId: addERTag
       parameters:
-        - name: escape_room_session_id
+        - name: session_id
           in: path
           description: The ID of the escape room session
           required: true
@@ -178,7 +178,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EscapeRoomSessionResponse"
+                $ref: "#/components/schemas/SessionResponse"
 components:
   schemas:
     EscapeRoomTagChange:
@@ -189,23 +189,23 @@ components:
           type: string
           description: The tag to add or remove
           example: "CSDC"
-        escape_room_session_id:
+        session_id:
           type: string
           format: uuid
           description: The id of the escape-room instance
           example: a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0
-    EscapeRoomSessionResponse:
+    SessionResponse:
       description: The escape-room instance
       type: object
       properties:
         state:
           $ref: "#/components/schemas/EscapeRoomState"
-        escape_room_template_id:
+        template_id:
           type: string
           format: uuid
           description: The id of the escape-room template used
           example: c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0
-        escape_room_session_id:
+        session_id:
           type: string
           format: uuid
           description: The id of the escape-room session
@@ -233,7 +233,7 @@ components:
       description: The escape-room template to use
       type: object
       properties:
-        escape_room_template_id:
+        template_id:
           type: string
           format: uuid
           description: The id of the escape-room template to use
@@ -253,10 +253,3 @@ components:
         - closed
         - started
         - finished
-
-  requestBodies:
-    escapeRoomCreation:
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/EscapeRoomCreation"

@@ -31,6 +31,8 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class LevelDTO {
 
+    private @Nullable String name;
+
     private @Nullable String templateId;
 
     private @Nullable String levelId;
@@ -42,6 +44,27 @@ public class LevelDTO {
     private List<@Valid SceneDTO> scenes = new ArrayList<>();
 
     private @Nullable RiddleDTO riddle;
+
+    public LevelDTO name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * The name of the level
+     *
+     * @return name
+     */
+
+    @Schema(name = "name", example = "Classroom", description = "The name of the level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public LevelDTO templateId(String templateId) {
         this.templateId = templateId;
@@ -165,20 +188,22 @@ public class LevelDTO {
             return false;
         }
         LevelDTO levelDTO = (LevelDTO) o;
-        return Objects.equals(this.templateId, levelDTO.templateId) && Objects.equals(this.levelId, levelDTO.levelId)
+        return Objects.equals(this.name, levelDTO.name) && Objects.equals(this.templateId, levelDTO.templateId)
+                && Objects.equals(this.levelId, levelDTO.levelId)
                 && Objects.equals(this.levelSequence, levelDTO.levelSequence)
                 && Objects.equals(this.scenes, levelDTO.scenes) && Objects.equals(this.riddle, levelDTO.riddle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(templateId, levelId, levelSequence, scenes, riddle);
+        return Objects.hash(name, templateId, levelId, levelSequence, scenes, riddle);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class LevelDTO {\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
         sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("    levelSequence: ").append(toIndentedString(levelSequence)).append("\n");

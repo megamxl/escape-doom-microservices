@@ -5,7 +5,7 @@
  */
 package at.escapedoom.session.rest.api;
 
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
+import at.escapedoom.session.rest.model.SessionResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,10 +46,10 @@ public interface HistoryApi {
      */
     @Operation(operationId = "getERHistory", summary = "Get the history of all escape-room instances of a lector", description = "Get the history of all escape-room instances of a lector", tags = {
             "history" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomSessionResponse.class))) }) })
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SessionResponse.class))) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/history", produces = { "application/json" })
 
-    default ResponseEntity<List<EscapeRoomSessionResponse>> getERHistory(
+    default ResponseEntity<List<SessionResponse>> getERHistory(
 
     ) {
         return getDelegate().getERHistory();

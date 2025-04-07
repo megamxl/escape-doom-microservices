@@ -45,7 +45,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /templates/{escape-room-template-id}:
+  /templates/{template-id}:
     delete:
       operationId: deleteTemplate
       tags:
@@ -53,7 +53,7 @@ paths:
       summary: Deletes an Template
       description: Deletes an Template by its unique ID
       parameters:
-        - name: escape-room-template-id
+        - name: template-id
           in: path
           required: true
           description: The unique ID of the Template to delete
@@ -78,7 +78,7 @@ paths:
         Override the name, description, and levels of an existing
         Template
       parameters:
-        - name: escape-room-template-id
+        - name: template-id
           in: path
           required: true
           description: The unique ID of the Template to update
@@ -112,7 +112,7 @@ paths:
       summary: Get a specific Template by ID
       description: Retrieve details of a specific Template using its unique ID
       parameters:
-        - name: escape-room-template-id
+        - name: template-id
           in: path
           required: true
           description: The unique ID of the Template
@@ -185,7 +185,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /levels/{escape-room-template-id}:
+  /levels/{template-id}:
     get:
       operationId: getLevelByTemplate
       summary: Retrieve levels
@@ -193,15 +193,21 @@ paths:
         - Level
       description: Retrieve all levels associated with a specific template
       parameters:
-        - name: escape-room-template-id
+        - name: template-id
           in: path
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: Success
-  /levels/{escape-room-level-id}:
+          description: A list of levels
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LevelDTO'
+  /levels/{level-id}:
     get:
       operationId: getLevel
       tags:
@@ -209,7 +215,7 @@ paths:
       summary: Get details of a level
       description: Retrieve details of a specific Level by its ID
       parameters:
-        - name: escape-room-level-id
+        - name: level-id
           in: path
           required: true
           description: The unique ID of the Level
@@ -234,7 +240,7 @@ paths:
       summary: Override a level
       description: Override the details of a Level
       parameters:
-        - name: escape-room-level-id
+        - name: level-id
           in: path
           required: true
           description: The unique ID of the Level
@@ -268,7 +274,7 @@ paths:
       summary: Delete a level
       description: Delete a Level by its ID
       parameters:
-        - name: escape-room-level-id
+        - name: level-id
           in: path
           required: true
           description: The unique ID of the Level to delete
@@ -820,6 +826,10 @@ components:
       description: The current level of an escape-room instance
       type: object
       properties:
+        name:
+          type: string
+          description: The name of the level
+          example: Classroom
         template_id:
           type: string
           description: The unique ID of the escape room template
@@ -832,6 +842,10 @@ components:
       description: The current level of an escape-room instance
       type: object
       properties:
+        name:
+          type: string
+          description: The name of the level
+          example: Classroom
         template_id:
           type: string
           description: The unique ID of the escape room template

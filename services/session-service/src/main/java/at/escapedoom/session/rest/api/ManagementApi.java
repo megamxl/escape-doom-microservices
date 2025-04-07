@@ -6,8 +6,8 @@
 package at.escapedoom.session.rest.api;
 
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
+import at.escapedoom.session.rest.model.SessionResponse;
 import java.util.UUID;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,20 +51,19 @@ public interface ManagementApi {
      */
     @Operation(operationId = "createERInstance", summary = "Create a new escape-room instance", description = "Creates a new escape-room instance", tags = {
             "management" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomSessionResponse.class)) }) })
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
     @RequestMapping(method = RequestMethod.POST, value = "/create", produces = { "application/json" }, consumes = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomSessionResponse> createERInstance(
+    default ResponseEntity<SessionResponse> createERInstance(
             @Parameter(name = "EscapeRoomCreation", description = "The escape-room template to use", required = true) @Valid @RequestBody EscapeRoomCreation escapeRoomCreation) {
         return getDelegate().createERInstance(escapeRoomCreation);
     }
 
     /**
-     * PUT /state/{escape_room_session_id}/{state} : Start or stop an escape-room instance Starts or stops an
-     * escape-room instance
+     * PUT /state/{session_id}/{state} : Start or stop an escape-room instance Starts or stops an escape-room instance
      *
-     * @param escapeRoomSessionId
+     * @param sessionId
      *            The id of the escape-room instance (required)
      * @param state
      *            The state to set (required)
@@ -73,14 +72,14 @@ public interface ManagementApi {
      */
     @Operation(operationId = "toggleERInstanceState", summary = "Start or stop an escape-room instance", description = "Starts or stops an escape-room instance", tags = {
             "management" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomSessionResponse.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/state/{escape_room_session_id}/{state}", produces = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
+    @RequestMapping(method = RequestMethod.PUT, value = "/state/{session_id}/{state}", produces = {
             "application/json" })
 
-    default ResponseEntity<EscapeRoomSessionResponse> toggleERInstanceState(
-            @Parameter(name = "escape_room_session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") UUID escapeRoomSessionId,
+    default ResponseEntity<SessionResponse> toggleERInstanceState(
+            @Parameter(name = "session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("session_id") UUID sessionId,
             @Parameter(name = "state", description = "The state to set", required = true, in = ParameterIn.PATH) @PathVariable("state") EscapeRoomState state) {
-        return getDelegate().toggleERInstanceState(escapeRoomSessionId, state);
+        return getDelegate().toggleERInstanceState(sessionId, state);
     }
 
 }

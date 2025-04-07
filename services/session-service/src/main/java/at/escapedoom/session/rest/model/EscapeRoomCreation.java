@@ -27,30 +27,30 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class EscapeRoomCreation {
 
-    private @Nullable UUID escapeRoomTemplateId;
+    private @Nullable UUID templateId;
 
     @lombok.Builder.Default
     private Integer playTime = 60;
 
-    public EscapeRoomCreation escapeRoomTemplateId(UUID escapeRoomTemplateId) {
-        this.escapeRoomTemplateId = escapeRoomTemplateId;
+    public EscapeRoomCreation templateId(UUID templateId) {
+        this.templateId = templateId;
         return this;
     }
 
     /**
      * The id of the escape-room template to use
      *
-     * @return escapeRoomTemplateId
+     * @return templateId
      */
     @Valid
-    @Schema(name = "escape_room_template_id", example = "c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room template to use", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_template_id")
-    public UUID getEscapeRoomTemplateId() {
-        return escapeRoomTemplateId;
+    @Schema(name = "template_id", example = "c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room template to use", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("template_id")
+    public UUID getTemplateId() {
+        return templateId;
     }
 
-    public void setEscapeRoomTemplateId(UUID escapeRoomTemplateId) {
-        this.escapeRoomTemplateId = escapeRoomTemplateId;
+    public void setTemplateId(UUID templateId) {
+        this.templateId = templateId;
     }
 
     public EscapeRoomCreation playTime(Integer playTime) {
@@ -84,20 +84,20 @@ public class EscapeRoomCreation {
             return false;
         }
         EscapeRoomCreation escapeRoomCreation = (EscapeRoomCreation) o;
-        return Objects.equals(this.escapeRoomTemplateId, escapeRoomCreation.escapeRoomTemplateId)
+        return Objects.equals(this.templateId, escapeRoomCreation.templateId)
                 && Objects.equals(this.playTime, escapeRoomCreation.playTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(escapeRoomTemplateId, playTime);
+        return Objects.hash(templateId, playTime);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class EscapeRoomCreation {\n");
-        sb.append("    escapeRoomTemplateId: ").append(toIndentedString(escapeRoomTemplateId)).append("\n");
+        sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
         sb.append("    playTime: ").append(toIndentedString(playTime)).append("\n");
         sb.append("}");
         return sb.toString();

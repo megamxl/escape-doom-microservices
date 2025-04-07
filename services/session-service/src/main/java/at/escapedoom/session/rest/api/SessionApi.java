@@ -5,7 +5,7 @@
  */
 package at.escapedoom.session.rest.api;
 
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
+import at.escapedoom.session.rest.model.SessionResponse;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -49,10 +49,10 @@ public interface SessionApi {
      */
     @Operation(operationId = "getERByTags", summary = "Get all escape-room instances having specific tags", description = "Retrieves a list of escape-room instances filtered by tags", tags = {
             "session" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = EscapeRoomSessionResponse.class))) }) })
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SessionResponse.class))) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/session/{tags}", produces = { "application/json" })
 
-    default ResponseEntity<List<EscapeRoomSessionResponse>> getERByTags(
+    default ResponseEntity<List<SessionResponse>> getERByTags(
             @Parameter(name = "tags", description = "List of tags to filter by", required = true, in = ParameterIn.PATH) @PathVariable("tags") List<String> tags) {
         return getDelegate().getERByTags(tags);
     }
@@ -68,10 +68,10 @@ public interface SessionApi {
      */
     @Operation(operationId = "getERSessionByPin", summary = "Retrieve an escape-room session by room pin", description = "Fetches an escape-room session using its room pin", tags = {
             "session" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
-                    @Content(mediaType = "application/json", schema = @Schema(implementation = EscapeRoomSessionResponse.class)) }) })
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/session/{room_pin}", produces = { "application/json" })
 
-    default ResponseEntity<EscapeRoomSessionResponse> getERSessionByPin(
+    default ResponseEntity<SessionResponse> getERSessionByPin(
             @Min(100000) @Max(999999) @Parameter(name = "room_pin", description = "The pin to join the escape-room", required = true, in = ParameterIn.PATH) @PathVariable("room_pin") Integer roomPin) {
         return getDelegate().getERSessionByPin(roomPin);
     }

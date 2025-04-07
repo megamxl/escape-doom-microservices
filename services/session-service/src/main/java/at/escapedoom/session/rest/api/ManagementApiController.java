@@ -1,8 +1,8 @@
 package at.escapedoom.session.rest.api;
 
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
+import at.escapedoom.session.rest.model.SessionResponse;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;

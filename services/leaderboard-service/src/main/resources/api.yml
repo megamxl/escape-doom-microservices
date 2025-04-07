@@ -31,12 +31,12 @@ paths:
                 items:
                   $ref: "#/components/schemas/UserProgress"
               example:
-                  - escape_room_session_id: "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0"
+                  - session_id: "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0"
                     player_name: "Waschbär"
                     current_escape_room_level: 3
                     last_riddle_solved_at: "2025-01-02T14:30:00Z"
                     score: 30
-                  - escape_room_session_id: "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0"
+                  - session_id: "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0"
                     player_name: "Tacocat"
                     current_escape_room_level: 42
                     last_riddle_solved_at: "2025-01-02T14:31:09Z"
@@ -82,11 +82,11 @@ paths:
                       state: "CLOSED"
                       play_time: 60
                       room_pin: 420666
-                      escape_room_template_id: "ff95c83b-c8da-4180-8a97-09dc91892a01"
-                      escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                      template_id: "ff95c83b-c8da-4180-8a97-09dc91892a01"
+                      session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
                       tags: ["SDE26", "CSDC"]
                       user_progress:
-                        - escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                        - session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
                           player_name: "Waschbär"
                           current_escape_room_level: 3
                           last_riddle_solved_at: "2025-01-02T14:30:00Z"
@@ -138,11 +138,11 @@ paths:
                     state: "CLOSED"
                     play_time: 60
                     room_pin: 420666
-                    escape_room_template_id: "ff95c83b-c8da-4180-8a97-09dc91892a01"
-                    escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                    template_id: "ff95c83b-c8da-4180-8a97-09dc91892a01"
+                    session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
                     tags: ["SDE26"]
                   user_progress:
-                    - escape_room_session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
+                    - session_id: "f1d948b9-2928-42f5-a5c8-0af5711514dc"
                       player_name: "Waschbär"
                       current_escape_room_level: 3
                       last_riddle_solved_at: "2025-01-02T14:30:00Z"
@@ -185,12 +185,12 @@ components:
           type: integer
           description: The PIN to join the session.
           example: 420666
-        escape_room_template_id:
+        template_id:
           type: string
           format: uuid
           description: The ID of the escape room template.
           example: "ff95c83b-c8da-4180-8a97-09dc91892a01"
-        escape_room_session_id:
+        session_id:
           type: string
           format: uuid
           description: The unique session ID.
@@ -206,7 +206,7 @@ components:
       type: object
       description: Represents the progress of user in a session.
       properties:
-        escape_room_session_id:
+        session_id:
           type: string
           format: uuid
           description: The session the user participated in.
