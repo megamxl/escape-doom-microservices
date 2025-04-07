@@ -2,8 +2,9 @@ package at.escapedoom.player.service;
 
 import at.escapedoom.player.data.postgres.entity.UserProgress;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
-import at.escapedoom.player.rest.model.EscapeRoomLevel;
+import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
 import at.escapedoom.player.rest.model.LevelDTO;
+import at.escapedoom.player.service.interfaces.CodeCompilerInterface;
 import at.escapedoom.player.service.interfaces.EscapeRoomTemplateRepositoryService;
 import at.escapedoom.spring.redis.data.models.EscapeRoomState;
 import at.escapedoom.spring.redis.data.models.SessionView;
@@ -21,8 +22,8 @@ import java.util.UUID;
 public class GamePlayService {
 
     private final UserProgressRepository userProgressRepository;
-
     private final EscapeRoomTemplateRepositoryService escapeRoomTemplateRepositoryService;
+    private final CodeCompilerInterface codeCompilerInterface;
 
     private final SessionViewRepository sessionViewRepository;
 
@@ -42,6 +43,10 @@ public class GamePlayService {
 
         return escapeRoomTemplateRepositoryService.getCompleteTemplateById(user.getTemplateID(),
                 (int) (long) user.getCurrentEscapeRoomLevel());
+    }
+
+    public void submitSolutionAttempt(UUID userIdentifier, EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
+        codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
     }
 
 }

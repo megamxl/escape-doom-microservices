@@ -47,10 +47,10 @@ public class SessionCommunicationService implements EscapeRoomSessionRepositoryS
     private static Optional<SessionView> getSessionViewFromApiResponseIfAllValuesAreFilled(
             EscapeRoomSessionResponse erSessionByPin) {
         if (erSessionByPin != null && erSessionByPin.getRoomPin() != null && erSessionByPin.getState() != null
-                && erSessionByPin.getEscapeRoomTemplateId() != null) {
+                && erSessionByPin.getTemplateId() != null) {
 
             return Optional.of(SessionView.builder().roomPin(erSessionByPin.getRoomPin().longValue())
-                    .escapeRoomTemplateId(erSessionByPin.getEscapeRoomTemplateId())
+                    .escapeRoomTemplateId(erSessionByPin.getTemplateId())
                     .roomState(stateSessionToRedisMapper(erSessionByPin.getState())).build());
         }
         return Optional.empty();

@@ -2,6 +2,10 @@ package at.escapedoom.player.config;
 
 import at.escapedoom.player.service.RedisNameUpdateReceiver;
 import at.escapedoom.player.service.RedisSessionStateUpdateReceiver;
+import at.escapedoom.player.data.postgres.repository.SolutionAttemptRepository;
+import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
+import at.escapedoom.player.service.CodeCompilerApiInterfaceImpl;
+import at.escapedoom.player.service.interfaces.CodeCompilerInterface;
 import at.escapedoom.spring.communication.data.api.TemplateApi;
 import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.player.service.SessionCommunicationService;
@@ -70,4 +74,12 @@ public class AppConfig {
 
         return container;
     }
+
+    @Bean
+    public CodeCompilerInterface getCodeCompilerInterface(
+            @Autowired SolutionAttemptRepository solutionAttemptRepository,
+            @Autowired UserProgressRepository userProgressRepository) {
+        return new CodeCompilerApiInterfaceImpl(solutionAttemptRepository, userProgressRepository);
+    }
+
 }

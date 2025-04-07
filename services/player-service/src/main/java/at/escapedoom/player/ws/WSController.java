@@ -29,7 +29,6 @@ public class WSController {
         this.template = template;
     }
 
-    @RequestMapping(path = "/player-names/{lobbyId}", method = POST)
     public void update(PlayerNamesMessage message, String topic) {
         log.debug("Update player-names via WS as: " + message + " topic: " + topic);
         this.template.convertAndSend(topic, message);
