@@ -77,9 +77,9 @@ public class EscapeRoomSessionResponse {
 
     private @Nullable Integer roomPin;
 
-    private @Nullable UUID escapeRoomTemplateId;
+    private @Nullable UUID templateId;
 
-    private @Nullable UUID escapeRoomSessionId;
+    private @Nullable UUID sessionId;
 
     @lombok.Builder.Default
     @Valid
@@ -149,46 +149,46 @@ public class EscapeRoomSessionResponse {
         this.roomPin = roomPin;
     }
 
-    public EscapeRoomSessionResponse escapeRoomTemplateId(UUID escapeRoomTemplateId) {
-        this.escapeRoomTemplateId = escapeRoomTemplateId;
+    public EscapeRoomSessionResponse templateId(UUID templateId) {
+        this.templateId = templateId;
         return this;
     }
 
     /**
      * The ID of the escape room template.
      *
-     * @return escapeRoomTemplateId
+     * @return templateId
      */
     @Valid
-    @Schema(name = "escape_room_template_id", example = "ff95c83b-c8da-4180-8a97-09dc91892a01", description = "The ID of the escape room template.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_template_id")
-    public UUID getEscapeRoomTemplateId() {
-        return escapeRoomTemplateId;
+    @Schema(name = "template_id", example = "ff95c83b-c8da-4180-8a97-09dc91892a01", description = "The ID of the escape room template.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("template_id")
+    public UUID getTemplateId() {
+        return templateId;
     }
 
-    public void setEscapeRoomTemplateId(UUID escapeRoomTemplateId) {
-        this.escapeRoomTemplateId = escapeRoomTemplateId;
+    public void setTemplateId(UUID templateId) {
+        this.templateId = templateId;
     }
 
-    public EscapeRoomSessionResponse escapeRoomSessionId(UUID escapeRoomSessionId) {
-        this.escapeRoomSessionId = escapeRoomSessionId;
+    public EscapeRoomSessionResponse sessionId(UUID sessionId) {
+        this.sessionId = sessionId;
         return this;
     }
 
     /**
      * The unique session ID.
      *
-     * @return escapeRoomSessionId
+     * @return sessionId
      */
     @Valid
-    @Schema(name = "escape_room_session_id", example = "f1d948b9-2928-42f5-a5c8-0af5711514dc", description = "The unique session ID.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("escape_room_session_id")
-    public UUID getEscapeRoomSessionId() {
-        return escapeRoomSessionId;
+    @Schema(name = "session_id", example = "f1d948b9-2928-42f5-a5c8-0af5711514dc", description = "The unique session ID.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("session_id")
+    public UUID getSessionId() {
+        return sessionId;
     }
 
-    public void setEscapeRoomSessionId(UUID escapeRoomSessionId) {
-        this.escapeRoomSessionId = escapeRoomSessionId;
+    public void setSessionId(UUID sessionId) {
+        this.sessionId = sessionId;
     }
 
     public EscapeRoomSessionResponse tags(List<String> tags) {
@@ -232,14 +232,14 @@ public class EscapeRoomSessionResponse {
         return Objects.equals(this.state, escapeRoomSessionResponse.state)
                 && Objects.equals(this.playTime, escapeRoomSessionResponse.playTime)
                 && Objects.equals(this.roomPin, escapeRoomSessionResponse.roomPin)
-                && Objects.equals(this.escapeRoomTemplateId, escapeRoomSessionResponse.escapeRoomTemplateId)
-                && Objects.equals(this.escapeRoomSessionId, escapeRoomSessionResponse.escapeRoomSessionId)
+                && Objects.equals(this.templateId, escapeRoomSessionResponse.templateId)
+                && Objects.equals(this.sessionId, escapeRoomSessionResponse.sessionId)
                 && Objects.equals(this.tags, escapeRoomSessionResponse.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(state, playTime, roomPin, escapeRoomTemplateId, escapeRoomSessionId, tags);
+        return Objects.hash(state, playTime, roomPin, templateId, sessionId, tags);
     }
 
     @Override
@@ -249,8 +249,8 @@ public class EscapeRoomSessionResponse {
         sb.append("    state: ").append(toIndentedString(state)).append("\n");
         sb.append("    playTime: ").append(toIndentedString(playTime)).append("\n");
         sb.append("    roomPin: ").append(toIndentedString(roomPin)).append("\n");
-        sb.append("    escapeRoomTemplateId: ").append(toIndentedString(escapeRoomTemplateId)).append("\n");
-        sb.append("    escapeRoomSessionId: ").append(toIndentedString(escapeRoomSessionId)).append("\n");
+        sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
+        sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
         sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
         sb.append("}");
         return sb.toString();

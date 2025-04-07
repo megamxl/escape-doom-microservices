@@ -1,9 +1,9 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Divider, Grid2 as Grid, Paper, Skeleton, Stack, Typography} from "@mui/material";
+import {Button, Grid2 as Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import {TemplateDTO, useGetTemplateHook} from "@/app/gen/data";
+import {TemplateDTO, useDeleteLevelHook, useGetTemplateHook} from "@/app/gen/data";
 import Level from "@/app/lector-portal/er-editor/[templateId]/_components/Level.tsx";
 import {grey} from "@mui/material/colors";
 
@@ -11,12 +11,9 @@ type EditorProps = {
     templateId: string
 }
 
-export type RemoveLevelProps = {
-    levelId: string
-}
-
 const EscapeRoomEditor = ({templateId}: EditorProps) => {
     const {data, isError, isLoading} = useGetTemplateHook({templateId: templateId})
+    const {mutate} = useDeleteLevelHook()
 
     const [template, setTemplate] = useState<TemplateDTO>()
 
@@ -25,7 +22,19 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         setTemplate(data)
     }, [data]);
 
-    const removeLevel = ({levelId}: RemoveLevelProps) => {
+    const removeLevel = (levelId: string) => {
+        //INFO: This works but cascading delete is still broken so this doesn't throw
+        mutate({levelId: levelId}, {
+            onSuccess: (response) => {
+                console.log("Deletion successful")
+            },
+            onError: (error) => {
+                console.error("Something went wrong!: ", error)
+            }
+        })
+    }
+
+    const openLevelPopup = () => {
 
     }
 
@@ -39,39 +48,21 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                         <Typography variant={"h6"}> {template.name} </Typography>
                     </Stack>
 
-                    <Stack>
-                        <Typography variant={'h6'}> Levels </Typography>
-                        <Divider/>
+                    <Stack spacing={2}>
+                        <Typography variant={'h4'}> Levels </Typography>
 
                         {template.levels?.map(level => {
                             return (
-                                <Level name={level.name!} onRemove={removeLevel}/>
+                                <Level key={level.level_id} level={level} onRemove={removeLevel}/>
                             )
                         })}
 
-                        <Paper>
-                            <Stack direction={"row"} alignItems={"center"} spacing={1} sx={{color: grey[600]}}>
-                                <AddBoxOutlinedIcon/>
+                        <Button onClick={openLevelPopup} fullWidth sx={{ color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem' }}>
+                            <Stack direction={"row"} spacing={1} sx={{ color: grey[600] }} alignItems={"center"}>
+                                <AddBoxOutlinedIcon sx={{marginTop: "auto"}} />
                                 <Typography variant={"h6"} fontWeight={"bold"}> Add Level </Typography>
                             </Stack>
-                        </Paper>
-
-
-                        {/*    <Accordion>*/}
-                        {/*        <AccordionSummary expandIcon={<ExpandMoreIcon/>}>*/}
-                        {/*            Classroom*/}
-                        {/*        </AccordionSummary>*/}
-                        {/*        <AccordionDetails>*/}
-                        {/*            <Stack direction={'row'} justifyContent={"space-between"}>*/}
-                        {/*                <Typography> MainScene </Typography>*/}
-                        {/*                <div>*/}
-                        {/*                    <IconButton> <CloseIcon/> </IconButton>*/}
-                        {/*                    <IconButton> <SwapHorizIcon/> </IconButton>*/}
-                        {/*                </div>*/}
-                        {/*            </Stack>*/}
-                        {/*        </AccordionDetails>*/}
-                        {/*    </Accordion>*/}
-
+                        </Button>
                     </Stack>
 
                 </Stack>

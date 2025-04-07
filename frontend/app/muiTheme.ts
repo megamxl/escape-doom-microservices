@@ -7,6 +7,9 @@ export const muiTheme = createTheme({
         mode: 'dark'
     },
     typography: {
-        fontFamily: 'var(--font-roboto)'
+        fontFamily: 'var(--font-roboto)',
+        button: {
+            textTransform: "none"
+        }
     },
 })
