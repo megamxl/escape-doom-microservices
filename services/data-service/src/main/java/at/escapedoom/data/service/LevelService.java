@@ -32,8 +32,8 @@ public class LevelService {
         assert creationRequest.getTemplateId() != null;
 
         Level newLevel = Level.builder().levelSequence(creationRequest.getLevelSequence())
-                .name(creationRequest.getName())
-                .scenes(Collections.emptyList()).templateId(UUID.fromString(creationRequest.getTemplateId())).build();
+                .name(creationRequest.getName()).scenes(Collections.emptyList())
+                .templateId(UUID.fromString(creationRequest.getTemplateId())).build();
 
         newLevel = repository.saveAndFlush(newLevel);
 

@@ -23,7 +23,7 @@ public class Level {
     @Column(name = LEVEL_ID)
     private UUID levelId;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = LEVEL_SEQUENCE)
