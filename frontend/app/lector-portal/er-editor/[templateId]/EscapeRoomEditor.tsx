@@ -3,7 +3,13 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Grid2 as Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import {TemplateDTO, useDeleteLevelHook, useGetTemplateHook, usePutTemplateHook} from "@/app/gen/data";
+import {
+    TemplateDTO,
+    useCreateLevelHook,
+    useDeleteLevelHook,
+    useGetTemplateHook,
+    usePutTemplateHook
+} from "@/app/gen/data";
 import Level from "@/app/lector-portal/er-editor/[templateId]/_components/Level.tsx";
 import {grey} from "@mui/material/colors";
 import {useRouter} from "next/navigation";
@@ -16,10 +22,11 @@ type EditorProps = {
 }
 
 const EscapeRoomEditor = ({templateId}: EditorProps) => {
-    const {data, isError, isLoading} = useGetTemplateHook({templateId: templateId})
+    const {data, isError, isLoading, refetch} = useGetTemplateHook({templateId: templateId})
 
     const {mutate: updateTemplate} = usePutTemplateHook()
     const {mutate} = useDeleteLevelHook()
+    const {mutate: createLevel} = useCreateLevelHook()
 
     const router = useRouter();
 
@@ -35,6 +42,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         mutate({levelId: levelId}, {
             onSuccess: (response) => {
                 console.log("Deletion successful")
+                setTemplate({...template, levels: template?.levels!.filter(l => l.level_id !== levelId)})
             },
             onError: (error) => {
                 console.error("Something went wrong!: ", error)
@@ -43,13 +51,35 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     }
 
     const saveTemplate = () => {
-        updateTemplate({templateId: template?.template_id!, data: {
-
-            }})
+        updateTemplate({
+            templateId: template?.template_id!, data: {
+                name: template?.name,
+                description: template?.description,
+                levels: template?.levels
+            }
+        }, {
+            onSuccess: (updated) => {
+                console.log('Saved template!', template)
+            },
+            onError: (error) => {
+                console.error('Saving template failed', error)
+            }
+        })
     }
 
-    const openLevelPopup = () => {
+    const addLevel = () => {
+        createLevel({
+            data: {
+                template_id: templateId!, level_sequence: (template?.levels?.length! + 1), name: 'New level'
+            }
+        }, {
+            onSuccess: (addedLevel) => {
+                setTemplate({...template, levels: [...template?.levels!, addedLevel]})
+            },
+            onError: (error) => {
 
+            }
+        })
     }
 
     if (isLoading || !template) return <Skeleton variant="rectangular" width="100%" height="100vh"/>;
@@ -71,11 +101,13 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                             )
                         })}
 
-                        <Button onClick={openLevelPopup} fullWidth
+                        <Button onClick={addLevel} fullWidth
                                 sx={{color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem'}}>
                             <Stack direction={"row"} spacing={1} sx={{color: grey[600]}} alignItems={"center"}>
                                 <AddBoxOutlinedIcon sx={{marginTop: "auto"}}/>
-                                <Typography variant={"h6"} fontWeight={"bold"}> Add Level </Typography>
+                                <Typography variant={"h6"} fontWeight={"bold"}>
+                                    Add Level
+                                </Typography>
                             </Stack>
                         </Button>
                     </Stack>

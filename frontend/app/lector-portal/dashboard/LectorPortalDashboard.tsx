@@ -13,7 +13,7 @@ import CreateTemplateButton from "@/app/lector-portal/dashboard/_components/Crea
 
 const LectorPortalDashboard = () => {
 
-    const {data, isLoading} = useGetERHistoryHook()
+    const {data, isLoading} = useGetERHistoryHook({ })
     const [sessions, setSessions] = useState<SessionResponse[]>([]);
 
     const [selected, setSelected] = useState(new Map([
@@ -107,7 +107,7 @@ const LectorPortalDashboard = () => {
                         <Grid2 size={{lg: 4, md: 6, sm: 12}}>
                             <AddSessionFromTemplateCard onDone={addSession}/>
                         </Grid2>
-                        {data !== undefined ? sessions.map((session, index) => {
+                        {!isLoading ? sessions.map((session, index) => {
                                 if (selected.get(session.state!)) {
                                     return (
                                         <Grid2 key={index} size={{lg: 4, md: 6, sm: 12}}>
