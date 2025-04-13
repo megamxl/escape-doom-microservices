@@ -86,6 +86,8 @@ public class LevelService {
                 .orElseThrow(() -> new NoSuchElementException("Level with ID " + levelId + " not found"));
 
         repository.delete(level);
+        repository.flush();
+
         return new DeleteLevelSuccessDTO().message("Level deleted successfully");
     }
 

@@ -5,7 +5,6 @@ import at.escapedoom.data.rest.model.LevelDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 
 import java.util.UUID;
 
@@ -14,6 +13,7 @@ public interface LevelMapper {
 
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "uuidToString")
     @Mapping(source = "templateId", target = "templateId", qualifiedByName = "uuidToString")
+    @Mapping(target = "riddle", ignore = true)
     LevelDTO toDTO(Level level);
 
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "stringToUUID")

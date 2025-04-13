@@ -6,22 +6,22 @@ import at.escapedoom.data.rest.model.RiddleDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 
 import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface RiddleMapper {
 
-    @Mapping(source = "levelId", target = "levelId", qualifiedByName = "uuidToString")
     @Mapping(source = "riddleId", target = "riddleId", qualifiedByName = "uuidToString")
+    @Mapping(target = "levelId", ignore = true)
     RiddleDTO toDTO(Riddle riddle);
 
-    @Mapping(source = "levelId", target = "levelId", qualifiedByName = "stringToUUID")
     @Mapping(source = "riddleId", target = "riddleId", qualifiedByName = "stringToUUID")
+    @Mapping(target = "level", ignore = true)
     Riddle toEntity(RiddleDTO riddleDTO);
 
-    @Mapping(source = "levelId", target = "levelId", qualifiedByName = "stringToUUID")
+    @Mapping(target = "riddleId", ignore = true)
+    @Mapping(target = "level", ignore = true)
     Riddle toEntity(RiddleCreationRequestDTO creationRequest);
 
     @Named("uuidToString")

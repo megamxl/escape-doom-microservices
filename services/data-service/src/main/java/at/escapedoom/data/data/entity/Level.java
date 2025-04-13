@@ -29,18 +29,17 @@ public class Level {
     @Column(name = LEVEL_SEQUENCE)
     private Integer levelSequence;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = RIDDLE_ID)
+    @OneToOne(mappedBy = "level", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Riddle riddle;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = LEVEL_ID)
     private List<Scene> scenes;
 
     @Version
     private int version;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Template.class)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = TEMPLATE_ID, insertable = false, updatable = false)
     private Template template;
 
