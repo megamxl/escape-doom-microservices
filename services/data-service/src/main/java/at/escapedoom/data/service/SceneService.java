@@ -1,6 +1,5 @@
 package at.escapedoom.data.service;
 
-import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
@@ -10,6 +9,7 @@ import at.escapedoom.data.rest.model.SceneDTO;
 import at.escapedoom.data.rest.model.SceneRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +41,14 @@ public class SceneService {
     public SceneDTO createScene(SceneRequestDTO sceneRequest) {
         assert sceneRequest != null : "Scene request is null";
 
+        UUID levelId = UUID.fromString(sceneRequest.getLevelId());
+
+        if (sceneRepository.existsByLevelIdAndSceneSequence(levelId, sceneRequest.getSceneSequence())) {
+            throw new DataIntegrityViolationException("Scene sequence already exists for this level!");
+        }
+
         Scene scene = sceneMapper.toEntity(sceneRequest);
-        scene.setNodes(Collections.EMPTY_LIST);
+        scene.setNodes(Collections.emptyList());
 
         scene = sceneRepository.saveAndFlush(scene);
 
@@ -72,7 +78,13 @@ public class SceneService {
         Scene dbScene = sceneRepository.findById(UUID.fromString(escapeRoomSceneId))
                 .orElseThrow(() -> new IllegalArgumentException("Scene with id " + escapeRoomSceneId + " not found"));
 
-        sceneMapper.toEntity(sceneRequest);
+        UUID levelId = dbScene.getLevelId();
+
+        if (sceneRepository.existsByLevelIdAndSceneSequence(levelId, sceneRequest.getSceneSequence())
+                && !dbScene.getSceneSequence().equals(sceneRequest.getSceneSequence())) {
+            throw new DataIntegrityViolationException("Scene sequence already exists for this level!");
+        }
+
         dbScene.setSceneSequence(sceneRequest.getSceneSequence());
         dbScene.setName(sceneRequest.getName());
         dbScene.setBackgroundImageUri(sceneRequest.getBackgroundImageUri());
@@ -90,6 +102,7 @@ public class SceneService {
         assert id != null : "Scene id is null";
 
         sceneRepository.deleteById(UUID.fromString(id));
+        sceneRepository.flush();
         log.info("Deleted scene with id {}", id);
         return new DeleteLevelResponseDTO("Deleted scene successfully");
     }
