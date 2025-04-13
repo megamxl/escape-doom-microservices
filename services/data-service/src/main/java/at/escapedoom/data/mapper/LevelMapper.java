@@ -14,6 +14,7 @@ public interface LevelMapper {
 
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "uuidToString")
     @Mapping(source = "templateId", target = "templateId", qualifiedByName = "uuidToString")
+    @Mapping(target = "riddle", ignore = true)
     LevelDTO toDTO(Level level);
 
     @Mapping(source = "levelId", target = "levelId", qualifiedByName = "stringToUUID")

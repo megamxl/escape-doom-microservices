@@ -2,6 +2,8 @@ package at.escapedoom.data.data.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,9 +38,11 @@ public class Scene {
     private Level level;
 
     @Column(name = LEVEL_ID)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UUID levelId;
 
-    @OneToMany(mappedBy = "scene", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "scene", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Node> nodes;
 
     @Override
