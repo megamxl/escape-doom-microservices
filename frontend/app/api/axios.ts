@@ -1,5 +1,5 @@
 import Axios from "axios"
-import {GAME_SESSION_API, LECTOR_PORTAL_API} from "@/app/constants/paths";
+import {GAME_SESSION_API, LECTOR_PORTAL_API, SESSION_API} from "@/app/constants/paths";
 
 // Asserts to not run if .env Variables are not prominent
 
@@ -12,3 +12,10 @@ export const lectorClient = Axios.create({
 export const gameSessionClient = Axios.create({
     baseURL: GAME_SESSION_API.BASE_API
 })
+
+export const sessionClient = Axios.create({
+    baseURL: SESSION_API.BASE_API,
+    withCredentials: true
+});
+
+
