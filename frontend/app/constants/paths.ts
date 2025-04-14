@@ -40,3 +40,15 @@ export class GAME_SESSION_APP_PATHS {
     public static LOBBY = `${this.BASE_PATH}/lobby`
     public static LEADERBOARD = `${this.BASE_PATH}/leaderboard`
 }
+
+export class SESSION_API {
+    public static BASE_API = process.env.NEXT_PUBLIC_SESSION_URI!;
+
+    public static CREATE = `${this.BASE_API}create`;
+    public static TOGGLE_STATE = (sessionId: string, state: string) => `${this.BASE_API}state/${sessionId}/${state}`;
+    public static HISTORY = `${this.BASE_API}history`;
+    public static BY_TAGS = (tags: string[]) => `${this.BASE_API}session/${tags.join(",")}`;
+    public static BY_ROOM_PIN = (roomPin: number) => `${this.BASE_API}session/${roomPin}`;
+    public static ADD_TAG = (sessionId: string, tag: string) => `${this.BASE_API}tag/${sessionId}/${tag}`;
+    public static REMOVE_TAG = (sessionId: string, tag: string) => `${this.BASE_API}tag/${sessionId}/${tag}`;
+}
