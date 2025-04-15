@@ -112,16 +112,33 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                 </Stack>
             </Paper>
 
-            <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} flexWrap="wrap">
+            <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} flexWrap="wrap" rowGap={1}>
                 <SessionStateDisplay state={cardInfo.state!}/>
-                <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap">
-                    {cardInfo.tags?.map(tag => (
-                        <Chip key={tag} label={tag} onDelete={() => handleDeleteTag(tag)} color="primary"/>
+
+                <Stack
+                    direction="row-reverse"
+                    spacing={1}
+                    flexWrap="wrap-reverse"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    rowGap={1}
+                >
+                    {cardInfo.tags?.map((tag) => (
+                        <Chip
+                            key={tag}
+                            label={tag}
+                            onDelete={() => handleDeleteTag(tag)}
+                            color="primary"
+                        />
                     ))}
 
                     {!showInput ? (
                         <Typography
-                            sx={{cursor: 'pointer', color: 'primary.main'}}
+                            sx={{
+                                fontSize: '0.8rem',
+                                cursor: 'pointer',
+                                color: 'primary.main',
+                            }}
                             onClick={() => setShowInput(true)}
                         >
                             + Add Tags
@@ -131,6 +148,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                             autoFocus
                             size="small"
                             variant="outlined"
+                            placeholder="Type and press Enter"
                             value={newTag}
                             onChange={(e) => setNewTag(e.target.value)}
                             onKeyDown={(e) => {
@@ -146,7 +164,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                                 setNewTag('');
                             }}
                             sx={{
-                                input: {color: 'black'},
+                                input: { color: 'black' },
                                 '& .MuiOutlinedInput-root': {
                                     '& fieldset': {
                                         borderColor: 'primary.main',
@@ -158,13 +176,11 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                                         borderColor: 'primary.main',
                                     },
                                 },
-                                ml: 1
                             }}
                         />
                     )}
                 </Stack>
             </Stack>
-
             <Snackbar open={open} autoHideDuration={5000} onClose={() => setOpen(false)}>
                 <Alert onClose={() => setOpen(false)} severity={"error"} variant={"filled"} sx={{width: "100%"}}>
                     You can't do this!
