@@ -24,6 +24,8 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     const { mutate: addTag } = useAddERTagHook();
     const { mutate: removeTag } = useDeleteERTagHook();
     const [showInput, setShowInput] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
     const router = useRouter()
     const {mutate} = useToggleERInstanceStateHook()
@@ -50,14 +52,18 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     }
 
     const handleAddTag = () => {
-        if (!newTag) {
+        if (!newTag) return;
+
+        if (cardInfo.tags?.includes(newTag)) {
+            setErrorMessage(`Tag "${newTag}" already exists.`);
+            setNewTag('');
             return;
         }
 
         addTag(
             {
                 escape_room_session_id: cardInfo.escape_room_session_id!,
-                tag_name: newTag
+                tag_name: newTag,
             },
             {
                 onSuccess: (updated) => {
@@ -65,7 +71,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                     onSessionUpdate(updated);
                     setNewTag('');
                 },
-                onError: () => setOpen(true)
+                onError: () => setErrorMessage("Failed to add tag."),
             }
         );
     };
@@ -163,9 +169,9 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                     )}
                 </Stack>
             </Stack>
-            <Snackbar open={open} autoHideDuration={5000} onClose={() => setOpen(false)}>
-                <Alert onClose={() => setOpen(false)} severity={"error"} variant={"filled"} sx={{width: "100%"}}>
-                    You can't do this!
+            <Snackbar open={!!errorMessage} autoHideDuration={5000} onClose={() => setErrorMessage(null)}>
+                <Alert onClose={() => setErrorMessage(null)} severity="error" variant="filled" sx={{ width: "100%" }}>
+                    {errorMessage}
                 </Alert>
             </Snackbar>
         </div>
