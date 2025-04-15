@@ -26,10 +26,6 @@ export class GAME_SESSION_API {
     public static JOIN = `${this.BASE_API}/join`
 }
 
-export class SESSION_API {
-    public static BASE_API = process.env.NEXT_PUBLIC_SESSION_URI;
-}
-
 export class GAME_SESSION_WEB_SOCKETS {
     public static BASE_API = process.env.NEXT_PUBLIC_WEB_SOCKETS
     public static YOUR_NAME = `${this.BASE_API}/ws/your-name`

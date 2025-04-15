@@ -2,7 +2,7 @@
 
 import React, {useState} from 'react';
 import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, TextField, Typography} from "@mui/material";
-import {EscapeRoomSessionResponse, EscapeRoomStateEnum, useToggleERInstanceStateHook} from "@/app/gen/session";
+import {EscapeRoomSessionResponse, EscapeRoomStateEnum, useToggleERInstanceStateHook, useAddERTagHook, useDeleteERTagHook} from "@/app/gen/session";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import CloseIcon from '@mui/icons-material/Close';
@@ -10,8 +10,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import SessionStateDisplay from "@/app/lector-portal/dashboard/_components/SessionStateDisplay.tsx";
 import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
-import {useAddTagToSession} from "@/app/hooks/lector-portal/useAddTagToSession.ts";
-import {useRemoveTagFromSession} from "@/app/hooks/lector-portal/useRemoveTagFromSession.ts";
 
 type SessionCardProps = {
     session: EscapeRoomSessionResponse,
@@ -23,8 +21,8 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     const [open, setOpen] = React.useState(false);
 
     const [newTag, setNewTag] = useState('');
-    const {mutate: addTag} = useAddTagToSession();
-    const {mutate: removeTag} = useRemoveTagFromSession();
+    const { mutate: addTag } = useAddERTagHook();
+    const { mutate: removeTag } = useDeleteERTagHook();
     const [showInput, setShowInput] = useState(false);
 
     const router = useRouter()
@@ -57,28 +55,34 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
         }
 
         addTag(
-            { sessionId: cardInfo.escape_room_session_id!, tag: newTag },
+            {
+                escape_room_session_id: cardInfo.escape_room_session_id!,
+                tag_name: newTag
+            },
             {
                 onSuccess: (updated) => {
                     setCardInfo(updated);
                     onSessionUpdate(updated);
                     setNewTag('');
                 },
-                onError: (error) => {
-                    setOpen(true);
-                }
+                onError: () => setOpen(true)
             }
         );
     };
 
     const handleDeleteTag = (tag: string) => {
-        removeTag({sessionId: cardInfo.escape_room_session_id!, tag}, {
-            onSuccess: (updated) => {
-                setCardInfo(updated);
-                onSessionUpdate(updated);
+        removeTag({
+                escape_room_session_id: cardInfo.escape_room_session_id!,
+                tag_name: tag
             },
-            onError: () => setOpen(true)
-        });
+            {
+                onSuccess: (updated) => {
+                    setCardInfo(updated);
+                    onSessionUpdate(updated);
+                },
+                onError: () => setOpen(true)
+            }
+        );
     };
 
     return (
