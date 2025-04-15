@@ -113,16 +113,11 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
             </Paper>
 
             <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} flexWrap="wrap" rowGap={1}>
+
                 <SessionStateDisplay state={cardInfo.state!}/>
 
-                <Stack
-                    direction="row-reverse"
-                    spacing={1}
-                    flexWrap="wrap-reverse"
-                    justifyContent="space-between"
-                    alignItems="center"
-                    rowGap={1}
-                >
+                <Stack direction="row-reverse" spacing={1} flexWrap="wrap-reverse" justifyContent="space-between" alignItems="center" rowGap={1}>
+
                     {cardInfo.tags?.map((tag) => (
                         <Chip
                             key={tag}
@@ -163,20 +158,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                                 setShowInput(false);
                                 setNewTag('');
                             }}
-                            sx={{
-                                input: { color: 'black' },
-                                '& .MuiOutlinedInput-root': {
-                                    '& fieldset': {
-                                        borderColor: 'primary.main',
-                                    },
-                                    '&:hover fieldset': {
-                                        borderColor: 'primary.dark',
-                                    },
-                                    '&.Mui-focused fieldset': {
-                                        borderColor: 'primary.main',
-                                    },
-                                },
-                            }}
+                            sx={{input: { color: 'primary.main' }}}
                         />
                     )}
                 </Stack>
