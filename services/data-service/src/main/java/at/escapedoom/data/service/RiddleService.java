@@ -2,6 +2,7 @@ package at.escapedoom.data.service;
 
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
+import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.mapper.RiddleMapper;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
@@ -48,21 +49,23 @@ public class RiddleService {
         assert riddleRequest != null : "Creation request cannot be null";
         assert riddleRequest.getLevelId() != null : "Level id cannot be null";
 
-        levelRepository.findById(UUID.fromString(riddleRequest.getLevelId())).ifPresent(level -> {
-            if (level.getRiddle() != null) {
-                throw new IllegalArgumentException(
-                        String.format("Riddle already exists on level %s", level.getLevelId()));
-            }
-        });
+        UUID levelUuid = UUID.fromString(riddleRequest.getLevelId());
+
+        Level level = levelRepository.findById(levelUuid)
+                .orElseThrow(() -> new IllegalArgumentException("Level not found"));
+
+        if (level.getRiddle() != null) {
+            throw new IllegalArgumentException(String.format("Riddle already exists on level %s", level.getLevelId()));
+        }
 
         Riddle riddle = riddleMapper.toEntity(riddleRequest);
 
-        riddleRepository.saveAndFlush(riddle);
+        riddle.setLevel(level);
 
-        levelRepository.findById(riddle.getLevelId()).ifPresent(level -> {
-            level.setRiddle(riddle);
-            levelRepository.saveAndFlush(level);
-        });
+        riddle = riddleRepository.saveAndFlush(riddle);
+
+        level.setRiddle(riddle);
+        levelRepository.saveAndFlush(level);
 
         riddleLog(LoggerUtils.LogType.CREATION, riddle.getRiddleId());
         return riddleMapper.toDTO(riddle);
