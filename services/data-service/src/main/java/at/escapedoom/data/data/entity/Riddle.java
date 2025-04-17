@@ -33,6 +33,9 @@ public class Riddle {
 
     private String variableName;
 
+    @Column(name = LEVEL_ID, insertable = false, updatable = false)
+    private UUID levelId;
+
     @OneToOne
     @JoinColumn(name = LEVEL_ID, nullable = false, unique = true)
     private Level level;

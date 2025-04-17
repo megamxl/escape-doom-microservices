@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS level (
 
 CREATE TABLE IF NOT EXISTS riddle (
                                       riddle_id UUID PRIMARY KEY,
-                                      level_id UUID UNIQUE,
+                                      level_id UUID UNIQUE NOT NULL,
                                       expected_output VARCHAR(255),
     language VARCHAR(255),
     function_signature VARCHAR(255),
