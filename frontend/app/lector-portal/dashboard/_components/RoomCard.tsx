@@ -37,6 +37,7 @@ export type RoomCardState = {
     Time: number
 }
 
+// @ts-ignore
 const RoomCard = ({name, topic, imgUrl, time, id, escapeRoomState}: TemplateDTO) => {
 
     const [roomInfo, setRoomInfo] = useState<RoomCardState>({

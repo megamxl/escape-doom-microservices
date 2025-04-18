@@ -3,11 +3,11 @@ package at.escapedoom.session.service.delegate;
 import at.escapedoom.session.data.entity.EscapeRoomSession;
 import at.escapedoom.session.rest.api.ManagementApiDelegate;
 import at.escapedoom.session.rest.model.EscapeRoomCreation;
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
 import at.escapedoom.session.rest.model.EscapeRoomState;
+import at.escapedoom.session.rest.model.SessionResponse;
 import at.escapedoom.session.service.EscapeRoomSessionService;
-import at.escapedoom.spring.security.KeycloakUserUtil;
 import at.escapedoom.session.util.EscapeRoomSessionMapperUtil;
+import at.escapedoom.spring.security.KeycloakUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import java.util.*;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Random;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Component
@@ -31,9 +34,9 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<EscapeRoomSessionResponse> createERInstance(EscapeRoomCreation escapeRoomCreation) {
+    public ResponseEntity<SessionResponse> createERInstance(EscapeRoomCreation escapeRoomCreation) {
         EscapeRoomSession escapeRoomSession = null;
-        EscapeRoomSessionResponse response = null;
+        SessionResponse response = null;
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
@@ -41,12 +44,12 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
         Integer roomPin = 100000 + random.nextInt(900000);
 
         try {
-            escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
+            escapeRoomSession = sessionService.createSession(escapeRoomCreation.getTemplateId(),
                     escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userId);
         } catch (Exception e) {
             if (e instanceof DataIntegrityViolationException) {
                 roomPin = 100000 + random.nextInt(900000);
-                escapeRoomSession = sessionService.createSession(escapeRoomCreation.getEscapeRoomTemplateId(),
+                escapeRoomSession = sessionService.createSession(escapeRoomCreation.getTemplateId(),
                         escapeRoomCreation.getPlayTime().longValue(), roomPin.longValue(), userId);
             }
         }
@@ -60,8 +63,7 @@ public class ManagementApiDelegateImpl implements ManagementApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<EscapeRoomSessionResponse> toggleERInstanceState(UUID escapeRoomSessionId,
-            EscapeRoomState state) {
+    public ResponseEntity<SessionResponse> toggleERInstanceState(UUID escapeRoomSessionId, EscapeRoomState state) {
 
         EscapeRoomSession escapeRoomSession = sessionService.getSessionById(escapeRoomSessionId);
 

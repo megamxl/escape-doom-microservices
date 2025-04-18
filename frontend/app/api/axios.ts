@@ -12,3 +12,8 @@ export const lectorClient = Axios.create({
 export const gameSessionClient = Axios.create({
     baseURL: GAME_SESSION_API.BASE_API
 })
+
+
+
+
+

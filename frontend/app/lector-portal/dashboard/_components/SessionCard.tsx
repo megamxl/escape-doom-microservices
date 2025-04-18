@@ -1,8 +1,14 @@
 'use client'
 
 import React, {useState} from 'react';
-import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, Typography} from "@mui/material";
-import {EscapeRoomSessionResponse, EscapeRoomStateEnum, useToggleERInstanceStateHook} from "@/app/gen/session";
+import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, TextField, Typography} from "@mui/material";
+import {
+    EscapeRoomStateEnum,
+    SessionResponse,
+    useAddERTagHook,
+    useDeleteERTagHook,
+    useToggleERInstanceStateHook
+} from "@/app/gen/session";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,41 +18,83 @@ import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 type SessionCardProps = {
-    session: EscapeRoomSessionResponse,
-    onSessionUpdate: (s: EscapeRoomSessionResponse) => void
+    session: SessionResponse,
+    onSessionUpdate: (s: SessionResponse) => void
 }
 
 const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
-    const [cardInfo, setCardInfo] = useState<EscapeRoomSessionResponse>(session);
-    const [open, setOpen] = React.useState(false);
+    const [cardInfo, setCardInfo] = useState<SessionResponse>(session);
+
+    const [newTag, setNewTag] = useState('');
+    const {mutate: addTag} = useAddERTagHook();
+    const {mutate: removeTag} = useDeleteERTagHook();
+    const [showInput, setShowInput] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
     const router = useRouter()
     const {mutate} = useToggleERInstanceStateHook()
 
     const handleSessionStateChange = (state: EscapeRoomStateEnum) => {
         mutate({
-            // @ts-ignore
+            //@ts-ignore
             state: state.toUpperCase(),
-            escape_room_session_id: cardInfo.escape_room_session_id!
+            session_id: cardInfo.session_id!
         }, {
             onSuccess: () => {
                 const updated = {...cardInfo, state: state}
                 setCardInfo(updated)
                 onSessionUpdate(updated)
             },
-            onError: () => {
-                setOpen(true)
+            onError: (error) => {
+                setErrorMessage(error.message)
             }
         })
     }
 
     const redirectToEdit = () => {
-        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.escape_room_template_id}`)
+        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.template_id}`)
     }
 
+    const handleAddTag = () => {
+        if (!newTag) return;
+
+        if (cardInfo.tags?.includes(newTag)) {
+            setErrorMessage(`Tag "${newTag}" already exists.`);
+            setNewTag('');
+            return;
+        }
+
+        addTag(
+            {
+                session_id: cardInfo.session_id!,
+                tag_name: newTag,
+            },
+            {
+                onSuccess: (updated) => {
+                    setCardInfo(updated);
+                    onSessionUpdate(updated);
+                    setNewTag('');
+                },
+                onError: () => setErrorMessage("Failed to add tag."),
+            }
+        );
+    };
+
     const handleDeleteTag = (tag: string) => {
-        console.log("Will try to delete tag " + tag)
-    }
+        removeTag({
+                session_id: cardInfo.session_id!,
+                tag_name: tag
+            },
+            {
+                onSuccess: (updated) => {
+                    setCardInfo(updated);
+                    onSessionUpdate(updated);
+                },
+                onError: (error) => setErrorMessage(error.message)
+            }
+        );
+    };
 
     return (
         <div>
@@ -74,20 +122,62 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                     <Typography textAlign={"center"} variant="h4"> PIN: {cardInfo.room_pin} </Typography>
                 </Stack>
             </Paper>
-            <Stack direction={"row"} justifyContent={"space-between"}>
+
+            <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} flexWrap="wrap" rowGap={1}>
+
                 <SessionStateDisplay state={cardInfo.state!}/>
-                <Stack direction={"row"} spacing={2}>
-                    <Button size={"small"}> + Add Tags </Button>
-                    {cardInfo.tags?.map(tag => {
-                        return (
-                            <Chip key={tag} label={tag} variant={"outlined"} onDelete={() => handleDeleteTag(tag)}/>
-                        )
-                    })}
+
+                <Stack direction="row-reverse" spacing={1} flexWrap="wrap-reverse" justifyContent="space-between"
+                       alignItems="center" rowGap={1}>
+
+                    {cardInfo.tags?.map((tag) => (
+                        <Chip
+                            key={tag}
+                            label={tag}
+                            onDelete={() => handleDeleteTag(tag)}
+                            color="primary"
+                        />
+                    ))}
+
+                    {!showInput ? (
+                        <Typography
+                            sx={{
+                                fontSize: '0.8rem',
+                                cursor: 'pointer',
+                                color: 'primary.main',
+                            }}
+                            onClick={() => setShowInput(true)}
+                        >
+                            + Add Tags
+                        </Typography>
+                    ) : (
+                        <TextField
+                            autoFocus
+                            size="small"
+                            variant="outlined"
+                            placeholder="Type and press Enter"
+                            value={newTag}
+                            onChange={(e) => setNewTag(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleAddTag();
+                                } else if (e.key === 'Escape') {
+                                    setShowInput(false);
+                                    setNewTag('');
+                                }
+                            }}
+                            onBlur={() => {
+                                setShowInput(false);
+                                setNewTag('');
+                            }}
+                            sx={{input: {color: 'primary.main'}}}
+                        />
+                    )}
                 </Stack>
             </Stack>
-            <Snackbar open={open} autoHideDuration={5000} onClose={() => setOpen(false)}>
-                <Alert onClose={() => setOpen(false)} severity={"error"} variant={"filled"} sx={{width: "100%"}}>
-                    You can't do this!
+            <Snackbar open={!!errorMessage} autoHideDuration={5000} onClose={() => setErrorMessage(null)}>
+                <Alert onClose={() => setErrorMessage(null)} severity="error" variant="filled" sx={{width: "100%"}}>
+                    {errorMessage}
                 </Alert>
             </Snackbar>
         </div>

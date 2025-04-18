@@ -17,13 +17,15 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import {
     type CreateERInstanceMutationRequest,
-    EscapeRoomSessionResponse,
+    SessionResponse,
     useCreateERInstanceHook
 } from "@/app/gen/session";
 import {useGetAllTemplatesHook} from "@/app/gen/data";
+import green from '@mui/material/colors/green';
+import {red} from "@mui/material/colors";
 
 type AddSessionCardProps = {
-    onDone: (newSession: EscapeRoomSessionResponse) => void;
+    onDone: (newSession: SessionResponse) => void;
 }
 
 const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
@@ -33,12 +35,16 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
 
     const [open, setOpen] = useState(false)
     const [newSession, setNewSession] = useState<CreateERInstanceMutationRequest>({
-        escape_room_template_id: '',
+        template_id: '',
         play_time: 60
     });
 
     const handleSelection = (event: ChangeEvent<HTMLInputElement>) => {
-        setNewSession({...newSession, escape_room_template_id: event.target.value})
+        setNewSession({...newSession, template_id: event.target.value})
+    }
+
+    const setNewTime = (event: ChangeEvent<HTMLInputElement>) => {
+        setNewSession({...newSession, play_time: Number(event.target.value)})
     }
 
     const openTemplateSelection = () => setOpen(true)
@@ -83,10 +89,10 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
             <Typography variant={"subtitle1"} align={"center"}> Create new session from template </Typography>
             <Dialog
                 open={open}
-                onClose={() => setOpen(false)}
                 sx={{'& .MuiDialog-paper': {width: '80%', maxHeight: 435}}}
+                slotProps={{ paper: {component: 'form', onSubmit: createNewSession} }}
             >
-                <DialogTitle> Create new Escape Room </DialogTitle>
+                <DialogTitle> Create new Escape Room session </DialogTitle>
                 <DialogContent dividers>
                     <Stack spacing={2}>
                         <TextField
@@ -97,6 +103,8 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                             fullWidth
                             type="number"
                             helperText={isError ? 'Only times between 15 - 120 are allowed' : ''}
+                            onChange={setNewTime}
+                            value={newSession.play_time}
                             slotProps={{
                                 htmlInput: {
                                     min: 15,
@@ -111,7 +119,7 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                             select
                             required
                             label="Template"
-                            value={newSession.escape_room_template_id}
+                            value={newSession.template_id}
                             onChange={handleSelection}
                         >
                             {
@@ -124,8 +132,8 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}> Cancel </Button>
-                    <Button onClick={createNewSession}> Create </Button>
+                    <Button variant={"contained"} onClick={handleClose} sx={{ backgroundColor: red[300] }}> Cancel </Button>
+                    <Button variant={"contained"} type={"submit"} sx={{ backgroundColor: green[300] }}> Create </Button>
                 </DialogActions>
             </Dialog>
             <Snackbar
