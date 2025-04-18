@@ -68,28 +68,16 @@ class LevelServiceTest {
         sceneRepository.flush();
         templateRepository.flush();
 
-        Template template = Template.builder()
-                .name("Test Template")
-                .description("Test template description")
-                .userId(UUID.randomUUID())
-                .build();
+        Template template = Template.builder().name("Test Template").description("Test template description")
+                .userId(UUID.randomUUID()).build();
         template = templateRepository.saveAndFlush(template);
 
-        Level level = Level.builder()
-                .levelSequence(1)
-                .scenes(List.of())
-                .templateId(template.getTemplateId())
-                .build();
+        Level level = Level.builder().levelSequence(1).scenes(List.of()).templateId(template.getTemplateId()).build();
         level = levelRepository.saveAndFlush(level);
 
-        Riddle riddle = Riddle.builder()
-                .input("1,2")
-                .expectedOutput("3")
-                .functionSignature("public static int add(int a, int b)")
-                .variableName("sum")
-                .language(CodingLanguage.JAVA)
-                .level(level)
-                .build();
+        Riddle riddle = Riddle.builder().input("1,2").expectedOutput("3")
+                .functionSignature("public static int add(int a, int b)").variableName("sum")
+                .language(CodingLanguage.JAVA).level(level).build();
 
         riddle = riddleRepository.saveAndFlush(riddle);
 

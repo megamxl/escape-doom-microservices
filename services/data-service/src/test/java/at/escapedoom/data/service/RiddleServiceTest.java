@@ -60,8 +60,7 @@ class RiddleServiceTest {
         VALID_LEVEL_ID = level.getLevelId();
 
         Riddle riddle = Riddle.builder().input("2, 3").language(CodingLanguage.JAVA).expectedOutput("5")
-                .functionSignature("public static int sum(int a, int b)").variableName("result").level(level)
-                .build();
+                .functionSignature("public static int sum(int a, int b)").variableName("result").level(level).build();
 
         VALID_RIDDLE_ID = repository.saveAndFlush(riddle).getRiddleId().toString();
     }
