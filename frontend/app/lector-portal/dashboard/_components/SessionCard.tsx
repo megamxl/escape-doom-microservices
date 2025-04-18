@@ -1,8 +1,14 @@
 'use client'
 
 import React, {useState} from 'react';
-import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, Typography} from "@mui/material";
-import {SessionResponse, EscapeRoomStateEnum, useToggleERInstanceStateHook} from "@/app/gen/session";
+import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, TextField, Typography} from "@mui/material";
+import {
+    EscapeRoomStateEnum,
+    SessionResponse,
+    useAddERTagHook,
+    useDeleteERTagHook,
+    useToggleERInstanceStateHook
+} from "@/app/gen/session";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,11 +24,10 @@ type SessionCardProps = {
 
 const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     const [cardInfo, setCardInfo] = useState<SessionResponse>(session);
-    const [open, setOpen] = React.useState(false);
 
     const [newTag, setNewTag] = useState('');
-    const { mutate: addTag } = useAddERTagHook();
-    const { mutate: removeTag } = useDeleteERTagHook();
+    const {mutate: addTag} = useAddERTagHook();
+    const {mutate: removeTag} = useDeleteERTagHook();
     const [showInput, setShowInput] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -32,7 +37,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
 
     const handleSessionStateChange = (state: EscapeRoomStateEnum) => {
         mutate({
-            // @ts-ignore
+            //@ts-ignore
             state: state.toUpperCase(),
             session_id: cardInfo.session_id!
         }, {
@@ -41,8 +46,8 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                 setCardInfo(updated)
                 onSessionUpdate(updated)
             },
-            onError: () => {
-                setOpen(true)
+            onError: (error) => {
+                setErrorMessage(error.message)
             }
         })
     }
@@ -62,7 +67,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
 
         addTag(
             {
-                escape_room_session_id: cardInfo.escape_room_session_id!,
+                session_id: cardInfo.session_id!,
                 tag_name: newTag,
             },
             {
@@ -78,7 +83,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
 
     const handleDeleteTag = (tag: string) => {
         removeTag({
-                escape_room_session_id: cardInfo.escape_room_session_id!,
+                session_id: cardInfo.session_id!,
                 tag_name: tag
             },
             {
@@ -86,7 +91,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                     setCardInfo(updated);
                     onSessionUpdate(updated);
                 },
-                onError: () => setOpen(true)
+                onError: (error) => setErrorMessage(error.message)
             }
         );
     };
@@ -122,7 +127,8 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
 
                 <SessionStateDisplay state={cardInfo.state!}/>
 
-                <Stack direction="row-reverse" spacing={1} flexWrap="wrap-reverse" justifyContent="space-between" alignItems="center" rowGap={1}>
+                <Stack direction="row-reverse" spacing={1} flexWrap="wrap-reverse" justifyContent="space-between"
+                       alignItems="center" rowGap={1}>
 
                     {cardInfo.tags?.map((tag) => (
                         <Chip
@@ -164,13 +170,13 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                                 setShowInput(false);
                                 setNewTag('');
                             }}
-                            sx={{input: { color: 'primary.main' }}}
+                            sx={{input: {color: 'primary.main'}}}
                         />
                     )}
                 </Stack>
             </Stack>
             <Snackbar open={!!errorMessage} autoHideDuration={5000} onClose={() => setErrorMessage(null)}>
-                <Alert onClose={() => setErrorMessage(null)} severity="error" variant="filled" sx={{ width: "100%" }}>
+                <Alert onClose={() => setErrorMessage(null)} severity="error" variant="filled" sx={{width: "100%"}}>
                     {errorMessage}
                 </Alert>
             </Snackbar>

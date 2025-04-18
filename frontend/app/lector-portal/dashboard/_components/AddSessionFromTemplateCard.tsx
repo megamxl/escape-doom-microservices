@@ -43,6 +43,10 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
         setNewSession({...newSession, template_id: event.target.value})
     }
 
+    const setNewTime = (event: ChangeEvent<HTMLInputElement>) => {
+        setNewSession({...newSession, play_time: Number(event.target.value)})
+    }
+
     const openTemplateSelection = () => setOpen(true)
 
     const handleClose = () => setOpen(false)
@@ -99,6 +103,8 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                             fullWidth
                             type="number"
                             helperText={isError ? 'Only times between 15 - 120 are allowed' : ''}
+                            onChange={setNewTime}
+                            value={newSession.play_time}
                             slotProps={{
                                 htmlInput: {
                                     min: 15,
