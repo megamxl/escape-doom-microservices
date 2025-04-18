@@ -13,10 +13,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
-        http
-                .authorizeExchange(
-                        auth -> auth.anyExchange().authenticated()
-                )
+        http.authorizeExchange(auth -> auth.anyExchange().authenticated())
 
                 .oauth2Login(withDefaults())
 
