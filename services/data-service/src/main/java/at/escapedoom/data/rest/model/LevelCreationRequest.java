@@ -26,9 +26,32 @@ import jakarta.annotation.Generated;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
 public class LevelCreationRequest {
 
+    private @Nullable String name;
+
     private @Nullable String templateId;
 
     private @Nullable Integer levelSequence;
+
+    public LevelCreationRequest name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * The name of the level
+     *
+     * @return name
+     */
+
+    @Schema(name = "name", example = "Classroom", description = "The name of the level", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public LevelCreationRequest templateId(String templateId) {
         this.templateId = templateId;
@@ -81,19 +104,21 @@ public class LevelCreationRequest {
             return false;
         }
         LevelCreationRequest levelCreationRequest = (LevelCreationRequest) o;
-        return Objects.equals(this.templateId, levelCreationRequest.templateId)
+        return Objects.equals(this.name, levelCreationRequest.name)
+                && Objects.equals(this.templateId, levelCreationRequest.templateId)
                 && Objects.equals(this.levelSequence, levelCreationRequest.levelSequence);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(templateId, levelSequence);
+        return Objects.hash(name, templateId, levelSequence);
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class LevelCreationRequest {\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
         sb.append("    levelSequence: ").append(toIndentedString(levelSequence)).append("\n");
         sb.append("}");

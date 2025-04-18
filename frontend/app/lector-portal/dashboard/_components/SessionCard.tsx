@@ -1,8 +1,8 @@
 'use client'
 
 import React, {useState} from 'react';
-import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, TextField, Typography} from "@mui/material";
-import {EscapeRoomSessionResponse, EscapeRoomStateEnum, useToggleERInstanceStateHook, useAddERTagHook, useDeleteERTagHook} from "@/app/gen/session";
+import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, Typography} from "@mui/material";
+import {SessionResponse, EscapeRoomStateEnum, useToggleERInstanceStateHook} from "@/app/gen/session";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import OpenInBrowserIcon from '@mui/icons-material/OpenInBrowser';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,12 +12,12 @@ import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 type SessionCardProps = {
-    session: EscapeRoomSessionResponse,
-    onSessionUpdate: (s: EscapeRoomSessionResponse) => void
+    session: SessionResponse,
+    onSessionUpdate: (s: SessionResponse) => void
 }
 
 const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
-    const [cardInfo, setCardInfo] = useState<EscapeRoomSessionResponse>(session);
+    const [cardInfo, setCardInfo] = useState<SessionResponse>(session);
     const [open, setOpen] = React.useState(false);
 
     const [newTag, setNewTag] = useState('');
@@ -34,7 +34,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
         mutate({
             // @ts-ignore
             state: state.toUpperCase(),
-            escape_room_session_id: cardInfo.escape_room_session_id!
+            session_id: cardInfo.session_id!
         }, {
             onSuccess: () => {
                 const updated = {...cardInfo, state: state}
@@ -48,7 +48,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     }
 
     const redirectToEdit = () => {
-        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.escape_room_template_id}`)
+        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.template_id}`)
     }
 
     const handleAddTag = () => {
