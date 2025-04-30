@@ -5,7 +5,7 @@ import at.escapedoom.spring.redis.data.repositories.SessionViewRepository;
 import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryService;
 import at.escapedoom.spring.communication.session.api.SessionApi;
 import at.escapedoom.spring.communication.session.invoker.ApiException;
-import at.escapedoom.spring.communication.session.model.EscapeRoomSessionResponse;
+import at.escapedoom.spring.communication.session.model.SessionResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -45,7 +45,7 @@ public class SessionCommunicationService implements EscapeRoomSessionRepositoryS
     }
 
     private static Optional<SessionView> getSessionViewFromApiResponseIfAllValuesAreFilled(
-            EscapeRoomSessionResponse erSessionByPin) {
+            SessionResponse erSessionByPin) {
         if (erSessionByPin != null && erSessionByPin.getRoomPin() != null && erSessionByPin.getState() != null
                 && erSessionByPin.getTemplateId() != null) {
 

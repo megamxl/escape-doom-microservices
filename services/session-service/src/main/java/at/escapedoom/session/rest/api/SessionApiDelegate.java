@@ -1,6 +1,6 @@
 package at.escapedoom.session.rest.api;
 
-import at.escapedoom.session.rest.model.EscapeRoomSessionResponse;
+import at.escapedoom.session.rest.model.SessionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +26,8 @@ public interface SessionApiDelegate {
     }
 
     /**
-     * GET /session/tags : Get all escape-room instances having specific tags Retrieves a list of escape-room instances
-     * filtered by tags
+     * GET /session/{tags} : Get all escape-room instances having specific tags Retrieves a list of escape-room
+     * instances filtered by tags
      *
      * @param tags
      *            List of tags to filter by (required)
@@ -36,11 +36,11 @@ public interface SessionApiDelegate {
      *
      * @see SessionApi#getERByTags
      */
-    default ResponseEntity<List<EscapeRoomSessionResponse>> getERByTags(List<String> tags) {
+    default ResponseEntity<List<SessionResponse>> getERByTags(List<String> tags) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }, { \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] } ]";
+                    String exampleString = "[ { \"room_pin\" : 420666, \"escape_room_template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }, { \"room_pin\" : 420666, \"escape_room_template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -61,11 +61,11 @@ public interface SessionApiDelegate {
      *
      * @see SessionApi#getERSessionByPin
      */
-    default ResponseEntity<EscapeRoomSessionResponse> getERSessionByPin(Integer roomPin) {
+    default ResponseEntity<SessionResponse> getERSessionByPin(Integer roomPin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
+                    String exampleString = "{ \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
