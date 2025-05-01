@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,14 +20,16 @@ import java.util.UUID;
 @Builder
 public class EscapeRoomSession {
     @Id
-    private UUID escapeRoomSessionId;
-    private UUID escapeRoomTemplateId;
+    private UUID sessionId;
+    private UUID templateId;
 
     @Column(unique = true, nullable = false)
     private Long roomPin;
 
     private UUID userId;
     private Long playTime;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
