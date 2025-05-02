@@ -54,13 +54,7 @@ const Session = () => {
         status: CompileStatus.COMPILED,
         output: "",
     })
-    const [submittedCodeBody, setSubmittedCodeBody] = useState<SubmittedCodeBody>({
-        playerSessionId: sessionID,
-        language: stageState.language,
-        code: code,
-        codeRiddleID: 0,
-        dateTime: new Date(Date.now())
-    })
+
 
     /* TanStack Query Calls */
     const {

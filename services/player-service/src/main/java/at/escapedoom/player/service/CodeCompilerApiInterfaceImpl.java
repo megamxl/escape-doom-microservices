@@ -77,7 +77,7 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
             PistonResponse result = gson.fromJson(responseBody, PistonResponse.class);
 
             if (result.getRun().getCode() == 0) {
-                attempt.setStatus(EscapeRoomResult.StatusEnum.SUCCESS);
+                attempt.setStatus(EscapeRoomResult.StatusEnum.COMPILED);
                 attempt.setOutput(result.getRun().getOutput());
             } else {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.ERROR);
