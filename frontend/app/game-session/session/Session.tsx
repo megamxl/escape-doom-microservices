@@ -1,27 +1,19 @@
 'use client'
 
 import React, {useEffect, useRef, useState} from 'react';
-import {useGetStageInformation} from "@/app/hooks/game-session/useGetStageInformation.ts";
 import {StageState} from "@/app/types/game-session/StageState.ts";
 import {CodeExecResponse} from "@/app/types/game-session/CodeExecResponse.ts";
 import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody.ts";
 import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
-import Node from './_components/Node.tsx';
-import {parseStage} from "@/app/utils/parseJsonString.ts";
-import {RoomState} from "@/app/enums/RoomState.ts";
-import {Alert, CircularProgress, FormControl, MenuItem, Select, Snackbar, Stack, Typography} from "@mui/material";
+import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
 import {PlayArrow} from "@mui/icons-material";
 import Editor from '@monaco-editor/react';
 import {LoadingButton} from '@mui/lab';
-import {useSubmitCode} from "@/app/hooks/game-session/useSubmitCode.ts";
-import {useGetCodeResult} from "@/app/hooks/game-session/useGetCodeResult.ts";
 import {CompileStatus} from "@/app/enums/CompileStatus.ts";
-import {removeGameSession} from "@/app/utils/game-session-handler.ts";
 import {redirect} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths.ts";
 import CodeExectuionDisplay from "@/app/game-session/session/_components/CodeExectuionDisplay.tsx";
-import {useSessionIdToRoomPin} from "@/app/hooks/game-session/useSessionIdToRoomPin.ts";
 import {useGetLevelOfSessionByPlayerSessionIDHook} from "@/app/gen/player";
 import NodeV2 from "@/app/game-session/session/_components/NodeV2.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
@@ -32,11 +24,11 @@ const Session = () => {
 
     const [sessionID, setSessionID] = useState("")
 
-    useEffect(() =>{
+    useEffect(() => {
 
         const sessionStorageItem = getSessionStorageItem(session_id_key);
 
-        if (sessionStorageItem !== null){
+        if (sessionStorageItem !== null) {
             setSessionID(sessionStorageItem)
             return
         }
@@ -65,7 +57,12 @@ const Session = () => {
     })
 
     /* TanStack Query Calls */
-    const {data: stageInformation, isFetching: isFetchingStageInformation, isError : errorState , error: errorObject} = useGetLevelOfSessionByPlayerSessionIDHook({player_session_id : sessionID});
+    const {
+        data: stageInformation,
+        isFetching: isFetchingStageInformation,
+        isError: errorState,
+        error: errorObject
+    } = useGetLevelOfSessionByPlayerSessionIDHook({player_session_id: sessionID});
 
 
     const monacoEditorRef = useRef()
@@ -76,56 +73,56 @@ const Session = () => {
         setLoading(true)
         // await reSubmitCode();
         let response = undefined
-/* while (true) {
-     console.log("Waiting for code compilation completed")
-     await sleep(250);
-     //response = await getCodeResult();
-     if (response?.status !== CompileStatus.WAITING && response !== undefined) {
-         setCodeExecutionResponse(response)
-         break
-     }
- }
+        /* while (true) {
+             console.log("Waiting for code compilation completed")
+             await sleep(250);
+             //response = await getCodeResult();
+             if (response?.status !== CompileStatus.WAITING && response !== undefined) {
+                 setCodeExecutionResponse(response)
+                 break
+             }
+         }
 
- // console.log("Compilation done", codeResultData)
- //
- // if (response?.status === CompileStatus.WON) {
- //     removeGameSession()
- //     redirect(`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${roomPinOfSession}`)
- //
- // }
- setLoading(false)
+         // console.log("Compilation done", codeResultData)
+         //
+         // if (response?.status === CompileStatus.WON) {
+         //     removeGameSession()
+         //     redirect(`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${roomPinOfSession}`)
+         //
+         // }
+         setLoading(false)
 
- */
-}
+         */
+    }
 
 //const getCodeResult = async (): Promise<CodeExecResponse | undefined> => {
 
- // const response = await refetchCodeResult();
- // return response.data;
+    // const response = await refetchCodeResult();
+    // return response.data;
 //}
 
-const handleLanguageChange = () => {
+    const handleLanguageChange = () => {
 
-}
+    }
 
-const handleCodeChange = (value: any) => {
- setCode(value)
- setSubmittedCodeBody({
-     "playerSessionId": sessionID,
-     "language": stageState.language,
-     "code": value,
-     "codeRiddleID": 1,
-     "dateTime": new Date(Date.now())
- })
-}
+    const handleCodeChange = (value: any) => {
+        setCode(value)
+        setSubmittedCodeBody({
+            "playerSessionId": sessionID,
+            "language": stageState.language,
+            "code": value,
+            "codeRiddleID": 1,
+            "dateTime": new Date(Date.now())
+        })
+    }
 
-const handleEditorMount = (editor: any) => {
- monacoEditorRef.current = editor
-}
+    const handleEditorMount = (editor: any) => {
+        monacoEditorRef.current = editor
+    }
 
 // Error and loading display before returning the content
     if (isFetchingStageInformation) {
-        return <LoadingDisplay />;
+        return <LoadingDisplay/>;
     }
 
 
@@ -148,101 +145,101 @@ const handleEditorMount = (editor: any) => {
 
     }
 
-return (
+    return (
 
- <Stack direction="row" alignItems="center" height="100vh">
-     <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>
-         <EditorContainer>
-             <Stack direction="row" alignItems="center">
-                 <Typography mx={2}> Code </Typography>
-                 <FormControl variant="standard" size='small'>
-                     <Select
-                         labelId='languageSelect'
-                         value={stageState.language}
-                         label="Language"
-                         onChange={handleLanguageChange}
-                         variant={"standard"}>
-                         {
-                             Object.keys(CodeLanguage).map(language => {
-                                 return (
-                                     <MenuItem key={language}
-                                               value={language}> {language[0]}{language.slice(1).toLowerCase()} </MenuItem>
-                                 )
-                             })
-                         }
-                     </Select>
-                 </FormControl>
-             </Stack>
-         </EditorContainer>
-         <EditorContainer sx={{flexGrow: 1, flexShrink: 1}}>
-             <Editor
-                 height="100%"
-                 width="30vw"
-                 language={stageState.language.toLowerCase()}
-                 value={code}
-                 onMount={handleEditorMount}
-                 onChange={handleCodeChange}
-                 theme={"vs-dark"}
-                 options={{
-                     wordWrap: 'on',
-                     minimap: {enabled: false},
-                     folding: false,
-                     lineNumbersMinChars: 3,
-                     scrollBeyondLastLine: false,
-                     automaticLayout: true,
-                 }}
-             />
-         </EditorContainer>
-         <EditorContainer>
-             <Stack direction="column">
-                 <Typography position={{sx: 'relative', lg: 'absolute'}}> Actions </Typography>
-                 <LoadingButton
-                     sx={{
-                         height: 60,
-                         width: 250,
-                         m: 1,
-                         alignSelf: 'center'
-                     }}
-                     startIcon={<PlayArrow/>}
-                     variant='contained'
-                     loading={loading}
-                     loadingPosition="start"
-                     onClick={handleCodeSubmission}
-                 >
-                     <span> Execute </span>
-                 </LoadingButton>
-             </Stack>
-         </EditorContainer>
-         <CodeExectuionDisplay codeExecResponse={codeExecutionResponse} />
-     </Stack>
+        <Stack direction="row" alignItems="center" height="100vh">
+            <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>
+                <EditorContainer>
+                    <Stack direction="row" alignItems="center">
+                        <Typography mx={2}> Code </Typography>
+                        <FormControl variant="standard" size='small'>
+                            <Select
+                                labelId='languageSelect'
+                                value={stageState.language}
+                                label="Language"
+                                onChange={handleLanguageChange}
+                                variant={"standard"}>
+                                {
+                                    Object.keys(CodeLanguage).map(language => {
+                                        return (
+                                            <MenuItem key={language}
+                                                      value={language}> {language[0]}{language.slice(1).toLowerCase()} </MenuItem>
+                                        )
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
+                    </Stack>
+                </EditorContainer>
+                <EditorContainer sx={{flexGrow: 1, flexShrink: 1}}>
+                    <Editor
+                        height="100%"
+                        width="30vw"
+                        language={stageState.language.toLowerCase()}
+                        value={code}
+                        onMount={handleEditorMount}
+                        onChange={handleCodeChange}
+                        theme={"vs-dark"}
+                        options={{
+                            wordWrap: 'on',
+                            minimap: {enabled: false},
+                            folding: false,
+                            lineNumbersMinChars: 3,
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
+                        }}
+                    />
+                </EditorContainer>
+                <EditorContainer>
+                    <Stack direction="column">
+                        <Typography position={{sx: 'relative', lg: 'absolute'}}> Actions </Typography>
+                        <LoadingButton
+                            sx={{
+                                height: 60,
+                                width: 250,
+                                m: 1,
+                                alignSelf: 'center'
+                            }}
+                            startIcon={<PlayArrow/>}
+                            variant='contained'
+                            loading={loading}
+                            loadingPosition="start"
+                            onClick={handleCodeSubmission}
+                        >
+                            <span> Execute </span>
+                        </LoadingButton>
+                    </Stack>
+                </EditorContainer>
+                <CodeExectuionDisplay codeExecResponse={codeExecutionResponse}/>
+            </Stack>
 
-     <div className="relative w-full mx-auto">
-         <img
-             //@ts-ignore
-             src={`${stageInformation?.scenes[0].background_image_uri}`}
-             alt="Background"
-             className="w-full bg-no-repeat bg-contain"
-         />
-         {
-             //@ts-ignore
-             stageInformation?.scenes[0]?.nodes.map((node) => {
-                 return (
-                     <NodeV2 key={node.node_id} node={node} codeSetter={setCode} />
-                 )
-             })
-         }
-     </div>
- </Stack>
-);
+            <div className="relative w-full mx-auto">
+                <img
+                    //@ts-ignore
+                    src={`${stageInformation?.scenes[0].background_image_uri}`}
+                    alt="Background"
+                    className="w-full bg-no-repeat bg-contain"
+                />
+                {
+                    //@ts-ignore
+                    stageInformation?.scenes[0]?.nodes.map((node) => {
+                        return (
+                            <NodeV2 key={node.node_id} node={node} codeSetter={setCode}/>
+                        )
+                    })
+                }
+            </div>
+        </Stack>
+    );
 };
 
 const LoadingDisplay = () => {
-return (
- <Stack height={"100vh"} width={"100vw"} direction={"column"} justifyContent={"center"} gap={4}
-        alignItems={"center"}>
-     <CircularProgress size={"10rem"} variant={"indeterminate"}/>
-     <Typography variant={"h3"}> Loading... </Typography> </Stack>
-)
+    return (
+        <Stack height={"100vh"} width={"100vw"} direction={"column"} justifyContent={"center"} gap={4}
+               alignItems={"center"}>
+            <CircularProgress size={"10rem"} variant={"indeterminate"}/>
+            <Typography variant={"h3"}> Loading... </Typography> </Stack>
+    )
 }
 
 export default Session;

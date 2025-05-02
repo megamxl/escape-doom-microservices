@@ -3,6 +3,7 @@ package at.escapedoom.player.service;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
 import at.escapedoom.player.service.interfaces.EscapeRoomTemplateRepositoryService;
 import at.escapedoom.player.service.interfaces.LevelDtoToRestResponse;
+import at.escapedoom.player.utils.RiddleToFunctionMapper;
 import at.escapedoom.spring.communication.data.api.TemplateApi;
 import at.escapedoom.spring.communication.data.invoker.ApiException;
 import at.escapedoom.spring.communication.data.model.LevelDTO;
@@ -29,8 +30,15 @@ public class TemplateRepoService implements EscapeRoomTemplateRepositoryService 
 
             LevelDTO levelDTO = template.getLevels().get(level);
 
-            return levelDtoToRestResponse.toRest(levelDTO);
+            at.escapedoom.player.rest.model.LevelDTO rest = levelDtoToRestResponse.toRest(levelDTO);
 
+            if (levelDTO.getRiddle() == null ) {
+                throw new NoSuchElementException("No Riddle found for level talk with you teacher " + level);
+            }
+
+            rest.setRiddle(RiddleToFunctionMapper.riddleToFrontendFunction(levelDTO.getRiddle()));
+            return rest;
+            
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
