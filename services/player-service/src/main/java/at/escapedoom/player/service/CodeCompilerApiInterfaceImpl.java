@@ -15,10 +15,7 @@ import okhttp3.*;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
@@ -57,7 +54,6 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
             }
         }
     }
-
     private void sendSolutionToCodeExec(SolutionAttempt attempt) {
         // TODO currently only java hardcoded somehow we need to map
         // SolutionAttempt.LanguageEnum to language tags supported by the api
