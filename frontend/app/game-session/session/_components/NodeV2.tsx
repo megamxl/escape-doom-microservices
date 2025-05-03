@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import IconButton from "@mui/material/IconButton";
 import {AutoStories, Search, Settings, SvgIconComponent, Visibility} from "@mui/icons-material";
-import {Card, CardContent, Dialog, Stack, Typography} from "@mui/material";
+import {Card, CardContent, CardHeader, CardMedia, Dialog, DialogContent, Stack, Typography} from "@mui/material";
 import {amber, blue, purple, teal} from "@mui/material/colors";
 import {NodeDTO, NodeType} from "@/app/gen/player";
 
@@ -18,7 +18,7 @@ type NodeV2Props = {
 }
 
 const NodeV2 = ({node, codeSetter}: NodeV2Props) => {
-    const { node_info, node_type, position } = node;
+    const {node_info, node_type, position} = node;
     const {icon: Icon, styling} = nodeTypeClassMapper[node_type!]
     const [isOpen, setIsOpen] = useState(false)
 
@@ -38,17 +38,25 @@ const NodeV2 = ({node, codeSetter}: NodeV2Props) => {
                 }}>
                 <Icon fontSize={"small"}/>
             </IconButton>
-            <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-                <Card sx={{minWidth: "400px", maxWidth: "60vw"}}>
-                    <CardContent>
-                        <Stack>
-                            <Typography sx={{verticalAlign: "center"}} fontWeight={"bold"}>
-                                {node_info?.title}
-                            </Typography>
+            <Dialog open={isOpen} onClose={() => setIsOpen(false)} maxWidth="lg" fullWidth>
+                <DialogContent>
+                    <Card className="h-[30vh]">
+                        <CardHeader title={node_info?.title} sx={{ backgroundColor: styling.color }}/>
+                        <Stack direction="row" className="h-full">
+                            <CardMedia
+                                component="img"
+                                image="https://images.squarespace-cdn.com/content/v1/607f89e638219e13eee71b1e/1684821560422-SD5V37BAG28BURTLIXUQ/michael-sum-LEpfefQf4rU-unsplash.jpg"
+                                alt="Node Image"
+                                sx={{width: "33.3%", objectFit: "cover"}}
+                            />
+                            <CardContent sx={{width: "100%"}}>
+                                <Typography sx={{verticalAlign: "center"}} fontWeight={"bold"}>
+                                    {node_info?.description}
+                                </Typography>
+                            </CardContent>
                         </Stack>
-                        <Typography mb={2}> {node_info?.description} </Typography>
-                    </CardContent>
-                </Card>
+                    </Card>
+                </DialogContent>
             </Dialog>
         </>
     );

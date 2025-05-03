@@ -1,8 +1,12 @@
 package at.escapedoom.data.data.entity;
 
 import at.escapedoom.data.rest.model.NodeType;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -38,6 +42,10 @@ public class Node {
 
     @Column(name = SCENE_ID)
     private UUID sceneId;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "node_specifics", columnDefinition = "jsonb")
+    private NodeSpecifics nodeSpecifics;
 
     @Override
     public String toString() {

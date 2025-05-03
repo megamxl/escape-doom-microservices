@@ -1,27 +1,19 @@
 'use client'
 
 import React, {useEffect, useRef, useState} from 'react';
-import {useGetStageInformation} from "@/app/hooks/game-session/useGetStageInformation.ts";
 import {StageState} from "@/app/types/game-session/StageState.ts";
 import {CodeExecResponse} from "@/app/types/game-session/CodeExecResponse.ts";
 import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody.ts";
 import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
-import Node from './_components/Node.tsx';
-import {parseStage} from "@/app/utils/parseJsonString.ts";
-import {RoomState} from "@/app/enums/RoomState.ts";
-import {Alert, CircularProgress, FormControl, MenuItem, Select, Snackbar, Stack, Typography} from "@mui/material";
+import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
 import {PlayArrow} from "@mui/icons-material";
 import Editor from '@monaco-editor/react';
 import {LoadingButton} from '@mui/lab';
-import {useSubmitCode} from "@/app/hooks/game-session/useSubmitCode.ts";
-import {useGetCodeResult} from "@/app/hooks/game-session/useGetCodeResult.ts";
 import {CompileStatus} from "@/app/enums/CompileStatus.ts";
-import {removeGameSession} from "@/app/utils/game-session-handler.ts";
 import {redirect} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths.ts";
 import CodeExectuionDisplay from "@/app/game-session/session/_components/CodeExectuionDisplay.tsx";
-import {useSessionIdToRoomPin} from "@/app/hooks/game-session/useSessionIdToRoomPin.ts";
 import {useGetLevelOfSessionByPlayerSessionIDHook} from "@/app/gen/player";
 import NodeV2 from "@/app/game-session/session/_components/NodeV2.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
@@ -226,6 +218,7 @@ return (
          {
              //@ts-ignore
              stageInformation?.scenes[0]?.nodes.map((node) => {
+                 console.log("Trying to create node: ", node)
                  return (
                      <NodeV2 key={node.node_id} node={node} codeSetter={setCode} />
                  )
