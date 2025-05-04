@@ -5,8 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.constraints.*;
+import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
@@ -22,17 +26,17 @@ public interface SessionApiDelegate {
     }
 
     /**
-     * GET /session/{tags} : Get all escape-room instances having specific tags Retrieves a list of escape-room
-     * instances filtered by tags
+     * GET /session/tags/{tag} : Get all escape-room instances with a specific tag Retrieves a list of escape-room
+     * instances filtered by a single tag
      *
-     * @param tags
-     *            List of tags to filter by (required)
+     * @param tag
+     *            The tag to filter sessions by (required)
      *
      * @return OK (status code 200)
      *
-     * @see SessionApi#getERByTags
+     * @see SessionApi#getERByTag
      */
-    default ResponseEntity<List<SessionResponse>> getERByTags(List<String> tags) {
+    default ResponseEntity<List<SessionResponse>> getERByTag(String tag) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -47,17 +51,17 @@ public interface SessionApiDelegate {
     }
 
     /**
-     * GET /session/{room_pin} : Retrieve an escape-room session by room pin Fetches an escape-room session using its
+     * GET /session/pins/{pin} : Retrieve an escape-room session by room pin Fetches an escape-room session using its
      * room pin
      *
-     * @param roomPin
-     *            The pin to join the escape-room (required)
+     * @param pin
+     *            The 6-digit room pin (required)
      *
      * @return OK (status code 200)
      *
      * @see SessionApi#getERSessionByPin
      */
-    default ResponseEntity<SessionResponse> getERSessionByPin(Integer roomPin) {
+    default ResponseEntity<SessionResponse> getERSessionByPin(Integer pin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

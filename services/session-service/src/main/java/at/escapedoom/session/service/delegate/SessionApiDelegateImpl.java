@@ -30,35 +30,28 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<List<SessionResponse>> getERByTags(List<String> tags) {
+    public ResponseEntity<List<SessionResponse>> getERByTag(String tag) {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
-
-        List<SessionResponse> response = new ArrayList<>();
-
         try {
-            List<EscapeRoomSession> escapeRoomSessions = sessionService.getSessionsByTags(userId, tags);
-            for (EscapeRoomSession session : escapeRoomSessions) {
-                response.add(EscapeRoomSessionMapperUtil.map(session));
-            }
+            List<EscapeRoomSession> sessions = sessionService.getSessionsByTags(userId, List.of(tag));
+            List<SessionResponse> response = sessions.stream().map(EscapeRoomSessionMapperUtil::map).toList();
             return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
             log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<SessionResponse> getERSessionByPin(Integer roomPin) {
+    public ResponseEntity<SessionResponse> getERSessionByPin(Integer pin) {
         try {
-            EscapeRoomSession escapeRoomSession = sessionService.getSessionByRoomPin(roomPin.longValue());
-            return new ResponseEntity<>(EscapeRoomSessionMapperUtil.map(escapeRoomSession), HttpStatus.OK);
+            EscapeRoomSession session = sessionService.getSessionByRoomPin(pin.longValue());
+            return new ResponseEntity<>(EscapeRoomSessionMapperUtil.map(session), HttpStatus.OK);
         } catch (Exception e) {
             log.debug(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
 }

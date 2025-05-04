@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import {
     EscapeRoomStateEnum,
-    EscapeRoomSessionResponse,
+    SessionResponse,
     useAddERTagHook,
     useDeleteERTagHook,
     useToggleERInstanceStateHook
@@ -18,12 +18,12 @@ import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 type SessionCardProps = {
-    session: EscapeRoomSessionResponse,
-    onSessionUpdate: (s: EscapeRoomSessionResponse) => void
+    session: SessionResponse,
+    onSessionUpdate: (s: SessionResponse) => void
 }
 
 const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
-    const [cardInfo, setCardInfo] = useState<EscapeRoomSessionResponse>(session);
+    const [cardInfo, setCardInfo] = useState<SessionResponse>(session);
 
     const [newTag, setNewTag] = useState('');
     const {mutate: addTag} = useAddERTagHook();
@@ -53,7 +53,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     }
 
     const redirectToEdit = () => {
-        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.escape_room_template_id}`)
+        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.template_id}`)
     }
 
     const handleAddTag = () => {
