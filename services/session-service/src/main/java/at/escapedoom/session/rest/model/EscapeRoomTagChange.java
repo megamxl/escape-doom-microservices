@@ -1,17 +1,13 @@
 package at.escapedoom.session.rest.model;
 
-import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.UUID;
 import org.springframework.lang.Nullable;
-import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
@@ -29,7 +25,7 @@ public class EscapeRoomTagChange {
 
     private @Nullable String tagName;
 
-    private @Nullable UUID sessionId;
+    private @Nullable UUID escapeRoomSessionId;
 
     public EscapeRoomTagChange tagName(String tagName) {
         this.tagName = tagName;
@@ -52,25 +48,25 @@ public class EscapeRoomTagChange {
         this.tagName = tagName;
     }
 
-    public EscapeRoomTagChange sessionId(UUID sessionId) {
-        this.sessionId = sessionId;
+    public EscapeRoomTagChange escapeRoomSessionId(UUID escapeRoomSessionId) {
+        this.escapeRoomSessionId = escapeRoomSessionId;
         return this;
     }
 
     /**
      * The id of the escape-room instance
      *
-     * @return sessionId
+     * @return escapeRoomSessionId
      */
     @Valid
-    @Schema(name = "session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("session_id")
-    public UUID getSessionId() {
-        return sessionId;
+    @Schema(name = "escape_room_session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room instance", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("escape_room_session_id")
+    public UUID getEscapeRoomSessionId() {
+        return escapeRoomSessionId;
     }
 
-    public void setSessionId(UUID sessionId) {
-        this.sessionId = sessionId;
+    public void setEscapeRoomSessionId(UUID escapeRoomSessionId) {
+        this.escapeRoomSessionId = escapeRoomSessionId;
     }
 
     @Override
@@ -83,12 +79,12 @@ public class EscapeRoomTagChange {
         }
         EscapeRoomTagChange escapeRoomTagChange = (EscapeRoomTagChange) o;
         return Objects.equals(this.tagName, escapeRoomTagChange.tagName)
-                && Objects.equals(this.sessionId, escapeRoomTagChange.sessionId);
+                && Objects.equals(this.escapeRoomSessionId, escapeRoomTagChange.escapeRoomSessionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tagName, sessionId);
+        return Objects.hash(tagName, escapeRoomSessionId);
     }
 
     @Override
@@ -96,7 +92,7 @@ public class EscapeRoomTagChange {
         StringBuilder sb = new StringBuilder();
         sb.append("class EscapeRoomTagChange {\n");
         sb.append("    tagName: ").append(toIndentedString(tagName)).append("\n");
-        sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
+        sb.append("    escapeRoomSessionId: ").append(toIndentedString(escapeRoomSessionId)).append("\n");
         sb.append("}");
         return sb.toString();
     }
