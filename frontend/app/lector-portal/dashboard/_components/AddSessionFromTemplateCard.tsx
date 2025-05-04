@@ -17,7 +17,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import {
     type CreateERInstanceMutationRequest,
-    SessionResponse,
+    EscapeRoomSessionResponse,
     useCreateERInstanceHook
 } from "@/app/gen/session";
 import {useGetAllTemplatesHook} from "@/app/gen/data";
@@ -25,7 +25,7 @@ import green from '@mui/material/colors/green';
 import {red} from "@mui/material/colors";
 
 type AddSessionCardProps = {
-    onDone: (newSession: SessionResponse) => void;
+    onDone: (newSession: EscapeRoomSessionResponse) => void;
 }
 
 const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
@@ -35,12 +35,12 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
 
     const [open, setOpen] = useState(false)
     const [newSession, setNewSession] = useState<CreateERInstanceMutationRequest>({
-        template_id: '',
+        escape_room_template_id: '',
         play_time: 60
     });
 
     const handleSelection = (event: ChangeEvent<HTMLInputElement>) => {
-        setNewSession({...newSession, template_id: event.target.value})
+        setNewSession({...newSession, escape_room_template_id: event.target.value})
     }
 
     const setNewTime = (event: ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +119,7 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                             select
                             required
                             label="Template"
-                            value={newSession.template_id}
+                            value={newSession.escape_room_template_id}
                             onChange={handleSelection}
                         >
                             {

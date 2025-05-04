@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {Alert, Button, Chip, Fab, Paper, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import {
     EscapeRoomStateEnum,
-    SessionResponse,
+    EscapeRoomSessionResponse,
     useAddERTagHook,
     useDeleteERTagHook,
     useToggleERInstanceStateHook
@@ -18,12 +18,12 @@ import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 type SessionCardProps = {
-    session: SessionResponse,
-    onSessionUpdate: (s: SessionResponse) => void
+    session: EscapeRoomSessionResponse,
+    onSessionUpdate: (s: EscapeRoomSessionResponse) => void
 }
 
 const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
-    const [cardInfo, setCardInfo] = useState<SessionResponse>(session);
+    const [cardInfo, setCardInfo] = useState<EscapeRoomSessionResponse>(session);
 
     const [newTag, setNewTag] = useState('');
     const {mutate: addTag} = useAddERTagHook();
@@ -39,7 +39,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
         mutate({
             //@ts-ignore
             state: state.toUpperCase(),
-            session_id: cardInfo.session_id!
+            escape_room_session_id: cardInfo.escape_room_session_id!
         }, {
             onSuccess: () => {
                 const updated = {...cardInfo, state: state}
@@ -53,7 +53,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
     }
 
     const redirectToEdit = () => {
-        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.template_id}`)
+        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.escape_room_template_id}`)
     }
 
     const handleAddTag = () => {
@@ -67,7 +67,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
 
         addTag(
             {
-                session_id: cardInfo.session_id!,
+                escape_room_session_id: cardInfo.escape_room_session_id!,
                 tag_name: newTag,
             },
             {
@@ -83,7 +83,7 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
 
     const handleDeleteTag = (tag: string) => {
         removeTag({
-                session_id: cardInfo.session_id!,
+                escape_room_session_id: cardInfo.escape_room_session_id!,
                 tag_name: tag
             },
             {
