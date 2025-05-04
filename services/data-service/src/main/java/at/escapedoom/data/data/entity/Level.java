@@ -29,10 +29,10 @@ public class Level {
     @Column(name = LEVEL_SEQUENCE)
     private Integer levelSequence;
 
-    @OneToOne(mappedBy = "level", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "level", cascade = CascadeType.ALL, orphanRemoval = true)
     private Riddle riddle;
 
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = LEVEL_ID)
     private List<Scene> scenes;
 

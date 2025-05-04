@@ -54,7 +54,7 @@ class RiddleServiceTest {
                 .userId(UUID.randomUUID()).build();
         templateRepository.saveAndFlush(template);
 
-        Level level = Level.builder().levelSequence(1).templateId(template.getTemplateId()).build();
+        Level level = Level.builder().levelSequence(1).name("Test Level").templateId(template.getTemplateId()).build();
         level = levelRepository.saveAndFlush(level);
 
         VALID_LEVEL_ID = level.getLevelId();
@@ -172,7 +172,7 @@ class RiddleServiceTest {
                 .userId(UUID.randomUUID()).build();
         template = templateRepository.saveAndFlush(template);
 
-        Level level = Level.builder().templateId(template.getTemplateId()).levelSequence(2).build();
+        Level level = Level.builder().name("Test Level").templateId(template.getTemplateId()).levelSequence(2).build();
         level = levelRepository.saveAndFlush(level);
 
         final String EXPECTED_OUTPUT = "666";

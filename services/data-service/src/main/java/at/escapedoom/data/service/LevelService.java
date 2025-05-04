@@ -1,15 +1,18 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.data.LevelRepository;
+import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.data.entity.Scene;
+import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.mapper.LevelMapper;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -25,6 +28,7 @@ public class LevelService {
     private final LevelRepository repository;
     private final SceneService sceneService;
     private final LevelMapper levelMapper;
+    private final RiddleRepository riddleRepository;
 
     @Transactional
     public LevelDTO createLevel(LevelCreationRequest creationRequest) {
@@ -85,9 +89,18 @@ public class LevelService {
         Level level = repository.findById(levelUUID)
                 .orElseThrow(() -> new NoSuchElementException("Level with ID " + levelId + " not found"));
 
-        repository.delete(level);
-        repository.flush();
+        Riddle riddle = level.getRiddle();
+        if (riddle != null) {
+            riddle.setLevel(null);
+            riddleRepository.save(riddle);
+        }
 
+        Template template = level.getTemplate();
+        if (template != null) {
+            template.getLevel().remove(level);
+        }
+
+        repository.delete(level);
         return new DeleteLevelSuccessDTO().message("Level deleted successfully");
     }
 

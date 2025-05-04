@@ -1,5 +1,6 @@
 package at.escapedoom.data.service;
 
+import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
@@ -10,6 +11,7 @@ import at.escapedoom.data.rest.model.SceneRequestDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class SceneService {
 
     private final SceneRepository sceneRepository;
     private final SceneMapper sceneMapper;
+    private final LevelRepository levelRepository;
 
     public List<SceneDTO> getAllScenes() {
         log.info("Getting all scenes");
@@ -47,7 +50,11 @@ public class SceneService {
             throw new DataIntegrityViolationException("Scene sequence already exists for this level!");
         }
 
+        Level level = levelRepository.findById(levelId)
+                .orElseThrow(() -> new NoSuchElementException("Level with ID " + levelId + " not found"));
+
         Scene scene = sceneMapper.toEntity(sceneRequest);
+        scene.setLevel(level);
         scene.setNodes(Collections.emptyList());
 
         scene = sceneRepository.saveAndFlush(scene);
@@ -98,12 +105,35 @@ public class SceneService {
         return sceneMapper.toDTO(dbScene);
     }
 
+    @Transactional
     public DeleteLevelResponseDTO deleteScene(String id) {
         assert id != null : "Scene id is null";
 
-        sceneRepository.deleteById(UUID.fromString(id));
+        UUID sceneId = UUID.fromString(id);
+        Optional<Scene> optionalScene = sceneRepository.findById(sceneId);
+
+        if (optionalScene.isEmpty()) {
+            log.warn("Scene with ID {} not found. Skipping delete.", id);
+            return new DeleteLevelResponseDTO("Scene not found. Nothing to delete.");
+        }
+
+        Scene scene = optionalScene.get();
+
+        Level parentLevel = levelRepository.findAll().stream().filter(level -> level.getScenes().contains(scene))
+                .findFirst().orElse(null);
+
+        if (parentLevel != null) {
+            parentLevel.getScenes().remove(scene);
+            levelRepository.saveAndFlush(parentLevel);
+        }
+
+        scene.setLevel(null);
+        sceneRepository.delete(scene);
         sceneRepository.flush();
-        log.info("Deleted scene with id {}", id);
+
+        log.info("Deleted scene with id {} from level {}", id,
+                parentLevel != null ? parentLevel.getLevelId() : "unknown");
+
         return new DeleteLevelResponseDTO("Deleted scene successfully");
     }
 }

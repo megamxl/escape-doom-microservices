@@ -33,12 +33,11 @@ public class Scene {
     @Column(name = "background_image_uri")
     private String backgroundImageUri;
 
-    @ManyToOne
-    @JoinColumn(name = LEVEL_ID, insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = LEVEL_ID)
     private Level level;
 
-    @Column(name = LEVEL_ID)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Column(name = LEVEL_ID, insertable = false, updatable = false)
     private UUID levelId;
 
     @OneToMany(mappedBy = "scene", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.EAGER)

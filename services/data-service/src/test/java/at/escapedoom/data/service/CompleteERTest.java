@@ -63,8 +63,8 @@ class CompleteERTest {
                 .description("Test Description").build();
         templateId = templateService.createTemplate(templateCreateRequestDTO).getTemplateId();
 
-        LevelCreationRequest levelCreationRequest = LevelCreationRequest.builder().templateId(templateId)
-                .levelSequence(1).build();
+        LevelCreationRequest levelCreationRequest = LevelCreationRequest.builder().name("Test Level")
+                .templateId(templateId).levelSequence(1).build();
         levelId = levelService.createLevel(levelCreationRequest).getLevelId();
 
         SceneRequestDTO sceneRequestDTO = SceneRequestDTO.builder().sceneSequence(1)
@@ -85,7 +85,6 @@ class CompleteERTest {
     }
 
     @Test
-    @Transactional
     void testComponentsExistAfterCreation() {
         assertNotNull(templateService.getTemplateById(templateId));
         assertNotNull(levelService.getLevelById(levelId));
@@ -95,7 +94,6 @@ class CompleteERTest {
     }
 
     @Test
-    @Transactional
     void testCascadeDeleteTemplate() {
         templateService.deleteTemplate(UUID.fromString(templateId));
         entityManager.clear();
@@ -108,7 +106,6 @@ class CompleteERTest {
     }
 
     @Test
-    @Transactional
     void testCascadeDeleteLevel() {
         levelService.deleteLevel(levelId);
         entityManager.clear();
@@ -120,7 +117,6 @@ class CompleteERTest {
     }
 
     @Test
-    @Transactional
     void testCascadeDeleteScene() {
         sceneService.deleteScene(sceneId);
         entityManager.clear();

@@ -4,6 +4,7 @@ import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Riddle;
+import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.mapper.RiddleMapper;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
@@ -87,19 +88,25 @@ public class RiddleService {
         return riddleMapper.toDTO(riddle);
     }
 
-    public RiddleDeletionResponseDTO deleteRiddle(String uuid) throws IllegalArgumentException {
+    public RiddleDeletionResponseDTO deleteRiddle(String uuid) {
         assert uuid != null : "UUID must not be null";
 
         UUID riddleId = UUID.fromString(uuid);
 
-        if (riddleRepository.existsById(riddleId)) {
-            riddleRepository.deleteById(riddleId);
+        Riddle riddle = riddleRepository.findById(riddleId)
+                .orElseThrow(() -> new NoSuchElementException("Riddle with ID " + riddleId + " not found"));
 
-            riddleLog(LoggerUtils.LogType.DELETION, riddleId);
-            return new RiddleDeletionResponseDTO("Riddle deleted successfully");
+        Level level = riddle.getLevel();
+        if (level != null) {
+            level.setRiddle(null);
+            levelRepository.save(level);
         }
 
-        throw new NoSuchElementException("There is no such Riddle with ID: " + uuid);
+        riddleRepository.deleteById(riddleId);
+
+        riddleLog(LoggerUtils.LogType.DELETION, riddleId);
+
+        return new RiddleDeletionResponseDTO("Riddle deleted successfully");
     }
 
     private void riddleLog(LoggerUtils.LogType logType, UUID uuid) {

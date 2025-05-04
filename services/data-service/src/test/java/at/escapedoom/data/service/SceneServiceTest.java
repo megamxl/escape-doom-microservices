@@ -10,12 +10,14 @@ import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -24,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
+@Transactional
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class SceneServiceTest {
 
     private final UUID USER_ID = UUID.randomUUID();
@@ -55,14 +59,21 @@ class SceneServiceTest {
 
         templateRepository.save(template);
 
-        Level level = Level.builder().template(template).levelSequence(1).build();
+        Level level = Level.builder().template(template).name("Test Level").levelSequence(1).scenes(new ArrayList<>())
+                .build();
 
-        LEVEL_ID = levelRepository.save(level).getLevelId();
+        level = levelRepository.save(level);
+        LEVEL_ID = level.getLevelId();
 
         Scene scene = Scene.builder().sceneSequence(1).backgroundImageUri("https://example.com/background.png")
-                .name("Scene 1").levelId(LEVEL_ID).build();
+                .name("Scene 1").level(level).build();
 
-        sceneId = sceneRepository.save(scene).getSceneId().toString();
+        level.getScenes().add(scene);
+
+        scene = sceneRepository.save(scene);
+        sceneId = scene.getSceneId().toString();
+
+        levelRepository.save(level);
     }
 
     // region GET Tests
