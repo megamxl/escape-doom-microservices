@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface RiddleMapper {
 
     @Mapping(source = "riddleId", target = "riddleId", qualifiedByName = "uuidToString")
-    @Mapping( source = "levelId", target = "levelId")
+    @Mapping(source = "levelId", target = "levelId")
     RiddleDTO toDTO(Riddle riddle);
 
     @Mapping(source = "riddleId", target = "riddleId", qualifiedByName = "stringToUUID")

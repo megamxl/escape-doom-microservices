@@ -55,7 +55,7 @@ class SceneServiceTest {
 
         templateRepository.save(template);
 
-        Level level = Level.builder().template(template).levelSequence(1).build();
+        Level level = Level.builder().template(template).name("Test Level").levelSequence(1).build();
 
         LEVEL_ID = levelRepository.save(level).getLevelId();
 

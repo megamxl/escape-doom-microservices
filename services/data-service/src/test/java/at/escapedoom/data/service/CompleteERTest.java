@@ -63,8 +63,8 @@ class CompleteERTest {
                 .description("Test Description").build();
         templateId = templateService.createTemplate(templateCreateRequestDTO).getTemplateId();
 
-        LevelCreationRequest levelCreationRequest = LevelCreationRequest.builder().templateId(templateId)
-                .levelSequence(1).build();
+        LevelCreationRequest levelCreationRequest = LevelCreationRequest.builder().name("Test Level")
+                .templateId(templateId).levelSequence(1).build();
         levelId = levelService.createLevel(levelCreationRequest).getLevelId();
 
         SceneRequestDTO sceneRequestDTO = SceneRequestDTO.builder().sceneSequence(1)
