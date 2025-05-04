@@ -39,41 +39,41 @@ public interface SessionApi {
     }
 
     /**
-     * GET /session/{tags} : Get all escape-room instances having specific tags Retrieves a list of escape-room
-     * instances filtered by tags
+     * GET /session/tags/{tag} : Get all escape-room instances with a specific tag Retrieves a list of escape-room
+     * instances filtered by a single tag
      *
-     * @param tags
-     *            List of tags to filter by (required)
+     * @param tag
+     *            The tag to filter sessions by (required)
      *
      * @return OK (status code 200)
      */
-    @Operation(operationId = "getERByTags", summary = "Get all escape-room instances having specific tags", description = "Retrieves a list of escape-room instances filtered by tags", tags = {
+    @Operation(operationId = "getERByTag", summary = "Get all escape-room instances with a specific tag", description = "Retrieves a list of escape-room instances filtered by a single tag", tags = {
             "session" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SessionResponse.class))) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/session/{tags}", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/session/tags/{tag}", produces = { "application/json" })
 
-    default ResponseEntity<List<SessionResponse>> getERByTags(
-            @Parameter(name = "tags", description = "List of tags to filter by", required = true, in = ParameterIn.PATH) @PathVariable("tags") List<String> tags) {
-        return getDelegate().getERByTags(tags);
+    default ResponseEntity<List<SessionResponse>> getERByTag(
+            @Parameter(name = "tag", description = "The tag to filter sessions by", required = true, in = ParameterIn.PATH) @PathVariable("tag") String tag) {
+        return getDelegate().getERByTag(tag);
     }
 
     /**
-     * GET /session/{room_pin} : Retrieve an escape-room session by room pin Fetches an escape-room session using its
+     * GET /session/pins/{pin} : Retrieve an escape-room session by room pin Fetches an escape-room session using its
      * room pin
      *
-     * @param roomPin
-     *            The pin to join the escape-room (required)
+     * @param pin
+     *            The 6-digit room pin (required)
      *
      * @return OK (status code 200)
      */
     @Operation(operationId = "getERSessionByPin", summary = "Retrieve an escape-room session by room pin", description = "Fetches an escape-room session using its room pin", tags = {
             "session" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/session/{room_pin}", produces = { "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/session/pins/{pin}", produces = { "application/json" })
 
     default ResponseEntity<SessionResponse> getERSessionByPin(
-            @Min(100000) @Max(999999) @Parameter(name = "room_pin", description = "The pin to join the escape-room", required = true, in = ParameterIn.PATH) @PathVariable("room_pin") Integer roomPin) {
-        return getDelegate().getERSessionByPin(roomPin);
+            @Min(100000) @Max(999999) @Parameter(name = "pin", description = "The 6-digit room pin", required = true, in = ParameterIn.PATH) @PathVariable("pin") Integer pin) {
+        return getDelegate().getERSessionByPin(pin);
     }
 
 }

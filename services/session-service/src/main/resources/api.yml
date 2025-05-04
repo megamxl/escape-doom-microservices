@@ -73,22 +73,20 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SessionResponse"
-  /session/{tags}:
+  /session/tags/{tag}:
     get:
       tags:
         - session
-      summary: Get all escape-room instances having specific tags
-      description: Retrieves a list of escape-room instances filtered by tags
-      operationId: getERByTags
+      summary: Get all escape-room instances with a specific tag
+      description: Retrieves a list of escape-room instances filtered by a single tag
+      operationId: getERByTag
       parameters:
-        - name: tags
+        - name: tag
           in: path
-          description: List of tags to filter by
           required: true
+          description: The tag to filter sessions by
           schema:
-            type: array
-            items:
-              type: string
+            type: string
       responses:
         "200":
           description: OK
@@ -98,8 +96,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SessionResponse"
-
-  /session/{room_pin}:
+  /session/pins/{pin}:
     get:
       tags:
         - session
@@ -107,10 +104,10 @@ paths:
       description: Fetches an escape-room session using its room pin
       operationId: getERSessionByPin
       parameters:
-        - name: room_pin
+        - name: pin
           in: path
-          description: The pin to join the escape-room
           required: true
+          description: The 6-digit room pin
           schema:
             type: integer
             minimum: 100000
