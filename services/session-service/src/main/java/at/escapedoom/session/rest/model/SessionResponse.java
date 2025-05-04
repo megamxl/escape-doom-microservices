@@ -1,24 +1,19 @@
 package at.escapedoom.session.rest.model;
 
-import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.session.rest.model.EscapeRoomState;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
-import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.*;
 import jakarta.annotation.Generated;
 
 /**
@@ -38,7 +33,7 @@ public class SessionResponse {
 
     private @Nullable UUID templateId;
 
-    private @Nullable UUID sessionId;
+    private @Nullable UUID escapeRoomSessionId;
 
     @lombok.Builder.Default
     private Integer playTime = 60;
@@ -94,25 +89,25 @@ public class SessionResponse {
         this.templateId = templateId;
     }
 
-    public SessionResponse sessionId(UUID sessionId) {
-        this.sessionId = sessionId;
+    public SessionResponse escapeRoomSessionId(UUID escapeRoomSessionId) {
+        this.escapeRoomSessionId = escapeRoomSessionId;
         return this;
     }
 
     /**
      * The id of the escape-room session
      *
-     * @return sessionId
+     * @return escapeRoomSessionId
      */
     @Valid
-    @Schema(name = "session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room session", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("session_id")
-    public UUID getSessionId() {
-        return sessionId;
+    @Schema(name = "escape_room_session_id", example = "a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0", description = "The id of the escape-room session", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("escape_room_session_id")
+    public UUID getEscapeRoomSessionId() {
+        return escapeRoomSessionId;
     }
 
-    public void setSessionId(UUID sessionId) {
-        this.sessionId = sessionId;
+    public void setEscapeRoomSessionId(UUID escapeRoomSessionId) {
+        this.escapeRoomSessionId = escapeRoomSessionId;
     }
 
     public SessionResponse playTime(Integer playTime) {
@@ -220,7 +215,7 @@ public class SessionResponse {
         SessionResponse sessionResponse = (SessionResponse) o;
         return Objects.equals(this.state, sessionResponse.state)
                 && Objects.equals(this.templateId, sessionResponse.templateId)
-                && Objects.equals(this.sessionId, sessionResponse.sessionId)
+                && Objects.equals(this.escapeRoomSessionId, sessionResponse.escapeRoomSessionId)
                 && Objects.equals(this.playTime, sessionResponse.playTime)
                 && Objects.equals(this.createdAt, sessionResponse.createdAt)
                 && Objects.equals(this.roomPin, sessionResponse.roomPin)
@@ -229,7 +224,7 @@ public class SessionResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hash(state, templateId, sessionId, playTime, createdAt, roomPin, tags);
+        return Objects.hash(state, templateId, escapeRoomSessionId, playTime, createdAt, roomPin, tags);
     }
 
     @Override
@@ -238,7 +233,7 @@ public class SessionResponse {
         sb.append("class SessionResponse {\n");
         sb.append("    state: ").append(toIndentedString(state)).append("\n");
         sb.append("    templateId: ").append(toIndentedString(templateId)).append("\n");
-        sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
+        sb.append("    escapeRoomSessionId: ").append(toIndentedString(escapeRoomSessionId)).append("\n");
         sb.append("    playTime: ").append(toIndentedString(playTime)).append("\n");
         sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
         sb.append("    roomPin: ").append(toIndentedString(roomPin)).append("\n");

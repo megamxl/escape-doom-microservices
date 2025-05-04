@@ -9,26 +9,19 @@ import at.escapedoom.session.rest.model.EscapeRoomCreation;
 import at.escapedoom.session.rest.model.EscapeRoomState;
 import at.escapedoom.session.rest.model.SessionResponse;
 import java.util.UUID;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
 import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -61,9 +54,10 @@ public interface ManagementApi {
     }
 
     /**
-     * PUT /state/{session_id}/{state} : Start or stop an escape-room instance Starts or stops an escape-room instance
+     * PUT /state/{escape_room_session_id}/{state} : Start or stop an escape-room instance Starts or stops an
+     * escape-room instance
      *
-     * @param sessionId
+     * @param escapeRoomSessionId
      *            The id of the escape-room instance (required)
      * @param state
      *            The state to set (required)
@@ -73,13 +67,13 @@ public interface ManagementApi {
     @Operation(operationId = "toggleERInstanceState", summary = "Start or stop an escape-room instance", description = "Starts or stops an escape-room instance", tags = {
             "management" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/state/{session_id}/{state}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/state/{escape_room_session_id}/{state}", produces = {
             "application/json" })
 
     default ResponseEntity<SessionResponse> toggleERInstanceState(
-            @Parameter(name = "session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("session_id") UUID sessionId,
+            @Parameter(name = "escape_room_session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") UUID escapeRoomSessionId,
             @Parameter(name = "state", description = "The state to set", required = true, in = ParameterIn.PATH) @PathVariable("state") EscapeRoomState state) {
-        return getDelegate().toggleERInstanceState(sessionId, state);
+        return getDelegate().toggleERInstanceState(escapeRoomSessionId, state);
     }
 
 }

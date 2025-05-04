@@ -5,12 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.*;
-import jakarta.validation.Valid;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
@@ -26,9 +21,10 @@ public interface TagsApiDelegate {
     }
 
     /**
-     * PUT /tag/{session_id}/{tag_name} : Add a tag to an escape-room instance Add a tag to an escape-room instance
+     * PUT /tag/{escape_room_session_id}/{tag_name} : Add a tag to an escape-room instance Add a tag to an escape-room
+     * instance
      *
-     * @param sessionId
+     * @param escapeRoomSessionId
      *            The ID of the escape room session (required)
      * @param tagName
      *            The name of the tag to remove (required)
@@ -37,11 +33,11 @@ public interface TagsApiDelegate {
      *
      * @see TagsApi#addERTag
      */
-    default ResponseEntity<SessionResponse> addERTag(String sessionId, String tagName) {
+    default ResponseEntity<SessionResponse> addERTag(String escapeRoomSessionId, String tagName) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
+                    String exampleString = "{ \"room_pin\" : 420666, \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -52,10 +48,10 @@ public interface TagsApiDelegate {
     }
 
     /**
-     * DELETE /tag/{session_id}/{tag_name} : Remove a tag from an escape-room instance Remove a tag from an escape-room
-     * instance
+     * DELETE /tag/{escape_room_session_id}/{tag_name} : Remove a tag from an escape-room instance Remove a tag from an
+     * escape-room instance
      *
-     * @param sessionId
+     * @param escapeRoomSessionId
      *            The ID of the escape room session (required)
      * @param tagName
      *            The name of the tag to remove (required)
@@ -64,11 +60,11 @@ public interface TagsApiDelegate {
      *
      * @see TagsApi#deleteERTag
      */
-    default ResponseEntity<SessionResponse> deleteERTag(String sessionId, String tagName) {
+    default ResponseEntity<SessionResponse> deleteERTag(String escapeRoomSessionId, String tagName) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
+                    String exampleString = "{ \"room_pin\" : 420666, \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

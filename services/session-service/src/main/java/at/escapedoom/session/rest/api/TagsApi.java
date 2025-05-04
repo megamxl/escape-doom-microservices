@@ -6,26 +6,17 @@
 package at.escapedoom.session.rest.api;
 
 import at.escapedoom.session.rest.model.SessionResponse;
-import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
 import jakarta.annotation.Generated;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", comments = "Generator version: 7.11.0")
@@ -39,9 +30,10 @@ public interface TagsApi {
     }
 
     /**
-     * PUT /tag/{session_id}/{tag_name} : Add a tag to an escape-room instance Add a tag to an escape-room instance
+     * PUT /tag/{escape_room_session_id}/{tag_name} : Add a tag to an escape-room instance Add a tag to an escape-room
+     * instance
      *
-     * @param sessionId
+     * @param escapeRoomSessionId
      *            The ID of the escape room session (required)
      * @param tagName
      *            The name of the tag to remove (required)
@@ -52,20 +44,20 @@ public interface TagsApi {
             "tags" }, responses = {
                     @ApiResponse(responseCode = "200", description = "The tag was added to the escape room", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/tag/{session_id}/{tag_name}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/tag/{escape_room_session_id}/{tag_name}", produces = {
             "application/json" })
 
     default ResponseEntity<SessionResponse> addERTag(
-            @Parameter(name = "session_id", description = "The ID of the escape room session", required = true, in = ParameterIn.PATH) @PathVariable("session_id") String sessionId,
+            @Parameter(name = "escape_room_session_id", description = "The ID of the escape room session", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") String escapeRoomSessionId,
             @Parameter(name = "tag_name", description = "The name of the tag to remove", required = true, in = ParameterIn.PATH) @PathVariable("tag_name") String tagName) {
-        return getDelegate().addERTag(sessionId, tagName);
+        return getDelegate().addERTag(escapeRoomSessionId, tagName);
     }
 
     /**
-     * DELETE /tag/{session_id}/{tag_name} : Remove a tag from an escape-room instance Remove a tag from an escape-room
-     * instance
+     * DELETE /tag/{escape_room_session_id}/{tag_name} : Remove a tag from an escape-room instance Remove a tag from an
+     * escape-room instance
      *
-     * @param sessionId
+     * @param escapeRoomSessionId
      *            The ID of the escape room session (required)
      * @param tagName
      *            The name of the tag to remove (required)
@@ -76,13 +68,13 @@ public interface TagsApi {
             "tags" }, responses = {
                     @ApiResponse(responseCode = "200", description = "The tag was added to the escape room", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/tag/{session_id}/{tag_name}", produces = {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/tag/{escape_room_session_id}/{tag_name}", produces = {
             "application/json" })
 
     default ResponseEntity<SessionResponse> deleteERTag(
-            @Parameter(name = "session_id", description = "The ID of the escape room session", required = true, in = ParameterIn.PATH) @PathVariable("session_id") String sessionId,
+            @Parameter(name = "escape_room_session_id", description = "The ID of the escape room session", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") String escapeRoomSessionId,
             @Parameter(name = "tag_name", description = "The name of the tag to remove", required = true, in = ParameterIn.PATH) @PathVariable("tag_name") String tagName) {
-        return getDelegate().deleteERTag(sessionId, tagName);
+        return getDelegate().deleteERTag(escapeRoomSessionId, tagName);
     }
 
 }
