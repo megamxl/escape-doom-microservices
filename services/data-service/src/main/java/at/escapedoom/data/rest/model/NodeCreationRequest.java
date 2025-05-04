@@ -2,12 +2,10 @@ package at.escapedoom.data.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.data.rest.model.NodeInfoDTO;
-import at.escapedoom.data.rest.model.NodeType;
+import at.escapedoom.data.rest.model.NodeDTONodeSpecifics;
 import at.escapedoom.data.rest.model.PositionDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -32,9 +30,11 @@ public class NodeCreationRequest {
 
     private @Nullable String sceneId;
 
-    private @Nullable NodeType nodeType;
+    private @Nullable String description;
 
-    private @Nullable NodeInfoDTO nodeInfo;
+    private @Nullable String title;
+
+    private @Nullable NodeDTONodeSpecifics nodeSpecifics;
 
     private @Nullable PositionDTO position;
 
@@ -59,46 +59,67 @@ public class NodeCreationRequest {
         this.sceneId = sceneId;
     }
 
-    public NodeCreationRequest nodeType(NodeType nodeType) {
-        this.nodeType = nodeType;
+    public NodeCreationRequest description(String description) {
+        this.description = description;
         return this;
     }
 
     /**
-     * Get nodeType
+     * The description of the node
      *
-     * @return nodeType
+     * @return description
      */
-    @Valid
-    @Schema(name = "node_type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("node_type")
-    public NodeType getNodeType() {
-        return nodeType;
+
+    @Schema(name = "description", example = "This is a story node", description = "The description of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
     }
 
-    public void setNodeType(NodeType nodeType) {
-        this.nodeType = nodeType;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public NodeCreationRequest nodeInfo(NodeInfoDTO nodeInfo) {
-        this.nodeInfo = nodeInfo;
+    public NodeCreationRequest title(String title) {
+        this.title = title;
         return this;
     }
 
     /**
-     * Get nodeInfo
+     * The display title of the node
      *
-     * @return nodeInfo
+     * @return title
      */
-    @Valid
-    @Schema(name = "node_info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("node_info")
-    public NodeInfoDTO getNodeInfo() {
-        return nodeInfo;
+
+    @Schema(name = "title", example = "I like cheese", description = "The display title of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("title")
+    public String getTitle() {
+        return title;
     }
 
-    public void setNodeInfo(NodeInfoDTO nodeInfo) {
-        this.nodeInfo = nodeInfo;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public NodeCreationRequest nodeSpecifics(NodeDTONodeSpecifics nodeSpecifics) {
+        this.nodeSpecifics = nodeSpecifics;
+        return this;
+    }
+
+    /**
+     * Get nodeSpecifics
+     *
+     * @return nodeSpecifics
+     */
+    @Valid
+    @Schema(name = "node_specifics", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("node_specifics")
+    public NodeDTONodeSpecifics getNodeSpecifics() {
+        return nodeSpecifics;
+    }
+
+    public void setNodeSpecifics(NodeDTONodeSpecifics nodeSpecifics) {
+        this.nodeSpecifics = nodeSpecifics;
     }
 
     public NodeCreationRequest position(PositionDTO position) {
@@ -132,14 +153,15 @@ public class NodeCreationRequest {
         }
         NodeCreationRequest nodeCreationRequest = (NodeCreationRequest) o;
         return Objects.equals(this.sceneId, nodeCreationRequest.sceneId)
-                && Objects.equals(this.nodeType, nodeCreationRequest.nodeType)
-                && Objects.equals(this.nodeInfo, nodeCreationRequest.nodeInfo)
+                && Objects.equals(this.description, nodeCreationRequest.description)
+                && Objects.equals(this.title, nodeCreationRequest.title)
+                && Objects.equals(this.nodeSpecifics, nodeCreationRequest.nodeSpecifics)
                 && Objects.equals(this.position, nodeCreationRequest.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sceneId, nodeType, nodeInfo, position);
+        return Objects.hash(sceneId, description, title, nodeSpecifics, position);
     }
 
     @Override
@@ -147,8 +169,9 @@ public class NodeCreationRequest {
         StringBuilder sb = new StringBuilder();
         sb.append("class NodeCreationRequest {\n");
         sb.append("    sceneId: ").append(toIndentedString(sceneId)).append("\n");
-        sb.append("    nodeType: ").append(toIndentedString(nodeType)).append("\n");
-        sb.append("    nodeInfo: ").append(toIndentedString(nodeInfo)).append("\n");
+        sb.append("    description: ").append(toIndentedString(description)).append("\n");
+        sb.append("    title: ").append(toIndentedString(title)).append("\n");
+        sb.append("    nodeSpecifics: ").append(toIndentedString(nodeSpecifics)).append("\n");
         sb.append("    position: ").append(toIndentedString(position)).append("\n");
         sb.append("}");
         return sb.toString();

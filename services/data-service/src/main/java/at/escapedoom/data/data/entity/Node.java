@@ -30,11 +30,9 @@ public class Node {
     @Embedded
     private Position position;
 
-    @Embedded
-    private NodeInfo nodeInfo;
+    private String description;
 
-    @Enumerated(EnumType.STRING)
-    private NodeType nodeType;
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = SCENE_ID, insertable = false, updatable = false)
@@ -49,8 +47,8 @@ public class Node {
 
     @Override
     public String toString() {
-
-        return "Node{" + "nodeId=" + nodeId + ", nodeType=" + nodeType + ", nodeInfo=" + nodeInfo + ", position"
-                + position + '}';
+        return "Node{" + "nodeId=" + nodeId + ", position=" + position + ", description='" + description + '\''
+                + ", title='" + title + '\'' + ", scene=" + scene + ", sceneId=" + sceneId + ", nodeSpecifics="
+                + nodeSpecifics + '}';
     }
 }

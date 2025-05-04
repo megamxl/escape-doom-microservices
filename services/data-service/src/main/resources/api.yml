@@ -685,20 +685,6 @@ components:
           type: string
           format: uuid
           description: The unique identifier of the node
-        scene_id:
-          type: string
-          format: uuid
-          description: The unique identifier of the scene the node belongs to
-        node_type:
-          $ref: '#/components/schemas/NodeType'
-        node_info:
-          $ref: '#/components/schemas/NodeInfoDTO'
-        position:
-          $ref: '#/components/schemas/PositionDTO'
-    NodeInfoDTO:
-      description: The information of a node
-      type: object
-      properties:
         description:
           type: string
           description: The description of the node
@@ -707,10 +693,19 @@ components:
           type: string
           description: The display title of the node
           example: I like cheese
-        imageURI:
+        scene_id:
           type: string
-          description: The URI of the image to display
-          example: https://example.com/image.png
+          format: uuid
+          description: The unique identifier of the scene the node belongs to
+        node_specifics:
+          type: object
+          description: Depending on the node type, different params should be given
+          properties:
+            node_type:
+              $ref: '#/components/schemas/NodeType'
+          additionalProperties: true
+        position:
+          $ref: '#/components/schemas/PositionDTO'
     PositionDTO:
       description: The position of a node
       type: object
@@ -733,10 +728,21 @@ components:
           type: string
           description: The unique ID of the scene the node belongs to
           example: 241a70fe-47d6-4756-9ac7-330f1b199e84
-        node_type:
-          $ref: '#/components/schemas/NodeType'
-        node_info:
-          $ref: '#/components/schemas/NodeInfoDTO'
+        description:
+          type: string
+          description: The description of the node
+          example: This is a story node
+        title:
+          type: string
+          description: The display title of the node
+          example: I like cheese
+        node_specifics:
+          type: object
+          description: Depending on the node type, different params should be given
+          properties:
+            node_type:
+              $ref: '#/components/schemas/NodeType'
+          additionalProperties: true
         position:
           $ref: '#/components/schemas/PositionDTO'
 

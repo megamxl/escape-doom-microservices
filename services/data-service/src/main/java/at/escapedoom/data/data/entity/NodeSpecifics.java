@@ -1,39 +1,26 @@
 package at.escapedoom.data.data.entity;
 
-import lombok.*;
+import at.escapedoom.data.rest.model.NodeType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class NodeSpecifics {
+@SuperBuilder
+@RequiredArgsConstructor
+@Data
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "node_type")
+@JsonSubTypes({ @JsonSubTypes.Type(value = ConsoleNodeSpecifics.class, name = "CONSOLE"),
+        @JsonSubTypes.Type(value = DetailsNodeSpecifics.class, name = "DETAIL"),
+        @JsonSubTypes.Type(value = ZoomNodeSpecifics.class, name = "ZOOM") })
+public abstract class NodeSpecifics {
 
-    // region ConsoleNode
-    private String return_description;
+    @Enumerated(EnumType.STRING)
+    @JsonIgnore
+    private NodeType nodeType;
 
-    private String constraints;
-
-    private String example;
-    // endregion
-
-    // region ZoomNode
-    private String linked_scene_id;
-    private String parent_scene_id;
-    // endregion
-
-    // region DetailNode
-    // endregion
-
-
-    @Override
-    public String toString() {
-        return "NodeSpecifics{" +
-                "return_description='" + return_description + '\'' +
-                ", constraints='" + constraints + '\'' +
-                ", example='" + example + '\'' +
-                ", linked_scene_id='" + linked_scene_id + '\'' +
-                ", parent_scene_id='" + parent_scene_id + '\'' +
-                '}';
-    }
 }

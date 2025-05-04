@@ -4,6 +4,7 @@ import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.NodeRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.TemplateRepository;
+import at.escapedoom.data.data.entity.ConsoleNodeSpecifics;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
@@ -69,10 +70,8 @@ public class NodeServiceTest {
         sceneId = sceneRepository.save(scene).getSceneId().toString();
 
         final NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeType(NodeType.CONSOLE)
-                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something")
-                        .imageURI("https://example.com/background.png").build())
-                .position(new PositionDTO(20.5, 40.0)).build();
+                .nodeSpecifics(NodeCreationRequestNodeSpecifics.builder().nodeType(NodeType.CONSOLE).build())
+                .title("Something").description("This is a console node").position(new PositionDTO(20.5, 40.0)).build();
 
         nodeId = nodeService.createNode(creationRequest).getNodeId();
     }
@@ -98,9 +97,8 @@ public class NodeServiceTest {
     void testCreateNode() {
 
         final NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeType(NodeType.STORY)
-                .nodeInfo(NodeInfoDTO.builder().description("Test test... 1. 2. 3.").title("If this fails we jails")
-                        .imageURI("https://www.youtube.com/watch?v=dQw4w9WgXcQ").build())
+                .nodeSpecifics(NodeCreationRequestNodeSpecifics.builder().nodeType(NodeType.CONSOLE).build())
+                .description("Test test... 1. 2. 3.").title("If this fails we jails")
                 .position(new PositionDTO(20.5, 40.0)).build();
 
         NodeDTO response = nodeService.createNode(creationRequest);
@@ -134,14 +132,14 @@ public class NodeServiceTest {
 
         updateNode.setNodeType(newType);
         updateNode.getPosition().setTopPercentage(newTopPosition);
-        updateNode.getNodeInfo().setTitle(newTitle);
+        updateNode.setTitle(newTitle);
 
         NodeDTO response = nodeService.updateNode(nodeId.toString(), updateNode);
 
         assertEquals(nodeId, response.getNodeId());
         assertEquals(newType, response.getNodeType());
         assertEquals(newTopPosition, response.getPosition().getTopPercentage());
-        assertEquals(newTitle, response.getNodeInfo().getTitle());
+        assertEquals(newTitle, response.getTitle());
     }
 
     @Test
