@@ -14,12 +14,11 @@ type NodeTypeConfig = {
 
 type NodeV2Props = {
     node: NodeDTO
-    codeSetter: React.Dispatch<React.SetStateAction<string>>
 }
 
-const NodeV2 = ({node, codeSetter}: NodeV2Props) => {
-    const {node_info, node_type, position} = node;
-    const {icon: Icon, styling} = nodeTypeClassMapper[node_type!]
+const NodeV2 = ({node}: NodeV2Props) => {
+    const {position, title, description, node_specifics} = node;
+    const {icon: Icon, styling} = nodeTypeClassMapper[node_specifics?.node_type]
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -41,7 +40,7 @@ const NodeV2 = ({node, codeSetter}: NodeV2Props) => {
             <Dialog open={isOpen} onClose={() => setIsOpen(false)} maxWidth="lg" fullWidth>
                 <DialogContent>
                     <Card className="h-[30vh]">
-                        <CardHeader title={node_info?.title} sx={{ backgroundColor: styling.color }}/>
+                        <CardHeader title={title} sx={{ backgroundColor: styling.color }}/>
                         <Stack direction="row" className="h-full">
                             <CardMedia
                                 component="img"
@@ -51,7 +50,7 @@ const NodeV2 = ({node, codeSetter}: NodeV2Props) => {
                             />
                             <CardContent sx={{width: "100%"}}>
                                 <Typography sx={{verticalAlign: "center"}} fontWeight={"bold"}>
-                                    {node_info?.description}
+                                    {description}
                                 </Typography>
                             </CardContent>
                         </Stack>

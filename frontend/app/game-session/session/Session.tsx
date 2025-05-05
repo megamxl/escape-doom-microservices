@@ -2,7 +2,6 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {StageState} from "@/app/types/game-session/StageState.ts";
-import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody.ts";
 import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
 import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
