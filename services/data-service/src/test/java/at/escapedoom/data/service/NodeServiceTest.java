@@ -70,8 +70,8 @@ public class NodeServiceTest {
         sceneId = sceneRepository.save(scene).getSceneId().toString();
 
         final NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeSpecifics(NodeCreationRequestNodeSpecifics.builder().nodeType(NodeType.CONSOLE).build())
-                .title("Something").description("This is a console node").position(new PositionDTO(20.5, 40.0)).build();
+                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build()).title("Something")
+                .description("This is a console node").position(new PositionDTO(20.5, 40.0)).build();
 
         nodeId = nodeService.createNode(creationRequest).getNodeId();
     }
@@ -97,14 +97,14 @@ public class NodeServiceTest {
     void testCreateNode() {
 
         final NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeSpecifics(NodeCreationRequestNodeSpecifics.builder().nodeType(NodeType.CONSOLE).build())
+                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build())
                 .description("Test test... 1. 2. 3.").title("If this fails we jails")
                 .position(new PositionDTO(20.5, 40.0)).build();
 
         NodeDTO response = nodeService.createNode(creationRequest);
 
         assertNotEquals(nodeId, response.getNodeId());
-        assertEquals(NodeType.STORY, response.getNodeType());
+        assertEquals(NodeType.STORY, response.getNodeSpecifics().getNodeType());
         assertEquals(sceneId, response.getSceneId().toString());
     }
 
@@ -130,14 +130,14 @@ public class NodeServiceTest {
         final double newTopPosition = 66.6;
         final String newTitle = "Lagerregal";
 
-        updateNode.setNodeType(newType);
+        updateNode.nodeSpecifics(NodeSpecificsDTO.builder().nodeType(newType).build());
         updateNode.getPosition().setTopPercentage(newTopPosition);
         updateNode.setTitle(newTitle);
 
         NodeDTO response = nodeService.updateNode(nodeId.toString(), updateNode);
 
         assertEquals(nodeId, response.getNodeId());
-        assertEquals(newType, response.getNodeType());
+        assertEquals(newType, response.getNodeSpecifics().getNodeType());
         assertEquals(newTopPosition, response.getPosition().getTopPercentage());
         assertEquals(newTitle, response.getTitle());
     }

@@ -3,6 +3,7 @@ package at.escapedoom.data.mapper;
 import at.escapedoom.data.data.entity.*;
 import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
+import at.escapedoom.data.rest.model.NodeSpecificsDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mapstruct.*;
@@ -69,14 +70,14 @@ public interface NodeMapper {
     }
 
     @Named("mapNodeSpecToString")
-    default Object mapNodeSpecifics(NodeSpecifics nodeSpecifics) {
+    default NodeSpecificsDTO mapNodeSpecifics(NodeSpecifics nodeSpecifics) {
         if (nodeSpecifics == null) {
             return null;
         }
         try {
-            return new ObjectMapper().writeValueAsString(nodeSpecifics);
-        } catch (JsonProcessingException e) {
-            return null;
+            return new ObjectMapper().convertValue(nodeSpecifics, NodeSpecificsDTO.class);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unable to convert NodeSpecifics to NodeSpecificsDTO", e);
         }
     }
 

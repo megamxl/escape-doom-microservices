@@ -698,12 +698,7 @@ components:
           format: uuid
           description: The unique identifier of the scene the node belongs to
         node_specifics:
-          type: object
-          description: Depending on the node type, different params should be given
-          properties:
-            node_type:
-              $ref: '#/components/schemas/NodeType'
-          additionalProperties: true
+          $ref: '#/components/schemas/NodeSpecificsDTO'
         position:
           $ref: '#/components/schemas/PositionDTO'
     PositionDTO:
@@ -737,16 +732,16 @@ components:
           description: The display title of the node
           example: I like cheese
         node_specifics:
-          type: object
-          description: Depending on the node type, different params should be given
-          properties:
-            node_type:
-              $ref: '#/components/schemas/NodeType'
-          additionalProperties: true
+          $ref: '#/components/schemas/NodeSpecificsDTO'
         position:
           $ref: '#/components/schemas/PositionDTO'
-
-
+    NodeSpecificsDTO:
+      type: object
+      description: Depending on the node type, different params should be given
+      properties:
+        node_type:
+          $ref: '#/components/schemas/NodeType'
+      additionalProperties: true
     # Enums
     CodingLanguage:
       type: string

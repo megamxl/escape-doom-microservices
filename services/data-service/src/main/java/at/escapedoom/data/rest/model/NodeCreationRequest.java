@@ -2,7 +2,7 @@ package at.escapedoom.data.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.data.rest.model.NodeDTONodeSpecifics;
+import at.escapedoom.data.rest.model.NodeSpecificsDTO;
 import at.escapedoom.data.rest.model.PositionDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -34,7 +34,7 @@ public class NodeCreationRequest {
 
     private @Nullable String title;
 
-    private @Nullable NodeDTONodeSpecifics nodeSpecifics;
+    private @Nullable NodeSpecificsDTO nodeSpecifics;
 
     private @Nullable PositionDTO position;
 
@@ -101,7 +101,7 @@ public class NodeCreationRequest {
         this.title = title;
     }
 
-    public NodeCreationRequest nodeSpecifics(NodeDTONodeSpecifics nodeSpecifics) {
+    public NodeCreationRequest nodeSpecifics(NodeSpecificsDTO nodeSpecifics) {
         this.nodeSpecifics = nodeSpecifics;
         return this;
     }
@@ -114,11 +114,11 @@ public class NodeCreationRequest {
     @Valid
     @Schema(name = "node_specifics", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("node_specifics")
-    public NodeDTONodeSpecifics getNodeSpecifics() {
+    public NodeSpecificsDTO getNodeSpecifics() {
         return nodeSpecifics;
     }
 
-    public void setNodeSpecifics(NodeDTONodeSpecifics nodeSpecifics) {
+    public void setNodeSpecifics(NodeSpecificsDTO nodeSpecifics) {
         this.nodeSpecifics = nodeSpecifics;
     }
 
