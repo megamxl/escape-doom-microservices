@@ -34,13 +34,7 @@ public class RiddleDTO {
 
     private @Nullable CodingLanguage language;
 
-    private @Nullable String functionSignature;
-
-    private @Nullable String input;
-
-    private @Nullable String variableName;
-
-    private @Nullable String expectedOutput;
+    private @Nullable String function;
 
     public RiddleDTO riddleId(String riddleId) {
         this.riddleId = riddleId;
@@ -105,88 +99,25 @@ public class RiddleDTO {
         this.language = language;
     }
 
-    public RiddleDTO functionSignature(String functionSignature) {
-        this.functionSignature = functionSignature;
+    public RiddleDTO function(String function) {
+        this.function = function;
         return this;
     }
 
     /**
      * The function signature
      *
-     * @return functionSignature
+     * @return function
      */
 
-    @Schema(name = "function_signature", example = "public static int sum(int a, int b)", description = "The function signature", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("function_signature")
-    public String getFunctionSignature() {
-        return functionSignature;
+    @Schema(name = "function", example = "public static int sum(int a, int b) ", description = "The function signature", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("function")
+    public String getFunction() {
+        return function;
     }
 
-    public void setFunctionSignature(String functionSignature) {
-        this.functionSignature = functionSignature;
-    }
-
-    public RiddleDTO input(String input) {
-        this.input = input;
-        return this;
-    }
-
-    /**
-     * The input values for the function
-     *
-     * @return input
-     */
-
-    @Schema(name = "input", example = "2, 3", description = "The input values for the function", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("input")
-    public String getInput() {
-        return input;
-    }
-
-    public void setInput(String input) {
-        this.input = input;
-    }
-
-    public RiddleDTO variableName(String variableName) {
-        this.variableName = variableName;
-        return this;
-    }
-
-    /**
-     * The name of the variable to compare
-     *
-     * @return variableName
-     */
-
-    @Schema(name = "variable_name", example = "result", description = "The name of the variable to compare", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("variable_name")
-    public String getVariableName() {
-        return variableName;
-    }
-
-    public void setVariableName(String variableName) {
-        this.variableName = variableName;
-    }
-
-    public RiddleDTO expectedOutput(String expectedOutput) {
-        this.expectedOutput = expectedOutput;
-        return this;
-    }
-
-    /**
-     * The expected output of the riddle
-     *
-     * @return expectedOutput
-     */
-
-    @Schema(name = "expected_output", example = "42", description = "The expected output of the riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("expected_output")
-    public String getExpectedOutput() {
-        return expectedOutput;
-    }
-
-    public void setExpectedOutput(String expectedOutput) {
-        this.expectedOutput = expectedOutput;
+    public void setFunction(String function) {
+        this.function = function;
     }
 
     @Override
@@ -200,15 +131,12 @@ public class RiddleDTO {
         RiddleDTO riddleDTO = (RiddleDTO) o;
         return Objects.equals(this.riddleId, riddleDTO.riddleId) && Objects.equals(this.levelId, riddleDTO.levelId)
                 && Objects.equals(this.language, riddleDTO.language)
-                && Objects.equals(this.functionSignature, riddleDTO.functionSignature)
-                && Objects.equals(this.input, riddleDTO.input)
-                && Objects.equals(this.variableName, riddleDTO.variableName)
-                && Objects.equals(this.expectedOutput, riddleDTO.expectedOutput);
+                && Objects.equals(this.function, riddleDTO.function);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(riddleId, levelId, language, functionSignature, input, variableName, expectedOutput);
+        return Objects.hash(riddleId, levelId, language, function);
     }
 
     @Override
@@ -218,10 +146,7 @@ public class RiddleDTO {
         sb.append("    riddleId: ").append(toIndentedString(riddleId)).append("\n");
         sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("    language: ").append(toIndentedString(language)).append("\n");
-        sb.append("    functionSignature: ").append(toIndentedString(functionSignature)).append("\n");
-        sb.append("    input: ").append(toIndentedString(input)).append("\n");
-        sb.append("    variableName: ").append(toIndentedString(variableName)).append("\n");
-        sb.append("    expectedOutput: ").append(toIndentedString(expectedOutput)).append("\n");
+        sb.append("    function: ").append(toIndentedString(function)).append("\n");
         sb.append("}");
         return sb.toString();
     }

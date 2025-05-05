@@ -1,7 +1,10 @@
 package at.escapedoom.player.service;
 
+import at.escapedoom.player.data.postgres.entity.SolutionAttempt;
 import at.escapedoom.player.data.postgres.entity.UserProgress;
+import at.escapedoom.player.data.postgres.repository.SolutionAttemptRepository;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
+import at.escapedoom.player.rest.model.EscapeRoomResult;
 import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
 import at.escapedoom.player.rest.model.LevelDTO;
 import at.escapedoom.player.service.interfaces.CodeCompilerInterface;
@@ -14,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,6 +28,7 @@ public class GamePlayService {
     private final UserProgressRepository userProgressRepository;
     private final EscapeRoomTemplateRepositoryService escapeRoomTemplateRepositoryService;
     private final CodeCompilerInterface codeCompilerInterface;
+    private final SolutionAttemptRepository solutionAttemptRepository;
 
     private final SessionViewRepository sessionViewRepository;
 
@@ -47,6 +52,28 @@ public class GamePlayService {
 
     public void submitSolutionAttempt(UUID userIdentifier, EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
         codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
+    }
+
+    public EscapeRoomResult getResultsByUserIdentifier(UUID userIdentifier) {
+
+        Optional<SolutionAttempt> byPlayerUUID = solutionAttemptRepository.findByPlayerUUID(userIdentifier);
+
+        if(byPlayerUUID.isEmpty()){
+            throw new NoSuchElementException("Can't find user resubmit Code" + userIdentifier);
+        }
+
+        //TODO check if won
+
+        EscapeRoomResult build = EscapeRoomResult.builder()
+                .status(byPlayerUUID.get().getStatus())
+                .output(byPlayerUUID.get().getOutput())
+                .build();
+
+        if (byPlayerUUID.get().getStatus() != EscapeRoomResult.StatusEnum.WAITING) {
+            solutionAttemptRepository.deleteById(byPlayerUUID.get().getSolutionAttemptId());
+        }
+
+        return build;
     }
 
 }

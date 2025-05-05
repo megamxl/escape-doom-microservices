@@ -13,5 +13,6 @@ public interface LevelDtoToRestResponse {
     LevelDtoToRestResponse levelMapper = Mappers.getMapper(LevelDtoToRestResponse.class);
 
     // @Mapping(source = "scenes.nodes.position", target = "scenes.nodes.position")
+    @Mapping(target = "riddle", ignore = true)
     at.escapedoom.player.rest.model.LevelDTO toRest(LevelDTO levelDTO);
 }
