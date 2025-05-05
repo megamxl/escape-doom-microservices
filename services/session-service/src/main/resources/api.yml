@@ -217,6 +217,11 @@ components:
           maximum: 180
           default: 60
           example: 60
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the escape-room session was created
+          example: "2025-04-06T14:30:00Z"
         room_pin:
           type: integer
           description: The pin to join the escape-room

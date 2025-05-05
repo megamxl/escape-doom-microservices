@@ -1,5 +1,6 @@
 package at.escapedoom.player.service.delegates;
 
+import at.escapedoom.player.data.postgres.entity.SolutionAttempt;
 import at.escapedoom.player.rest.api.LevelApiDelegate;
 import at.escapedoom.player.rest.model.EscapeRoomLevel;
 import at.escapedoom.player.rest.model.EscapeRoomResult;
@@ -36,13 +37,16 @@ public class GamePlayDelegateService implements LevelApiDelegate {
 
     @Override
     public ResponseEntity<EscapeRoomResult> getLevelResult(UUID playerSessionId) {
-        return LevelApiDelegate.super.getLevelResult(playerSessionId);
+        EscapeRoomResult resultsByUserIdentifier = gamePlayService.getResultsByUserIdentifier(playerSessionId);
+
+        return new ResponseEntity<>(resultsByUserIdentifier, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Void> submitSolutionAttemptForCurrentLevel(UUID playerSessionId,
             EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
-        return LevelApiDelegate.super.submitSolutionAttemptForCurrentLevel(playerSessionId,
-                escapeRoomSolutionSubmition);
+
+        gamePlayService.submitSolutionAttempt(playerSessionId, escapeRoomSolutionSubmition);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

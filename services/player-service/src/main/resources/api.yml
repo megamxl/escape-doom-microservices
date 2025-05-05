@@ -349,22 +349,10 @@ components:
           example: "a12b34c5-6789-4def-abcd-12345678abcd"
         language:
           $ref: "#/components/schemas/CodingLanguage"
-        function_signature:
+        function:
           type: string
           description: The function signature
-          example: "public static int sum(int a, int b)"
-        input:
-          type: string
-          description: The input values for the function
-          example: "2, 3"
-        variable_name:
-          type: string
-          description: The name of the variable to compare
-          example: "result"
-        expected_output:
-          type: string
-          description: The expected output of the riddle
-          example: "42"
+          example: "public static int sum(int a, int b) "
     # Enums
     CodingLanguage:
       type: string

@@ -59,8 +59,8 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                     onDone(created)
                     handleClose()
                 },
-                onError: () => {
-
+                onError: (e) => {
+                    console.error(e)
                 }
             }
         )
