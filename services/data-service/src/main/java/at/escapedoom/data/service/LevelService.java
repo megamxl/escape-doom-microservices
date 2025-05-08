@@ -4,6 +4,7 @@ import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.data.entity.Scene;
+import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.mapper.LevelMapper;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
@@ -85,7 +86,14 @@ public class LevelService {
         Level level = repository.findById(levelUUID)
                 .orElseThrow(() -> new NoSuchElementException("Level with ID " + levelId + " not found"));
 
+        Template template = level.getTemplate();
+        if (template != null) {
+            template.getLevel().remove(level);
+        }
+
         repository.delete(level);
+        repository.flush();
+
         return new DeleteLevelSuccessDTO().message("Level deleted successfully");
     }
 

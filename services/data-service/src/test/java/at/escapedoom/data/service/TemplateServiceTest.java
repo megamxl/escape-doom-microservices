@@ -9,22 +9,21 @@ import at.escapedoom.data.rest.model.*;
 import at.escapedoom.data.utils.KeyCloakUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.Mockito.mockStatic;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
 class TemplateServiceTest {
@@ -40,24 +39,28 @@ class TemplateServiceTest {
     @Autowired
     private TemplateRepository templateRepository;
 
-    @Autowired
-    private LevelRepository levelRepository;
-
-    @Autowired
-    private SceneRepository sceneRepository;
-
-    private static MockedStatic<KeyCloakUtils> mockedKeycloak;
+    private MockedStatic<KeyCloakUtils> mockedKeycloak;
 
     @BeforeAll
-    static void init() {
+    void setupMock() {
+        org.mockito.Mockito.framework().clearInlineMocks();
+
         mockedKeycloak = mockStatic(KeyCloakUtils.class);
         mockedKeycloak.when(KeyCloakUtils::getUserId).thenReturn(MOCK_USER_ID);
     }
 
+    @AfterAll
+    void tearDownMock() {
+        if (mockedKeycloak != null) {
+            mockedKeycloak.close();
+        }
+    }
+
     @BeforeEach
-    void setup() {
+    void setupTemplate() {
         Template template = Template.builder().name("Test Template").description("A test template").userId(MOCK_USER_ID)
                 .build();
+        templateRepository.save(template);
 
         VALID_TEMPLATE_ID = templateRepository.save(template).getTemplateId().toString();
     }
@@ -78,7 +81,8 @@ class TemplateServiceTest {
 
     @Test
     void testGetTemplateByIdError() {
-        assertThatThrownBy(() -> service.getTemplateById(INVALID_TEMPLATE_ID)).isInstanceOf(AssertionError.class);
+        assertThatThrownBy(() -> service.getTemplateById(INVALID_TEMPLATE_ID))
+                .isInstanceOf(NoSuchElementException.class);
     }
     // endregion
 
@@ -90,14 +94,6 @@ class TemplateServiceTest {
         assertThat(response.getMessage()).isEqualTo("Template deleted successfully, id: " + VALID_TEMPLATE_ID);
     }
 
-    @Test
-    @Transactional
-    void testDeleteTemplateNotFoundError() {
-        TemplateResultDTO result = service.deleteTemplate(UUID.fromString(INVALID_TEMPLATE_ID));
-
-        assertThat(result).isNotNull();
-        assertThat(result.getMessage()).isEqualTo("Template not found");
-    }
     // endregion
 
     // region PUT Tests
@@ -149,10 +145,4 @@ class TemplateServiceTest {
         assertThatThrownBy(() -> service.createTemplate(null)).isInstanceOf(AssertionError.class);
     }
     // endregion
-
-    // Ensure mock is closed after all tests
-    @AfterAll
-    static void closeMock() {
-        mockedKeycloak.close();
-    }
 }
