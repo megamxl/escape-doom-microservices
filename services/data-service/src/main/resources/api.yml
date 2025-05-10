@@ -742,6 +742,50 @@ components:
         node_type:
           $ref: '#/components/schemas/NodeType'
       additionalProperties: true
+    ConsoleNodeSpecificsDTO:
+      description: Console node specifics - Used for the frontend type-safety
+      allOf:
+        - $ref: '#/components/schemas/NodeSpecificsDTO'
+      type: object
+      properties:
+        return_description:
+          type: string
+          description: Description about the input properties
+          example: 'moves: The list of moves available'
+        constraints:
+          type: string
+          description: Any code-details helpful for the user
+          example: moves[] = UP | DOWN
+        example:
+          type: string
+          description: A code-example in somewhat human-readable form
+          example: '[ "UP", "DOWN", "UP" ]'
+    DetailsNodeSpecificsDTO:
+      description: Detail node specifics - Used for the frontend type-safety
+      allOf:
+        - $ref: '#/components/schemas/NodeSpecificsDTO'
+      type: object
+      properties:
+        image_uri:
+          type: string
+          description: A Web-URL to the Image
+          example: https://example.com/background.png
+    ZoomNodeSpecificsDTO:
+      description: Detail node specifics - Used for the frontend type-safety
+      allOf:
+        - $ref: '#/components/schemas/NodeSpecificsDTO'
+      type: object
+      properties:
+        linked_scene_id:
+          type: string
+          format: uuid
+          description: The scene_id of the scene the node links to
+          example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
+        parent_scene_id:
+          type: string
+          format: uuid
+          description: The scene_id of the parent it should return to
+          example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
     # Enums
     CodingLanguage:
       type: string

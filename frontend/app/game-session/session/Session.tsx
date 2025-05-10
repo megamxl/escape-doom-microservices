@@ -20,7 +20,7 @@ import {
     useGetLevelResultHook,
     useSubmitSolutionAttemptForCurrentLevelHook
 } from "@/app/gen/player";
-import NodeV2 from "@/app/game-session/session/_components/NodeV2.tsx";
+import Node from "@/app/game-session/session/_components/nodes/Node.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
 import {session_id_key} from "@/app/utils/Constants.ts";
 import ErrorDisplayCard, {ErrorDetails} from "@/app/game-session/session/_components/ErrorDisplayCard.tsx";
@@ -130,7 +130,7 @@ const Session = () => {
 
     }
 
-    const handleCodeChange = (value: any) => {
+    const handleCodeChange = (value: string) => {
         setCode(value)
         setSubmittedCodeBody({
             "playerSessionId": sessionID,
@@ -249,7 +249,7 @@ const Session = () => {
                     //@ts-ignore
                     stageInformation?.scenes[0]?.nodes.map((node) => {
                         return (
-                            <NodeV2 key={node.node_id} node={node} codeSetter={setCode}/>
+                            <Node key={node.node_id} node={node} />
                         )
                     })
                 }
