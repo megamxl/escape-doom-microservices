@@ -99,7 +99,7 @@ public class EscapeRoomSessionService {
     }
 
     @NotNull
-    private EscapeRoomSession saveAndChacheSession(EscapeRoomSession session) {
+    public EscapeRoomSession saveAndChacheSession(EscapeRoomSession session) {
         EscapeRoomSession persistedSession = repository.save(session);
         sessionViewPublisher(persistedSession);
         return persistedSession;
