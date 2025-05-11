@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS level (
                                      template_id UUID,
                                      level_sequence INT,
                                      name VARCHAR(255),
-                                     version INT,
-                                     CONSTRAINT fk_level_template FOREIGN KEY (template_id) REFERENCES template(template_id) ON DELETE CASCADE
+    version INT,
+    CONSTRAINT fk_level_template FOREIGN KEY (template_id) REFERENCES template(template_id) ON DELETE CASCADE
     );
 
 CREATE TABLE IF NOT EXISTS riddle (
