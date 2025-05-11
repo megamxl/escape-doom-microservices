@@ -4,7 +4,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {StageState} from "@/app/types/game-session/StageState.ts";
 import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody.ts";
 import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
-import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
+import {Avatar, Box, CircularProgress, FormControl, MenuItem, Select, Stack, Tooltip, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
 import {PlayArrow} from "@mui/icons-material";
 import Editor from '@monaco-editor/react';
@@ -23,19 +23,32 @@ import {
 } from "@/app/gen/player";
 import NodeV2 from "@/app/game-session/session/_components/NodeV2.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
-import {session_id_key} from "@/app/utils/Constants.ts";
+import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
 import ErrorDisplayCard, {ErrorDetails} from "@/app/game-session/session/_components/ErrorDisplayCard.tsx";
+import {deepOrange} from "@mui/material/colors";
 
 const Session = () => {
 
     const [sessionID, setSessionID] = useState("")
+    const [playerName, setPlayerName] = useState({
+        short: "",
+        long: ""
+    })
 
     useEffect(() => {
 
         const sessionStorageItem = getSessionStorageItem(session_id_key);
+        const palyername = getSessionStorageItem(player_name_key);
 
         if (sessionStorageItem !== null) {
             setSessionID(sessionStorageItem)
+        }
+
+        if (palyername !== null && palyername !== "") {
+            //TODO check empty player name or short name
+            setPlayerName(
+                {short: palyername.slice(0,1).toUpperCase(), long: palyername}
+            )
             return
         }
 
@@ -195,6 +208,10 @@ const Session = () => {
                                 }
                             </Select>
                         </FormControl>
+
+                        <Tooltip title={playerName.long}  arrow>
+                            <Avatar sx={{ml: "auto"}}>{playerName.short}</Avatar>
+                        </Tooltip>
                     </Stack>
                 </EditorContainer>
                 <EditorContainer sx={{flexGrow: 1, flexShrink: 1}}>
