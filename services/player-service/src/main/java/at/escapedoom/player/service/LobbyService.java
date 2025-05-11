@@ -43,7 +43,13 @@ public class LobbyService {
         UserProgress newUser = createAndInitializeAUserObject(roomPin, playerName,
                 sessionView.getEscapeRoomTemplateId());
 
-        UserProgress persistedUser = userProgressRepository.save(newUser);
+        UserProgress persistedUser;
+        try {
+             persistedUser = userProgressRepository.save(newUser);
+        }catch (Exception e) {
+            log.trace("Could not save user with username {} and the identifier {}", newUser.getUserName(), newUser.getUserIdentifier(), e);
+            throw new IllegalArgumentException("The username you entered is already taken");
+        }
 
         log.info("Saved user with Username {} and the identifier {} in room with roomPin {}",
                 persistedUser.getUserName(), persistedUser.getUserIdentifier(), persistedUser.getRoomPin());
