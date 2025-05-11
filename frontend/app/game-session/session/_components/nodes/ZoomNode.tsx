@@ -2,16 +2,24 @@ import React from 'react';
 import IconButton from "@mui/material/IconButton";
 import {NodeDTO} from "@/app/gen/player";
 import {purple} from "@mui/material/colors";
-import {Visibility} from "@mui/icons-material";
+import {Reply, Visibility} from "@mui/icons-material";
 import {ZoomNodeSpecificsDTO} from "@/app/gen/data";
 
-const ZoomNode = ({node}: {node: NodeDTO}) => {
+type ZoomNodeProps = {
+    node: NodeDTO
+    onZoomChangeScene?: (targetSceneId: string) => void
+}
+
+const ZoomNode = ({node, onZoomChangeScene}: ZoomNodeProps) => {
     const position = node.position
     const zoomSpecifics = node.node_specifics as ZoomNodeSpecificsDTO
 
     const changeScene = () => {
-        console.log('ZoomSpecifics: ', zoomSpecifics)
-        //TODO: Make redirect call and load new scene - Probably new endpoint needed
+        if (onZoomChangeScene && zoomSpecifics.linked_scene_id) {
+            onZoomChangeScene(zoomSpecifics.linked_scene_id)
+        } else {
+            console.warn("Target scene ID not provided or callback missing.")
+        }
     }
 
     return (
@@ -27,7 +35,7 @@ const ZoomNode = ({node}: {node: NodeDTO}) => {
                 width: "clamp(1.5rem, 2vw, 3rem)",
                 height: "clamp(1.5rem, 2vw, 3rem)"
             }}>
-            <Visibility />
+            { zoomSpecifics.linked_scene_id === null || undefined ? <Reply /> : <Visibility/> }
         </IconButton>
     );
 };

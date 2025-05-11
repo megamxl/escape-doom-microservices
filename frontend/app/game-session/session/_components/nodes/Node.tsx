@@ -18,12 +18,13 @@ type NodeTypeConfig = {
 type NodeV2Props = {
     node: NodeDTO
     children?: ReactNode
+    onZoomChangeScene?: (targetSceneId: string) => void
 }
 
-const Node = ({node}: NodeV2Props) => {
+const Node = ({node, onZoomChangeScene}: NodeV2Props) => {
     if (node.node_specifics?.node_type === undefined) return;
 
-    if (node.node_specifics.node_type === "ZOOM") return <ZoomNode node={node}/>
+    if (node.node_specifics.node_type === "ZOOM") return <ZoomNode node={node} onZoomChangeScene={onZoomChangeScene}/>
 
     return (
         <BaseNode node={node}>
