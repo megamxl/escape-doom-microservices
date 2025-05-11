@@ -142,6 +142,33 @@ paths:
                     example: 404
         '500':
           $ref: '#/components/responses/InternalServerError'
+  /templates/{template-id}/ready:
+    get:
+      operationId: getReadyEscapeRoom
+      tags:
+        - Template
+      summary: Get fully assembled Escape Room
+      description: Returns a full escape room including all levels, scenes, riddles, and nodes for a given template.
+      parameters:
+        - name: template-id
+          in: path
+          required: true
+          description: The ID of the escape room template
+          schema:
+            type: string
+            example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
+      responses:
+        '200':
+          description: Fully assembled escape room
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyEscapeRoomDTO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   ### Level
   /levels:
     get:
@@ -972,6 +999,38 @@ components:
           type: string
           description: The name of the scene
           example: "Scene 1"
+
+    ReadyEscapeRoomDTO:
+      description: A complete and playable escape room
+      type: object
+      properties:
+        template:
+          $ref: '#/components/schemas/TemplateDTO'
+        levels:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadyLevelDTO'
+
+    ReadyLevelDTO:
+      type: object
+      properties:
+        level:
+          $ref: '#/components/schemas/LevelDTO'
+        scenes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadySceneDTO'
+
+    ReadySceneDTO:
+      type: object
+      properties:
+        scene:
+          $ref: '#/components/schemas/SceneDTO'
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeDTO'
+
   responses:
     BadRequest:
       description: Bad Request

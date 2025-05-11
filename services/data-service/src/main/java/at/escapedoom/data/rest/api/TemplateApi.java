@@ -9,6 +9,7 @@ import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
 import at.escapedoom.data.rest.model.GetTemplateNotFoundDTO;
+import at.escapedoom.data.rest.model.ReadyEscapeRoomDTO;
 import at.escapedoom.data.rest.model.TemplateCreateRequestDTO;
 import at.escapedoom.data.rest.model.TemplateDTO;
 import at.escapedoom.data.rest.model.TemplateResultDTO;
@@ -115,6 +116,32 @@ public interface TemplateApi {
 
     ) {
         return getDelegate().getAllTemplates();
+    }
+
+    /**
+     * GET /templates/{template-id}/ready : Get fully assembled Escape Room Returns a full escape room including all
+     * levels, scenes, riddles, and nodes for a given template.
+     *
+     * @param templateId
+     *            The ID of the escape room template (required)
+     *
+     * @return Fully assembled escape room (status code 200) or Not Found (status code 404) or Internal Server Error
+     *         (status code 500)
+     */
+    @Operation(operationId = "getReadyEscapeRoom", summary = "Get fully assembled Escape Room", description = "Returns a full escape room including all levels, scenes, riddles, and nodes for a given template.", tags = {
+            "Template" }, responses = {
+                    @ApiResponse(responseCode = "200", description = "Fully assembled escape room", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = ReadyEscapeRoomDTO.class)) }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/templates/{template-id}/ready", produces = {
+            "application/json" })
+
+    default ResponseEntity<ReadyEscapeRoomDTO> getReadyEscapeRoom(
+            @Parameter(name = "template-id", description = "The ID of the escape room template", required = true, in = ParameterIn.PATH) @PathVariable("template-id") String templateId) {
+        return getDelegate().getReadyEscapeRoom(templateId);
     }
 
     /**

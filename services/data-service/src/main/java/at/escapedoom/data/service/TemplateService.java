@@ -8,6 +8,7 @@ import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.mapper.TemplateMapper;
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.utils.UuidUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.NonNull;
@@ -77,7 +78,7 @@ public class TemplateService {
     }
 
     public TemplateDTO getTemplateById(String templateId) {
-        UUID id = validateUUID(templateId);
+        UUID id = UuidUtils.validateUUID(templateId);
 
         Optional<Template> entityOpt = templateRepository.findById(id);
         assert entityOpt.isPresent();
@@ -87,7 +88,7 @@ public class TemplateService {
     public TemplateUpdateResultDTO updateTemplate(String templateId, TemplateUpdateRequestDTO request) {
         log.debug("Updating template with ID: {}", templateId);
 
-        UUID id = validateUUID(templateId);
+        UUID id = UuidUtils.validateUUID(templateId);
 
         Template template = templateRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Template with ID " + templateId + " not found"));
@@ -103,14 +104,5 @@ public class TemplateService {
         templateRepository.save(template);
 
         return TemplateUpdateResultDTO.builder().message("Template updated successfully").build();
-    }
-
-    private UUID validateUUID(String templateId) {
-        try {
-            return UUID.fromString(templateId);
-        } catch (IllegalArgumentException e) {
-            log.error("Invalid UUID format: {}", templateId);
-            throw new IllegalArgumentException("Invalid UUID format");
-        }
     }
 }

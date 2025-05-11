@@ -4,6 +4,7 @@ import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
 import at.escapedoom.data.rest.model.GetTemplateNotFoundDTO;
+import at.escapedoom.data.rest.model.ReadyEscapeRoomDTO;
 import at.escapedoom.data.rest.model.TemplateCreateRequestDTO;
 import at.escapedoom.data.rest.model.TemplateDTO;
 import at.escapedoom.data.rest.model.TemplateResultDTO;
