@@ -1,4 +1,9 @@
 spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: data_schema
+    baseline-on-migrate: true
   datasource:
     url: jdbc:postgresql://localhost:5432/main
     username: dataapi
@@ -29,3 +34,7 @@ management:
       exposure:
         include: "*"
         exclude: "env,beans"
+
+logging:
+  level:
+    org.flywaydb: debug

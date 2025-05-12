@@ -22,7 +22,7 @@ public class SolutionAttempt {
     private Long solutionAttemptId;
 
     // TODO evaluate if more entries are allowed
-    @Column(unique = true)
+    @Column(unique = true, name = "player_uuid")
     private UUID playerUUID;
 
     @Enumerated(EnumType.STRING)

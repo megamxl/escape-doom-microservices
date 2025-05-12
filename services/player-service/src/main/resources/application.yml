@@ -1,4 +1,9 @@
 spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: player_schema
+    baseline-on-migrate: true
   datasource:
     url: jdbc:postgresql://localhost:5432/main
     username: playerapi

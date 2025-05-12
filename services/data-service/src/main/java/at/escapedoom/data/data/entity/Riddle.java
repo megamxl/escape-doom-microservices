@@ -33,11 +33,12 @@ public class Riddle {
 
     private String variableName;
 
-    @OneToOne(mappedBy = "riddle")
-    private Level level;
-
-    @Column(name = LEVEL_ID, nullable = false)
+    @Column(name = LEVEL_ID, insertable = false, updatable = false)
     private UUID levelId;
+
+    @OneToOne
+    @JoinColumn(name = LEVEL_ID, nullable = false, unique = true)
+    private Level level;
 
     @Override
     public String toString() {

@@ -2,6 +2,9 @@ package at.escapedoom.data.service;
 
 import at.escapedoom.data.data.NodeRepository;
 import at.escapedoom.data.data.entity.*;
+import at.escapedoom.data.data.SceneRepository;
+import at.escapedoom.data.data.entity.Node;
+import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
@@ -9,6 +12,7 @@ import at.escapedoom.data.rest.model.NodeDeletionResponseDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +27,7 @@ public class NodeService {
 
     private final NodeRepository nodeRepository;
     private final NodeMapper nodeMapper;
+    private final SceneRepository sceneRepository;
 
     @Transactional
     public NodeDTO createNode(NodeCreationRequest creationRequest) {
@@ -54,7 +59,7 @@ public class NodeService {
 
         var node = nodeRepository.findById(UUID.fromString(nodeId)).orElse(null);
         if (node == null) {
-            throw new NoSuchElementException("Riddle with ID: " + nodeId + " not found");
+            throw new NoSuchElementException("Node with ID: " + nodeId + " not found");
         }
 
         log.debug("Found NodeId: {}", nodeId);
@@ -88,13 +93,20 @@ public class NodeService {
 
         UUID nodeUUID = UUID.fromString(nodeId);
 
-        if (nodeRepository.existsById(nodeUUID)) {
-            nodeRepository.deleteById(nodeUUID);
-            nodeRepository.flush();
+        Node node = nodeRepository.findById(nodeUUID)
+                .orElseThrow(() -> new NoSuchElementException("Node with id " + nodeUUID + " not found"));
 
-            log.info("Deleted node with id " + nodeUUID);
-            return new NodeDeletionResponseDTO("Deleted node with id " + nodeUUID);
+        Scene scene = node.getScene();
+        if (scene != null) {
+            scene.getNodes().remove(node);
+            sceneRepository.saveAndFlush(scene);
+        } else {
+            nodeRepository.deleteById(nodeUUID);
         }
+
+        log.info("Deleted node with id " + nodeUUID);
+        return new NodeDeletionResponseDTO("Deleted node with id " + nodeUUID);
+    }
 
         throw new NoSuchElementException("Node with id " + nodeUUID + " not found");
     }
