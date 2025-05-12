@@ -17,6 +17,7 @@ import at.escapedoom.spring.redis.data.repositories.SessionViewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -61,6 +62,7 @@ public class GamePlayService {
         codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
     }
 
+    @Transactional
     public EscapeRoomResult getResultsByUserIdentifier(UUID userIdentifier) {
 
         Optional<SolutionAttempt> byPlayerUUID = solutionAttemptRepository.findByPlayerUUID(userIdentifier);
