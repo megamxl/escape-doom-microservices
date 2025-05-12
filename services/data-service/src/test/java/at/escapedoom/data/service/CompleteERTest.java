@@ -1,6 +1,7 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import at.escapedoom.data.utils.KeyCloakUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
@@ -21,7 +23,7 @@ import static org.mockito.Mockito.mockStatic;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class CompleteERTest {
+class CompleteERTest extends PostgresConfig {
 
     @Autowired
     TemplateService templateService;
@@ -77,10 +79,12 @@ class CompleteERTest {
         riddleId = riddleService.createRiddle(riddleCreationRequestDTO).getRiddleId();
 
         final NodeCreationRequest nodeCreationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeType(NodeType.CONSOLE)
-                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something")
-                        .imageURI("https://example.com/background.png").build())
-                .position(new PositionDTO(20.5, 40.0)).build();
+                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE)
+                        .additionalProperties(Map.of("return_description", "I am a console node return description",
+                                "constraints", "Some funny constraints", "example", "Some example"))
+                        .build())
+                .description("This is a console node").title("Some funny title").position(new PositionDTO(20.5, 40.0))
+                .build();
         nodeId = nodeService.createNode(nodeCreationRequest).getNodeId().toString();
     }
 

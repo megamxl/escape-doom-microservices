@@ -4,7 +4,6 @@ import at.escapedoom.data.data.entity.*;
 import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
 import at.escapedoom.data.rest.model.NodeSpecificsDTO;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mapstruct.*;
 

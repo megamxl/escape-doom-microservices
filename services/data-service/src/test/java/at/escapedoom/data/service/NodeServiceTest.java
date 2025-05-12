@@ -9,6 +9,7 @@ import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class NodeServiceTest {
+public class NodeServiceTest extends PostgresConfig {
 
     private final UUID USER_ID = UUID.randomUUID();
     private final String INVALID_NODE_ID = UUID.randomUUID().toString();
@@ -104,7 +105,7 @@ public class NodeServiceTest {
         NodeDTO response = nodeService.createNode(creationRequest);
 
         assertNotEquals(nodeId, response.getNodeId());
-        assertEquals(NodeType.STORY, response.getNodeSpecifics().getNodeType());
+        assertEquals(NodeType.CONSOLE, response.getNodeSpecifics().getNodeType());
         assertEquals(sceneId, response.getSceneId().toString());
     }
 

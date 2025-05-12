@@ -10,6 +10,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SuperBuilder
 @RequiredArgsConstructor
 @Data
@@ -22,5 +25,8 @@ public abstract class NodeSpecifics {
     @Enumerated(EnumType.STRING)
     @JsonIgnore
     private NodeType nodeType;
+
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
 }

@@ -11,6 +11,7 @@ import at.escapedoom.data.rest.model.CodingLanguage;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
-class RiddleServiceTest {
+class RiddleServiceTest extends PostgresConfig {
 
     private String VALID_RIDDLE_ID = "";
     private final String INVALID_RIDDLE_ID = "05c48cb1-a3aa-4673-8d24-666666666666";

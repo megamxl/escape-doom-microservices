@@ -6,6 +6,7 @@ import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.TemplateRepository;
 import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import at.escapedoom.data.utils.KeyCloakUtils;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.mockStatic;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
-class TemplateServiceTest {
+class TemplateServiceTest extends PostgresConfig {
 
     private String VALID_TEMPLATE_ID = "";
 
