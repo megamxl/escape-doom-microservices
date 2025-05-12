@@ -13,4 +13,6 @@ public interface EscapeRoomTemplateRepositoryService {
 
     EscapeRoomLevel getEscapeRoomLevelByRoomPin(Long roomPin, Long level);
 
+    int getNumberOfLevels(UUID templateId);
+
 }

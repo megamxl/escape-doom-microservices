@@ -1,6 +1,7 @@
 package at.escapedoom.player.data.postgres.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -8,6 +9,11 @@ import static at.escapedoom.player.utils.EntityConstants.RESULT_JOIN_COLUMN;
 
 @Entity
 @Table(name = "result")
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 public class Result {
 
     @Id

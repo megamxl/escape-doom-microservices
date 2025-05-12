@@ -48,4 +48,16 @@ public class TemplateRepoService implements EscapeRoomTemplateRepositoryService 
     public EscapeRoomLevel getEscapeRoomLevelByRoomPin(Long roomPin, Long level) {
         return null;
     }
+
+    @Override
+    public int getNumberOfLevels(UUID templateId) {
+        int size = 0;
+        try {
+            TemplateDTO template = templateApi.getTemplate(templateId.toString());
+            size = template.getLevels().size();
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
+        return size;
+    }
 }
