@@ -15,10 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static at.escapedoom.data.utils.KeyCloakUtils.getUserId;
 
@@ -46,26 +43,11 @@ public class TemplateService {
 
     @Transactional
     public TemplateResultDTO deleteTemplate(UUID templateId) {
-        Optional<Template> templateOpt = templateRepository.findById(templateId);
-
-        if (templateOpt.isEmpty()) {
-            return TemplateResultDTO.builder().message("Template not found").build();
-        }
-
-        Template template = templateOpt.get();
-
-        List<Level> levels = template.getLevel();
-        if (levels != null && !levels.isEmpty()) {
-            for (Level level : levels) {
-                List<Scene> scenes = level.getScenes();
-                if (scenes != null && !scenes.isEmpty()) {
-                    sceneRepository.deleteAllInBatch(scenes);
-                }
-            }
-            levelRepository.deleteAllInBatch(levels);
-        }
+        Template template = templateRepository.findById(templateId)
+                .orElseThrow(() -> new NoSuchElementException("Template not found: " + templateId));
 
         templateRepository.delete(template);
+        templateRepository.flush();
 
         return TemplateResultDTO.builder().message("Template deleted successfully, id: " + templateId).build();
     }
@@ -77,11 +59,9 @@ public class TemplateService {
     }
 
     public TemplateDTO getTemplateById(String templateId) {
-        UUID id = validateUUID(templateId);
-
-        Optional<Template> entityOpt = templateRepository.findById(id);
-        assert entityOpt.isPresent();
-        return templateMapper.toDTO(entityOpt.get());
+        Template template = templateRepository.findById(UUID.fromString(templateId))
+                .orElseThrow(() -> new NoSuchElementException("Template not found: " + templateId));
+        return templateMapper.toDTO(template);
     }
 
     public TemplateUpdateResultDTO updateTemplate(String templateId, TemplateUpdateRequestDTO request) {

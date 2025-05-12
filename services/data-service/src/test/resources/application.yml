@@ -1,4 +1,7 @@
 spring:
+  sql:
+    init:
+      mode: never
   profiles:
     active: test
   datasource:
@@ -9,8 +12,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop
-
+      ddl-auto: none
 
   security:
     oauth2:

@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface SceneMapper {
 
     @Mapping(source = "sceneId", target = "sceneId", qualifiedByName = "sceneUuidToString")
-    @Mapping(source = "levelId", target = "levelId", qualifiedByName = "sceneUuidToString")
+    @Mapping(source = "level.levelId", target = "levelId", qualifiedByName = "sceneUuidToString")
     SceneDTO toDTO(Scene scene);
 
     @Mapping(source = "sceneId", target = "sceneId", qualifiedByName = "sceneStringToUUID")

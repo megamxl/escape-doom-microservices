@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface SceneRepository extends JpaRepository<Scene, UUID> {
+
+    boolean existsByLevelIdAndSceneSequence(UUID levelId, Integer sceneSequence);
 }
