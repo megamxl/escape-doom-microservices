@@ -58,16 +58,14 @@ public class GamePlayService {
 
         Optional<SolutionAttempt> byPlayerUUID = solutionAttemptRepository.findByPlayerUUID(userIdentifier);
 
-        if(byPlayerUUID.isEmpty()){
+        if (byPlayerUUID.isEmpty()) {
             throw new NoSuchElementException("Can't find user resubmit Code" + userIdentifier);
         }
 
-        //TODO check if won
+        // TODO check if won
 
-        EscapeRoomResult build = EscapeRoomResult.builder()
-                .status(byPlayerUUID.get().getStatus())
-                .output(byPlayerUUID.get().getOutput())
-                .build();
+        EscapeRoomResult build = EscapeRoomResult.builder().status(byPlayerUUID.get().getStatus())
+                .output(byPlayerUUID.get().getOutput()).build();
 
         if (byPlayerUUID.get().getStatus() != EscapeRoomResult.StatusEnum.WAITING) {
             solutionAttemptRepository.deleteById(byPlayerUUID.get().getSolutionAttemptId());
