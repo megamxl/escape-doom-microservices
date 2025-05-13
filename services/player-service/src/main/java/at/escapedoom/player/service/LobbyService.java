@@ -45,9 +45,10 @@ public class LobbyService {
 
         UserProgress persistedUser;
         try {
-             persistedUser = userProgressRepository.save(newUser);
-        }catch (Exception e) {
-            log.trace("Could not save user with username {} and the identifier {}", newUser.getUserName(), newUser.getUserIdentifier(), e);
+            persistedUser = userProgressRepository.save(newUser);
+        } catch (Exception e) {
+            log.trace("Could not save user with username {} and the identifier {}", newUser.getUserName(),
+                    newUser.getUserIdentifier(), e);
             throw new IllegalArgumentException("The username you entered is already taken");
         }
 

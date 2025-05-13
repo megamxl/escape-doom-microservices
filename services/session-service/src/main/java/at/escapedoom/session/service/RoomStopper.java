@@ -22,7 +22,8 @@ public class RoomStopper {
     @Scheduled(fixedRate = 60000)
     public void HouseKeeper() {
 
-        List<EscapeRoomSession> allByStatePlaying = escapeRoomSessionRepository.getEscapeRoomSessionsByStateOpenAndEndTimeAfter(LocalDateTime.now());
+        List<EscapeRoomSession> allByStatePlaying = escapeRoomSessionRepository
+                .getEscapeRoomSessionsByStateOpenAndEndTimeAfter(LocalDateTime.now());
         if (allByStatePlaying.isEmpty()) {
             log.debug("No room to Stop");
             return;
@@ -34,5 +35,3 @@ public class RoomStopper {
         }
     }
 }
-
-
