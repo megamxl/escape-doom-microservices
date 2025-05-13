@@ -2,12 +2,10 @@ package at.escapedoom.player.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.player.rest.model.NodeInfoDTO;
-import at.escapedoom.player.rest.model.NodeType;
+import at.escapedoom.player.rest.model.NodeSpecificsDTO;
 import at.escapedoom.player.rest.model.PositionDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.UUID;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
@@ -33,11 +31,13 @@ public class NodeDTO {
 
     private @Nullable UUID nodeId;
 
+    private @Nullable String description;
+
+    private @Nullable String title;
+
     private @Nullable UUID sceneId;
 
-    private @Nullable NodeType nodeType;
-
-    private @Nullable NodeInfoDTO nodeInfo;
+    private @Nullable NodeSpecificsDTO nodeSpecifics;
 
     private @Nullable PositionDTO position;
 
@@ -62,6 +62,48 @@ public class NodeDTO {
         this.nodeId = nodeId;
     }
 
+    public NodeDTO description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
+     * The description of the node
+     *
+     * @return description
+     */
+
+    @Schema(name = "description", example = "This is a story node", description = "The description of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public NodeDTO title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    /**
+     * The display title of the node
+     *
+     * @return title
+     */
+
+    @Schema(name = "title", example = "I like cheese", description = "The display title of the node", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("title")
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public NodeDTO sceneId(UUID sceneId) {
         this.sceneId = sceneId;
         return this;
@@ -83,46 +125,25 @@ public class NodeDTO {
         this.sceneId = sceneId;
     }
 
-    public NodeDTO nodeType(NodeType nodeType) {
-        this.nodeType = nodeType;
+    public NodeDTO nodeSpecifics(NodeSpecificsDTO nodeSpecifics) {
+        this.nodeSpecifics = nodeSpecifics;
         return this;
     }
 
     /**
-     * Get nodeType
+     * Get nodeSpecifics
      *
-     * @return nodeType
+     * @return nodeSpecifics
      */
     @Valid
-    @Schema(name = "node_type", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("node_type")
-    public NodeType getNodeType() {
-        return nodeType;
+    @Schema(name = "node_specifics", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("node_specifics")
+    public NodeSpecificsDTO getNodeSpecifics() {
+        return nodeSpecifics;
     }
 
-    public void setNodeType(NodeType nodeType) {
-        this.nodeType = nodeType;
-    }
-
-    public NodeDTO nodeInfo(NodeInfoDTO nodeInfo) {
-        this.nodeInfo = nodeInfo;
-        return this;
-    }
-
-    /**
-     * Get nodeInfo
-     *
-     * @return nodeInfo
-     */
-    @Valid
-    @Schema(name = "node_info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("node_info")
-    public NodeInfoDTO getNodeInfo() {
-        return nodeInfo;
-    }
-
-    public void setNodeInfo(NodeInfoDTO nodeInfo) {
-        this.nodeInfo = nodeInfo;
+    public void setNodeSpecifics(NodeSpecificsDTO nodeSpecifics) {
+        this.nodeSpecifics = nodeSpecifics;
     }
 
     public NodeDTO position(PositionDTO position) {
@@ -155,14 +176,15 @@ public class NodeDTO {
             return false;
         }
         NodeDTO nodeDTO = (NodeDTO) o;
-        return Objects.equals(this.nodeId, nodeDTO.nodeId) && Objects.equals(this.sceneId, nodeDTO.sceneId)
-                && Objects.equals(this.nodeType, nodeDTO.nodeType) && Objects.equals(this.nodeInfo, nodeDTO.nodeInfo)
+        return Objects.equals(this.nodeId, nodeDTO.nodeId) && Objects.equals(this.description, nodeDTO.description)
+                && Objects.equals(this.title, nodeDTO.title) && Objects.equals(this.sceneId, nodeDTO.sceneId)
+                && Objects.equals(this.nodeSpecifics, nodeDTO.nodeSpecifics)
                 && Objects.equals(this.position, nodeDTO.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nodeId, sceneId, nodeType, nodeInfo, position);
+        return Objects.hash(nodeId, description, title, sceneId, nodeSpecifics, position);
     }
 
     @Override
@@ -170,9 +192,10 @@ public class NodeDTO {
         StringBuilder sb = new StringBuilder();
         sb.append("class NodeDTO {\n");
         sb.append("    nodeId: ").append(toIndentedString(nodeId)).append("\n");
+        sb.append("    description: ").append(toIndentedString(description)).append("\n");
+        sb.append("    title: ").append(toIndentedString(title)).append("\n");
         sb.append("    sceneId: ").append(toIndentedString(sceneId)).append("\n");
-        sb.append("    nodeType: ").append(toIndentedString(nodeType)).append("\n");
-        sb.append("    nodeInfo: ").append(toIndentedString(nodeInfo)).append("\n");
+        sb.append("    nodeSpecifics: ").append(toIndentedString(nodeSpecifics)).append("\n");
         sb.append("    position: ").append(toIndentedString(position)).append("\n");
         sb.append("}");
         return sb.toString();

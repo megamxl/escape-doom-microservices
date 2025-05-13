@@ -1,4 +1,9 @@
 spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    default-schema: session_schema
   datasource:
     url: jdbc:postgresql://localhost:5432/main
     username: sessionapi

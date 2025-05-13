@@ -185,19 +185,20 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /levels/{template-id}:
+  /templates/{template-id}/levels:
     get:
-      operationId: getLevelByTemplate
-      summary: Retrieve levels
+      operationId: getLevelsByTemplate
+      summary: Get levels for a specific template
       tags:
         - Level
-      description: Retrieve all levels associated with a specific template
+      description: Retrieve all levels associated with a given template
       parameters:
         - name: template-id
           in: path
           required: true
           schema:
             type: string
+            example: b6557071-e7fa-47bc-bdd1-5657ebd325b8
       responses:
         '200':
           description: A list of levels
@@ -207,6 +208,10 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LevelDTO'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
   /levels/{level-id}:
     get:
       operationId: getLevel
@@ -685,20 +690,6 @@ components:
           type: string
           format: uuid
           description: The unique identifier of the node
-        scene_id:
-          type: string
-          format: uuid
-          description: The unique identifier of the scene the node belongs to
-        node_type:
-          $ref: '#/components/schemas/NodeType'
-        node_info:
-          $ref: '#/components/schemas/NodeInfoDTO'
-        position:
-          $ref: '#/components/schemas/PositionDTO'
-    NodeInfoDTO:
-      description: The information of a node
-      type: object
-      properties:
         description:
           type: string
           description: The description of the node
@@ -707,10 +698,14 @@ components:
           type: string
           description: The display title of the node
           example: I like cheese
-        imageURI:
+        scene_id:
           type: string
-          description: The URI of the image to display
-          example: https://example.com/image.png
+          format: uuid
+          description: The unique identifier of the scene the node belongs to
+        node_specifics:
+          $ref: '#/components/schemas/NodeSpecificsDTO'
+        position:
+          $ref: '#/components/schemas/PositionDTO'
     PositionDTO:
       description: The position of a node
       type: object
@@ -733,14 +728,69 @@ components:
           type: string
           description: The unique ID of the scene the node belongs to
           example: 241a70fe-47d6-4756-9ac7-330f1b199e84
-        node_type:
-          $ref: '#/components/schemas/NodeType'
-        node_info:
-          $ref: '#/components/schemas/NodeInfoDTO'
+        description:
+          type: string
+          description: The description of the node
+          example: This is a story node
+        title:
+          type: string
+          description: The display title of the node
+          example: I like cheese
+        node_specifics:
+          $ref: '#/components/schemas/NodeSpecificsDTO'
         position:
           $ref: '#/components/schemas/PositionDTO'
-
-
+    NodeSpecificsDTO:
+      type: object
+      description: Depending on the node type, different params should be given
+      properties:
+        node_type:
+          $ref: '#/components/schemas/NodeType'
+      additionalProperties: true
+    ConsoleNodeSpecificsDTO:
+      description: Console node specifics - Used for the frontend type-safety
+      allOf:
+        - $ref: '#/components/schemas/NodeSpecificsDTO'
+      type: object
+      properties:
+        return_description:
+          type: string
+          description: Description about the input properties
+          example: 'moves: The list of moves available'
+        constraints:
+          type: string
+          description: Any code-details helpful for the user
+          example: moves[] = UP | DOWN
+        example:
+          type: string
+          description: A code-example in somewhat human-readable form
+          example: '[ "UP", "DOWN", "UP" ]'
+    DetailsNodeSpecificsDTO:
+      description: Detail node specifics - Used for the frontend type-safety
+      allOf:
+        - $ref: '#/components/schemas/NodeSpecificsDTO'
+      type: object
+      properties:
+        image_uri:
+          type: string
+          description: A Web-URL to the Image
+          example: https://example.com/background.png
+    ZoomNodeSpecificsDTO:
+      description: Detail node specifics - Used for the frontend type-safety
+      allOf:
+        - $ref: '#/components/schemas/NodeSpecificsDTO'
+      type: object
+      properties:
+        linked_scene_id:
+          type: string
+          format: uuid
+          description: The scene_id of the scene the node links to
+          example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
+        parent_scene_id:
+          type: string
+          format: uuid
+          description: The scene_id of the parent it should return to
+          example: "241a70fe-47d6-4756-9ac7-330f1b199e84"
     # Enums
     CodingLanguage:
       type: string

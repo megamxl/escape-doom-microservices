@@ -1,4 +1,9 @@
 spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: data_schema
+    baseline-on-migrate: true
   datasource:
     url: jdbc:postgresql://localhost:5432/main
     username: dataapi
@@ -10,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: data_schema
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
   security:
     oauth2:
       resourceserver:
@@ -29,3 +34,7 @@ management:
       exposure:
         include: "*"
         exclude: "env,beans"
+
+logging:
+  level:
+    org.flywaydb: debug

@@ -36,6 +36,7 @@ public class UserProgress {
 
     private Long currentPoints;
 
+    @Column(name = "template_id")
     private UUID templateID;
 
 }

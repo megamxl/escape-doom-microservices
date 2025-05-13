@@ -133,21 +133,28 @@ public interface LevelApi {
     }
 
     /**
-     * GET /levels/{template-id} : Retrieve levels Retrieve all levels associated with a specific template
+     * GET /templates/{template-id}/levels : Get levels for a specific template Retrieve all levels associated with a
+     * given template
      *
      * @param templateId
      *            (required)
      *
-     * @return A list of levels (status code 200)
+     * @return A list of levels (status code 200) or Not Found (status code 404) or Internal Server Error (status code
+     *         500)
      */
-    @Operation(operationId = "getLevelByTemplate", summary = "Retrieve levels", description = "Retrieve all levels associated with a specific template", tags = {
+    @Operation(operationId = "getLevelsByTemplate", summary = "Get levels for a specific template", description = "Retrieve all levels associated with a given template", tags = {
             "Level" }, responses = { @ApiResponse(responseCode = "200", description = "A list of levels", content = {
-                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LevelDTO.class))) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/levels/{template-id}", produces = { "application/json" })
+                    @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LevelDTO.class))) }),
+                    @ApiResponse(responseCode = "404", description = "Not Found", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.GET, value = "/templates/{template-id}/levels", produces = {
+            "application/json" })
 
-    default ResponseEntity<List<LevelDTO>> getLevelByTemplate(
+    default ResponseEntity<List<LevelDTO>> getLevelsByTemplate(
             @Parameter(name = "template-id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("template-id") String templateId) {
-        return getDelegate().getLevelByTemplate(templateId);
+        return getDelegate().getLevelsByTemplate(templateId);
     }
 
     /**
