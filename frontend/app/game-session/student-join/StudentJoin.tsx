@@ -22,7 +22,9 @@ const StudentJoin = () => {
 
     const [roomJoin, setRoomJoin] = useState<EscapeRoomJoin>()
 
-    const [openSnackbar, setOpenOpenSnackbar] = useState({state :false, message:"The given lobby is either closed or doesn't exist"});
+    const [openSnackbar, setOpenOpenSnackbar] = useState({state :false, message:"The given lobby is either closed or doesn't exist"})
+
+    const [JoinButton, setJoinButton] = useState<boolean>(false)
 
     const [session, setSession] = useSession();
 
@@ -43,6 +45,7 @@ const StudentJoin = () => {
 
     const sendID = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setJoinButton(true)
 
         playerJoinCall({data: roomJoin},{
             onSuccess: (response) => {
@@ -129,7 +132,7 @@ const StudentJoin = () => {
                                 onChange={handlePlayerNameChange}
                                 fullWidth
                             />
-                            <Button sx={{height: 56}} variant="contained" type="submit" fullWidth>JOIN</Button>
+                            <Button sx={{height: 56}} variant="contained" type="submit" fullWidth disabled={JoinButton}>JOIN</Button>
                         </Stack>
                         <Stack>
                         <Link
@@ -146,8 +149,15 @@ const StudentJoin = () => {
                 </Card>
             </Grid2>
 
-            <Snackbar open={openSnackbar.state} autoHideDuration={6000} onClose={() => setOpenOpenSnackbar(prev => ({ ...prev, state: false }))}>
-                <Alert onClose={() => setOpenOpenSnackbar(prev => ({ ...prev, state: false }))} severity="error" sx={{width: '100%'}}>
+            <Snackbar open={openSnackbar.state} autoHideDuration={6000} onClose={() => {
+                setOpenOpenSnackbar(prev => ({ ...prev, state: false }))
+                setJoinButton(false)
+            }
+            }>
+                <Alert onClose={() => {
+                    setOpenOpenSnackbar(prev => ({ ...prev, state: false }))
+                    setJoinButton(false)
+                }} severity="error" sx={{width: '100%'}}>
                     {openSnackbar.message}
                 </Alert>
             </Snackbar>

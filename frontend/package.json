@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "next lint",
-    "gen": "npx kubb generate -c kubb-configs/leaderboard.config.ts & npx kubb generate -c kubb-configs/session.config.ts & npx kubb generate -c kubb-configs/player.config.ts & npx kubb generate -c kubb-configs/data.config.ts & npx tsx -e \"import main from './baseUrlReformater.ts'; main();\""
+    "gen": "npx kubb generate -c kubb-configs/leaderboard.config.ts & npx kubb generate -c kubb-configs/session.config.ts & npx kubb generate -c kubb-configs/player.config.ts & npx kubb generate -c kubb-configs/data.config.ts & npx tsx -e \"import main from './baseUrlReformater.ts'; main();\"",
+    "format": "npx tsx -e \"import main from './baseUrlReformater.ts'; main();\""
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

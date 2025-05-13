@@ -3,7 +3,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {StageState} from "@/app/types/game-session/StageState.ts";
 import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
-import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
+import {Avatar, CircularProgress, FormControl, MenuItem, Select, Stack, Tooltip, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
 import {PlayArrow} from "@mui/icons-material";
 import Editor from '@monaco-editor/react';
@@ -23,12 +23,38 @@ import {
 } from "@/app/gen/player";
 import Node from "@/app/game-session/session/_components/nodes/Node.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
-import {session_id_key} from "@/app/utils/Constants.ts";
+import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
 import ErrorDisplayCard, {ErrorDetails} from "@/app/game-session/session/_components/ErrorDisplayCard.tsx";
 
 const Session = () => {
     const [currentScene, setCurrentScene] = useState<SceneDTO>()
     const [sessionID, setSessionID] = useState("")
+    const [playerName, setPlayerName] = useState({
+        short: "",
+        long: ""
+    })
+
+    useEffect(() => {
+
+        const sessionStorageItem = getSessionStorageItem(session_id_key);
+        const playername = getSessionStorageItem(player_name_key);
+
+        if (sessionStorageItem !== null) {
+            setSessionID(sessionStorageItem)
+        }
+
+        if (playername !== null && playername !== "") {
+            //TODO check empty player name or short name
+            setPlayerName(
+                {short: playername.slice(0,1).toUpperCase(), long: playername}
+            )
+            return
+        }
+
+        redirect(GAME_SESSION_APP_PATHS.STUDENT_JOIN)
+
+    }, [])
+
     const [stageState, setStageState] = useState<StageState>({
         language: CodeLanguage.JAVA,
         stageScene: undefined
@@ -206,6 +232,10 @@ const Session = () => {
                                 }
                             </Select>
                         </FormControl>
+
+                        <Tooltip title={playerName.long}  arrow>
+                            <Avatar sx={{ml: "auto"}}>{playerName.short}</Avatar>
+                        </Tooltip>
                     </Stack>
                 </EditorContainer>
                 <EditorContainer sx={{flexGrow: 1, flexShrink: 1}}>
