@@ -3,7 +3,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {StageState} from "@/app/types/game-session/StageState.ts";
 import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
-import {Avatar, Box, CircularProgress, FormControl, MenuItem, Select, Stack, Tooltip, Typography} from "@mui/material";
+import {Avatar, CircularProgress, FormControl, MenuItem, Select, Stack, Tooltip, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
 import {PlayArrow} from "@mui/icons-material";
 import Editor from '@monaco-editor/react';
@@ -25,7 +25,6 @@ import Node from "@/app/game-session/session/_components/nodes/Node.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
 import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
 import ErrorDisplayCard, {ErrorDetails} from "@/app/game-session/session/_components/ErrorDisplayCard.tsx";
-import {deepOrange} from "@mui/material/colors";
 
 const Session = () => {
     const [currentScene, setCurrentScene] = useState<SceneDTO>()
@@ -38,16 +37,16 @@ const Session = () => {
     useEffect(() => {
 
         const sessionStorageItem = getSessionStorageItem(session_id_key);
-        const palyername = getSessionStorageItem(player_name_key);
+        const playername = getSessionStorageItem(player_name_key);
 
         if (sessionStorageItem !== null) {
             setSessionID(sessionStorageItem)
         }
 
-        if (palyername !== null && palyername !== "") {
+        if (playername !== null && playername !== "") {
             //TODO check empty player name or short name
             setPlayerName(
-                {short: palyername.slice(0,1).toUpperCase(), long: palyername}
+                {short: playername.slice(0,1).toUpperCase(), long: playername}
             )
             return
         }
