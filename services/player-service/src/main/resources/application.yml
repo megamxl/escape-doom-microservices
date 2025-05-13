@@ -15,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: player_schema
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
   security:
     oauth2:
       resourceserver:

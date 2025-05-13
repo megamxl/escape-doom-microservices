@@ -1,8 +1,12 @@
 package at.escapedoom.data.data.entity;
 
 import at.escapedoom.data.rest.model.NodeType;
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -26,11 +30,9 @@ public class Node {
     @Embedded
     private Position position;
 
-    @Embedded
-    private NodeInfo nodeInfo;
+    private String description;
 
-    @Enumerated(EnumType.STRING)
-    private NodeType nodeType;
+    private String title;
 
     @ManyToOne
     @JoinColumn(name = SCENE_ID, insertable = false, updatable = false)
@@ -39,10 +41,14 @@ public class Node {
     @Column(name = SCENE_ID)
     private UUID sceneId;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "node_specifics", columnDefinition = "jsonb")
+    private NodeSpecifics nodeSpecifics;
+
     @Override
     public String toString() {
-
-        return "Node{" + "nodeId=" + nodeId + ", nodeType=" + nodeType + ", nodeInfo=" + nodeInfo + ", position"
-                + position + '}';
+        return "Node{" + "nodeId=" + nodeId + ", position=" + position + ", description='" + description + '\''
+                + ", title='" + title + '\'' + ", scene=" + scene + ", sceneId=" + sceneId + ", nodeSpecifics="
+                + nodeSpecifics + '}';
     }
 }

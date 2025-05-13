@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import {Button} from "@mui/material";
 import {useCreateTemplateHook} from "@/app/gen/data";
+import DnDGridSnap from "@/app/_components/DnDGridSnap.tsx";
 
 export default function Test() {
 
@@ -19,6 +20,7 @@ export default function Test() {
 
     return (
         <>
+            <DnDGridSnap />
             <Button onClick={handleClick}> Send stuff </Button>
         </>
     );

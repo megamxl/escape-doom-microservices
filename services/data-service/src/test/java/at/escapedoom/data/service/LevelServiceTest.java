@@ -12,6 +12,7 @@ import at.escapedoom.data.rest.model.CodingLanguage;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,11 +30,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
-class LevelServiceTest {
+class LevelServiceTest extends PostgresConfig {
 
-    private String VALID_LEVEL_ID = "";
     private static final String INVALID_LEVEL_ID = "05c48cb1-a3aa-4673-8d24-666666666666";
-
+    private String VALID_LEVEL_ID = "";
     @Autowired
     private LevelService service;
 

@@ -8,6 +8,7 @@ import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class SceneServiceTest {
+class SceneServiceTest extends PostgresConfig {
 
     private final UUID USER_ID = UUID.randomUUID();
     private final String INVALID_SCENE_ID = UUID.randomUUID().toString();

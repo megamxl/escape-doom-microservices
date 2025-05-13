@@ -2,7 +2,7 @@ package at.escapedoom.player.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.player.rest.model.Node;
+import at.escapedoom.player.rest.model.NodeDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.math.BigDecimal;
@@ -35,7 +35,7 @@ public class Scene {
 
     @lombok.Builder.Default
     @Valid
-    private List<@Valid Node> nodes = new ArrayList<>();
+    private List<@Valid NodeDTO> nodes = new ArrayList<>();
 
     private @Nullable String backgroundImageUri;
 
@@ -62,12 +62,12 @@ public class Scene {
         this.sceneSequence = sceneSequence;
     }
 
-    public Scene nodes(List<@Valid Node> nodes) {
+    public Scene nodes(List<@Valid NodeDTO> nodes) {
         this.nodes = nodes;
         return this;
     }
 
-    public Scene addNodesItem(Node nodesItem) {
+    public Scene addNodesItem(NodeDTO nodesItem) {
         if (this.nodes == null) {
             this.nodes = new ArrayList<>();
         }
@@ -83,11 +83,11 @@ public class Scene {
     @Valid
     @Schema(name = "nodes", description = "The nodes of the scene", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("nodes")
-    public List<@Valid Node> getNodes() {
+    public List<@Valid NodeDTO> getNodes() {
         return nodes;
     }
 
-    public void setNodes(List<@Valid Node> nodes) {
+    public void setNodes(List<@Valid NodeDTO> nodes) {
         this.nodes = nodes;
     }
 

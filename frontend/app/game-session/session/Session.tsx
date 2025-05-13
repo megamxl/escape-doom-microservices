@@ -2,7 +2,6 @@
 
 import React, {useEffect, useRef, useState} from 'react';
 import {StageState} from "@/app/types/game-session/StageState.ts";
-import {SubmittedCodeBody} from "@/app/types/game-session/SubmittedCodeBody.ts";
 import {CodeLanguage} from "@/app/enums/CodeLanguage.ts";
 import {CircularProgress, FormControl, MenuItem, Select, Stack, Typography} from "@mui/material";
 import EditorContainer from "@/app/game-session/session/_components/EditorContainer.tsx";
@@ -17,32 +16,19 @@ import {
     EscapeRoomResult,
     escapeRoomResultStatusEnum,
     EscapeRoomSolutionSubmition,
+    SceneDTO,
     useGetLevelOfSessionByPlayerSessionIDHook,
     useGetLevelResultHook,
     useSubmitSolutionAttemptForCurrentLevelHook
 } from "@/app/gen/player";
-import NodeV2 from "@/app/game-session/session/_components/NodeV2.tsx";
+import Node from "@/app/game-session/session/_components/nodes/Node.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
 import {session_id_key} from "@/app/utils/Constants.ts";
 import ErrorDisplayCard, {ErrorDetails} from "@/app/game-session/session/_components/ErrorDisplayCard.tsx";
 
 const Session = () => {
-
+    const [currentScene, setCurrentScene] = useState<SceneDTO>()
     const [sessionID, setSessionID] = useState("")
-
-    useEffect(() => {
-
-        const sessionStorageItem = getSessionStorageItem(session_id_key);
-
-        if (sessionStorageItem !== null) {
-            setSessionID(sessionStorageItem)
-            return
-        }
-
-        redirect(GAME_SESSION_APP_PATHS.STUDENT_JOIN)
-
-    }, [])
-
     const [stageState, setStageState] = useState<StageState>({
         language: CodeLanguage.JAVA,
         stageScene: undefined
@@ -54,7 +40,6 @@ const Session = () => {
         status: CompileStatus.COMPILED,
         output: "",
     })
-
 
     /* TanStack Query Calls */
     const {
@@ -72,10 +57,37 @@ const Session = () => {
     const useSubmitSolution = useSubmitSolutionAttemptForCurrentLevelHook();
 
     useEffect(() => {
-        if (stageInformation?.riddle?.function === undefined) return;
+
+        const sessionStorageItem = getSessionStorageItem(session_id_key);
+
+        if (sessionStorageItem !== null) {
+            setSessionID(sessionStorageItem)
+            return
+        }
+
+        redirect(GAME_SESSION_APP_PATHS.STUDENT_JOIN)
+
+    }, [])
+
+    useEffect(() => {
+        if (stageInformation?.riddle?.function === undefined || stageInformation.scenes === undefined) return;
 
         setCode(stageInformation?.riddle?.function)
+        console.log("Received: ", stageInformation)
+        setCurrentScene(stageInformation.scenes.find(s => s.scene_sequence == 1))
     }, [stageInformation])
+
+    const handleZoomChange = (targetSceneId: string) => {
+        if (stageInformation?.scenes === undefined) return;
+        const newIdx = stageInformation?.scenes.findIndex(scene => scene.scene_id == targetSceneId) ?? -1
+
+        if (newIdx !== -1) {
+            console.log("New scene: ", stageInformation?.scenes[newIdx])
+            setCurrentScene(stageInformation?.scenes[newIdx])
+        } else {
+            console.warn(`Scene with ID ${targetSceneId} not found`)
+        }
+    }
 
     const monacoEditorRef = useRef()
 
@@ -104,7 +116,7 @@ const Session = () => {
             console.log(refetchData.data)
 
 
-            if ( refetchData.data !== undefined && refetchData.data.status !== escapeRoomResultStatusEnum.WAITING) {
+            if (refetchData.data !== undefined && refetchData.data.status !== escapeRoomResultStatusEnum.WAITING) {
                 console.log("Code compilation completed")
                 setCodeExecutionResponse(refetchData.data)
                 setLoading(false)
@@ -128,10 +140,9 @@ const Session = () => {
 //}
 
     const handleLanguageChange = () => {
-
     }
 
-    const handleCodeChange = (value: any) => {
+    const handleCodeChange = (value: string) => {
         setCode(value)
         setSubmittedCodeBody({
             "playerSessionId": sessionID,
@@ -242,15 +253,15 @@ const Session = () => {
             <div className="relative w-full mx-auto">
                 <img
                     //@ts-ignore
-                    src={`${stageInformation?.scenes[0].background_image_uri}`}
+                    src={`${currentScene?.background_image_uri}`}
                     alt="Background"
                     className="w-full bg-no-repeat bg-contain"
                 />
                 {
                     //@ts-ignore
-                    stageInformation?.scenes[0]?.nodes.map((node) => {
+                    currentScene?.nodes.map((node) => {
                         return (
-                            <NodeV2 key={node.node_id} node={node} codeSetter={setCode}/>
+                            <Node key={node.node_id} node={node} onZoomChangeScene={handleZoomChange}/>
                         )
                     })
                 }
