@@ -44,7 +44,7 @@ public interface NodeApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"This is a story node\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"title\" : \"I like cheese\", \"node_specifics\" : { \"node_type\" : \"ZOOM\" }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -100,7 +100,7 @@ public interface NodeApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ]";
+                    String exampleString = "[ { \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"This is a story node\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"title\" : \"I like cheese\", \"node_specifics\" : { \"node_type\" : \"ZOOM\" }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }, { \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"This is a story node\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"title\" : \"I like cheese\", \"node_specifics\" : { \"node_type\" : \"ZOOM\" }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -129,7 +129,7 @@ public interface NodeApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"This is a story node\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"title\" : \"I like cheese\", \"node_specifics\" : { \"node_type\" : \"ZOOM\" }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -166,7 +166,7 @@ public interface NodeApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"node_type\" : \"ZOOM\", \"node_info\" : { \"imageURI\" : \"https://example.com/image.png\", \"description\" : \"This is a story node\", \"title\" : \"I like cheese\" }, \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"scene_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"description\" : \"This is a story node\", \"position\" : { \"left_percentage\" : 22, \"top_percentage\" : 50.5 }, \"title\" : \"I like cheese\", \"node_specifics\" : { \"node_type\" : \"ZOOM\" }, \"node_id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

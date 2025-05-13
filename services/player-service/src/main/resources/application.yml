@@ -1,4 +1,9 @@
 spring:
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    schemas: player_schema
+    baseline-on-migrate: true
   datasource:
     url: jdbc:postgresql://localhost:5432/main
     username: playerapi
@@ -10,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: player_schema
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
   security:
     oauth2:
       resourceserver:

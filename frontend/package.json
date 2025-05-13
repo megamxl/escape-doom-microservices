@@ -12,6 +12,8 @@
     "format": "npx tsx -e \"import main from './baseUrlReformater.ts'; main();\""
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/utilities": "^3.2.2",
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",

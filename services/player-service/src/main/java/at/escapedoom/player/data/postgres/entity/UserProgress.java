@@ -9,7 +9,11 @@ import java.util.UUID;
 import static at.escapedoom.player.utils.EntityConstants.RESULT_JOIN_COLUMN;
 
 @Entity
-@Table(name = "user_progress")
+@Table(
+        name = "user_progress",
+        uniqueConstraints =
+            @UniqueConstraint(columnNames = {"roomPin", "userName"})
+)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -32,6 +36,7 @@ public class UserProgress {
 
     private Long currentPoints;
 
+    @Column(name = "template_id")
     private UUID templateID;
 
 }

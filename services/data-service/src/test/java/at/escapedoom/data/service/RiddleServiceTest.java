@@ -1,12 +1,17 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.DataApi;
+import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
+import at.escapedoom.data.data.TemplateRepository;
+import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Riddle;
+import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.CodingLanguage;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
-class RiddleServiceTest {
+class RiddleServiceTest extends PostgresConfig {
 
     private String VALID_RIDDLE_ID = "";
     private final String INVALID_RIDDLE_ID = "05c48cb1-a3aa-4673-8d24-666666666666";
@@ -34,20 +39,31 @@ class RiddleServiceTest {
     @Autowired
     private RiddleRepository repository;
 
+    @Autowired
+    private LevelRepository levelRepository;
+
+    @Autowired
+    private TemplateRepository templateRepository;
+
     @Transactional
     @BeforeEach
     void setup() {
-
         repository.deleteAllInBatch();
         repository.flush();
 
-        VALID_LEVEL_ID = UUID.randomUUID();
+        Template template = Template.builder().name("Test Template").description("Test template description")
+                .userId(UUID.randomUUID()).build();
+        templateRepository.saveAndFlush(template);
+
+        Level level = Level.builder().levelSequence(1).name("Test Level").templateId(template.getTemplateId()).build();
+        level = levelRepository.saveAndFlush(level);
+
+        VALID_LEVEL_ID = level.getLevelId();
 
         Riddle riddle = Riddle.builder().input("2, 3").language(CodingLanguage.JAVA).expectedOutput("5")
-                .functionSignature("public static int sum(int a, int b)").variableName("result").levelId(VALID_LEVEL_ID)
-                .build();
+                .functionSignature("public static int sum(int a, int b)").variableName("result").level(level).build();
 
-        VALID_RIDDLE_ID = repository.save(riddle).getRiddleId().toString();
+        VALID_RIDDLE_ID = repository.saveAndFlush(riddle).getRiddleId().toString();
     }
 
     // region GET Tests
@@ -151,7 +167,15 @@ class RiddleServiceTest {
 
     // region POST Tests
     @Test
+    @Transactional
     void testCreateRiddle() {
+        Template template = Template.builder().name("Another Template").description("Test template for riddle creation")
+                .userId(UUID.randomUUID()).build();
+        template = templateRepository.saveAndFlush(template);
+
+        Level level = Level.builder().name("Test Level").templateId(template.getTemplateId()).levelSequence(2).build();
+        level = levelRepository.saveAndFlush(level);
+
         final String EXPECTED_OUTPUT = "666";
         final String EXPECTED_INPUT = "660, 6";
         final CodingLanguage EXPECTED_LANGUAGE = CodingLanguage.JAVA;
@@ -160,7 +184,7 @@ class RiddleServiceTest {
 
         RiddleCreationRequestDTO riddleCreationRequest = RiddleCreationRequestDTO.builder().language(EXPECTED_LANGUAGE)
                 .expectedOutput(EXPECTED_OUTPUT).input(EXPECTED_INPUT).functionSignature(EXPECTED_FUNCTION)
-                .levelId(VALID_LEVEL_ID.toString()).variableName(EXPECTED_VARIABLE).build();
+                .levelId(level.getLevelId().toString()).variableName(EXPECTED_VARIABLE).build();
 
         RiddleDTO riddle = service.createRiddle(riddleCreationRequest);
 

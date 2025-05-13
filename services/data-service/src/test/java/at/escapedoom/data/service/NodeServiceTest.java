@@ -4,10 +4,12 @@ import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.NodeRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.TemplateRepository;
+import at.escapedoom.data.data.entity.ConsoleNodeSpecifics;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class NodeServiceTest {
+public class NodeServiceTest extends PostgresConfig {
 
     private final UUID USER_ID = UUID.randomUUID();
     private final String INVALID_NODE_ID = UUID.randomUUID().toString();
@@ -69,10 +71,8 @@ public class NodeServiceTest {
         sceneId = sceneRepository.save(scene).getSceneId().toString();
 
         final NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeType(NodeType.CONSOLE)
-                .nodeInfo(NodeInfoDTO.builder().description("This is a console node").title("Something")
-                        .imageURI("https://example.com/background.png").build())
-                .position(new PositionDTO(20.5, 40.0)).build();
+                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build()).title("Something")
+                .description("This is a console node").position(new PositionDTO(20.5, 40.0)).build();
 
         nodeId = nodeService.createNode(creationRequest).getNodeId();
     }
@@ -98,15 +98,14 @@ public class NodeServiceTest {
     void testCreateNode() {
 
         final NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeType(NodeType.STORY)
-                .nodeInfo(NodeInfoDTO.builder().description("Test test... 1. 2. 3.").title("If this fails we jails")
-                        .imageURI("https://www.youtube.com/watch?v=dQw4w9WgXcQ").build())
+                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build())
+                .description("Test test... 1. 2. 3.").title("If this fails we jails")
                 .position(new PositionDTO(20.5, 40.0)).build();
 
         NodeDTO response = nodeService.createNode(creationRequest);
 
         assertNotEquals(nodeId, response.getNodeId());
-        assertEquals(NodeType.STORY, response.getNodeType());
+        assertEquals(NodeType.CONSOLE, response.getNodeSpecifics().getNodeType());
         assertEquals(sceneId, response.getSceneId().toString());
     }
 
@@ -132,16 +131,16 @@ public class NodeServiceTest {
         final double newTopPosition = 66.6;
         final String newTitle = "Lagerregal";
 
-        updateNode.setNodeType(newType);
+        updateNode.nodeSpecifics(NodeSpecificsDTO.builder().nodeType(newType).build());
         updateNode.getPosition().setTopPercentage(newTopPosition);
-        updateNode.getNodeInfo().setTitle(newTitle);
+        updateNode.setTitle(newTitle);
 
         NodeDTO response = nodeService.updateNode(nodeId.toString(), updateNode);
 
         assertEquals(nodeId, response.getNodeId());
-        assertEquals(newType, response.getNodeType());
+        assertEquals(newType, response.getNodeSpecifics().getNodeType());
         assertEquals(newTopPosition, response.getPosition().getTopPercentage());
-        assertEquals(newTitle, response.getNodeInfo().getTitle());
+        assertEquals(newTitle, response.getTitle());
     }
 
     @Test

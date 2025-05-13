@@ -2,13 +2,17 @@ package at.escapedoom.data.service;
 
 import at.escapedoom.data.DataApi;
 import at.escapedoom.data.data.LevelRepository;
+import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.TemplateRepository;
 import at.escapedoom.data.data.entity.Level;
+import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.data.entity.Template;
+import at.escapedoom.data.rest.model.CodingLanguage;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
+import at.escapedoom.data.service.rest.config.PostgresConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,11 +30,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest(classes = DataApi.class)
 @ActiveProfiles("test")
-class LevelServiceTest {
+class LevelServiceTest extends PostgresConfig {
 
-    private String VALID_LEVEL_ID = "";
     private static final String INVALID_LEVEL_ID = "05c48cb1-a3aa-4673-8d24-666666666666";
-
+    private String VALID_LEVEL_ID = "";
     @Autowired
     private LevelService service;
 
@@ -43,24 +46,46 @@ class LevelServiceTest {
     @Autowired
     private SceneRepository sceneRepository;
 
-    @BeforeEach
-    @Transactional
-    void setup() {
-        levelRepository.deleteAll();
-        sceneRepository.deleteAll();
-        templateRepository.deleteAll();
-
-        levelRepository.flush();
-
-        Level level = Level.builder().levelSequence(1).scenes(List.of()).name("Classroom").build();
-        VALID_LEVEL_ID = levelRepository.saveAndFlush(level).getLevelId().toString();
-    }
-    // region GET Tests
+    @Autowired
+    private RiddleRepository riddleRepository;
 
     @AfterEach
     @Transactional
     void tearDown() {
-        levelRepository.deleteAll();
+        templateRepository.deleteAll();
+    }
+
+    @BeforeEach
+    @Transactional
+    void setup() {
+        riddleRepository.deleteAllInBatch();
+        levelRepository.deleteAllInBatch();
+        sceneRepository.deleteAllInBatch();
+        templateRepository.deleteAllInBatch();
+
+        riddleRepository.flush();
+        levelRepository.flush();
+        sceneRepository.flush();
+        templateRepository.flush();
+
+        Template template = Template.builder().name("Test Template").description("Test template description")
+                .userId(UUID.randomUUID()).build();
+        template = templateRepository.saveAndFlush(template);
+
+        Level level = Level.builder().name("Test Level").levelSequence(1).scenes(List.of())
+                .templateId(template.getTemplateId()).build();
+        level = levelRepository.saveAndFlush(level);
+
+        Riddle riddle = Riddle.builder().input("1,2").expectedOutput("3")
+                .functionSignature("public static int add(int a, int b)").variableName("sum")
+                .language(CodingLanguage.JAVA).level(level).build();
+
+        riddle = riddleRepository.saveAndFlush(riddle);
+
+        level.setRiddle(riddle);
+        levelRepository.saveAndFlush(level);
+
+        VALID_LEVEL_ID = level.getLevelId().toString();
     }
 
     @Test

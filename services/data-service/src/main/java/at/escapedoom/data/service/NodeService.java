@@ -1,11 +1,14 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.data.NodeRepository;
-import at.escapedoom.data.data.entity.Node;
+import at.escapedoom.data.data.SceneRepository;
+import at.escapedoom.data.data.entity.*;
 import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
 import at.escapedoom.data.rest.model.NodeDeletionResponseDTO;
+import at.escapedoom.data.rest.model.NodeSpecificsDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,8 +18,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import static at.escapedoom.spring.security.KeycloakUserUtil.getCurrentUserUUID;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -24,6 +25,7 @@ public class NodeService {
 
     private final NodeRepository nodeRepository;
     private final NodeMapper nodeMapper;
+    private final SceneRepository sceneRepository;
 
     @Transactional
     public NodeDTO createNode(NodeCreationRequest creationRequest) {
@@ -33,6 +35,7 @@ public class NodeService {
         log.debug("Received NodeCreationRequest: {}", creationRequest);
 
         Node newNode = nodeMapper.toEntity(creationRequest);
+        newNode.setNodeSpecifics(castNodeSpecifics(creationRequest));
 
         newNode = nodeRepository.saveAndFlush(newNode);
 
@@ -54,7 +57,7 @@ public class NodeService {
 
         var node = nodeRepository.findById(UUID.fromString(nodeId)).orElse(null);
         if (node == null) {
-            throw new NoSuchElementException("Riddle with ID: " + nodeId + " not found");
+            throw new NoSuchElementException("Node with ID: " + nodeId + " not found");
         }
 
         log.debug("Found NodeId: {}", nodeId);
@@ -75,6 +78,7 @@ public class NodeService {
         log.debug("Found node: {} for update request", nodeId);
 
         Node node = nodeMapper.toEntity(updatedNode);
+        node.setNodeSpecifics(castNodeSpecifics(updatedNode));
 
         // log.info("Updated Node with id: {} by {}", node.getNodeId(), getCurrentUserUUID().get());
         log.info("Updated Node with id: {}", node.getNodeId());
@@ -88,14 +92,52 @@ public class NodeService {
 
         UUID nodeUUID = UUID.fromString(nodeId);
 
-        if (nodeRepository.existsById(nodeUUID)) {
-            nodeRepository.deleteById(nodeUUID);
-            nodeRepository.flush();
+        Node node = nodeRepository.findById(nodeUUID)
+                .orElseThrow(() -> new NoSuchElementException("Node with id " + nodeUUID + " not found"));
 
-            log.info("Deleted node with id " + nodeUUID);
-            return new NodeDeletionResponseDTO("Deleted node with id " + nodeUUID);
+        Scene scene = node.getScene();
+        if (scene != null) {
+            scene.getNodes().remove(node);
+            sceneRepository.saveAndFlush(scene);
+        } else {
+            nodeRepository.deleteById(nodeUUID);
         }
 
-        throw new NoSuchElementException("Node with id " + nodeUUID + " not found");
+        log.info("Deleted node with id " + nodeUUID);
+        return new NodeDeletionResponseDTO("Deleted node with id " + nodeUUID);
+    }
+
+    private NodeSpecifics castNodeSpecifics(NodeDTO node) {
+        Class<? extends NodeSpecifics> clazz;
+        switch (node.getNodeSpecifics().getNodeType()) {
+        case CONSOLE -> clazz = ConsoleNodeSpecifics.class;
+        case DETAIL -> clazz = DetailsNodeSpecifics.class;
+        case ZOOM -> clazz = ZoomNodeSpecifics.class;
+        default -> throw new IllegalArgumentException(
+                "Unsupported node type: " + node.getNodeSpecifics().getNodeType());
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.convertValue(node.getNodeSpecifics(), clazz);
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException("Unable to convert node to JSON", e);
+        }
+    }
+
+    private NodeSpecifics castNodeSpecifics(NodeCreationRequest creationRequest) {
+        Class<? extends NodeSpecifics> clazz;
+        switch (creationRequest.getNodeSpecifics().getNodeType()) {
+        case CONSOLE -> clazz = ConsoleNodeSpecifics.class;
+        case DETAIL -> clazz = DetailsNodeSpecifics.class;
+        case ZOOM -> clazz = ZoomNodeSpecifics.class;
+        default -> throw new IllegalArgumentException(
+                "Unsupported node type: " + creationRequest.getNodeSpecifics().getNodeType());
+        }
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.convertValue(creationRequest.getNodeSpecifics(), clazz);
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException("Unable to convert node to JSON", e);
+        }
     }
 }

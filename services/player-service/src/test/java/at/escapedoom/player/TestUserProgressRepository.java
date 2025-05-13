@@ -51,10 +51,10 @@ class TestUserProgressRepository {
         userSaver("1", 2L);
         userSaver("2", 2L);
         userSaver("3", 2L);
-        userSaver("1", 1L);
-        userSaver("1", 1L);
-        userSaver("1", 3L);
-        userSaver("1", 2L);
+        userSaver("4", 1L);
+        userSaver("5", 1L);
+        userSaver("6", 3L);
+        userSaver("7", 2L);
 
         // Act
         Optional<Integer> amountOfUsersSolvedThisLevel1 = userProgressRepository

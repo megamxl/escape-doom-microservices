@@ -32,13 +32,13 @@ public class TemplateRepoService implements EscapeRoomTemplateRepositoryService 
 
             at.escapedoom.player.rest.model.LevelDTO rest = levelDtoToRestResponse.toRest(levelDTO);
 
-            if (levelDTO.getRiddle() == null ) {
+            if (levelDTO.getRiddle() == null) {
                 throw new NoSuchElementException("No Riddle found for level talk with you teacher " + level);
             }
 
             rest.setRiddle(RiddleToFunctionMapper.riddleToFrontendFunction(levelDTO.getRiddle()));
             return rest;
-            
+
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
