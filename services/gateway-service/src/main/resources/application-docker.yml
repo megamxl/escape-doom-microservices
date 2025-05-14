@@ -36,3 +36,7 @@ spring:
           uri: http://host.docker.internal:8092
           predicates:
             - Path=/leaderboard-api/**
+        - id: frontend
+          uri: http://host.docker.internal:3000
+          predicates:
+            - Path= /frontend/**
