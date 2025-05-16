@@ -9,11 +9,7 @@ import java.util.UUID;
 import static at.escapedoom.player.utils.EntityConstants.RESULT_JOIN_COLUMN;
 
 @Entity
-@Table(
-        name = "user_progress",
-        uniqueConstraints =
-            @UniqueConstraint(columnNames = {"roomPin", "userName"})
-)
+@Table(name = "user_progress", uniqueConstraints = @UniqueConstraint(columnNames = { "roomPin", "userName" }))
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

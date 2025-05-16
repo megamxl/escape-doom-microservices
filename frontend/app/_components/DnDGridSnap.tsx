@@ -1,26 +1,29 @@
 'use client'
 
-import {DndContext, useDraggable} from "@dnd-kit/core";
-import {CSS} from "@dnd-kit/utilities";
+import {DndContext} from "@dnd-kit/core";
+import Droppable from "@/app/testpage/_components/Droppable.tsx";
+import Draggable from "@/app/testpage/_components/Draggable.tsx";
+import {useState} from "react";
 
 const DnDGridSnap = () => {
 
-    const {attributes, listeners, setNodeRef, transform} = useDraggable({ id: 'button' })
-    const style = {
-        transform: CSS.Translate.toString(transform),
-        color: '#000'
+    const [isDropped, setIsDropped] = useState(false)
+
+    const draggableMarkup = <Draggable/>
+
+    const handleDragEnd = (event: any) => {
+        if (event.over && event.over.id === 'droppable') {
+            setIsDropped(true)
+        }
     }
 
     return (
-        <>
-            <DndContext>
-                <div className="w-[100vw] h-[100vh] bg-amber-100">
-                    <button ref={setNodeRef} style={style} {...listeners} {...attributes}>
-                        I am button
-                    </button>
-                </div>
-            </DndContext>
-        </>
+        <DndContext autoScroll={false} onDragEnd={handleDragEnd}>
+            {!isDropped ? draggableMarkup : null}
+            <Droppable>
+                {isDropped ? draggableMarkup : 'Drop here'}
+            </Droppable>
+        </DndContext>
     );
 };
 
