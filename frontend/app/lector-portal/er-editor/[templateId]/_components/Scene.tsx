@@ -21,7 +21,7 @@ const Scene = ({scene, onDelete}: SceneProps) => {
             <Button fullWidth sx={{ color: grey[50], p: 0, justifyContent: "flex-start" }}>
                 <Stack direction={"row"} spacing={1}>
                     <AspectRatioIcon fontSize={"small"}/>
-                    <Typography> {scene?.name} </Typography>
+                    <Typography> {name} </Typography>
                 </Stack>
             </Button>
             <Stack direction={"row"} spacing={0.5}>

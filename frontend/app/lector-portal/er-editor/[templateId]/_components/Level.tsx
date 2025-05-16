@@ -1,30 +1,67 @@
 'use client'
 
 import React, {useState} from 'react';
-import {Box, Collapse, IconButton, Stack, Typography} from "@mui/material";
+import {Box, Button, Collapse, IconButton, Stack, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from "@mui/icons-material/Close";
-import {LevelDTO, useUpdateLevelHook} from "@/app/gen/data";
+import {LevelDTO, useCreateSceneHook, useDeleteSceneHook} from "@/app/gen/data";
 import Scene from "@/app/lector-portal/er-editor/[templateId]/_components/Scene.tsx";
-import AddScene from "@/app/lector-portal/er-editor/[templateId]/_components/AddScene.tsx";
 import InlineEditableText from "@/app/_components/InlineEditableText.tsx";
+import {grey} from "@mui/material/colors";
+import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 
 type LevelProps = {
     level: LevelDTO,
-    onRemove: (levelId: string) => void;
+    onRemove: (levelId: string) => void
+    onChange: (level: LevelDTO) => void
 }
 
-const removeScene = (sceneId: string) => {
-    console.log("I should remove a scene")
-}
+const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
+    const {mutate: createScene} = useCreateSceneHook()
+    const {mutate: deleteScene} = useDeleteSceneHook()
 
-const Level = ({level: prop, onRemove}: LevelProps) => {
     const [expanded, setExpanded] = useState(true);
     const [level, setLevel] = useState(prop)
 
+    const addScene = (level: LevelDTO) => {
+        if (!level.scenes) return;
+
+        createScene({
+                data: {
+                    scene_sequence: level.scenes.length,
+                    level_id: level.level_id,
+                    background_image_uri: undefined,
+                    name: 'New Scene'
+                }
+            },
+            {
+                onSuccess: (addedScene) => {
+                    console.log("Added Scene:", addedScene)
+                },
+                onError: (addSceneError) => {
+                    console.error("Couldn't create scene:", addSceneError)
+                }
+            })
+    }
+
+    const removeScene = (sceneId: string) => {
+        deleteScene({sceneId: sceneId}, {
+            onSuccess: (sceneDeleted) => {
+                console.log("Deleted scene", sceneDeleted)
+            },
+            onError: (err) => {
+                console.error("Failed to remove scene", err)
+            }
+        })
+    }
+
+    const handleSceneAdd = () => {
+        addScene(level)
+    }
+
     const handleNameChange = async (newName: string) => {
         setLevel({...level, name: newName})
-
+        onChange({...level, name: newName})
     }
 
     return (
@@ -43,9 +80,7 @@ const Level = ({level: prop, onRemove}: LevelProps) => {
                         <ExpandMoreIcon/>
                     </IconButton>
 
-                    <InlineEditableText variant={"h5"} value={level.name!} onSave={handleNameChange} />
-
-                    {/*<Typography variant={"h5"}> {name} </Typography>*/}
+                    <InlineEditableText variant={"h5"} value={level.name!} onSave={handleNameChange}/>
                 </Stack>
                 <IconButton size={"small"} onClick={() => onRemove(level.level_id!)}>
                     <CloseIcon/>
@@ -54,8 +89,16 @@ const Level = ({level: prop, onRemove}: LevelProps) => {
             <Collapse in={expanded} timeout={"auto"} unmountOnExit>
                 <Box ml={5}>
                     <Stack spacing={0.5}>
-                        {level.scenes?.map(scene => (<Scene key={scene.scene_id} scene={scene} onDelete={removeScene}/>))}
-                        <AddScene />
+                        {level.scenes?.map(scene => (
+                            <Scene key={scene.scene_id} scene={scene} onDelete={removeScene}/>)
+                        )}
+                        <Button onClick={handleSceneAdd} fullWidth
+                                sx={{color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem'}}>
+                            <Stack direction={"row"} spacing={1} sx={{cursor: 'pointer', color: grey[600]}}>
+                                <AddBoxOutlinedIcon fontSize={"small"}/>
+                                <Typography sx={{color: grey[600]}} fontWeight={"bold"}> Add Scene </Typography>
+                            </Stack>
+                        </Button>
                     </Stack>
                 </Box>
             </Collapse>
