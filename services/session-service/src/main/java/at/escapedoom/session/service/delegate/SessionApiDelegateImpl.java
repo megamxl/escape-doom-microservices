@@ -30,7 +30,7 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<List<SessionResponse>> getEscapeRoomSessionsByTagOrPin(String tag, Integer pin) {
+    public ResponseEntity<List<SessionResponse>> getERSessionByTagOrPin(String tag, Integer pin) {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
@@ -38,14 +38,14 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
             List<EscapeRoomSession> sessions;
 
             if (tag != null && pin != null) {
-                return ResponseEntity.badRequest().build(); // Only one should be used
+                return ResponseEntity.badRequest().build();
             } else if (tag != null) {
                 sessions = sessionService.getSessionsByTags(userId, List.of(tag));
             } else if (pin != null) {
                 EscapeRoomSession session = sessionService.getSessionByRoomPin(pin.longValue());
                 sessions = session != null ? List.of(session) : List.of();
             } else {
-                return ResponseEntity.badRequest().build(); // Neither provided
+                return ResponseEntity.badRequest().build();
             }
 
             List<SessionResponse> response = sessions.stream().map(EscapeRoomSessionMapperUtil::map).toList();

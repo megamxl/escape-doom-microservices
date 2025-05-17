@@ -79,7 +79,7 @@ paths:
         - session
       summary: Get escape-room sessions by tag or pin
       description: Retrieves escape-room sessions filtered by a tag or a specific 6-digit room pin. Only one filter (tag or pin) should be used per request.
-      operationId: getEscapeRoomSessionsByTagOrPin
+      operationId: getERSessionByTagOrPin
       parameters:
         - name: tag
           in: query

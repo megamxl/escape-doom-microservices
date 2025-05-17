@@ -60,9 +60,9 @@ public interface SessionApiDelegate {
      *
      * @return OK (status code 200)
      *
-     * @see SessionApi#getEscapeRoomSessionsByTagOrPin
+     * @see SessionApi#getERSessionByTagOrPin
      */
-    default ResponseEntity<List<SessionResponse>> getEscapeRoomSessionsByTagOrPin(String tag, Integer pin) {
+    default ResponseEntity<List<SessionResponse>> getERSessionByTagOrPin(String tag, Integer pin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

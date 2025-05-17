@@ -68,15 +68,15 @@ public interface SessionApi {
      *
      * @return OK (status code 200)
      */
-    @Operation(operationId = "getEscapeRoomSessionsByTagOrPin", summary = "Get escape-room sessions by tag or pin", description = "Retrieves escape-room sessions filtered by a tag or a specific 6-digit room pin. Only one filter (tag or pin) should be used per request.", tags = {
+    @Operation(operationId = "getERSessionByTagOrPin", summary = "Get escape-room sessions by tag or pin", description = "Retrieves escape-room sessions filtered by a tag or a specific 6-digit room pin. Only one filter (tag or pin) should be used per request.", tags = {
             "session" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = SessionResponse.class))) }) })
     @RequestMapping(method = RequestMethod.GET, value = "/session", produces = { "application/json" })
 
-    default ResponseEntity<List<SessionResponse>> getEscapeRoomSessionsByTagOrPin(
+    default ResponseEntity<List<SessionResponse>> getERSessionByTagOrPin(
             @Parameter(name = "tag", description = "The tag to filter sessions by", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tag", required = false) String tag,
             @Min(100000) @Max(999999) @Parameter(name = "pin", description = "The 6-digit room pin", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pin", required = false) Integer pin) {
-        return getDelegate().getEscapeRoomSessionsByTagOrPin(tag, pin);
+        return getDelegate().getERSessionByTagOrPin(tag, pin);
     }
 
 }
