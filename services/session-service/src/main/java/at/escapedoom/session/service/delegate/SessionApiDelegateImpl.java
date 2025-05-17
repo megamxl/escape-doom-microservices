@@ -56,4 +56,17 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PreAuthorize("hasRole('LECTOR')")
+    @Override
+    public ResponseEntity<SessionResponse> getERSessionByPin(Integer pin) {
+        try {
+            EscapeRoomSession session = sessionService.getSessionByRoomPin(pin.longValue());
+            return new ResponseEntity<>(EscapeRoomSessionMapperUtil.map(session), HttpStatus.OK);
+        } catch (Exception e) {
+            log.debug("Room pin {} not found: {}", pin, e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
