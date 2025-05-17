@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Divider, Grid2, InputBase, Paper, Stack, Typography} from "@mui/material";
+import {Box, Button, Divider, Grid, InputBase, Paper, Stack, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
 import IconButton from "@mui/material/IconButton";
@@ -40,7 +40,7 @@ const LectorPortalDashboard = () => {
     const clearFilters = () => {
         setSelected(prev => {
             const newSelection = new Map();
-            for (let key of prev.keys()) {
+            for (const key of prev.keys()) {
                 newSelection.set(key, true);
             }
             return newSelection;
@@ -102,27 +102,26 @@ const LectorPortalDashboard = () => {
                         </Paper>
 
                     </Stack>
-                    <Grid2 container spacing={3}>
-                        {/*@ts-ignore*/}
-                        <Grid2 size={{lg: 4, md: 6, sm: 12}}>
+                    <Grid container spacing={3}>
+                        <Grid size={{lg: 4, md: 6, sm: 12}}>
                             <AddSessionFromTemplateCard onDone={addSession}/>
-                        </Grid2>
+                        </Grid>
                         {!isLoading ? sessions.map((session, index) => {
                                 if (selected.get(session.state!)) {
                                     return (
-                                        <Grid2 key={index} size={{lg: 4, md: 6, sm: 12}}>
+                                        <Grid key={index} size={{lg: 4, md: 6, sm: 12}}>
                                             <SessionCard session={session} onSessionUpdate={updateSession}/>
-                                        </Grid2>
+                                        </Grid>
                                     )
                                 }
                             }) :
                             [...Array(6)].map((_, index) => (
-                                <Grid2 key={index} size={{lg: 4, md: 6, sm: 12}}>
+                                <Grid key={index} size={{lg: 4, md: 6, sm: 12}}>
                                     <SessionCardSkeleton/>
-                                </Grid2>
+                                </Grid>
                             ))
                         }
-                    </Grid2>
+                    </Grid>
                 </Stack>
             </Box>
         </>

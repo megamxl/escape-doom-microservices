@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Button, Grid2 as Grid, Skeleton, Stack, Typography} from "@mui/material";
+import {Button, Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import {TemplateDTO, useCreateLevelHook, useGetTemplateHook, useUpdateTemplateHook} from "@/app/gen/data";
 import Level from "@/app/lector-portal/er-editor/[templateId]/_components/Level.tsx";
