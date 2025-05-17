@@ -1,7 +1,7 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Backdrop, CircularProgress, Divider, Grid2, Grow, Paper, Stack, Typography} from "@mui/material";
+import {Backdrop, CircularProgress, Divider, Grid, Grow, Paper, Stack, Typography} from "@mui/material";
 import {common} from "@mui/material/colors";
 import {redirect, useRouter} from 'next/navigation'
 import UserCard from "./_components/UserCard";
@@ -164,7 +164,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                     <CircularProgress size={30} thickness={5} sx={{margin: 2, marginRight: 10}}/>
                 </Stack>
             </Stack>
-            <Grid2
+            <Grid
                 container
                 direction="row"
                 alignItems="center"
@@ -175,13 +175,13 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
             >
                 {lobbyState.users.map((playerName, index) => (
 
-                    <Grid2 key={index} size={{xs: 4}} p={1}>
+                    <Grid key={index} size={{xs: 4}} p={1}>
                         <UserCard playerName={playerName} isMainUsr={lobbyState.name === playerName}/>
-                    </Grid2>
+                    </Grid>
 
                 ))
                 }
-            </Grid2>
+            </Grid>
             <Backdrop TransitionComponent={Grow} open={lobbyState.isStarted}>
                 <Stack>
                     <Typography fontSize="8rem"> Starting in </Typography>
