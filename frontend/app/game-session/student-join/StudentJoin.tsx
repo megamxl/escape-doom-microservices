@@ -1,14 +1,15 @@
 'use client'
 
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {Alert, Button, Card, CardContent, Grid2, Link, Snackbar, Stack, TextField, Typography} from "@mui/material";
+import {Alert, Button, Card, CardContent, Grid, Link, Snackbar, Stack, TextField, Typography} from "@mui/material";
 import BackgroundImage from '@/public/images/StudentJoin.jpg'
 import {common} from '@mui/material/colors';
 import {redirect, useRouter} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import {useSession} from "@/app/utils/game-session-handler";
 import {
-    EscapeRoomJoin, EscapeRoomJoinResponse,
+    EscapeRoomJoin,
+    EscapeRoomJoinResponse,
     EscapeRoomStateEnum,
     escapeRoomStateEnum,
     HandlePlayerJoinMutationResponse,
@@ -96,7 +97,7 @@ const StudentJoin = () => {
 
     return (
         <>
-            <Grid2
+            <Grid
                 container
                 direction="column"
                 justifyContent="center"
@@ -147,7 +148,7 @@ const StudentJoin = () => {
                         </Stack>
                     </CardContent>
                 </Card>
-            </Grid2>
+            </Grid>
 
             <Snackbar open={openSnackbar.state} autoHideDuration={6000} onClose={() => {
                 setOpenOpenSnackbar(prev => ({ ...prev, state: false }))

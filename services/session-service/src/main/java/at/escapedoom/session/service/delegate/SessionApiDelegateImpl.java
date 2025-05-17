@@ -30,35 +30,43 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<List<SessionResponse>> getERByTags(List<String> tags) {
+    public ResponseEntity<List<SessionResponse>> getERSessionByTagOrPin(String tag, Integer pin) {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
 
-        List<SessionResponse> response = new ArrayList<>();
-
         try {
-            List<EscapeRoomSession> escapeRoomSessions = sessionService.getSessionsByTags(userId, tags);
-            for (EscapeRoomSession session : escapeRoomSessions) {
-                response.add(EscapeRoomSessionMapperUtil.map(session));
-            }
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-        }
+            List<EscapeRoomSession> sessions;
 
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            if (tag != null && pin != null) {
+                return ResponseEntity.badRequest().build();
+            } else if (tag != null) {
+                sessions = sessionService.getSessionsByTags(userId, List.of(tag));
+            } else if (pin != null) {
+                EscapeRoomSession session = sessionService.getSessionByRoomPin(pin.longValue());
+                sessions = session != null ? List.of(session) : List.of();
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+
+            List<SessionResponse> response = sessions.stream().map(EscapeRoomSessionMapperUtil::map).toList();
+
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            log.error("Error fetching sessions by tag or pin: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<SessionResponse> getERSessionByPin(Integer roomPin) {
+    public ResponseEntity<SessionResponse> getERSessionByPin(Integer pin) {
         try {
-            EscapeRoomSession escapeRoomSession = sessionService.getSessionByRoomPin(roomPin.longValue());
-            return new ResponseEntity<>(EscapeRoomSessionMapperUtil.map(escapeRoomSession), HttpStatus.OK);
+            EscapeRoomSession session = sessionService.getSessionByRoomPin(pin.longValue());
+            return new ResponseEntity<>(EscapeRoomSessionMapperUtil.map(session), HttpStatus.OK);
         } catch (Exception e) {
-            log.debug(e.getMessage());
+            log.debug("Room pin {} not found: {}", pin, e.getMessage());
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

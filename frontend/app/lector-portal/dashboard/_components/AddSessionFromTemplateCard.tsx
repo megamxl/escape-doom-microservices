@@ -21,7 +21,7 @@ import {
     useCreateERInstanceHook
 } from "@/app/gen/session";
 import {useGetAllTemplatesHook} from "@/app/gen/data";
-import green from '@mui/material/colors/green';
+import { green } from '@mui/material/colors';
 import {red} from "@mui/material/colors";
 
 type AddSessionCardProps = {
