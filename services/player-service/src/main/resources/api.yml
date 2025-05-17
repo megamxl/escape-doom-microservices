@@ -313,6 +313,10 @@ components:
           type: string
           description: The function signature
           example: "public static int sum(int a, int b) "
+        expected_output:
+          type: string
+          description: The expected output of the riddle
+          example: "42"
     # Enums
     CodingLanguage:
       type: string

@@ -36,6 +36,8 @@ public class RiddleDTO {
 
     private @Nullable String function;
 
+    private @Nullable String expectedOutput;
+
     public RiddleDTO riddleId(String riddleId) {
         this.riddleId = riddleId;
         return this;
@@ -120,6 +122,27 @@ public class RiddleDTO {
         this.function = function;
     }
 
+    public RiddleDTO expectedOutput(String expectedOutput) {
+        this.expectedOutput = expectedOutput;
+        return this;
+    }
+
+    /**
+     * The expected output of the riddle
+     *
+     * @return expectedOutput
+     */
+
+    @Schema(name = "expected_output", example = "42", description = "The expected output of the riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("expected_output")
+    public String getExpectedOutput() {
+        return expectedOutput;
+    }
+
+    public void setExpectedOutput(String expectedOutput) {
+        this.expectedOutput = expectedOutput;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -131,12 +154,13 @@ public class RiddleDTO {
         RiddleDTO riddleDTO = (RiddleDTO) o;
         return Objects.equals(this.riddleId, riddleDTO.riddleId) && Objects.equals(this.levelId, riddleDTO.levelId)
                 && Objects.equals(this.language, riddleDTO.language)
-                && Objects.equals(this.function, riddleDTO.function);
+                && Objects.equals(this.function, riddleDTO.function)
+                && Objects.equals(this.expectedOutput, riddleDTO.expectedOutput);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(riddleId, levelId, language, function);
+        return Objects.hash(riddleId, levelId, language, function, expectedOutput);
     }
 
     @Override
@@ -147,6 +171,7 @@ public class RiddleDTO {
         sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
         sb.append("    language: ").append(toIndentedString(language)).append("\n");
         sb.append("    function: ").append(toIndentedString(function)).append("\n");
+        sb.append("    expectedOutput: ").append(toIndentedString(expectedOutput)).append("\n");
         sb.append("}");
         return sb.toString();
     }
