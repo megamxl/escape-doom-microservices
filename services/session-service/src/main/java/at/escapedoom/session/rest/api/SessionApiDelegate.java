@@ -26,46 +26,23 @@ public interface SessionApiDelegate {
     }
 
     /**
-     * GET /session/tags/{tag} : Get all escape-room instances with a specific tag Retrieves a list of escape-room
-     * instances filtered by a single tag
+     * GET /session : Get escape-room sessions by tag or pin Retrieves escape-room sessions filtered by a tag or a
+     * specific 6-digit room pin. Only one filter (tag or pin) should be used per request.
      *
      * @param tag
-     *            The tag to filter sessions by (required)
+     *            The tag to filter sessions by (optional)
+     * @param pin
+     *            The 6-digit room pin (optional)
      *
      * @return OK (status code 200)
      *
-     * @see SessionApi#getERByTag
+     * @see SessionApi#getEscapeRoomSessionsByTagOrPin
      */
-    default ResponseEntity<List<SessionResponse>> getERByTag(String tag) {
+    default ResponseEntity<List<SessionResponse>> getEscapeRoomSessionsByTagOrPin(String tag, Integer pin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"room_pin\" : 420666, \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }, { \"room_pin\" : 420666, \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-    /**
-     * GET /session/pins/{pin} : Retrieve an escape-room session by room pin Fetches an escape-room session using its
-     * room pin
-     *
-     * @param pin
-     *            The 6-digit room pin (required)
-     *
-     * @return OK (status code 200)
-     *
-     * @see SessionApi#getERSessionByPin
-     */
-    default ResponseEntity<SessionResponse> getERSessionByPin(Integer pin) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"room_pin\" : 420666, \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"escape_room_session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
