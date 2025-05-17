@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static at.escapedoom.player.utils.MapperFunctions.extractJson;
 
@@ -31,7 +29,7 @@ public class RedisNameUpdateReceiver {
         if (jsonString != null) {
             PlayerJoinedEvent playerJoinedEvent = gson.fromJson(jsonString, PlayerJoinedEvent.class);
             List<UserProgress> userProgressResult = userProgressRepository
-                    .getUserNamesByRoomPin(Long.valueOf(playerJoinedEvent.getRoomPin()));
+                    .getUserProgressByRoomPin(Long.valueOf(playerJoinedEvent.getRoomPin()));
             List<String> playerNames = userProgressResult.stream().map(UserProgress::getUserName).toList();
             PlayerNamesMessage playerNamesMessage = new PlayerNamesMessage(playerNames);
 

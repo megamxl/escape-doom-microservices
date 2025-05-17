@@ -46,11 +46,13 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
     @Override
     @Scheduled(fixedDelay = 5000)
     public void updateCompileRequest() {
-        for (SolutionAttempt attempt : attemptList) {
+        Iterator<SolutionAttempt> iterator = attemptList.iterator();
+        while (iterator.hasNext()) {
+            SolutionAttempt attempt = iterator.next();
             if (attempt.getStatus() == EscapeRoomResult.StatusEnum.WAITING) {
                 sendSolutionToCodeExec(attempt);
             } else {
-                attemptList.remove(attempt);
+                iterator.remove();
             }
         }
     }

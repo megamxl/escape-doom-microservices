@@ -16,5 +16,4 @@ public interface ResultRepository extends JpaRepository<Result, Long> {
 
     @Query("SELECT new at.escapedoom.player.data.postgres.entity.ResultDTO(r.escapeRoomLevel, r.input, r.solvedLevelAt, r.awardedPoints) FROM Result r where r.userProgress.userIdentifier = :userIdentifier")
     Optional<List<ResultDTO>> findResultsByUserIdentifier(@Param("userIdentifier") UUID userIdentifier);
-
 }

@@ -11,6 +11,11 @@ public interface EscapeRoomTemplateRepositoryService {
 
     LevelDTO getCompleteTemplateById(UUID templateId, int level) throws NoSuchElementException;
 
+    at.escapedoom.spring.communication.data.model.LevelDTO getFullCurrentLevelByUserIdentifier(UUID templateId,
+            int level) throws NoSuchElementException;
+
     EscapeRoomLevel getEscapeRoomLevelByRoomPin(Long roomPin, Long level);
+
+    int getNumberOfLevels(UUID templateId);
 
 }

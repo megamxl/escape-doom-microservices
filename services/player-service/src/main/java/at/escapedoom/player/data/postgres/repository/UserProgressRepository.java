@@ -2,6 +2,7 @@ package at.escapedoom.player.data.postgres.repository;
 
 import at.escapedoom.player.data.postgres.entity.UserProgress;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,17 @@ public interface UserProgressRepository extends JpaRepository<UserProgress, UUID
     Optional<Integer> getAmountOfUsersSolvedThisLevelByRoomPin(@Param("roomPin") Long roomPin,
             @Param("levelToCheck") Long levelToCheck);
 
-    List<UserProgress> getUserNamesByRoomPin(Long roomPin);
+    List<UserProgress> getUserProgressByRoomPin(Long roomPin);
+
+    @Query("SELECT u FROM UserProgress u where u.userIdentifier = :userId")
+    Optional<UserProgress> getUserProgressByUserId(@Param("userId") UUID userId);
+
+    @Modifying
+    @Query("UPDATE UserProgress u SET u.lastRiddleSolvedAt = CURRENT_TIMESTAMP, u.currentPoints = u.currentPoints + :points WHERE u.userIdentifier = :userId")
+    int updateUserProgress(UUID userId, Long points);
+
+    @Modifying
+    @Query("UPDATE UserProgress u SET u.currentEscapeRoomLevel = u.currentEscapeRoomLevel + 1 WHERE u.userIdentifier = :userId")
+    int updateUserLvl(UUID userId);
 
 }

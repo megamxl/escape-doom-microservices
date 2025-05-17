@@ -1,7 +1,9 @@
 package at.escapedoom.player.service;
 
+import at.escapedoom.player.data.postgres.entity.Result;
 import at.escapedoom.player.data.postgres.entity.SolutionAttempt;
 import at.escapedoom.player.data.postgres.entity.UserProgress;
+import at.escapedoom.player.data.postgres.repository.ResultRepository;
 import at.escapedoom.player.data.postgres.repository.SolutionAttemptRepository;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
 import at.escapedoom.player.rest.model.EscapeRoomResult;
@@ -15,7 +17,9 @@ import at.escapedoom.spring.redis.data.repositories.SessionViewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,8 +33,10 @@ public class GamePlayService {
     private final EscapeRoomTemplateRepositoryService escapeRoomTemplateRepositoryService;
     private final CodeCompilerInterface codeCompilerInterface;
     private final SolutionAttemptRepository solutionAttemptRepository;
-
     private final SessionViewRepository sessionViewRepository;
+    private final ResultRepository resultRepository;
+
+    private final Long POINTS_PER_LVL = 20L;
 
     public LevelDTO getCurrentLevelByUserIdentifier(UUID userIdentifier) {
 
@@ -50,10 +56,21 @@ public class GamePlayService {
                 (int) (long) user.getCurrentEscapeRoomLevel());
     }
 
+    private at.escapedoom.spring.communication.data.model.LevelDTO getFullLvl(UUID userIdentifier) {
+        UserProgress user = userProgressRepository.findById(userIdentifier)
+                .orElseThrow(() -> new NoSuchElementException("Can't find user with identifier " + userIdentifier));
+
+        return escapeRoomTemplateRepositoryService.getFullCurrentLevelByUserIdentifier(user.getTemplateID(),
+                (int) (long) user.getCurrentEscapeRoomLevel());
+
+    }
+
     public void submitSolutionAttempt(UUID userIdentifier, EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
+
         codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
     }
 
+    @Transactional
     public EscapeRoomResult getResultsByUserIdentifier(UUID userIdentifier) {
 
         Optional<SolutionAttempt> byPlayerUUID = solutionAttemptRepository.findByPlayerUUID(userIdentifier);
@@ -62,10 +79,42 @@ public class GamePlayService {
             throw new NoSuchElementException("Can't find user resubmit Code" + userIdentifier);
         }
 
-        // TODO check if won
+        at.escapedoom.spring.communication.data.model.LevelDTO template = getFullLvl(userIdentifier);
 
-        EscapeRoomResult build = EscapeRoomResult.builder().status(byPlayerUUID.get().getStatus())
-                .output(byPlayerUUID.get().getOutput()).build();
+        EscapeRoomResult.StatusEnum status;
+
+        if (template.getRiddle().getExpectedOutput().trim().equals(byPlayerUUID.get().getOutput().trim())) {
+            int numberOfLvls = escapeRoomTemplateRepositoryService
+                    .getNumberOfLevels(UUID.fromString(template.getTemplateId()));
+
+            if (numberOfLvls > byPlayerUUID.get().getCurrentEscapeRoomLevel() + 1) {
+                userProgressRepository.updateUserLvl(userIdentifier);
+                status = EscapeRoomResult.StatusEnum.SUCCESS;
+            } else {
+                status = EscapeRoomResult.StatusEnum.WON;
+            }
+            userProgressRepository.updateUserProgress(userIdentifier, POINTS_PER_LVL);
+
+            Optional<UserProgress> userProgress = userProgressRepository
+                    .getUserProgressByUserId(byPlayerUUID.get().getPlayerUUID());
+
+            if (userProgress.isEmpty()) {
+                throw new NoSuchElementException(
+                        "Can't find user progress with identifier " + byPlayerUUID.get().getPlayerUUID());
+            }
+
+            Result result = new Result().builder().awardedPoints(POINTS_PER_LVL.doubleValue())
+                    .escapeRoomLevel(byPlayerUUID.get().getCurrentEscapeRoomLevel())
+                    .input(byPlayerUUID.get().getCodeSubmition()).solvedLevelAt(LocalDateTime.now())
+                    .userProgress(userProgress.get()).build();
+            resultRepository.save(result);
+
+        } else {
+            status = byPlayerUUID.get().getStatus();
+        }
+
+        EscapeRoomResult build = EscapeRoomResult.builder().status(status).output(byPlayerUUID.get().getOutput())
+                .build();
 
         if (byPlayerUUID.get().getStatus() != EscapeRoomResult.StatusEnum.WAITING) {
             solutionAttemptRepository.deleteById(byPlayerUUID.get().getSolutionAttemptId());

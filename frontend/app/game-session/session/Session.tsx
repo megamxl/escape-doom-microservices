@@ -152,10 +152,11 @@ const Session = () => {
 
         console.log(result)
 
-        // if (response?.status === CompileStatus.WON) {
-        //     removeGameSession()
-        //     redirect(`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${roomPinOfSession}`)
-        //
+    if (codeExecutionResponse.status === CompileStatus.WON) {
+            console.log("escapeRoom won")
+             //removeGameSession()
+             //redirect(`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${roomPinOfSession}`)
+         }
 
     }
 
