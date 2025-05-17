@@ -1,6 +1,5 @@
 package at.escapedoom.data.service;
 
-import at.escapedoom.data.DataApi;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.TemplateRepository;
@@ -11,7 +10,7 @@ import at.escapedoom.data.rest.model.CodingLanguage;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
-import at.escapedoom.data.service.rest.config.PostgresConfig;
+import at.escapedoom.data.config.PostgresTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = DataApi.class)
+@SpringBootTest
 @ActiveProfiles("test")
-class RiddleServiceTest extends PostgresConfig {
+class RiddleServiceTest extends PostgresTestConfig {
 
     private String VALID_RIDDLE_ID = "";
     private final String INVALID_RIDDLE_ID = "05c48cb1-a3aa-4673-8d24-666666666666";
@@ -45,7 +44,6 @@ class RiddleServiceTest extends PostgresConfig {
     @Autowired
     private TemplateRepository templateRepository;
 
-    @Transactional
     @BeforeEach
     void setup() {
         repository.deleteAllInBatch();
@@ -60,8 +58,15 @@ class RiddleServiceTest extends PostgresConfig {
 
         VALID_LEVEL_ID = level.getLevelId();
 
-        Riddle riddle = Riddle.builder().input("2, 3").language(CodingLanguage.JAVA).expectedOutput("5")
-                .functionSignature("public static int sum(int a, int b)").variableName("result").level(level).build();
+        Riddle riddle = Riddle.builder()
+                .input("2, 3")
+                .expectedOutput("5")
+                .functionSignature("public static int add(int a, int b)")
+                .variableName("sum")
+                .language(CodingLanguage.JAVA)
+                .level(level)
+                .levelId(level.getLevelId())
+                .build();
 
         VALID_RIDDLE_ID = repository.saveAndFlush(riddle).getRiddleId().toString();
     }
@@ -91,6 +96,7 @@ class RiddleServiceTest extends PostgresConfig {
 
     // region DELETE Tests
     @Test
+    @Transactional
     void testDeleteRiddle() {
         RiddleDeletionResponseDTO response = service.deleteRiddle(VALID_RIDDLE_ID);
         assertEquals("Riddle deleted successfully", response.getMessage());

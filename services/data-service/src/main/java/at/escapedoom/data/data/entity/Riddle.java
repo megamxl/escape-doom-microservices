@@ -7,7 +7,6 @@ import lombok.*;
 import java.util.UUID;
 
 import static at.escapedoom.data.data.entity.Constants.LEVEL_ID;
-import static at.escapedoom.data.data.entity.Constants.RIDDLE_ID;
 
 @Entity
 @Getter
@@ -17,27 +16,31 @@ import static at.escapedoom.data.data.entity.Constants.RIDDLE_ID;
 @NoArgsConstructor
 @Table(name = "riddle")
 public class Riddle {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = RIDDLE_ID)
+    @Column(name = "riddle_id")
     private UUID riddleId;
 
+    @Column(name = "expected_output")
     private String expectedOutput;
 
     @Enumerated(EnumType.STRING)
     private CodingLanguage language;
 
+    @Column(name = "function_signature")
     private String functionSignature;
 
     private String input;
 
+    @Column(name = "variable_name")
     private String variableName;
 
-    @Column(name = LEVEL_ID, insertable = false, updatable = false)
+    @Column(name = LEVEL_ID, nullable = false)
     private UUID levelId;
 
-    @OneToOne
-    @JoinColumn(name = LEVEL_ID, nullable = false, unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = LEVEL_ID, referencedColumnName = LEVEL_ID, insertable = false, updatable = false)
     private Level level;
 
     @Override

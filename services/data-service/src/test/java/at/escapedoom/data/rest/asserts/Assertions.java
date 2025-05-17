@@ -1,4 +1,4 @@
-package at.escapedoom.data.service.rest.asserts;
+package at.escapedoom.data.rest.asserts;
 
 import lombok.experimental.UtilityClass;
 import org.springframework.test.web.servlet.ResultMatcher;
