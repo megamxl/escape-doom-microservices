@@ -1,21 +1,14 @@
 package at.escapedoom.data.rest.model;
 
-import java.net.URI;
-import java.util.Objects;
-import at.escapedoom.data.rest.model.NodeDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import org.springframework.lang.Nullable;
-import java.time.OffsetDateTime;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.*;
 import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import org.springframework.lang.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * A scene of an escape-room instance

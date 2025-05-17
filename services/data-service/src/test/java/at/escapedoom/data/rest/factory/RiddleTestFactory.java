@@ -1,4 +1,4 @@
-package at.escapedoom.data.service.rest.factory;
+package at.escapedoom.data.rest.factory;
 
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;

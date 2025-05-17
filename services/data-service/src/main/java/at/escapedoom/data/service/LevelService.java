@@ -12,7 +12,6 @@ import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

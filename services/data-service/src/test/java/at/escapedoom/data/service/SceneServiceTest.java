@@ -1,14 +1,14 @@
 package at.escapedoom.data.service;
 
-import at.escapedoom.data.DataApi;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.TemplateRepository;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
-import at.escapedoom.data.rest.model.*;
-import at.escapedoom.data.service.rest.config.PostgresConfig;
+import at.escapedoom.data.rest.model.SceneDTO;
+import at.escapedoom.data.rest.model.SceneRequestDTO;
+import at.escapedoom.data.config.PostgresTestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -25,11 +25,11 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = DataApi.class)
+@SpringBootTest
 @ActiveProfiles("test")
 @Transactional
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class SceneServiceTest extends PostgresConfig {
+class SceneServiceTest extends PostgresTestConfig {
 
     private final UUID USER_ID = UUID.randomUUID();
     private final String INVALID_SCENE_ID = UUID.randomUUID().toString();
@@ -39,6 +39,7 @@ class SceneServiceTest extends PostgresConfig {
 
     @Autowired
     private SceneService service;
+
     @Autowired
     private SceneRepository sceneRepository;
 
