@@ -14,10 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -35,19 +32,8 @@ public class LevelService {
         assert creationRequest.getTemplateId() != null;
 
         Level newLevel = Level.builder().levelSequence(creationRequest.getLevelSequence())
-                .name(creationRequest.getName()).scenes(Collections.emptyList())
+                .name(creationRequest.getName()).scenes(new ArrayList<>())
                 .templateId(UUID.fromString(creationRequest.getTemplateId())).build();
-
-        newLevel = repository.saveAndFlush(newLevel);
-
-        return levelMapper.toDTO(newLevel);
-    }
-
-    private LevelDTO getLevelDTO(LevelDTO restModel, Level newLevel) {
-        if (restModel.getScenes() != null && !restModel.getScenes().isEmpty()) {
-            List<Scene> scenes = sceneService.createScenesForLevel(restModel.getScenes(), newLevel);
-            newLevel.getScenes().addAll(scenes);
-        }
 
         newLevel = repository.saveAndFlush(newLevel);
 
@@ -64,9 +50,22 @@ public class LevelService {
         level.setLevelSequence(restModel.getLevelSequence());
         level.setName(restModel.getName());
 
-        level.getScenes().clear();
-
         return getLevelDTO(restModel, level);
+    }
+
+    private LevelDTO getLevelDTO(LevelDTO restModel, Level level) {
+        if (restModel.getScenes() != null && !restModel.getScenes().isEmpty()) {
+            if (level.getScenes() != null && !level.getScenes().isEmpty()) {
+                level.getScenes().forEach(scene -> scene.setLevel(null));
+                level.getScenes().clear();
+            }
+
+            List<Scene> newScenes = sceneService.createScenesForLevel(restModel.getScenes(), level);
+            level.setScenes(new ArrayList<>(newScenes));
+        }
+
+        level = repository.saveAndFlush(level);
+        return levelMapper.toDTO(level);
     }
 
     public LevelDTO getLevelById(String levelId) {
