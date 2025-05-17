@@ -56,6 +56,15 @@ public class GamePlayService {
                 (int) (long) user.getCurrentEscapeRoomLevel());
     }
 
+    private at.escapedoom.spring.communication.data.model.LevelDTO getFullLvl(UUID userIdentifier) {
+        UserProgress user = userProgressRepository.findById(userIdentifier)
+                .orElseThrow(() -> new NoSuchElementException("Can't find user with identifier " + userIdentifier));
+
+        return escapeRoomTemplateRepositoryService.getFullCurrentLevelByUserIdentifier(user.getTemplateID(),
+                (int) (long) user.getCurrentEscapeRoomLevel());
+
+    }
+
     public void submitSolutionAttempt(UUID userIdentifier, EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
 
         codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
@@ -70,7 +79,7 @@ public class GamePlayService {
             throw new NoSuchElementException("Can't find user resubmit Code" + userIdentifier);
         }
 
-        LevelDTO template = getCurrentLevelByUserIdentifier(userIdentifier);
+        at.escapedoom.spring.communication.data.model.LevelDTO template = getFullLvl(userIdentifier);
 
         EscapeRoomResult.StatusEnum status;
 

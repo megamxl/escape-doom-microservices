@@ -16,7 +16,6 @@ public class RiddleToFunctionMapper {
         builder.function(riddle.getFunctionSignature() + "{ \n \n \n}");
         builder.levelId(riddle.getLevelId());
         builder.riddleId(riddle.getRiddleId());
-        builder.expectedOutput(riddle.getExpectedOutput());
 
         return builder.build();
     }

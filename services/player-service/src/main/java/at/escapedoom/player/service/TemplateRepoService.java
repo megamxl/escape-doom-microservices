@@ -45,6 +45,23 @@ public class TemplateRepoService implements EscapeRoomTemplateRepositoryService 
     }
 
     @Override
+    public LevelDTO getFullCurrentLevelByUserIdentifier(UUID templateId, int level) throws NoSuchElementException {
+
+        try {
+            TemplateDTO template = templateApi.getTemplate(templateId.toString());
+
+            LevelDTO levelDTO = template.getLevels().get(level);
+
+            if (levelDTO.getRiddle() == null) {
+                throw new NoSuchElementException("No Riddle found for level talk with you teacher " + level);
+            }
+            return levelDTO;
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public EscapeRoomLevel getEscapeRoomLevelByRoomPin(Long roomPin, Long level) {
         return null;
     }
