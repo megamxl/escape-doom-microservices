@@ -3,13 +3,7 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Grid2 as Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import {
-    TemplateDTO,
-    useCreateLevelHook,
-    useDeleteLevelHook,
-    useGetTemplateHook,
-    usePutTemplateHook
-} from "@/app/gen/data";
+import {TemplateDTO, useCreateLevelHook, useGetTemplateHook, useUpdateTemplateHook} from "@/app/gen/data";
 import Level from "@/app/lector-portal/er-editor/[templateId]/_components/Level.tsx";
 import {grey} from "@mui/material/colors";
 import {useRouter} from "next/navigation";
@@ -19,7 +13,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DnDNode from "@/app/lector-portal/er-editor/[templateId]/_components/DnDNode.tsx";
 import {DndContext, DragEndEvent} from "@dnd-kit/core";
 import DnDDroppable from "@/app/lector-portal/er-editor/[templateId]/_components/DnDDroppable.tsx";
-import {LevelDTO, SceneDTO} from "@/app/gen/player";
+import {SceneDTO} from "@/app/gen/player";
 
 type EditorProps = {
     templateId: string
@@ -29,8 +23,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     const router = useRouter();
 
     const {data, isLoading} = useGetTemplateHook({templateId: templateId})
-    const {mutate: updateTemplate} = usePutTemplateHook()
-    const {mutate: deleteLevel} = useDeleteLevelHook()
+    const {mutate: updateTemplate} = useUpdateTemplateHook()
     const {mutate: createLevel} = useCreateLevelHook()
 
     const [template, setTemplate] = useState<TemplateDTO>()
@@ -44,38 +37,12 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         if (!firstLevel || !firstLevel.scenes) return;
 
         setSelectedScene(firstLevel.scenes.find(scene => scene.scene_sequence === 1))
-
     }, [data]);
 
     useEffect(() => {
         console.log("Template", template)
         saveTemplate()
     }, [template]);
-
-    const removeLevel = (levelId: string) => {
-        deleteLevel({levelId: levelId}, {
-            onSuccess: () => {
-                console.log("Deletion successful")
-                setTemplate({...template, levels: template?.levels!.filter(l => l.level_id !== levelId)})
-            },
-            onError: (error) => {
-                console.error("Something went wrong!: ", error)
-            }
-        })
-    }
-
-    const updateLevel = (level: LevelDTO) => {
-        if (!template || !template.levels) return;
-        console.log("Received toUpdate level:", level)
-
-        setTemplate(prev => ({
-            ...prev,
-            levels: prev?.levels!.map(l =>
-                l.level_id === level.level_id ? {...l, ...level} : l
-            )
-        }))
-        saveTemplate()
-    }
 
     const addLevel = () => {
         if (!template || !template.levels) return;
@@ -92,6 +59,25 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                 console.log(error)
             }
         })
+    }
+
+    const handleSceneSelection = (sceneId: string, levelId: string) => {
+        if (!template || !template.levels) return;
+
+        const selectedLevel = template.levels.find(l => l.level_id && l.level_id === levelId)
+
+        if (!selectedLevel || !selectedLevel.scenes) return;
+
+        const newScene = selectedLevel.scenes.find(s => s.scene_id === sceneId)
+
+        setSelectedScene(newScene)
+    }
+
+    const handleLevelDeletion = (levelId: string) => {
+        setTemplate(prev => ({
+            ...prev,
+            levels: prev?.levels!.filter(lvl => lvl.level_id !== levelId)
+        }))
     }
 
     const saveTemplate = () => {
@@ -122,23 +108,36 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     return (
         <>
             <Grid spacing={4} container p={2} height={'100vh'} style={{backgroundColor: '#121212'}}>
-                <Grid spacing={4} size={{xs: 12, md: 3}}>
-                    <Stack style={{backgroundColor: '#1e1e1e'}} height={"100%"} px={4} py={2}>
+                <Grid spacing={4} size={{xs: 12, md: 3}} height='100%'>
+                    <Stack
+                        style={{backgroundColor: '#1e1e1e'}}
+                        height={"100%"}
+                        px={4}
+                        py={2}
+                        spacing={2}
+                    >
                         <Typography variant="h5"> {template.name} </Typography>
 
-                        <Stack spacing={2}>
-                            <Typography variant={'h5'}> Levels </Typography>
-
-                            {template.levels?.map(level => {
-                                return (
-                                    <Level
-                                        key={level.level_id}
-                                        level={level}
-                                        onRemove={removeLevel}
-                                        onChange={updateLevel}
-                                    />
-                                )
-                            })}
+                        <Stack
+                            spacing={2}
+                            sx={{
+                                flexGrow: 1,
+                                overflowY: 'auto',
+                                overflowX: 'hidden',
+                                minHeight: 0, // <-- CRUCIAL for scroll to work in flex containers
+                            }}
+                        >
+                            {template.levels
+                                ?.sort((l1, l2) => l1.level_sequence! - l2.level_sequence!)
+                                .map(level => (
+                                        <Level
+                                            key={level.level_id}
+                                            level={level}
+                                            onDeletion={handleLevelDeletion}
+                                            onSceneSelection={handleSceneSelection}
+                                        />
+                                    )
+                                )}
 
                             <Button onClick={addLevel} fullWidth
                                     sx={{color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem'}}>

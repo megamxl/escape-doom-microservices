@@ -4,21 +4,22 @@ import React, {useState} from 'react';
 import {Box, Button, Collapse, IconButton, Stack, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from "@mui/icons-material/Close";
-import {LevelDTO, useCreateSceneHook, useDeleteSceneHook} from "@/app/gen/data";
+import {LevelDTO, useCreateSceneHook, useDeleteLevelHook, useUpdateLevelHook} from "@/app/gen/data";
 import Scene from "@/app/lector-portal/er-editor/[templateId]/_components/Scene.tsx";
 import InlineEditableText from "@/app/_components/InlineEditableText.tsx";
 import {grey} from "@mui/material/colors";
 import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 
 type LevelProps = {
-    level: LevelDTO,
-    onRemove: (levelId: string) => void
-    onChange: (level: LevelDTO) => void
+    level: LevelDTO
+    onDeletion: (levelId: string) => void
+    onSceneSelection: (sceneId: string, levelId: string) => void
 }
 
-const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
+const Level = ({level: prop, onDeletion, onSceneSelection}: LevelProps) => {
+    const {mutate: deleteLevel} = useDeleteLevelHook()
+    const {mutate: updateLevel} = useUpdateLevelHook()
     const {mutate: createScene} = useCreateSceneHook()
-    const {mutate: deleteScene} = useDeleteSceneHook()
 
     const [expanded, setExpanded] = useState(true);
     const [level, setLevel] = useState(prop)
@@ -45,18 +46,28 @@ const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
             })
     }
 
-    const removeScene = (sceneId: string) => {
-        console.log(level.scenes, sceneId)
-        deleteScene({sceneId: sceneId}, {
-            onSuccess: (sceneDeleted) => {
-                if (!level.scenes) return;
-                setLevel({...level, scenes: level.scenes.filter(scene => scene.scene_id !== sceneId) })
-                console.log("Deleted scene", sceneDeleted)
+    const handleSceneRemove = (sceneId: string) => {
+        setLevel(prev => ({
+            ...prev, scenes: prev.scenes?.filter(s => s.scene_id !== sceneId)
+        }))
+    }
+
+    const handleLevelRemove = () => {
+        if (!level.level_id) return
+
+        deleteLevel({levelId: level.level_id}, {
+            onSuccess: () => {
+                if (!level.level_id) return
+                onDeletion(level.level_id)
             },
-            onError: (err) => {
-                console.error("Failed to remove scene", err)
+            onError: (error) => {
+                console.error("Something went wrong!: ", error)
             }
         })
+    }
+
+    const handleSceneSelection = (sceneId: string) => {
+        onSceneSelection(sceneId, level.level_id!)
     }
 
     const handleSceneAdd = () => {
@@ -65,7 +76,21 @@ const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
 
     const handleNameChange = async (newName: string) => {
         setLevel({...level, name: newName})
-        onChange({...level, name: newName})
+        if (!level.level_id) return
+
+        console.log("Sending", level)
+
+        updateLevel({
+            levelId: level.level_id,
+            data: { ...level, name: newName }
+        }, {
+            onSuccess: (result) => {
+                console.log("Updated level", result)
+            },
+            onError: (error) => {
+                console.error("Updating level failed", error)
+            }
+        })
     }
 
     return (
@@ -84,17 +109,28 @@ const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
                         <ExpandMoreIcon/>
                     </IconButton>
 
-                    <InlineEditableText variant={"h5"} value={level.name!} onSave={handleNameChange}/>
+                    <InlineEditableText
+                        variant={"h5"}
+                        value={level.name!}
+                        onSave={handleNameChange}
+                    />
                 </Stack>
-                <IconButton size={"small"} onClick={() => onRemove(level.level_id!)}>
+                <IconButton size={"small"} onClick={handleLevelRemove}>
                     <CloseIcon/>
                 </IconButton>
             </Stack>
             <Collapse in={expanded} timeout={"auto"} unmountOnExit>
                 <Box ml={5}>
                     <Stack spacing={0.5}>
-                        {level.scenes?.map(scene => (
-                            <Scene key={scene.scene_id} scene={scene} onDelete={removeScene}/>)
+                        {level.scenes
+                            ?.sort((s1, s2) => s1.scene_sequence! - s2.scene_sequence!)
+                            .map(scene => (
+                            <Scene
+                                key={scene.scene_id}
+                                scene={scene}
+                                onDeletion={handleSceneRemove}
+                                onSelection={handleSceneSelection}
+                            />)
                         )}
                         <Button onClick={handleSceneAdd} fullWidth
                                 sx={{color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem'}}>

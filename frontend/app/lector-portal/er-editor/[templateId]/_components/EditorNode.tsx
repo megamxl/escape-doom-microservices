@@ -17,7 +17,7 @@ const EditorNode = ({node}: EditorNodeProps) => {
     const {icon: Icon, styling} = nodeTypeClassMapper[node_specifics?.node_type]
     return (
         <>
-            <IconButton sx={{
+            <IconButton style={{
                 position: "absolute",
                 top: `${position?.top_percentage}%`,
                 left: `${position?.left_percentage}%`,

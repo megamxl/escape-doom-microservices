@@ -41,7 +41,7 @@ public class RiddleApiDelegateImpl implements RiddleApiDelegate {
     }
 
     @Override
-    public ResponseEntity<RiddleDTO> putRiddle(String escapeRoomRiddleId,
+    public ResponseEntity<RiddleDTO> updateRiddle(String escapeRoomRiddleId,
             RiddleCreationRequestDTO riddleCreationRequest) {
         return new ResponseEntity<>(service.updateRiddle(riddleCreationRequest, escapeRoomRiddleId), HttpStatus.OK);
     }

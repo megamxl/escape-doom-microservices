@@ -70,7 +70,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
-      operationId: putTemplate
+      operationId: updateTemplate
       tags:
         - Template
       summary: Overrides an existing Template
@@ -374,7 +374,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
-      operationId: putRiddle
+      operationId: updateRiddle
       tags:
         - Riddle
       summary: Override a riddle
@@ -494,7 +494,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
-      operationId: putScene
+      operationId: updateScene
       tags:
         - Scene
       summary: Update a scene
@@ -888,6 +888,20 @@ components:
           type: integer
           description: The sequence number of the level
           example: 1
+    LevelUpdateRequest:
+      description: The payload for updating a level
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the level
+          example: Classroom
+        level_sequence:
+          type: integer
+          description: The sequence number of the level
+          example: 1
+        riddle:
+          $ref: "#/components/schemas/RiddleDTO"
     LevelDTO:
       description: The current level of an escape-room instance
       type: object

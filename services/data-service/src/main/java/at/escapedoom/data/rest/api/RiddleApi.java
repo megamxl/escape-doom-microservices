@@ -69,9 +69,9 @@ public interface RiddleApi {
     }
 
     /**
-     * DELETE /riddles/{escape-room-riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
+     * DELETE /riddles/{riddle-id} : Delete a riddle Delete a riddle that is not linked to any level
      *
-     * @param escapeRoomRiddleId
+     * @param riddleId
      *            The unique ID of the riddle (required)
      *
      * @return Riddle deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
@@ -85,12 +85,11 @@ public interface RiddleApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/riddles/{escape-room-riddle-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/riddles/{riddle-id}", produces = { "application/json" })
 
     default ResponseEntity<RiddleDeletionResponseDTO> deleteRiddle(
-            @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId) {
-        return getDelegate().deleteRiddle(escapeRoomRiddleId);
+            @Parameter(name = "riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("riddle-id") String riddleId) {
+        return getDelegate().deleteRiddle(riddleId);
     }
 
     /**
@@ -112,9 +111,9 @@ public interface RiddleApi {
     }
 
     /**
-     * GET /riddles/{escape-room-riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
+     * GET /riddles/{riddle-id} : Get one riddle by id Retrieve riddle that matches the UUID
      *
-     * @param escapeRoomRiddleId
+     * @param riddleId
      *            The unique ID of the riddle (required)
      *
      * @return The riddle (status code 200) or Internal Server Error (status code 500)
@@ -124,18 +123,17 @@ public interface RiddleApi {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = RiddleDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/riddles/{escape-room-riddle-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/riddles/{riddle-id}", produces = { "application/json" })
 
     default ResponseEntity<RiddleDTO> getRiddleById(
-            @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId) {
-        return getDelegate().getRiddleById(escapeRoomRiddleId);
+            @Parameter(name = "riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("riddle-id") String riddleId) {
+        return getDelegate().getRiddleById(riddleId);
     }
 
     /**
-     * PUT /riddles/{escape-room-riddle-id} : Override a riddle Override the details of a riddle
+     * PUT /riddles/{riddle-id} : Override a riddle Override the details of a riddle
      *
-     * @param escapeRoomRiddleId
+     * @param riddleId
      *            The unique ID of the riddle (required)
      * @param riddleCreationRequestDTO
      *            The override details of the riddle (required)
@@ -143,7 +141,7 @@ public interface RiddleApi {
      * @return Riddle updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "putRiddle", summary = "Override a riddle", description = "Override the details of a riddle", tags = {
+    @Operation(operationId = "updateRiddle", summary = "Override a riddle", description = "Override the details of a riddle", tags = {
             "Riddle" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Riddle updated successfully", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = RiddleDTO.class)) }),
@@ -153,13 +151,13 @@ public interface RiddleApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/riddles/{escape-room-riddle-id}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/riddles/{riddle-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<RiddleDTO> putRiddle(
-            @Parameter(name = "escape-room-riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-riddle-id") String escapeRoomRiddleId,
+    default ResponseEntity<RiddleDTO> updateRiddle(
+            @Parameter(name = "riddle-id", description = "The unique ID of the riddle", required = true, in = ParameterIn.PATH) @PathVariable("riddle-id") String riddleId,
             @Parameter(name = "RiddleCreationRequestDTO", description = "The override details of the riddle", required = true) @Valid @RequestBody RiddleCreationRequestDTO riddleCreationRequestDTO) {
-        return getDelegate().putRiddle(escapeRoomRiddleId, riddleCreationRequestDTO);
+        return getDelegate().updateRiddle(riddleId, riddleCreationRequestDTO);
     }
 
 }
