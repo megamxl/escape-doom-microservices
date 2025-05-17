@@ -28,7 +28,7 @@ const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
 
         createScene({
                 data: {
-                    scene_sequence: level.scenes.length,
+                    scene_sequence: level.scenes.length + 1,
                     level_id: level.level_id,
                     background_image_uri: undefined,
                     name: 'New Scene'
@@ -36,7 +36,8 @@ const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
             },
             {
                 onSuccess: (addedScene) => {
-                    console.log("Added Scene:", addedScene)
+                    if (!level.scenes) return;
+                    setLevel({...level, scenes: [...level.scenes, addedScene]})
                 },
                 onError: (addSceneError) => {
                     console.error("Couldn't create scene:", addSceneError)
@@ -45,8 +46,11 @@ const Level = ({level: prop, onRemove, onChange}: LevelProps) => {
     }
 
     const removeScene = (sceneId: string) => {
+        console.log(level.scenes, sceneId)
         deleteScene({sceneId: sceneId}, {
             onSuccess: (sceneDeleted) => {
+                if (!level.scenes) return;
+                setLevel({...level, scenes: level.scenes.filter(scene => scene.scene_id !== sceneId) })
                 console.log("Deleted scene", sceneDeleted)
             },
             onError: (err) => {

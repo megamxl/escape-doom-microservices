@@ -10,22 +10,29 @@ type DroppableProps = {
     nodeList: NodeDTO[]
 }
 
-const DnDDroppable = ({nodeList}: DroppableProps) => {
+const DnDDroppable = ({nodeList, bgImageUrl}: DroppableProps) => {
     const {isOver, setNodeRef} = useDroppable({
         id: 'droppable'
     })
 
-    const style = isOver ? 'border-4 border-dashed rounded-md'
-        : 'border-2 border-dashed rounded-md'
+    const style = isOver ? 'border-2 border-dashed rounded-md' : ""
 
 
     return (
-        <div ref={setNodeRef} className={`${style} grow h-full relative`}>
-            {nodeList.map(node => {
-                return (
-                    <EditorNode key={node.node_id} node={node}/>
-                )
-            })}
+        <div className="grow w-full h-full">
+            <div className="relative">
+                <img
+                    ref={setNodeRef}
+                    src={bgImageUrl}
+                    alt="Scene Background"
+                    className={`${style} w-full bg-no-repeat bg-contain z-0`}>
+                </img>
+                {nodeList.map(node => {
+                    return (
+                        <EditorNode key={node.node_id} node={node}/>
+                    )
+                })}
+            </div>
         </div>
     );
 };

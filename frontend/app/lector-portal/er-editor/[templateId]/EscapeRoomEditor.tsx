@@ -74,6 +74,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                 l.level_id === level.level_id ? {...l, ...level} : l
             )
         }))
+        saveTemplate()
     }
 
     const addLevel = () => {
@@ -165,7 +166,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                 <Grid size='grow' style={{backgroundColor: '#1e1e1e'}} className="p-4 relative">
                     <DndContext autoScroll={false} onDragEnd={handleDragEnd}>
                         <div id="NodesContainer"
-                             className="p-2 rounded-lg bg-[#2e2e2e] flex justify-center gap-4 absolute bottom-4 left-[50%] translate-x-[-50%]">
+                             className="p-2 rounded-lg z-10 bg-[#2e2e2e] flex justify-center gap-4 absolute bottom-4 left-[50%] translate-x-[-50%]">
                             <DnDNode nodeType={"ZOOM"}/>
                             <DnDNode nodeType={"DETAIL"}/>
                             <DnDNode nodeType={"CONSOLE"}/>

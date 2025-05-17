@@ -20,11 +20,17 @@ const EditorNode = ({node}: EditorNodeProps) => {
             <IconButton sx={{
                 position: "absolute",
                 top: `${position?.top_percentage}%`,
-                left: `${position?.left_percentage}%`
+                left: `${position?.left_percentage}%`,
+                backgroundColor: styling.color
             }}>
                 <Icon fontSize={"small"}/>
             </IconButton>
-            <Dialog open={isOpen} onClose={() => setIsOpen(false)} maxWidth="md" fullWidth>
+            <Dialog
+                open={isOpen}
+                onClose={() => setIsOpen(false)}
+                maxWidth="md"
+                fullWidth
+            >
                 <Card>
                     <CardHeader title={title} sx={{backgroundColor: styling.color}}/>
                     <CardContent className="w-full">
