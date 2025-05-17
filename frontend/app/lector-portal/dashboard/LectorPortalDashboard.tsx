@@ -9,8 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
 import {
     SessionResponse,
-    getERByTagHook,
-    getERSessionByPinHook,
+    getEscapeRoomSessionsByTagOrPinHook,
     useGetERHistoryHook,
 } from '@/app/gen/session';
 import { useGetAllTemplatesHook } from '@/app/gen/data/hooks/templates/useGetAllTemplatesHook';
@@ -68,13 +67,12 @@ const LectorPortalDashboard = () => {
         setSelected(allTrue);
 
         try {
-            if (/^\d{6}$/.test(trimmed)) {
-                const session = await getERSessionByPinHook({ pin: Number(trimmed) });
-                setSearchResults(session ? [session] : []);
-            } else {
-                const apiResults = await getERByTagHook({ tag: trimmed });
-                setSearchResults(apiResults ?? []);
-            }
+            const params = /^\d{6}$/.test(trimmed)
+                ? { pin: Number(trimmed) }
+                : { tag: trimmed };
+
+            const apiResults = await getEscapeRoomSessionsByTagOrPinHook(params);
+            setSearchResults(apiResults ?? []);
         } catch (err) {
             console.error('Search failed:', err);
             setSearchResults([]);

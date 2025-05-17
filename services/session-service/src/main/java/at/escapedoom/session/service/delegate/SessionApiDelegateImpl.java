@@ -30,28 +30,30 @@ public class SessionApiDelegateImpl implements SessionApiDelegate {
 
     @PreAuthorize("hasRole('LECTOR')")
     @Override
-    public ResponseEntity<List<SessionResponse>> getERByTag(String tag) {
+    public ResponseEntity<List<SessionResponse>> getEscapeRoomSessionsByTagOrPin(String tag, Integer pin) {
         UUID userId = KeycloakUserUtil.getCurrentUserUUID()
                 .orElseThrow(() -> new NoSuchElementException("No userUUID found"));
-        try {
-            List<EscapeRoomSession> sessions = sessionService.getSessionsByTags(userId, List.of(tag));
-            List<SessionResponse> response = sessions.stream().map(EscapeRoomSessionMapperUtil::map).toList();
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 
-    @PreAuthorize("hasRole('LECTOR')")
-    @Override
-    public ResponseEntity<SessionResponse> getERSessionByPin(Integer pin) {
         try {
-            EscapeRoomSession session = sessionService.getSessionByRoomPin(pin.longValue());
-            return new ResponseEntity<>(EscapeRoomSessionMapperUtil.map(session), HttpStatus.OK);
+            List<EscapeRoomSession> sessions;
+
+            if (tag != null && pin != null) {
+                return ResponseEntity.badRequest().build(); // Only one should be used
+            } else if (tag != null) {
+                sessions = sessionService.getSessionsByTags(userId, List.of(tag));
+            } else if (pin != null) {
+                EscapeRoomSession session = sessionService.getSessionByRoomPin(pin.longValue());
+                sessions = session != null ? List.of(session) : List.of();
+            } else {
+                return ResponseEntity.badRequest().build(); // Neither provided
+            }
+
+            List<SessionResponse> response = sessions.stream().map(EscapeRoomSessionMapperUtil::map).toList();
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            log.error("Error fetching sessions by tag or pin: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
