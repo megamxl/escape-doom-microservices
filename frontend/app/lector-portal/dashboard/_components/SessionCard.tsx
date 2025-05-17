@@ -19,10 +19,11 @@ import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 type SessionCardProps = {
     session: SessionResponse,
+    templateName: string,
     onSessionUpdate: (s: SessionResponse) => void
 }
 
-const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
+const SessionCard = ({session, templateName, onSessionUpdate}: SessionCardProps) => {
     const [cardInfo, setCardInfo] = useState<SessionResponse>(session);
 
     const [newTag, setNewTag] = useState('');
@@ -120,7 +121,11 @@ const SessionCard = ({session, onSessionUpdate}: SessionCardProps) => {
                 </Stack>
                 <Stack style={{flexGrow: 1, height: '100%'}} justifyContent={"center"} alignItems={"center"}>
                     <Typography textAlign={"center"} variant="h4"> PIN: {cardInfo.room_pin} </Typography>
+                    <Typography textAlign={"center"} variant="subtitle1" color="textSecondary">
+                        Template: {templateName}
+                    </Typography>
                 </Stack>
+
             </Paper>
 
             <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1} flexWrap="wrap" rowGap={1}>

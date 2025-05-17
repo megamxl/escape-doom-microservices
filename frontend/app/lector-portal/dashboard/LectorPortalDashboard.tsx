@@ -9,14 +9,15 @@ import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
 import {
     SessionResponse,
-    getEscapeRoomSessionsByTagOrPinHook,
+    getERSessionByTagOrPinHook,
     useGetERHistoryHook,
 } from '@/app/gen/session';
-import { useGetAllTemplatesHook } from '@/app/gen/data/hooks/templates/useGetAllTemplatesHook';
 import SessionCard from '@/app/lector-portal/dashboard/_components/SessionCard.tsx';
 import SessionCardSkeleton from '@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx';
 import AddSessionFromTemplateCard from '@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx';
 import CreateTemplateButton from '@/app/lector-portal/dashboard/_components/CreateTemplateButton.tsx';
+import {useGetAllTemplatesHook} from "@/app/gen/data";
+
 
 const LectorPortalDashboard = () => {
 
@@ -27,9 +28,12 @@ const LectorPortalDashboard = () => {
         new Map([
             ['open', true],
             ['started', false],
+            ['finished', false],
             ['closed', false],
         ])
     );
+    const { data: templates } = useGetAllTemplatesHook();
+
 
     useEffect(() => {
         if (searchValue.trim() === '') {
@@ -71,7 +75,7 @@ const LectorPortalDashboard = () => {
                 ? { pin: Number(trimmed) }
                 : { tag: trimmed };
 
-            const apiResults = await getEscapeRoomSessionsByTagOrPinHook(params);
+            const apiResults = await getERSessionByTagOrPinHook(params);
             setSearchResults(apiResults ?? []);
         } catch (err) {
             console.error('Search failed:', err);
@@ -150,6 +154,7 @@ const LectorPortalDashboard = () => {
                             <Grid key={session.escape_room_session_id} size={{ lg: 4, md: 6, sm: 12 }}>
                                 <SessionCard
                                     session={session}
+                                    templateName={templates?.find(t => t.template_id === session.template_id)?.name ?? 'Unknown'}
                                     onSessionUpdate={() => {}}
                                 />
                             </Grid>
