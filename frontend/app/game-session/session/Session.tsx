@@ -33,6 +33,17 @@ const Session = () => {
         short: "",
         long: ""
     })
+    const [stageState, setStageState] = useState<StageState>({
+        language: CodeLanguage.JAVA,
+        stageScene: undefined
+    })
+
+    const [loading, setLoading] = useState(false)
+    const [code, setCode] = useState<string>("Initial code");
+    const [codeExecutionResponse, setCodeExecutionResponse] = useState<EscapeRoomResult>({
+        status: CompileStatus.COMPILED,
+        output: "",
+    })
 
     useEffect(() => {
 
@@ -46,7 +57,7 @@ const Session = () => {
         if (playername !== null && playername !== "") {
             //TODO check empty player name or short name
             setPlayerName(
-                {short: playername.slice(0,1).toUpperCase(), long: playername}
+                {short: playername.slice(0, 1).toUpperCase(), long: playername}
             )
             return
         }
@@ -54,18 +65,6 @@ const Session = () => {
         redirect(GAME_SESSION_APP_PATHS.STUDENT_JOIN)
 
     }, [])
-
-    const [stageState, setStageState] = useState<StageState>({
-        language: CodeLanguage.JAVA,
-        stageScene: undefined
-    })
-
-    const [loading, setLoading] = useState(false)
-    const [code, setCode] = useState<string>("Initial code");
-    const [codeExecutionResponse, setCodeExecutionResponse] = useState<EscapeRoomResult>({
-        status: CompileStatus.COMPILED,
-        output: "",
-    })
 
     /* TanStack Query Calls */
     const {
@@ -152,11 +151,11 @@ const Session = () => {
 
         console.log(result)
 
-    if (codeExecutionResponse.status === CompileStatus.WON) {
+        if (codeExecutionResponse.status === CompileStatus.WON) {
             console.log("escapeRoom won")
-             //removeGameSession()
-             //redirect(`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${roomPinOfSession}`)
-         }
+            //removeGameSession()
+            //redirect(`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${roomPinOfSession}`)
+        }
 
     }
 
@@ -171,13 +170,6 @@ const Session = () => {
 
     const handleCodeChange = (value: string) => {
         setCode(value)
-        setSubmittedCodeBody({
-            "playerSessionId": sessionID,
-            "language": stageState.language,
-            "code": value,
-            "codeRiddleID": 1,
-            "dateTime": new Date(Date.now())
-        })
     }
 
     const handleEditorMount = (editor: any) => {
@@ -234,7 +226,7 @@ const Session = () => {
                             </Select>
                         </FormControl>
 
-                        <Tooltip title={playerName.long}  arrow>
+                        <Tooltip title={playerName.long} arrow>
                             <Avatar sx={{ml: "auto"}}>{playerName.short}</Avatar>
                         </Tooltip>
                     </Stack>

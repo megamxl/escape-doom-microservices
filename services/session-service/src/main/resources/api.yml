@@ -73,22 +73,28 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SessionResponse"
-  /session/{tags}:
+  /session:
     get:
       tags:
         - session
-      summary: Get all escape-room instances having specific tags
-      description: Retrieves a list of escape-room instances filtered by tags
-      operationId: getERByTags
+      summary: Get escape-room sessions by tag or pin
+      description: Retrieves escape-room sessions filtered by a tag or a specific 6-digit room pin. Only one filter (tag or pin) should be used per request.
+      operationId: getERSessionByTagOrPin
       parameters:
-        - name: tags
-          in: path
-          description: List of tags to filter by
-          required: true
+        - name: tag
+          in: query
+          required: false
+          description: The tag to filter sessions by
           schema:
-            type: array
-            items:
-              type: string
+            type: string
+        - name: pin
+          in: query
+          required: false
+          description: The 6-digit room pin
+          schema:
+            type: integer
+            minimum: 100000
+            maximum: 999999
       responses:
         "200":
           description: OK
@@ -98,19 +104,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/SessionResponse"
-
-  /session/{room_pin}:
+  /session/{pin}:
     get:
       tags:
         - session
-      summary: Retrieve an escape-room session by room pin
+      summary: Get escape-room session by room pin
       description: Fetches an escape-room session using its room pin
       operationId: getERSessionByPin
       parameters:
-        - name: room_pin
+        - name: pin
           in: path
-          description: The pin to join the escape-room
           required: true
+          description: The 6-digit room pin
           schema:
             type: integer
             minimum: 100000
@@ -122,6 +127,8 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SessionResponse"
+        "404":
+          description: Not Found
   /tag/{session_id}/{tag_name}:
     delete:
       tags:

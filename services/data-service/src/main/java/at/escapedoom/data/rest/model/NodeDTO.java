@@ -1,13 +1,20 @@
 package at.escapedoom.data.rest.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.annotation.Generated;
-import jakarta.validation.Valid;
-import org.springframework.lang.Nullable;
-
+import java.net.URI;
 import java.util.Objects;
+import at.escapedoom.data.rest.model.NodeSpecificsDTO;
+import at.escapedoom.data.rest.model.PositionDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.UUID;
+import org.springframework.lang.Nullable;
+import java.time.OffsetDateTime;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.*;
+import jakarta.annotation.Generated;
 
 /**
  * A node of an escape-room instance

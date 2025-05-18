@@ -11,10 +11,8 @@ class RiddleControllerMvcTest extends ControllerTestConfig {
 
     @Test
     void createRiddle_success() throws Exception {
-        TestActions actions = new TestActions(mockMvc, objectMapper)
-                .withTemplateApiDelegate(templateApiDelegate)
-                .withLevelApiDelegate(levelApiDelegate)
-                .withRiddleApiDelegate(riddleApiDelegate);
+        TestActions actions = new TestActions(mockMvc, objectMapper).withTemplateApiDelegate(templateApiDelegate)
+                .withLevelApiDelegate(levelApiDelegate).withRiddleApiDelegate(riddleApiDelegate);
 
         String templateId = actions.createTemplate();
         String levelId = actions.createLevel(templateId);

@@ -81,9 +81,14 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
 
             if (result.getRun().getCode() == 0) {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.COMPILED);
-                attempt.setOutput(result.getRun().getOutput());
+                if (result.getRun().getOutput() == null){
+                    attempt.setOutput("");
+                }else {
+                    attempt.setOutput(result.getRun().getOutput());
+                }
             } else {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.ERROR);
+                attempt.setOutput(result.run.stderr);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

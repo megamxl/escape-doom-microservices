@@ -50,7 +50,7 @@ const CreateTemplateButton = () => {
                 onClick={openDialog}
                 startIcon={<EditIcon/>}
                 variant={"contained"}
-                color={"secondary"}
+                color={"primary"}
             >
                 Create new template
             </Button>
