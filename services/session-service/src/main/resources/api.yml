@@ -27,7 +27,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SessionResponse"
 
-  /state/{escape_room_session_id}/{state}:
+  /state/{session_id}/{state}:
     put:
       tags:
         - management
@@ -35,7 +35,7 @@ paths:
       description: Starts or stops an escape-room instance
       operationId: toggleERInstanceState
       parameters:
-        - name: escape_room_session_id
+        - name: session_id
           in: path
           description: The id of the escape-room instance
           required: true
@@ -129,7 +129,7 @@ paths:
                 $ref: "#/components/schemas/SessionResponse"
         "404":
           description: Not Found
-  /tag/{escape_room_session_id}/{tag_name}:
+  /tag/{session_id}/{tag_name}:
     delete:
       tags:
         - tags
@@ -137,7 +137,7 @@ paths:
       description: Remove a tag from an escape-room instance
       operationId: deleteERTag
       parameters:
-        - name: escape_room_session_id
+        - name: session_id
           in: path
           description: The ID of the escape room session
           required: true
@@ -165,7 +165,7 @@ paths:
       description: Add a tag to an escape-room instance
       operationId: addERTag
       parameters:
-        - name: escape_room_session_id
+        - name: session_id
           in: path
           description: The ID of the escape room session
           required: true
@@ -196,7 +196,7 @@ components:
           type: string
           description: The tag to add or remove
           example: "CSDC"
-        escape_room_session_id:
+        session_id:
           type: string
           format: uuid
           description: The id of the escape-room instance
@@ -212,7 +212,7 @@ components:
           format: uuid
           description: The id of the escape-room template used
           example: c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0
-        escape_room_session_id:
+        session_id:
           type: string
           format: uuid
           description: The id of the escape-room session

@@ -40,7 +40,7 @@ const SessionCard = ({session, templateName, onSessionUpdate}: SessionCardProps)
         mutate({
             //@ts-ignore
             state: state.toUpperCase(),
-            escape_room_session_id: cardInfo.escape_room_session_id!
+            session_id: cardInfo.session_id!
         }, {
             onSuccess: () => {
                 const updated = {...cardInfo, state: state}
@@ -68,7 +68,7 @@ const SessionCard = ({session, templateName, onSessionUpdate}: SessionCardProps)
 
         addTag(
             {
-                escape_room_session_id: cardInfo.escape_room_session_id!,
+                session_id: cardInfo.session_id!,
                 tag_name: newTag,
             },
             {
@@ -84,7 +84,7 @@ const SessionCard = ({session, templateName, onSessionUpdate}: SessionCardProps)
 
     const handleDeleteTag = (tag: string) => {
         removeTag({
-                escape_room_session_id: cardInfo.escape_room_session_id!,
+                session_id: cardInfo.session_id!,
                 tag_name: tag
             },
             {

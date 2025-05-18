@@ -58,15 +58,9 @@ class RiddleServiceTest extends PostgresTestConfig {
 
         VALID_LEVEL_ID = level.getLevelId();
 
-        Riddle riddle = Riddle.builder()
-                .input("2, 3")
-                .expectedOutput("5")
-                .functionSignature("public static int add(int a, int b)")
-                .variableName("sum")
-                .language(CodingLanguage.JAVA)
-                .level(level)
-                .levelId(level.getLevelId())
-                .build();
+        Riddle riddle = Riddle.builder().input("2, 3").expectedOutput("5")
+                .functionSignature("public static int add(int a, int b)").variableName("sum")
+                .language(CodingLanguage.JAVA).level(level).levelId(level.getLevelId()).build();
 
         VALID_RIDDLE_ID = repository.saveAndFlush(riddle).getRiddleId().toString();
     }

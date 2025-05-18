@@ -61,10 +61,9 @@ public interface ManagementApi {
     }
 
     /**
-     * PUT /state/{escape_room_session_id}/{state} : Start or stop an escape-room instance Starts or stops an
-     * escape-room instance
+     * PUT /state/{session_id}/{state} : Start or stop an escape-room instance Starts or stops an escape-room instance
      *
-     * @param escapeRoomSessionId
+     * @param sessionId
      *            The id of the escape-room instance (required)
      * @param state
      *            The state to set (required)
@@ -74,13 +73,13 @@ public interface ManagementApi {
     @Operation(operationId = "toggleERInstanceState", summary = "Start or stop an escape-room instance", description = "Starts or stops an escape-room instance", tags = {
             "management" }, responses = { @ApiResponse(responseCode = "200", description = "OK", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = SessionResponse.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/state/{escape_room_session_id}/{state}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/state/{session_id}/{state}", produces = {
             "application/json" })
 
     default ResponseEntity<SessionResponse> toggleERInstanceState(
-            @Parameter(name = "escape_room_session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("escape_room_session_id") UUID escapeRoomSessionId,
+            @Parameter(name = "session_id", description = "The id of the escape-room instance", required = true, in = ParameterIn.PATH) @PathVariable("session_id") UUID sessionId,
             @Parameter(name = "state", description = "The state to set", required = true, in = ParameterIn.PATH) @PathVariable("state") EscapeRoomState state) {
-        return getDelegate().toggleERInstanceState(escapeRoomSessionId, state);
+        return getDelegate().toggleERInstanceState(sessionId, state);
     }
 
 }

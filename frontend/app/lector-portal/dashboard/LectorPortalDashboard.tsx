@@ -1,29 +1,19 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {Box, Button, Divider, Grid, InputBase, Paper, Stack, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
 import GridViewIcon from '@mui/icons-material/GridView';
 import IconButton from "@mui/material/IconButton";
-import {SessionResponse, useGetERHistoryHook} from "@/app/gen/session";
+import {getERSessionByTagOrPinHook, SessionResponse, useGetERHistoryHook} from "@/app/gen/session";
 import SessionCard from "@/app/lector-portal/dashboard/_components/SessionCard.tsx";
 import SessionCardSkeleton from "@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx";
 import AddSessionFromTemplateCard from "@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx";
 import CreateTemplateButton from "@/app/lector-portal/dashboard/_components/CreateTemplateButton.tsx";
 import {useRouter} from "next/navigation";
 import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
-import {
-    SessionResponse,
-    getERSessionByTagOrPinHook,
-    useGetERHistoryHook,
-} from '@/app/gen/session';
-import SessionCard from '@/app/lector-portal/dashboard/_components/SessionCard.tsx';
-import SessionCardSkeleton from '@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx';
-import AddSessionFromTemplateCard from '@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx';
-import CreateTemplateButton from '@/app/lector-portal/dashboard/_components/CreateTemplateButton.tsx';
 import {useGetAllTemplatesHook} from "@/app/gen/data";
-
 
 const LectorPortalDashboard = () => {
     const router = useRouter()
@@ -64,7 +54,7 @@ const LectorPortalDashboard = () => {
     const clearFilters = () => {
         setSearchResults(null);
         const newMap = new Map<string, boolean>();
-        for (let key of selected.keys()) {
+        for (const key of selected.keys()) {
             newMap.set(key, false);
         }
         setSelected(newMap);
@@ -96,7 +86,7 @@ const LectorPortalDashboard = () => {
 
     const filteredSessions = useMemo(() => {
         const base = searchResults ?? history ?? [];
-        const unique = Array.from(new Map(base.map(s => [s.escape_room_session_id, s])).values());
+        const unique = Array.from(new Map(base.map(s => [s.session_id, s])).values());
 
         if (searchResults !== null) return unique;
 
@@ -111,7 +101,6 @@ const LectorPortalDashboard = () => {
                     <Stack direction="row" gap={2}>
                         <Button
                             variant={"contained"}
-                            color={"secondary"}
                             onClick={redirectToTemplateView}
                             startIcon={<GridViewIcon/>}
                         >
@@ -171,7 +160,7 @@ const LectorPortalDashboard = () => {
 
                     {!isLoading
                         ? filteredSessions.map((session) => (
-                            <Grid key={session.escape_room_session_id} size={{ lg: 4, md: 6, sm: 12 }}>
+                            <Grid key={session.session_id} size={{ lg: 4, md: 6, sm: 12 }}>
                                 <SessionCard
                                     session={session}
                                     templateName={templates?.find(t => t.template_id === session.template_id)?.name ?? 'Unknown'}
