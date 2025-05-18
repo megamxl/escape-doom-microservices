@@ -15,10 +15,17 @@ const ZoomNode = ({node, onZoomChangeScene}: ZoomNodeProps) => {
     const zoomSpecifics = node.node_specifics as ZoomNodeSpecificsDTO
 
     const changeScene = () => {
-        if (onZoomChangeScene && zoomSpecifics.linked_scene_id) {
+        if (!onZoomChangeScene) {
+            console.error("Callback function not define!")
+            return;
+        }
+
+        if (zoomSpecifics.linked_scene_id) {
             onZoomChangeScene(zoomSpecifics.linked_scene_id)
+        } else if (zoomSpecifics.parent_scene_id && !zoomSpecifics.linked_scene_id) {
+            onZoomChangeScene(zoomSpecifics.parent_scene_id)
         } else {
-            console.warn("Target scene ID not provided or callback missing.")
+            console.error("Parent scene ID was not defined but is mandatory!")
         }
     }
 

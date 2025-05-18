@@ -1,9 +1,9 @@
-package at.escapedoom.data.service.rest.utils;
+package at.escapedoom.data.rest.utils;
 
 import at.escapedoom.data.rest.api.*;
+import at.escapedoom.data.rest.asserts.Assertions;
+import at.escapedoom.data.rest.factory.*;
 import at.escapedoom.data.rest.model.*;
-import at.escapedoom.data.service.rest.asserts.Assertions;
-import at.escapedoom.data.service.rest.factory.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

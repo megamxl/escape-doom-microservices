@@ -1,11 +1,11 @@
-package at.escapedoom.data.service.rest.config;
+package at.escapedoom.data.config;
 
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 
-public abstract class PostgresConfig {
+public abstract class PostgresTestConfig {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:17.2-alpine").withDatabaseName("main")

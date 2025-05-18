@@ -6,7 +6,6 @@ import at.escapedoom.data.rest.model.SceneRequestDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.UUID;

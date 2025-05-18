@@ -8,21 +8,17 @@ import {
     DialogTitle,
     InputAdornment,
     MenuItem,
-    Paper, Snackbar,
+    Paper,
+    Snackbar,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
 
 import AddIcon from '@mui/icons-material/Add';
-import {
-    type CreateERInstanceMutationRequest,
-    SessionResponse,
-    useCreateERInstanceHook
-} from "@/app/gen/session";
+import {type CreateERInstanceMutationRequest, SessionResponse, useCreateERInstanceHook} from "@/app/gen/session";
 import {useGetAllTemplatesHook} from "@/app/gen/data";
-import { green } from '@mui/material/colors';
-import {red} from "@mui/material/colors";
+import {green, red} from "@mui/material/colors";
 
 type AddSessionCardProps = {
     onDone: (newSession: SessionResponse) => void;
@@ -90,7 +86,7 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
             <Dialog
                 open={open}
                 sx={{'& .MuiDialog-paper': {width: '80%', maxHeight: 435}}}
-                slotProps={{ paper: {component: 'form', onSubmit: createNewSession} }}
+                slotProps={{paper: {component: 'form', onSubmit: createNewSession}}}
             >
                 <DialogTitle> Create new Escape Room session </DialogTitle>
                 <DialogContent dividers>
@@ -132,8 +128,9 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                     </Stack>
                 </DialogContent>
                 <DialogActions>
-                    <Button variant={"contained"} onClick={handleClose} sx={{ backgroundColor: red[300] }}> Cancel </Button>
-                    <Button variant={"contained"} type={"submit"} sx={{ backgroundColor: green[300] }}> Create </Button>
+                    <Button variant={"contained"} onClick={handleClose}
+                            sx={{backgroundColor: red[300]}}> Cancel </Button>
+                    <Button variant={"contained"} type={"submit"} sx={{backgroundColor: green[300]}}> Create </Button>
                 </DialogActions>
             </Dialog>
             <Snackbar
@@ -143,7 +140,7 @@ const AddSessionFromTemplateCard = ({onDone}: AddSessionCardProps) => {
                 <Alert
                     severity={'error'}
                     variant={'filled'}
-                    sx={{ width: '100%' }}
+                    sx={{width: '100%'}}
                 >
                     Session could not be created - Please try again later or call for support
                 </Alert>

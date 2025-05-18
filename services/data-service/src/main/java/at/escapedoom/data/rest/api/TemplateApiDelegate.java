@@ -1,26 +1,14 @@
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequestDTO;
-import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
-import at.escapedoom.data.rest.model.CreateNotFoundDTO;
-import at.escapedoom.data.rest.model.GetTemplateNotFoundDTO;
-import at.escapedoom.data.rest.model.TemplateCreateRequestDTO;
-import at.escapedoom.data.rest.model.TemplateDTO;
-import at.escapedoom.data.rest.model.TemplateResultDTO;
-import at.escapedoom.data.rest.model.TemplateUpdateRequestDTO;
-import at.escapedoom.data.rest.model.TemplateUpdateResultDTO;
+import at.escapedoom.data.rest.model.*;
+import jakarta.annotation.Generated;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.*;
-import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import jakarta.annotation.Generated;
 
 /**
  * A delegate to be called by the {@link TemplateApiController}}. Implement this interface with a
@@ -182,9 +170,9 @@ public interface TemplateApiDelegate {
      * @return Template updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status
      *         code 404) or Internal Server Error (status code 500)
      *
-     * @see TemplateApi#putTemplate
+     * @see TemplateApi#updateTemplate
      */
-    default ResponseEntity<TemplateUpdateResultDTO> putTemplate(String templateId,
+    default ResponseEntity<TemplateUpdateResultDTO> updateTemplate(String templateId,
             TemplateUpdateRequestDTO templateUpdateRequestDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {

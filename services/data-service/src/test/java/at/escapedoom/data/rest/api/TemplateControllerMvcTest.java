@@ -1,10 +1,10 @@
-package at.escapedoom.data.service.rest.api;
+package at.escapedoom.data.rest.api;
 
 import at.escapedoom.data.rest.model.TemplateCreateRequestDTO;
 import at.escapedoom.data.rest.model.TemplateDTO;
-import at.escapedoom.data.service.rest.asserts.Assertions;
-import at.escapedoom.data.service.rest.config.ControllerTestConfig;
-import at.escapedoom.data.service.rest.factory.TemplateTestFactory;
+import at.escapedoom.data.config.ControllerTestConfig;
+import at.escapedoom.data.rest.asserts.Assertions;
+import at.escapedoom.data.rest.factory.TemplateTestFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

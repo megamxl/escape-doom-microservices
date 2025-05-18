@@ -1,15 +1,13 @@
 package at.escapedoom.data.service;
 
-import at.escapedoom.data.data.LevelRepository;
-import at.escapedoom.data.data.NodeRepository;
-import at.escapedoom.data.data.SceneRepository;
-import at.escapedoom.data.data.TemplateRepository;
-import at.escapedoom.data.data.entity.ConsoleNodeSpecifics;
+import at.escapedoom.data.data.*;
 import at.escapedoom.data.data.entity.Level;
+import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.rest.model.*;
-import at.escapedoom.data.service.rest.config.PostgresConfig;
+import at.escapedoom.data.config.PostgresTestConfig;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +21,10 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Transactional
 @SpringBootTest
 @ActiveProfiles("test")
-public class NodeServiceTest extends PostgresConfig {
+class NodeServiceTest extends PostgresTestConfig {
 
     private final UUID USER_ID = UUID.randomUUID();
     private final String INVALID_NODE_ID = UUID.randomUUID().toString();
@@ -44,35 +43,71 @@ public class NodeServiceTest extends PostgresConfig {
 
     @Autowired
     private TemplateRepository templateRepository;
+
     @Autowired
     private NodeRepository nodeRepository;
 
-    @BeforeEach
-    @Transactional
-    void setUp() {
+    @Autowired
+    private RiddleRepository riddleRepository;
+
+    @AfterEach
+    void tearDown() {
         nodeRepository.deleteAllInBatch();
+        riddleRepository.deleteAllInBatch();
         sceneRepository.deleteAllInBatch();
         levelRepository.deleteAllInBatch();
         templateRepository.deleteAllInBatch();
-        templateRepository.flush();
+    }
 
-        Template template = Template.builder().name("Test Template").description("Test Template").userId(USER_ID)
+    @BeforeEach
+    void setUp() {
+        riddleRepository.deleteAll();
+        nodeRepository.deleteAll();
+        sceneRepository.deleteAll();
+        levelRepository.deleteAll();
+        templateRepository.deleteAll();
+
+        Template template = Template.builder()
+                .name("Test Template")
+                .description("Test Template")
+                .userId(USER_ID)
+                .build();
+        templateRepository.saveAndFlush(template);
+
+        Level level = Level.builder()
+                .template(template)
+                .levelSequence(1)
+                .name("Classroom")
+                .build();
+        level = levelRepository.saveAndFlush(level);
+
+        Riddle riddle = Riddle.builder()
+                .input("1,2")
+                .expectedOutput("3")
+                .functionSignature("public static int add(int a, int b)")
+                .variableName("sum")
+                .language(CodingLanguage.JAVA)
+                .level(level)
+                .levelId(level.getLevelId())
                 .build();
 
-        templateRepository.save(template);
+        riddleRepository.saveAndFlush(riddle);
 
-        Level level = Level.builder().template(template).levelSequence(1).name("Classroom").build();
-
-        var levelId = levelRepository.save(level).getLevelId();
-
-        Scene scene = Scene.builder().sceneSequence(1).backgroundImageUri("https://example.com/background.png")
-                .name("Scene 1").levelId(levelId).build();
-
+        Scene scene = Scene.builder()
+                .sceneSequence(1)
+                .backgroundImageUri("https://example.com/background.png")
+                .name("Scene 1")
+                .levelId(level.getLevelId())
+                .build();
         sceneId = sceneRepository.save(scene).getSceneId().toString();
 
-        final NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
-                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build()).title("Something")
-                .description("This is a console node").position(new PositionDTO(20.5, 40.0)).build();
+        NodeCreationRequest creationRequest = NodeCreationRequest.builder()
+                .sceneId(sceneId)
+                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build())
+                .title("Something")
+                .description("This is a console node")
+                .position(new PositionDTO(20.5, 40.0))
+                .build();
 
         nodeId = nodeService.createNode(creationRequest).getNodeId();
     }

@@ -6,28 +6,24 @@ import BackgroundImage from '@/public/images/StudentJoin.jpg'
 import {common} from '@mui/material/colors';
 import {redirect, useRouter} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
-import {useSession} from "@/app/utils/game-session-handler";
-import {
-    EscapeRoomJoin,
-    EscapeRoomJoinResponse,
-    EscapeRoomStateEnum,
-    escapeRoomStateEnum,
-    HandlePlayerJoinMutationResponse,
-    useHandlePlayerJoinHook
-} from "@/app/gen/player";
+import {EscapeRoomJoin, escapeRoomStateEnum, useHandlePlayerJoinHook} from "@/app/gen/player";
 import {getSessionStorageItem, setSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
 import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
+import {useSession} from "@/app/utils/game-session-handler.ts";
 
 const StudentJoin = () => {
     const appRouterInstance = useRouter();
 
-    const [roomJoin, setRoomJoin] = useState<EscapeRoomJoin>()
+    const [roomJoin, setRoomJoin] = useState<EscapeRoomJoin>({
+        room_pin: 0,
+        player_name: ''
+    })
 
     const [openSnackbar, setOpenOpenSnackbar] = useState({state :false, message:"The given lobby is either closed or doesn't exist"})
 
     const [JoinButton, setJoinButton] = useState<boolean>(false)
 
-    const [session, setSession] = useSession();
+    const [, setSession] = useSession();
 
     const {mutate : playerJoinCall} = useHandlePlayerJoinHook();
 
@@ -51,6 +47,7 @@ const StudentJoin = () => {
         playerJoinCall({data: roomJoin},{
             onSuccess: (response) => {
                 if (response.player_session_id === undefined){
+
                     setOpenOpenSnackbar(prev => ({ ...prev, state: true }))
                     return
                 }
@@ -75,8 +72,8 @@ const StudentJoin = () => {
                 console.log(response)
             },
             onError: (error) =>{
-                // @ts-ignore
-                setOpenOpenSnackbar(prev => ({ ...prev, state: true, message: error.response.data.message }))
+                //@ts-expect-error Inline checking auf error.response war zu zach :)
+                setOpenOpenSnackbar(prev => ({ ...prev, state: true, message: error.response.data.error }))
                 return
             }
         })

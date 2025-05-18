@@ -1,23 +1,16 @@
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequestDTO;
-import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
-import at.escapedoom.data.rest.model.CreateNotFoundDTO;
 import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
 import at.escapedoom.data.rest.model.NodeDeletionResponseDTO;
+import jakarta.annotation.Generated;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.*;
-import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import jakarta.annotation.Generated;
 
 /**
  * A delegate to be called by the {@link NodeApiController}}. Implement this interface with a
@@ -55,9 +48,9 @@ public interface NodeApiDelegate {
     }
 
     /**
-     * DELETE /nodes/{escape-room-node-id} : Delete a node Delete a node by its ID
+     * DELETE /nodes/{node-id} : Delete a node Delete a node by its ID
      *
-     * @param escapeRoomNodeId
+     * @param nodeId
      *            The unique ID of the node (required)
      *
      * @return Node deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
@@ -65,7 +58,7 @@ public interface NodeApiDelegate {
      *
      * @see NodeApi#deleteNode
      */
-    default ResponseEntity<NodeDeletionResponseDTO> deleteNode(String escapeRoomNodeId) {
+    default ResponseEntity<NodeDeletionResponseDTO> deleteNode(String nodeId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -116,16 +109,16 @@ public interface NodeApiDelegate {
     }
 
     /**
-     * GET /nodes/{escape-room-node-id} : Get details of a node Retrieve details of a specific node by its ID
+     * GET /nodes/{node-id} : Get details of a node Retrieve details of a specific node by its ID
      *
-     * @param escapeRoomNodeId
+     * @param nodeId
      *            The unique ID of the node (required)
      *
      * @return Node details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      *
      * @see NodeApi#getNode
      */
-    default ResponseEntity<NodeDTO> getNode(String escapeRoomNodeId) {
+    default ResponseEntity<NodeDTO> getNode(String nodeId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -150,9 +143,9 @@ public interface NodeApiDelegate {
     }
 
     /**
-     * PUT /nodes/{escape-room-node-id} : Override a node Override the details of a node
+     * PUT /nodes/{node-id} : Override a node Override the details of a node
      *
-     * @param escapeRoomNodeId
+     * @param nodeId
      *            The unique ID of the node (required)
      * @param nodeDTO
      *            The overridden details of the node (required)
@@ -162,7 +155,7 @@ public interface NodeApiDelegate {
      *
      * @see NodeApi#updateNode
      */
-    default ResponseEntity<NodeDTO> updateNode(String escapeRoomNodeId, NodeDTO nodeDTO) {
+    default ResponseEntity<NodeDTO> updateNode(String nodeId, NodeDTO nodeDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

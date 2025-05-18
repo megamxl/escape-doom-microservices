@@ -1,19 +1,12 @@
 package at.escapedoom.data.rest.model;
 
-import java.net.URI;
-import java.util.Objects;
-import at.escapedoom.data.rest.model.NodeSpecificsDTO;
-import at.escapedoom.data.rest.model.PositionDTO;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import org.springframework.lang.Nullable;
-import java.time.OffsetDateTime;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.util.*;
 import jakarta.annotation.Generated;
+import jakarta.validation.Valid;
+import org.springframework.lang.Nullable;
+
+import java.util.Objects;
 
 /**
  * The payload for creating a node

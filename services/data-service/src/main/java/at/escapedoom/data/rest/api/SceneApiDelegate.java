@@ -1,23 +1,16 @@
 package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.rest.model.CreateBadRequestDTO;
-import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
-import at.escapedoom.data.rest.model.CreateNotFoundDTO;
 import at.escapedoom.data.rest.model.DeleteLevelResponseDTO;
 import at.escapedoom.data.rest.model.SceneDTO;
 import at.escapedoom.data.rest.model.SceneRequestDTO;
+import jakarta.annotation.Generated;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.validation.constraints.*;
-import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import jakarta.annotation.Generated;
 
 /**
  * A delegate to be called by the {@link SceneApiController}}. Implement this interface with a
@@ -66,9 +59,9 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * DELETE /scenes/{escape-room-scene-id} : Delete a scene Delete a specific Scene by its ID
+     * DELETE /scenes/{scene-id} : Delete a scene Delete a specific Scene by its ID
      *
-     * @param escapeRoomSceneId
+     * @param sceneId
      *            The unique ID of the Scene (required)
      *
      * @return Scene deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
@@ -76,7 +69,7 @@ public interface SceneApiDelegate {
      *
      * @see SceneApi#deleteScene
      */
-    default ResponseEntity<DeleteLevelResponseDTO> deleteScene(String escapeRoomSceneId) {
+    default ResponseEntity<DeleteLevelResponseDTO> deleteScene(String sceneId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -127,16 +120,16 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * GET /scenes/{escape-room-scene-id} : Get details of a scene Retrieve details of a specific scene by its ID
+     * GET /scenes/{scene-id} : Get details of a scene Retrieve details of a specific scene by its ID
      *
-     * @param escapeRoomSceneId
+     * @param sceneId
      *            The unique ID of the Scene (required)
      *
      * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
      *
      * @see SceneApi#getSceneById
      */
-    default ResponseEntity<SceneDTO> getSceneById(String escapeRoomSceneId) {
+    default ResponseEntity<SceneDTO> getSceneById(String sceneId) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -161,9 +154,9 @@ public interface SceneApiDelegate {
     }
 
     /**
-     * PUT /scenes/{escape-room-scene-id} : Update a scene Update the details of a specific Scene
+     * PUT /scenes/{scene-id} : Update a scene Update the details of a specific Scene
      *
-     * @param escapeRoomSceneId
+     * @param sceneId
      *            The unique ID of the Scene (required)
      * @param sceneRequestDTO
      *            The updated details of the Scene (required)
@@ -171,9 +164,9 @@ public interface SceneApiDelegate {
      * @return Scene updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      *
-     * @see SceneApi#putScene
+     * @see SceneApi#updateScene
      */
-    default ResponseEntity<SceneDTO> putScene(String escapeRoomSceneId, SceneRequestDTO sceneRequestDTO) {
+    default ResponseEntity<SceneDTO> updateScene(String sceneId, SceneRequestDTO sceneRequestDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
