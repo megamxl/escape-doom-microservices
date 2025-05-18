@@ -154,7 +154,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                             <Button onClick={saveTemplate} fullWidth variant={"contained"} startIcon={<SaveIcon/>}>
                                 <strong> Save </strong>
                             </Button>
-                            <Button size={"large"} onClick={() => router.push(LECTOR_PORTAL_APP_PATHS.DASHBOARD)}
+                            <Button size={"large"} onClick={() => router.back()}
                                     fullWidth
                                     variant={"contained"} startIcon={<DirectionsRunIcon/>}>
                                 <strong> Leave </strong>

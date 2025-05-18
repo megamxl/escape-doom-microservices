@@ -4,17 +4,22 @@ import React, {useEffect, useState} from 'react';
 import {Box, Button, Divider, Grid, InputBase, Paper, Stack, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
+import GridViewIcon from '@mui/icons-material/GridView';
 import IconButton from "@mui/material/IconButton";
 import {SessionResponse, useGetERHistoryHook} from "@/app/gen/session";
 import SessionCard from "@/app/lector-portal/dashboard/_components/SessionCard.tsx";
 import SessionCardSkeleton from "@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx";
 import AddSessionFromTemplateCard from "@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx";
 import CreateTemplateButton from "@/app/lector-portal/dashboard/_components/CreateTemplateButton.tsx";
+import {useRouter} from "next/navigation";
+import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 const LectorPortalDashboard = () => {
 
-    const {data, isLoading} = useGetERHistoryHook({ })
+    const {data, isLoading} = useGetERHistoryHook({})
     const [sessions, setSessions] = useState<SessionResponse[]>([]);
+
+    const router = useRouter()
 
     const [selected, setSelected] = useState(new Map([
         ['open', true],
@@ -28,6 +33,10 @@ const LectorPortalDashboard = () => {
             setSessions(data);
         }
     }, [data]);
+
+    const redirectToTemplateView = () => {
+        router.push(LECTOR_PORTAL_APP_PATHS.TEMPLATE_VIEW)
+    }
 
     const handleFilterSelection = (state: string) => {
         setSelected(prev => {
@@ -63,7 +72,17 @@ const LectorPortalDashboard = () => {
                 <Stack gap={3}>
                     <Stack direction="row" alignItems="center" justifyContent={"space-between"}>
                         <Typography fontSize="16" fontWeight="bold"> Your Escape Rooms </Typography>
-                        <CreateTemplateButton />
+                        <Stack direction="row" gap={2}>
+                            <Button
+                                variant={"contained"}
+                                color={"secondary"}
+                                onClick={redirectToTemplateView}
+                                startIcon={<GridViewIcon/>}
+                            >
+                                View Templates
+                            </Button>
+                            <CreateTemplateButton/>
+                        </Stack>
                     </Stack>
                     <Divider sx={{flexGrow: 1, borderBottomWidth: 3}} orientation="horizontal"/>
                     <Stack direction="row" gap="4" justifyContent={"space-between"}>
