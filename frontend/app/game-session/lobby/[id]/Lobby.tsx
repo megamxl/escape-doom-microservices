@@ -11,7 +11,8 @@ import {initializeStompClient} from "@/app/utils/stompClient.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
 import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
 import {escapeRoomStateEnum} from "@/app/gen/session";
-import { Client } from '@stomp/stompjs';
+import {Client} from '@stomp/stompjs';
+import {useSession} from "@/app/utils/game-session-handler.ts";
 
 const Lobby = ({lobbyID}: { lobbyID: number }) => {
     const [lobbyState, setLobbyState] = useState<LobbyState>({
