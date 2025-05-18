@@ -70,7 +70,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
-      operationId: putTemplate
+      operationId: updateTemplate
       tags:
         - Template
       summary: Overrides an existing Template
@@ -349,9 +349,9 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /riddles/{escape-room-riddle-id}:
+  /riddles/{riddle-id}:
     parameters:
-      - name: escape-room-riddle-id
+      - name: riddle-id
         in: path
         required: true
         description: The unique ID of the riddle
@@ -374,7 +374,7 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
-      operationId: putRiddle
+      operationId: updateRiddle
       tags:
         - Riddle
       summary: Override a riddle
@@ -467,7 +467,7 @@ paths:
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /scenes/{escape-room-scene-id}:
+  /scenes/{scene-id}:
     get:
       operationId: getSceneById
       tags:
@@ -475,7 +475,7 @@ paths:
       summary: Get details of a scene
       description: Retrieve details of a specific scene by its ID
       parameters:
-        - name: escape-room-scene-id
+        - name: scene-id
           in: path
           required: true
           description: The unique ID of the Scene
@@ -494,13 +494,13 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
     put:
-      operationId: putScene
+      operationId: updateScene
       tags:
         - Scene
       summary: Update a scene
       description: Update the details of a specific Scene
       parameters:
-        - name: escape-room-scene-id
+        - name: scene-id
           in: path
           required: true
           description: The unique ID of the Scene
@@ -534,7 +534,7 @@ paths:
       summary: Delete a scene
       description: Delete a specific Scene by its ID
       parameters:
-        - name: escape-room-scene-id
+        - name: scene-id
           in: path
           required: true
           description: The unique ID of the Scene
@@ -596,9 +596,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NodeDTO'
-  /nodes/{escape-room-node-id}:
+  /nodes/{node-id}:
     parameters:
-      - name: escape-room-node-id
+      - name: node-id
         in: path
         required: true
         description: The unique ID of the node
@@ -888,6 +888,20 @@ components:
           type: integer
           description: The sequence number of the level
           example: 1
+    LevelUpdateRequest:
+      description: The payload for updating a level
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the level
+          example: Classroom
+        level_sequence:
+          type: integer
+          description: The sequence number of the level
+          example: 1
+        riddle:
+          $ref: "#/components/schemas/RiddleDTO"
     LevelDTO:
       description: The current level of an escape-room instance
       type: object

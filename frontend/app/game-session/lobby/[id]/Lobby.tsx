@@ -1,19 +1,17 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Backdrop, CircularProgress, Divider, Grid2, Grow, Paper, Stack, Typography} from "@mui/material";
+import {Backdrop, CircularProgress, Divider, Grid, Grow, Paper, Stack, Typography} from "@mui/material";
 import {common} from "@mui/material/colors";
-import {redirect, useRouter} from 'next/navigation'
+import {redirect} from 'next/navigation'
 import UserCard from "./_components/UserCard";
-import {useSession} from "@/app/utils/game-session-handler";
-import {useLobbyStatus} from "@/app/hooks/student-join/useLobbyStatus";
 import {LobbyState} from "@/app/types/lobby/LobbyState";
-import {GAME_SESSION_APP_PATHS, GAME_SESSION_WEB_SOCKETS} from "@/app/constants/paths";
-import {RoomState} from "@/app/enums/RoomState";
+import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import {initializeStompClient} from "@/app/utils/stompClient.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
 import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
 import {escapeRoomStateEnum} from "@/app/gen/session";
+import {Client} from '@stomp/stompjs';
 
 const Lobby = ({lobbyID}: { lobbyID: number }) => {
     const [lobbyState, setLobbyState] = useState<LobbyState>({
@@ -23,9 +21,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
         isStarted: false
     })
 
-    const [stompClient, setStompClient] = useState<any>(null);
-
-    const [sessionID, setSessionID] = useSession();
+    const [stompClient, setStompClient] = useState<Client>();
 
     const [subscribed, setSubscribed] = useState<boolean>(false);
 
@@ -35,8 +31,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
             sendMessage();
         }
         const storedName = getSessionStorageItem(player_name_key);
-        if (storedName === null)
-        {
+        if (storedName === null) {
             console.error("make popup playerName empty")
             return
         }
@@ -50,15 +45,13 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
     }, [subscribed]);
 
     useEffect(() => {
-        //@ts-ignore
-        let interval;
+        let interval: NodeJS.Timeout;
         const handleVisibilityChange = () => {
             if (document.visibilityState === "visible") {
                 interval = setInterval(() => {
                     setLobbyState({...lobbyState, countdown: lobbyState.countdown - 1});
                 }, 1000);
             } else {
-                //@ts-ignore
                 clearInterval(interval);
             }
         };
@@ -74,76 +67,75 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
         }
 
         return () => {
-            //@ts-ignore
             clearInterval(interval);
             document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
     }, [lobbyState.countdown, lobbyState.isStarted]);
 
 
-        useEffect(() => {
-            const setupWebSocket = async () => {
-                try {
-                    const client = await initializeStompClient();
-                    if (!client) return;
+    useEffect(() => {
+        const setupWebSocket = async () => {
+            try {
+                const client = await initializeStompClient();
+                if (!client) return;
 
-                    setStompClient(client);
-                    client.onConnect = (frame) => {
-                        client.subscribe("/topic/player-names/"+lobbyID, (message) => {
-                            const data = JSON.parse(message.body);
+                setStompClient(client);
+                client.onConnect = () => {
+                    client.subscribe("/topic/player-names/" + lobbyID, (message) => {
+                        const data = JSON.parse(message.body);
 
-                            if (data.state === escapeRoomStateEnum.started.toUpperCase()){
-                                var playerId = getSessionStorageItem(session_id_key);
+                        if (data.state === escapeRoomStateEnum.started.toUpperCase()) {
+                            const playerId = getSessionStorageItem(session_id_key);
 
-                                if (playerId ===  null){
-                                    console.error("No Player SessionSet !!!! make pop up")
-                                }
-                                setLobbyState(prev => ({
-                                    ...prev,
-                                    isStarted : true,
-                                }))
-                                return
+                            if (playerId === null) {
+                                console.error("No Player SessionSet !!!! make pop up")
                             }
+                            setLobbyState(prev => ({
+                                ...prev,
+                                isStarted: true,
+                            }))
+                            return
+                        }
 
-                            setSubscribed(true);
-                            if (data.message && Array.isArray(data.message)) {
-                                setLobbyState(prevState => ({
-                                    ...prevState,
-                                    users: data.message
-                                }));
-                            }
-                        });
-                    };
+                        setSubscribed(true);
+                        if (data.message && Array.isArray(data.message)) {
+                            setLobbyState(prevState => ({
+                                ...prevState,
+                                users: data.message
+                            }));
+                        }
+                    });
+                };
 
-                    client.onWebSocketError = (error) => {
-                        console.error("WebSocket Error:", error);
-                    };
+                client.onWebSocketError = (error) => {
+                    console.error("WebSocket Error:", error);
+                };
 
-                    client.onStompError = (frame) => {
-                        console.error("STOMP Error:", frame.headers["message"]);
-                    };
+                client.onStompError = (frame) => {
+                    console.error("STOMP Error:", frame.headers["message"]);
+                };
 
-                    client.activate();
-                } catch (error) {
-                    console.error("Error initializing WebSocket:", error);
-                }
-            };
-
-            setupWebSocket();
-
-            return () => {
-                if (stompClient) {
-                    stompClient.deactivate();
-                }
-            };
-        }, []);
-
-        const sendMessage = () => {
-            if (!stompClient) {
-                console.error("STOMP client is not initialized");
-                return;
+                client.activate();
+            } catch (error) {
+                console.error("Error initializing WebSocket:", error);
             }
         };
+
+        setupWebSocket();
+
+        return () => {
+            if (stompClient) {
+                stompClient.deactivate();
+            }
+        };
+    }, []);
+
+    const sendMessage = () => {
+        if (!stompClient) {
+            console.error("STOMP client is not initialized");
+            return;
+        }
+    };
 
     return (
         <>
@@ -164,7 +156,7 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
                     <CircularProgress size={30} thickness={5} sx={{margin: 2, marginRight: 10}}/>
                 </Stack>
             </Stack>
-            <Grid2
+            <Grid
                 container
                 direction="row"
                 alignItems="center"
@@ -175,13 +167,13 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
             >
                 {lobbyState.users.map((playerName, index) => (
 
-                    <Grid2 key={index} size={{xs: 4}} p={1}>
+                    <Grid key={index} size={{xs: 4}} p={1}>
                         <UserCard playerName={playerName} isMainUsr={lobbyState.name === playerName}/>
-                    </Grid2>
+                    </Grid>
 
                 ))
                 }
-            </Grid2>
+            </Grid>
             <Backdrop TransitionComponent={Grow} open={lobbyState.isStarted}>
                 <Stack>
                     <Typography fontSize="8rem"> Starting in </Typography>

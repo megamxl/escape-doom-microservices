@@ -39,7 +39,7 @@ public class TemplateApiDelegateImpl implements TemplateApiDelegate {
     }
 
     @Override
-    public ResponseEntity<TemplateUpdateResultDTO> putTemplate(String templateId, TemplateUpdateRequestDTO request) {
+    public ResponseEntity<TemplateUpdateResultDTO> updateTemplate(String templateId, TemplateUpdateRequestDTO request) {
         return new ResponseEntity<>(templateService.updateTemplate(templateId, request), HttpStatus.OK);
     }
 }

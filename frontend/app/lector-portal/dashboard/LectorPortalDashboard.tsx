@@ -1,20 +1,25 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {Box, Button, Divider, Grid2, InputBase, Paper, Stack, Typography} from "@mui/material";
+import {Box, Button, Divider, Grid, InputBase, Paper, Stack, Typography} from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import CheckIcon from '@mui/icons-material/Check';
+import GridViewIcon from '@mui/icons-material/GridView';
 import IconButton from "@mui/material/IconButton";
 import {SessionResponse, useGetERHistoryHook} from "@/app/gen/session";
 import SessionCard from "@/app/lector-portal/dashboard/_components/SessionCard.tsx";
 import SessionCardSkeleton from "@/app/lector-portal/dashboard/_components/SessionCardSkeleton.tsx";
 import AddSessionFromTemplateCard from "@/app/lector-portal/dashboard/_components/AddSessionFromTemplateCard.tsx";
 import CreateTemplateButton from "@/app/lector-portal/dashboard/_components/CreateTemplateButton.tsx";
+import {useRouter} from "next/navigation";
+import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 
 const LectorPortalDashboard = () => {
 
-    const {data, isLoading} = useGetERHistoryHook({ })
+    const {data, isLoading} = useGetERHistoryHook({})
     const [sessions, setSessions] = useState<SessionResponse[]>([]);
+
+    const router = useRouter()
 
     const [selected, setSelected] = useState(new Map([
         ['open', true],
@@ -29,6 +34,10 @@ const LectorPortalDashboard = () => {
         }
     }, [data]);
 
+    const redirectToTemplateView = () => {
+        router.push(LECTOR_PORTAL_APP_PATHS.TEMPLATE_VIEW)
+    }
+
     const handleFilterSelection = (state: string) => {
         setSelected(prev => {
             const newSelection = new Map(prev)
@@ -40,7 +49,7 @@ const LectorPortalDashboard = () => {
     const clearFilters = () => {
         setSelected(prev => {
             const newSelection = new Map();
-            for (let key of prev.keys()) {
+            for (const key of prev.keys()) {
                 newSelection.set(key, true);
             }
             return newSelection;
@@ -63,7 +72,17 @@ const LectorPortalDashboard = () => {
                 <Stack gap={3}>
                     <Stack direction="row" alignItems="center" justifyContent={"space-between"}>
                         <Typography fontSize="16" fontWeight="bold"> Your Escape Rooms </Typography>
-                        <CreateTemplateButton />
+                        <Stack direction="row" gap={2}>
+                            <Button
+                                variant={"contained"}
+                                color={"secondary"}
+                                onClick={redirectToTemplateView}
+                                startIcon={<GridViewIcon/>}
+                            >
+                                View Templates
+                            </Button>
+                            <CreateTemplateButton/>
+                        </Stack>
                     </Stack>
                     <Divider sx={{flexGrow: 1, borderBottomWidth: 3}} orientation="horizontal"/>
                     <Stack direction="row" gap="4" justifyContent={"space-between"}>
@@ -102,27 +121,26 @@ const LectorPortalDashboard = () => {
                         </Paper>
 
                     </Stack>
-                    <Grid2 container spacing={3}>
-                        {/*@ts-ignore*/}
-                        <Grid2 size={{lg: 4, md: 6, sm: 12}}>
+                    <Grid container spacing={3}>
+                        <Grid size={{lg: 4, md: 6, sm: 12}}>
                             <AddSessionFromTemplateCard onDone={addSession}/>
-                        </Grid2>
+                        </Grid>
                         {!isLoading ? sessions.map((session, index) => {
                                 if (selected.get(session.state!)) {
                                     return (
-                                        <Grid2 key={index} size={{lg: 4, md: 6, sm: 12}}>
+                                        <Grid key={index} size={{lg: 4, md: 6, sm: 12}}>
                                             <SessionCard session={session} onSessionUpdate={updateSession}/>
-                                        </Grid2>
+                                        </Grid>
                                     )
                                 }
                             }) :
                             [...Array(6)].map((_, index) => (
-                                <Grid2 key={index} size={{lg: 4, md: 6, sm: 12}}>
+                                <Grid key={index} size={{lg: 4, md: 6, sm: 12}}>
                                     <SessionCardSkeleton/>
-                                </Grid2>
+                                </Grid>
                             ))
                         }
-                    </Grid2>
+                    </Grid>
                 </Stack>
             </Box>
         </>

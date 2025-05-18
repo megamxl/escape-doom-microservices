@@ -56,9 +56,9 @@ public interface NodeApi {
     }
 
     /**
-     * DELETE /nodes/{escape-room-node-id} : Delete a node Delete a node by its ID
+     * DELETE /nodes/{node-id} : Delete a node Delete a node by its ID
      *
-     * @param escapeRoomNodeId
+     * @param nodeId
      *            The unique ID of the node (required)
      *
      * @return Node deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
@@ -72,12 +72,11 @@ public interface NodeApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/nodes/{escape-room-node-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/nodes/{node-id}", produces = { "application/json" })
 
     default ResponseEntity<NodeDeletionResponseDTO> deleteNode(
-            @Parameter(name = "escape-room-node-id", description = "The unique ID of the node", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-node-id") String escapeRoomNodeId) {
-        return getDelegate().deleteNode(escapeRoomNodeId);
+            @Parameter(name = "node-id", description = "The unique ID of the node", required = true, in = ParameterIn.PATH) @PathVariable("node-id") String nodeId) {
+        return getDelegate().deleteNode(nodeId);
     }
 
     /**
@@ -99,9 +98,9 @@ public interface NodeApi {
     }
 
     /**
-     * GET /nodes/{escape-room-node-id} : Get details of a node Retrieve details of a specific node by its ID
+     * GET /nodes/{node-id} : Get details of a node Retrieve details of a specific node by its ID
      *
-     * @param escapeRoomNodeId
+     * @param nodeId
      *            The unique ID of the node (required)
      *
      * @return Node details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
@@ -113,18 +112,17 @@ public interface NodeApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/nodes/{escape-room-node-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/nodes/{node-id}", produces = { "application/json" })
 
     default ResponseEntity<NodeDTO> getNode(
-            @Parameter(name = "escape-room-node-id", description = "The unique ID of the node", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-node-id") String escapeRoomNodeId) {
-        return getDelegate().getNode(escapeRoomNodeId);
+            @Parameter(name = "node-id", description = "The unique ID of the node", required = true, in = ParameterIn.PATH) @PathVariable("node-id") String nodeId) {
+        return getDelegate().getNode(nodeId);
     }
 
     /**
-     * PUT /nodes/{escape-room-node-id} : Override a node Override the details of a node
+     * PUT /nodes/{node-id} : Override a node Override the details of a node
      *
-     * @param escapeRoomNodeId
+     * @param nodeId
      *            The unique ID of the node (required)
      * @param nodeDTO
      *            The overridden details of the node (required)
@@ -142,13 +140,13 @@ public interface NodeApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/nodes/{escape-room-node-id}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/nodes/{node-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
     default ResponseEntity<NodeDTO> updateNode(
-            @Parameter(name = "escape-room-node-id", description = "The unique ID of the node", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-node-id") String escapeRoomNodeId,
+            @Parameter(name = "node-id", description = "The unique ID of the node", required = true, in = ParameterIn.PATH) @PathVariable("node-id") String nodeId,
             @Parameter(name = "NodeDTO", description = "The overridden details of the node", required = true) @Valid @RequestBody NodeDTO nodeDTO) {
-        return getDelegate().updateNode(escapeRoomNodeId, nodeDTO);
+        return getDelegate().updateNode(nodeId, nodeDTO);
     }
 
 }

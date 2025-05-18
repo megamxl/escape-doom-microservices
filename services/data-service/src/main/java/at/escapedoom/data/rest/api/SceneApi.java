@@ -61,9 +61,9 @@ public interface SceneApi {
     }
 
     /**
-     * DELETE /scenes/{escape-room-scene-id} : Delete a scene Delete a specific Scene by its ID
+     * DELETE /scenes/{scene-id} : Delete a scene Delete a specific Scene by its ID
      *
-     * @param escapeRoomSceneId
+     * @param sceneId
      *            The unique ID of the Scene (required)
      *
      * @return Scene deleted successfully (status code 200) or Not Found (status code 404) or Internal Server Error
@@ -77,12 +77,11 @@ public interface SceneApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.DELETE, value = "/scenes/{escape-room-scene-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.DELETE, value = "/scenes/{scene-id}", produces = { "application/json" })
 
     default ResponseEntity<DeleteLevelResponseDTO> deleteScene(
-            @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId) {
-        return getDelegate().deleteScene(escapeRoomSceneId);
+            @Parameter(name = "scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("scene-id") String sceneId) {
+        return getDelegate().deleteScene(sceneId);
     }
 
     /**
@@ -104,9 +103,9 @@ public interface SceneApi {
     }
 
     /**
-     * GET /scenes/{escape-room-scene-id} : Get details of a scene Retrieve details of a specific scene by its ID
+     * GET /scenes/{scene-id} : Get details of a scene Retrieve details of a specific scene by its ID
      *
-     * @param escapeRoomSceneId
+     * @param sceneId
      *            The unique ID of the Scene (required)
      *
      * @return Scene details (status code 200) or Not Found (status code 404) or Internal Server Error (status code 500)
@@ -118,18 +117,17 @@ public interface SceneApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.GET, value = "/scenes/{escape-room-scene-id}", produces = {
-            "application/json" })
+    @RequestMapping(method = RequestMethod.GET, value = "/scenes/{scene-id}", produces = { "application/json" })
 
     default ResponseEntity<SceneDTO> getSceneById(
-            @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId) {
-        return getDelegate().getSceneById(escapeRoomSceneId);
+            @Parameter(name = "scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("scene-id") String sceneId) {
+        return getDelegate().getSceneById(sceneId);
     }
 
     /**
-     * PUT /scenes/{escape-room-scene-id} : Update a scene Update the details of a specific Scene
+     * PUT /scenes/{scene-id} : Update a scene Update the details of a specific Scene
      *
-     * @param escapeRoomSceneId
+     * @param sceneId
      *            The unique ID of the Scene (required)
      * @param sceneRequestDTO
      *            The updated details of the Scene (required)
@@ -137,7 +135,7 @@ public interface SceneApi {
      * @return Scene updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status code
      *         404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "putScene", summary = "Update a scene", description = "Update the details of a specific Scene", tags = {
+    @Operation(operationId = "updateScene", summary = "Update a scene", description = "Update the details of a specific Scene", tags = {
             "Scene" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Scene updated successfully", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = SceneDTO.class)) }),
@@ -147,13 +145,13 @@ public interface SceneApi {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNotFoundDTO.class)) }),
                     @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
-    @RequestMapping(method = RequestMethod.PUT, value = "/scenes/{escape-room-scene-id}", produces = {
+    @RequestMapping(method = RequestMethod.PUT, value = "/scenes/{scene-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<SceneDTO> putScene(
-            @Parameter(name = "escape-room-scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("escape-room-scene-id") String escapeRoomSceneId,
+    default ResponseEntity<SceneDTO> updateScene(
+            @Parameter(name = "scene-id", description = "The unique ID of the Scene", required = true, in = ParameterIn.PATH) @PathVariable("scene-id") String sceneId,
             @Parameter(name = "SceneRequestDTO", description = "The updated details of the Scene", required = true) @Valid @RequestBody SceneRequestDTO sceneRequestDTO) {
-        return getDelegate().putScene(escapeRoomSceneId, sceneRequestDTO);
+        return getDelegate().updateScene(sceneId, sceneRequestDTO);
     }
 
 }

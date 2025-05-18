@@ -170,9 +170,9 @@ public interface TemplateApiDelegate {
      * @return Template updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status
      *         code 404) or Internal Server Error (status code 500)
      *
-     * @see TemplateApi#putTemplate
+     * @see TemplateApi#updateTemplate
      */
-    default ResponseEntity<TemplateUpdateResultDTO> putTemplate(String templateId,
+    default ResponseEntity<TemplateUpdateResultDTO> updateTemplate(String templateId,
             TemplateUpdateRequestDTO templateUpdateRequestDTO) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {

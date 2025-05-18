@@ -143,7 +143,7 @@ public interface TemplateApi {
      * @return Template updated successfully (status code 200) or Bad Request (status code 400) or Not Found (status
      *         code 404) or Internal Server Error (status code 500)
      */
-    @Operation(operationId = "putTemplate", summary = "Overrides an existing Template", description = "Override the name, description, and levels of an existing Template", tags = {
+    @Operation(operationId = "updateTemplate", summary = "Overrides an existing Template", description = "Override the name, description, and levels of an existing Template", tags = {
             "Template" }, responses = {
                     @ApiResponse(responseCode = "200", description = "Template updated successfully", content = {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = TemplateUpdateResultDTO.class)) }),
@@ -156,10 +156,10 @@ public interface TemplateApi {
     @RequestMapping(method = RequestMethod.PUT, value = "/templates/{template-id}", produces = {
             "application/json" }, consumes = { "application/json" })
 
-    default ResponseEntity<TemplateUpdateResultDTO> putTemplate(
+    default ResponseEntity<TemplateUpdateResultDTO> updateTemplate(
             @Parameter(name = "template-id", description = "The unique ID of the Template to update", required = true, in = ParameterIn.PATH) @PathVariable("template-id") String templateId,
             @Parameter(name = "TemplateUpdateRequestDTO", description = "The updated data for the template", required = true) @Valid @RequestBody TemplateUpdateRequestDTO templateUpdateRequestDTO) {
-        return getDelegate().putTemplate(templateId, templateUpdateRequestDTO);
+        return getDelegate().updateTemplate(templateId, templateUpdateRequestDTO);
     }
 
 }
