@@ -18,6 +18,6 @@ public interface EscapeRoomSessionRepository extends JpaRepository<EscapeRoomSes
 
     List<EscapeRoomSession> getEscapeRoomSessionsByUserIdAndTagsContains(UUID userId, List<String> tags);
 
-    @Query("SELECT s FROM EscapeRoomSession s WHERE s.state = at.escapedoom.session.rest.model.EscapeRoomState.STARTED AND s.endTime < ?1" )
+    @Query("SELECT s FROM EscapeRoomSession s WHERE s.state = at.escapedoom.session.rest.model.EscapeRoomState.STARTED AND s.endTime < ?1")
     List<EscapeRoomSession> getEscapeRoomSessionsByStateOpenAndEndTimeAfter(LocalDateTime now);
 }

@@ -7,7 +7,6 @@ import {TemplateDTO, useCreateLevelHook, useGetTemplateHook, useUpdateTemplateHo
 import Level from "@/app/lector-portal/er-editor/[templateId]/_components/Level.tsx";
 import {grey} from "@mui/material/colors";
 import {useRouter} from "next/navigation";
-import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import SaveIcon from '@mui/icons-material/Save';
 import DnDNode from "@/app/lector-portal/er-editor/[templateId]/_components/DnDNode.tsx";
