@@ -1,10 +1,7 @@
 package at.escapedoom.data.service;
 
-import at.escapedoom.data.DataApi;
-import at.escapedoom.data.data.LevelRepository;
-import at.escapedoom.data.data.RiddleRepository;
-import at.escapedoom.data.data.SceneRepository;
-import at.escapedoom.data.data.TemplateRepository;
+import at.escapedoom.data.config.PostgresTestConfig;
+import at.escapedoom.data.data.*;
 import at.escapedoom.data.data.entity.Level;
 import at.escapedoom.data.data.entity.Riddle;
 import at.escapedoom.data.data.entity.Template;
@@ -12,12 +9,11 @@ import at.escapedoom.data.rest.model.CodingLanguage;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
-import at.escapedoom.data.service.rest.config.PostgresConfig;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +24,11 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@SpringBootTest(classes = DataApi.class)
+@Transactional
+@SpringBootTest
 @ActiveProfiles("test")
-class LevelServiceTest extends PostgresConfig {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+class LevelServiceTest extends PostgresTestConfig {
 
     private static final String INVALID_LEVEL_ID = "05c48cb1-a3aa-4673-8d24-666666666666";
     private String VALID_LEVEL_ID = "";
@@ -49,25 +47,18 @@ class LevelServiceTest extends PostgresConfig {
     @Autowired
     private RiddleRepository riddleRepository;
 
-    @AfterEach
-    @Transactional
-    void tearDown() {
-        templateRepository.deleteAll();
-    }
+    @Autowired
+    private NodeRepository nodeRepository;
 
     @BeforeEach
-    @Transactional
     void setup() {
         riddleRepository.deleteAllInBatch();
-        levelRepository.deleteAllInBatch();
+        nodeRepository.deleteAllInBatch();
         sceneRepository.deleteAllInBatch();
+        levelRepository.deleteAllInBatch();
         templateRepository.deleteAllInBatch();
 
-        riddleRepository.flush();
         levelRepository.flush();
-        sceneRepository.flush();
-        templateRepository.flush();
-
         Template template = Template.builder().name("Test Template").description("Test template description")
                 .userId(UUID.randomUUID()).build();
         template = templateRepository.saveAndFlush(template);
@@ -78,7 +69,7 @@ class LevelServiceTest extends PostgresConfig {
 
         Riddle riddle = Riddle.builder().input("1,2").expectedOutput("3")
                 .functionSignature("public static int add(int a, int b)").variableName("sum")
-                .language(CodingLanguage.JAVA).level(level).build();
+                .language(CodingLanguage.JAVA).level(level).levelId(level.getLevelId()).build();
 
         riddle = riddleRepository.saveAndFlush(riddle);
 

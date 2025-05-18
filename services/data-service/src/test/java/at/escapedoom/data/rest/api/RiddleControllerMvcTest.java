@@ -1,9 +1,12 @@
-package at.escapedoom.data.service.rest.api;
+package at.escapedoom.data.rest.api;
 
-import at.escapedoom.data.service.rest.config.ControllerTestConfig;
-import at.escapedoom.data.service.rest.utils.TestActions;
+import at.escapedoom.data.config.ControllerTestConfig;
+import at.escapedoom.data.config.SecurityTestConfig;
+import at.escapedoom.data.rest.utils.TestActions;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.annotation.Import;
 
+@Import({ TemplateApiController.class, SecurityTestConfig.class })
 class RiddleControllerMvcTest extends ControllerTestConfig {
 
     @Test

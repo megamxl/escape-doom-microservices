@@ -46,11 +46,13 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
     @Override
     @Scheduled(fixedDelay = 5000)
     public void updateCompileRequest() {
-        for (SolutionAttempt attempt : attemptList) {
+        Iterator<SolutionAttempt> iterator = attemptList.iterator();
+        while (iterator.hasNext()) {
+            SolutionAttempt attempt = iterator.next();
             if (attempt.getStatus() == EscapeRoomResult.StatusEnum.WAITING) {
                 sendSolutionToCodeExec(attempt);
             } else {
-                attemptList.remove(attempt);
+                iterator.remove();
             }
         }
     }
@@ -79,9 +81,14 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
 
             if (result.getRun().getCode() == 0) {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.COMPILED);
-                attempt.setOutput(result.getRun().getOutput());
+                if (result.getRun().getOutput() == null){
+                    attempt.setOutput("");
+                }else {
+                    attempt.setOutput(result.getRun().getOutput());
+                }
             } else {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.ERROR);
+                attempt.setOutput(result.run.stderr);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

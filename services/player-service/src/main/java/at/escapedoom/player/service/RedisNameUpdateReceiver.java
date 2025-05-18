@@ -29,7 +29,7 @@ public class RedisNameUpdateReceiver {
         if (jsonString != null) {
             PlayerJoinedEvent playerJoinedEvent = gson.fromJson(jsonString, PlayerJoinedEvent.class);
             List<UserProgress> userProgressResult = userProgressRepository
-                    .getUserNamesByRoomPin(Long.valueOf(playerJoinedEvent.getRoomPin()));
+                    .getUserProgressByRoomPin(Long.valueOf(playerJoinedEvent.getRoomPin()));
             List<String> playerNames = userProgressResult.stream().map(UserProgress::getUserName).toList();
             PlayerNamesMessage playerNamesMessage = new PlayerNamesMessage(playerNames);
 

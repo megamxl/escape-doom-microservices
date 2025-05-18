@@ -1,11 +1,8 @@
 package at.escapedoom.data.data.entity;
 
-import at.escapedoom.data.rest.model.NodeType;
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;

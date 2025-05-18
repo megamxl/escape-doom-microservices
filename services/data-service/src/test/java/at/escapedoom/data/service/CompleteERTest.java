@@ -1,7 +1,7 @@
 package at.escapedoom.data.service;
 
 import at.escapedoom.data.rest.model.*;
-import at.escapedoom.data.service.rest.config.PostgresConfig;
+import at.escapedoom.data.config.PostgresTestConfig;
 import at.escapedoom.data.utils.KeyCloakUtils;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -12,18 +12,18 @@ import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockStatic;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class CompleteERTest extends PostgresConfig {
+class CompleteERTest extends PostgresTestConfig {
 
     @Autowired
     TemplateService templateService;
@@ -58,7 +58,6 @@ class CompleteERTest extends PostgresConfig {
         mockedKeycloak.when(KeyCloakUtils::getUserId).thenReturn(MOCK_USER_ID);
     }
 
-    @Transactional
     @BeforeEach
     void setUp() {
         TemplateCreateRequestDTO templateCreateRequestDTO = TemplateCreateRequestDTO.builder().name("Test Template")
@@ -114,10 +113,10 @@ class CompleteERTest extends PostgresConfig {
         levelService.deleteLevel(levelId);
         entityManager.clear();
 
-        assertThrows(Exception.class, () -> levelService.getLevelById(levelId));
-        assertThrows(Exception.class, () -> sceneService.getSceneById(sceneId));
-        assertThrows(Exception.class, () -> riddleService.getRiddleById(riddleId));
-        assertThrows(Exception.class, () -> nodeService.getNodeById(nodeId));
+        assertThrows(NoSuchElementException.class, () -> levelService.getLevelById(levelId));
+        assertThrows(NoSuchElementException.class, () -> sceneService.getSceneById(sceneId));
+        assertThrows(NoSuchElementException.class, () -> riddleService.getRiddleById(riddleId));
+        assertThrows(NoSuchElementException.class, () -> nodeService.getNodeById(nodeId));
     }
 
     @Test
@@ -125,7 +124,7 @@ class CompleteERTest extends PostgresConfig {
         sceneService.deleteScene(sceneId);
         entityManager.clear();
 
-        assertThrows(Exception.class, () -> sceneService.getSceneById(sceneId));
-        assertThrows(Exception.class, () -> nodeService.getNodeById(nodeId));
+        assertThrows(NoSuchElementException.class, () -> sceneService.getSceneById(sceneId));
+        assertThrows(NoSuchElementException.class, () -> nodeService.getNodeById(nodeId));
     }
 }

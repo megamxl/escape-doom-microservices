@@ -7,7 +7,6 @@ import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.rest.model.NodeCreationRequest;
 import at.escapedoom.data.rest.model.NodeDTO;
 import at.escapedoom.data.rest.model.NodeDeletionResponseDTO;
-import at.escapedoom.data.rest.model.NodeSpecificsDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
