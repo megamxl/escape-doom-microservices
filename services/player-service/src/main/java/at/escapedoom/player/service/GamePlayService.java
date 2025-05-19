@@ -11,6 +11,7 @@ import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
 import at.escapedoom.player.rest.model.LevelDTO;
 import at.escapedoom.player.service.interfaces.CodeCompilerInterface;
 import at.escapedoom.player.service.interfaces.EscapeRoomTemplateRepositoryService;
+import at.escapedoom.player.utils.RiddleToFunctionMapper;
 import at.escapedoom.spring.redis.data.models.EscapeRoomState;
 import at.escapedoom.spring.redis.data.models.SessionView;
 import at.escapedoom.spring.redis.data.repositories.SessionViewRepository;
@@ -66,6 +67,14 @@ public class GamePlayService {
     }
 
     public void submitSolutionAttempt(UUID userIdentifier, EscapeRoomSolutionSubmition escapeRoomSolutionSubmition) {
+
+        at.escapedoom.spring.communication.data.model.LevelDTO template = getFullLvl(userIdentifier);
+
+        String s = RiddleToFunctionMapper.riddleToBackendFunction(escapeRoomSolutionSubmition.getSolution(),
+                template.getRiddle().getInput());
+        escapeRoomSolutionSubmition.setSolution(s);
+
+        System.out.println(escapeRoomSolutionSubmition.getSolution());
 
         codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
     }

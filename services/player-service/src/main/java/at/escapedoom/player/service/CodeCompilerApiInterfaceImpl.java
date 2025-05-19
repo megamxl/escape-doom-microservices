@@ -10,11 +10,13 @@ import at.escapedoom.player.rest.model.EscapeRoomResult;
 import at.escapedoom.player.rest.model.EscapeRoomSolutionSubmition;
 import at.escapedoom.player.service.interfaces.CodeCompilerInterface;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -81,9 +83,14 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
 
             if (result.getRun().getCode() == 0) {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.COMPILED);
-                attempt.setOutput(result.getRun().getOutput());
+                if (result.getRun().getOutput() == null) {
+                    attempt.setOutput("");
+                } else {
+                    attempt.setOutput(result.getRun().getOutput());
+                }
             } else {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.ERROR);
+                attempt.setOutput(result.run.stderr);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

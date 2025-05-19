@@ -67,47 +67,26 @@ class NodeServiceTest extends PostgresTestConfig {
         levelRepository.deleteAll();
         templateRepository.deleteAll();
 
-        Template template = Template.builder()
-                .name("Test Template")
-                .description("Test Template")
-                .userId(USER_ID)
+        Template template = Template.builder().name("Test Template").description("Test Template").userId(USER_ID)
                 .build();
         templateRepository.saveAndFlush(template);
 
-        Level level = Level.builder()
-                .template(template)
-                .levelSequence(1)
-                .name("Classroom")
-                .build();
+        Level level = Level.builder().template(template).levelSequence(1).name("Classroom").build();
         level = levelRepository.saveAndFlush(level);
 
-        Riddle riddle = Riddle.builder()
-                .input("1,2")
-                .expectedOutput("3")
-                .functionSignature("public static int add(int a, int b)")
-                .variableName("sum")
-                .language(CodingLanguage.JAVA)
-                .level(level)
-                .levelId(level.getLevelId())
-                .build();
+        Riddle riddle = Riddle.builder().input("1,2").expectedOutput("3")
+                .functionSignature("public static int add(int a, int b)").variableName("sum")
+                .language(CodingLanguage.JAVA).level(level).levelId(level.getLevelId()).build();
 
         riddleRepository.saveAndFlush(riddle);
 
-        Scene scene = Scene.builder()
-                .sceneSequence(1)
-                .backgroundImageUri("https://example.com/background.png")
-                .name("Scene 1")
-                .levelId(level.getLevelId())
-                .build();
+        Scene scene = Scene.builder().sceneSequence(1).backgroundImageUri("https://example.com/background.png")
+                .name("Scene 1").levelId(level.getLevelId()).build();
         sceneId = sceneRepository.save(scene).getSceneId().toString();
 
-        NodeCreationRequest creationRequest = NodeCreationRequest.builder()
-                .sceneId(sceneId)
-                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build())
-                .title("Something")
-                .description("This is a console node")
-                .position(new PositionDTO(20.5, 40.0))
-                .build();
+        NodeCreationRequest creationRequest = NodeCreationRequest.builder().sceneId(sceneId)
+                .nodeSpecifics(NodeSpecificsDTO.builder().nodeType(NodeType.CONSOLE).build()).title("Something")
+                .description("This is a console node").position(new PositionDTO(20.5, 40.0)).build();
 
         nodeId = nodeService.createNode(creationRequest).getNodeId();
     }

@@ -67,15 +67,9 @@ class LevelServiceTest extends PostgresTestConfig {
                 .templateId(template.getTemplateId()).build();
         level = levelRepository.saveAndFlush(level);
 
-        Riddle riddle = Riddle.builder()
-                .input("1,2")
-                .expectedOutput("3")
-                .functionSignature("public static int add(int a, int b)")
-                .variableName("sum")
-                .language(CodingLanguage.JAVA)
-                .level(level)
-                .levelId(level.getLevelId())
-                .build();
+        Riddle riddle = Riddle.builder().input("1,2").expectedOutput("3")
+                .functionSignature("public static int add(int a, int b)").variableName("sum")
+                .language(CodingLanguage.JAVA).level(level).levelId(level.getLevelId()).build();
 
         riddle = riddleRepository.saveAndFlush(riddle);
 

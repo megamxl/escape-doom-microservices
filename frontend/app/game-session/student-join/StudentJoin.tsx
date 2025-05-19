@@ -14,7 +14,11 @@ import {
     HandlePlayerJoinMutationResponse,
     useHandlePlayerJoinHook
 } from "@/app/gen/player";
-import {getSessionStorageItem, setSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
+import {
+    getSessionStorageItem,
+    removeSessionStorageItem,
+    setSessionStorageItem
+} from "@/app/utils/session-storage-handler.ts";
 import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
 
 const StudentJoin = () => {
@@ -55,7 +59,9 @@ const StudentJoin = () => {
                 }
                 switch (response.escape_room_state) {
                     case escapeRoomStateEnum.started:
+                        //Todo if set ask to replace mn
                         setSession(response.player_session_id!)
+                        setSessionStorageItem(player_name_key , response.player_name != null ? response.player_name : "");
                         appRouterInstance.push(GAME_SESSION_APP_PATHS.SESSION)
                         break;
                     case escapeRoomStateEnum.open:
@@ -67,6 +73,8 @@ const StudentJoin = () => {
                     case escapeRoomStateEnum.closed || escapeRoomStateEnum.finished:
                         setSession("")
                         setOpenOpenSnackbar(prev => ({ ...prev, state: true }))
+                        removeSessionStorageItem(player_name_key)
+                        removeSessionStorageItem(session_id_key)
                         break;
                     default:
                         console.log("Lobby is in an unknown state");
