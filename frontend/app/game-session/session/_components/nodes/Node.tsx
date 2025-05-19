@@ -78,7 +78,7 @@ const renderSpecifics = (node: NodeDTO): ReactNode => {
     }
 }
 
-const nodeTypeClassMapper: Record<NodeType, NodeTypeConfig> = {
+export const nodeTypeClassMapper: Record<NodeType, NodeTypeConfig> = {
     STORY: {
         styling: {
             color: teal[500]

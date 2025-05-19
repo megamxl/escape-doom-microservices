@@ -15,6 +15,7 @@ export class LECTOR_PORTAL_API {
 export class LECTOR_PORTAL_APP_PATHS {
     public static BASE_PATH = `${SRV_PATH}/lector-portal`
     public static DASHBOARD = `${this.BASE_PATH}/dashboard`
+    public static TEMPLATE_VIEW = `${this.BASE_PATH}/template-view`
     public static EDITOR = `${this.BASE_PATH}/er-editor`
     public static LOGIN = `${this.BASE_PATH}/login`
 

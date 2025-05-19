@@ -49,6 +49,7 @@ const InlineEditableText = ({value, onSave, variant = 'body1', inputProps = {}}:
     return isEditing ? (
         <TextField
             {...inputProps}
+            variant={"outlined"}
             inputRef={inputRef}
             value={editingText}
             onChange={(e) => setEditingText(e.target.value)}
@@ -61,14 +62,13 @@ const InlineEditableText = ({value, onSave, variant = 'body1', inputProps = {}}:
                 }
             }}
             size="small"
-            variant="standard"
             fullWidth
         />
     ) : (
         <Typography
             variant={variant}
             onDoubleClick={handleEnterEditMode}
-            sx={{cursor: 'pointer', display: 'inline-block'}}
+            className="truncate flex-grow min-w-0 cursor-pointer"
         >
             {displayText || <em style={{color: '#999'}}>Double click to edit</em>}
         </Typography>

@@ -39,7 +39,7 @@ public class SceneApiDelegateImpl implements SceneApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SceneDTO> putScene(String escapeRoomSceneId, SceneRequestDTO scene) {
+    public ResponseEntity<SceneDTO> updateScene(String escapeRoomSceneId, SceneRequestDTO scene) {
         return new ResponseEntity<>(sceneService.updateScene(escapeRoomSceneId, scene), HttpStatus.OK);
     }
 }

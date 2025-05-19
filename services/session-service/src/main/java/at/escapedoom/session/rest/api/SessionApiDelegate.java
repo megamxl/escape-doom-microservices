@@ -26,21 +26,20 @@ public interface SessionApiDelegate {
     }
 
     /**
-     * GET /session/{tags} : Get all escape-room instances having specific tags Retrieves a list of escape-room
-     * instances filtered by tags
+     * GET /session/{pin} : Get escape-room session by room pin Fetches an escape-room session using its room pin
      *
-     * @param tags
-     *            List of tags to filter by (required)
+     * @param pin
+     *            The 6-digit room pin (required)
      *
-     * @return OK (status code 200)
+     * @return OK (status code 200) or Not Found (status code 404)
      *
-     * @see SessionApi#getERByTags
+     * @see SessionApi#getERSessionByPin
      */
-    default ResponseEntity<List<SessionResponse>> getERByTags(List<String> tags) {
+    default ResponseEntity<SessionResponse> getERSessionByPin(Integer pin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }, { \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] } ]";
+                    String exampleString = "{ \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -51,21 +50,23 @@ public interface SessionApiDelegate {
     }
 
     /**
-     * GET /session/{room_pin} : Retrieve an escape-room session by room pin Fetches an escape-room session using its
-     * room pin
+     * GET /session : Get escape-room sessions by tag or pin Retrieves escape-room sessions filtered by a tag or a
+     * specific 6-digit room pin. Only one filter (tag or pin) should be used per request.
      *
-     * @param roomPin
-     *            The pin to join the escape-room (required)
+     * @param tag
+     *            The tag to filter sessions by (optional)
+     * @param pin
+     *            The 6-digit room pin (optional)
      *
      * @return OK (status code 200)
      *
-     * @see SessionApi#getERSessionByPin
+     * @see SessionApi#getERSessionByTagOrPin
      */
-    default ResponseEntity<SessionResponse> getERSessionByPin(Integer roomPin) {
+    default ResponseEntity<List<SessionResponse>> getERSessionByTagOrPin(String tag, Integer pin) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }";
+                    String exampleString = "[ { \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] }, { \"room_pin\" : 420666, \"session_id\" : \"a32d8f8c-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"created_at\" : \"2025-04-06T14:30:00Z\", \"template_id\" : \"c7a1c8d0-f2f4-4c4d-b9c3-e5a7d7f6e8f0\", \"state\" : \"open\", \"play_time\" : 60, \"tags\" : [ \"[]\", \"[]\" ] } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
