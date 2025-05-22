@@ -10,6 +10,7 @@ import at.escapedoom.data.mapper.LevelMapper;
 import at.escapedoom.data.rest.model.DeleteLevelSuccessDTO;
 import at.escapedoom.data.rest.model.LevelCreationRequest;
 import at.escapedoom.data.rest.model.LevelDTO;
+import at.escapedoom.data.rest.model.SceneDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

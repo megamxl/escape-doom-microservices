@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS scene
     scene_sequence       INT,
     background_image_uri VARCHAR(255),
     name                 VARCHAR(255),
+    version              BIGINT NOT NULL DEFAULT 0,
     CONSTRAINT fk_scene_level FOREIGN KEY (level_id) REFERENCES level (level_id) ON DELETE CASCADE,
     CONSTRAINT unique_level_scene_sequence UNIQUE (level_id, scene_sequence)
 );

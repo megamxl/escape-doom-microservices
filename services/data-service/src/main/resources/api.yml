@@ -1022,6 +1022,11 @@ components:
           type: string
           description: The name of the scene
           example: "Scene 1"
+        nodes:
+          type: array
+          description: List of nodes associated with the scene
+          items:
+            $ref: '#/components/schemas/NodeDTO'
   responses:
     BadRequest:
       description: Bad Request

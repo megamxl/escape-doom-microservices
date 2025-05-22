@@ -3,7 +3,9 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.Level;
+import at.escapedoom.data.data.entity.Node;
 import at.escapedoom.data.data.entity.Scene;
+import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.mapper.SceneMapper;
 import at.escapedoom.data.rest.model.DeleteLevelResponseDTO;
 import at.escapedoom.data.rest.model.SceneDTO;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,6 +27,7 @@ public class SceneService {
     private final SceneRepository sceneRepository;
     private final SceneMapper sceneMapper;
     private final LevelRepository levelRepository;
+    private final NodeMapper nodeMapper;
 
     public List<SceneDTO> getAllScenes() {
         log.info("Getting all scenes");
@@ -99,6 +103,17 @@ public class SceneService {
             dbScene.setLevelId(UUID.fromString(sceneRequest.getLevelId()));
         }
 
+        if (sceneRequest.getNodes() != null) {
+            dbScene.getNodes().clear();
+
+            List<Node> nodes = sceneRequest.getNodes().stream().map(nodeMapper::toEntity).collect(Collectors.toList());
+
+            Scene finalDbScene = dbScene;
+            nodes.forEach(node -> node.setScene(finalDbScene));
+
+            dbScene.getNodes().addAll(nodes);
+        }
+
         dbScene = sceneRepository.saveAndFlush(dbScene);
         log.info("Updated scene with sequence {}", dbScene.getSceneSequence());
         return sceneMapper.toDTO(dbScene);
@@ -134,5 +149,14 @@ public class SceneService {
                 parentLevel != null ? parentLevel.getLevelId() : "unknown");
 
         return new DeleteLevelResponseDTO("Deleted scene successfully");
+    }
+
+    public void deleteScenes(List<Scene> scenes) {
+        sceneRepository.deleteAll(scenes);
+        sceneRepository.flush();
+    }
+
+    public void flushScenes() {
+        sceneRepository.flush();
     }
 }

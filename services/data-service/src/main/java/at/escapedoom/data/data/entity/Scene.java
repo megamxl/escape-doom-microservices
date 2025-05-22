@@ -44,6 +44,9 @@ public class Scene {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Node> nodes;
 
+    @Version
+    private Long version;
+
     @Override
     public String toString() {
         return "Scene{" + "sceneId=" + sceneId + ", sceneSequence=" + sceneSequence + ", name='" + name + '\''

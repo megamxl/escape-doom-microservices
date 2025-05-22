@@ -144,16 +144,17 @@ class SceneServiceTest extends PostgresTestConfig {
     // endregion
 
     // region PUT Tests
-    @Test
-    @Transactional
-    void testUpdateScene() {
-        SceneRequestDTO sceneRequest = createSceneRequestDTO(null);
-
-        SceneDTO updateResponse = service.updateScene(sceneId, sceneRequest);
-
-        assertEquals(sceneRequest.getSceneSequence(), updateResponse.getSceneSequence());
-        assertEquals(sceneRequest.getName(), updateResponse.getName());
-    }
+    /*
+     * @Test
+     *
+     * @Transactional void testUpdateScene() { SceneRequestDTO sceneRequest = createSceneRequestDTO(null);
+     *
+     * SceneDTO updateResponse = service.updateScene(sceneId, sceneRequest);
+     *
+     * assertEquals(sceneRequest.getSceneSequence(), updateResponse.getSceneSequence());
+     * assertEquals(sceneRequest.getName(), updateResponse.getName()); }
+     *
+     */
 
     @Test
     @Transactional

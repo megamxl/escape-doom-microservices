@@ -17,10 +17,6 @@ public interface NodeMapper {
     @Mapping(source = "nodeSpecifics", target = "nodeSpecifics", qualifiedByName = "mapNodeSpecToString")
     NodeDTO toDTO(Node node);
 
-    @Mapping(source = "nodeId", target = "nodeId", qualifiedByName = "stringToUUID")
-    @Mapping(target = "nodeSpecifics", source = "nodeSpecifics", ignore = true)
-    Node toEntity(NodeDTO nodeDTO);
-
     @Mapping(source = "sceneId", target = "sceneId", qualifiedByName = "stringToUUID")
     @Mapping(target = "nodeSpecifics", source = "nodeSpecifics", ignore = true)
     Node toEntity(NodeCreationRequest creationRequest);
@@ -44,17 +40,22 @@ public interface NodeMapper {
 
     @AfterMapping
     default void handleNodeSpecifics(@MappingTarget Node node, NodeDTO dto) {
-        Class<? extends NodeSpecifics> clazz;
-        switch (dto.getNodeSpecifics().getNodeType()) {
-        case CONSOLE -> clazz = ConsoleNodeSpecifics.class;
-        case DETAIL -> clazz = DetailsNodeSpecifics.class;
-        case ZOOM -> clazz = ZoomNodeSpecifics.class;
+        if (dto.getNodeSpecifics() == null)
+            return;
+
+        Class<? extends NodeSpecifics> targetClass = switch (dto.getNodeSpecifics().getNodeType()) {
+        case CONSOLE -> ConsoleNodeSpecifics.class;
+        case DETAIL -> DetailsNodeSpecifics.class;
+        case ZOOM -> ZoomNodeSpecifics.class;
         default -> throw new IllegalArgumentException("Unsupported node type: " + dto.getNodeSpecifics().getNodeType());
-        }
+        };
+
         try {
-            node.setNodeSpecifics(clazz.cast(dto.getNodeSpecifics()));
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException("Unable to convert node to JSON", e);
+            ObjectMapper mapper = new ObjectMapper();
+            NodeSpecifics specifics = mapper.convertValue(dto.getNodeSpecifics(), targetClass);
+            node.setNodeSpecifics(specifics);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Failed to convert NodeSpecificsDTO to entity: " + e.getMessage(), e);
         }
     }
 
@@ -87,4 +88,29 @@ public interface NodeMapper {
     default List<Node> toEntityList(List<NodeDTO> nodeDTOs) {
         return nodeDTOs != null ? nodeDTOs.stream().map(this::toEntity).toList() : null;
     }
+
+    default Node toEntity(NodeDTO dto) {
+        if (dto == null)
+            return null;
+
+        Node node = new Node();
+        node.setNodeId(dto.getNodeId());
+        node.setTitle(dto.getTitle());
+        node.setDescription(dto.getDescription());
+        node.setSceneId(dto.getSceneId());
+
+        if (dto.getPosition() != null) {
+            Position position = new Position();
+            position.setTopPercentage(dto.getPosition().getTopPercentage());
+            position.setLeftPercentage(dto.getPosition().getLeftPercentage());
+            node.setPosition(position);
+        }
+
+        if (dto.getNodeSpecifics() != null) {
+            handleNodeSpecifics(node, dto);
+        }
+
+        return node;
+    }
+
 }
