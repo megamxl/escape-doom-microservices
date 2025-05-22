@@ -161,7 +161,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                         </Stack>
                     </Stack>
                 </Grid>
-                <Grid size='grow' style={{backgroundColor: '#1e1e1e'}} className="p-4 relative">
+                <Grid size='grow' style={{backgroundColor: '#1e1e1e'}} className="p-4 relative h-full">
                     <DndContext autoScroll={false} onDragEnd={handleDragEnd}>
                         <div id="NodesContainer"
                              className="p-2 rounded-lg z-10 bg-[#2e2e2e] flex justify-center gap-4 absolute bottom-4 left-[50%] translate-x-[-50%]">
@@ -170,9 +170,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                             <DnDNode nodeType={"CONSOLE"}/>
                             <DnDNode nodeType={"STORY"}/>
                         </div>
-                        <DnDDroppable bgImageUrl={selectedScene?.background_image_uri}
-                                      nodeList={selectedScene?.nodes ?? []}>
-                        </DnDDroppable>
+                        {selectedScene && <DnDDroppable selectedScene={selectedScene} />}
                     </DndContext>
                 </Grid>
             </Grid>
