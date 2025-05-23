@@ -10,7 +10,7 @@ const LeaderboardPage = async ({params}: LeaderBoardProps) => {
     const id = (await params).id;
 
     return (
-        <Leaderboard boardID={id} />
+        <Leaderboard roomPin={id} />
     );
 };
 

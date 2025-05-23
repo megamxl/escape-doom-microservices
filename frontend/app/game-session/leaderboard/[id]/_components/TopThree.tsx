@@ -1,9 +1,10 @@
 import React from 'react';
 import {PlayerProgression} from "@/app/types/leaderboard/player-progression";
 import PedestalPlace from "@/app/game-session/leaderboard/[id]/_components/PedestalPlace";
+import {UserProgress} from "@/app/gen/leaderboard";
 
 type TopThreeProps = {
-    topThree: PlayerProgression[]
+    topThree: UserProgress[]
 }
 
 const TopThree = ({topThree}: TopThreeProps) => {

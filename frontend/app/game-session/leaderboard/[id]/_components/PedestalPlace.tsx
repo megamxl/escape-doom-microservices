@@ -1,8 +1,8 @@
 import React from 'react';
-import {PlayerProgression} from "@/app/types/leaderboard/player-progression";
-import {formatTime} from "@/app/utils/formatTime";
+import {UserProgress} from "@/app/gen/leaderboard";
+import {formatTime} from "@/app/utils/formatTime.ts";
 
-const PedestalPlace = ({player, place}: { player: PlayerProgression, place: number }) => {
+const PedestalPlace = ({player, place}: { player: UserProgress, place: number }) => {
 
     const pedestalGradients = [
         "bg-gradient-to-b from-[#efbf04]",
@@ -21,8 +21,8 @@ const PedestalPlace = ({player, place}: { player: PlayerProgression, place: numb
     return (
         player &&
         <div className={"flex flex-col flex-grow items-center gap-2"}>
-            <p className={`text-3xl ${!player.time ? 'text-gray-500' : 'text-white'}`}> {player.score} Pkt. | {formatTime(player.time)} </p>
-            <p> {player.playerName} </p>
+            <p className={`text-3xl ${player.last_riddle_solved_at ? 'text-gray-500' : 'text-white'}`}> {player.score} Pkt. | {formatTime(player.last_riddle_solved_at)} </p>
+            <p> {player.player_name} </p>
             <div
                 className={`flex justify-center items-center ${pedestalGradients[place - 1]} ${defineHeight()} rounded-t-2xl w-full `}>
                 <p className={"text-4xl font-bold"}> #{place} </p>

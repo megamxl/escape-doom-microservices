@@ -43,10 +43,8 @@ public class EscapeRoomLeaderBoardService {
     }
 
     private FullExportResponse buildResp(SessionResponse session) {
-        return FullExportResponse.builder()
-                .session(convertToEscapeRoomSessionResponse(session))
-                .userProgress(getUserProgessesBySession(session))
-                .build();
+        return FullExportResponse.builder().session(convertToEscapeRoomSessionResponse(session))
+                .userProgress(getUserProgessesBySession(session)).build();
     }
 
     public List<UserProgress> getLeaderBoardByRoomPin(Integer roomPin) {
@@ -75,32 +73,28 @@ public class EscapeRoomLeaderBoardService {
     public EscapeRoomSessionResponse convertToEscapeRoomSessionResponse(SessionResponse session) {
         return EscapeRoomSessionResponse.builder()
                 .state(EscapeRoomSessionResponse.StateEnum.fromValue(session.getState().name().toUpperCase()))
-                .tags(session.getTags())
-                .templateId(session.getTemplateId())
-                .playTime(session.getPlayTime())
-                .roomPin(session.getRoomPin())
-                .sessionId(session.getSessionId())
-                .build();
+                .tags(session.getTags()).templateId(session.getTemplateId()).playTime(session.getPlayTime())
+                .roomPin(session.getRoomPin()).sessionId(session.getSessionId()).build();
     }
 
-    public List<UserProgress> getUserProgessesBySession( SessionResponse session){
-        return userProgressRepository.getUserProgressesByRoomPin(session.getRoomPin().longValue()).stream().map(e -> UserProgress
-                .builder().sessionId(session.getSessionId())
-                .playerName(e.getUserName()).currentEscapeRoomLevel(e.getCurrentEscapeRoomLevel().intValue())
-                .score(e.getCurrentPoints().intValue())
-                .lastRiddleSolvedAt(
-                        e.getLastRiddleSolvedAt() != null ? e.getLastRiddleSolvedAt().atOffset(ZoneOffset.UTC) : null)
-                .results(resultRepository.getResultsByUserProgress_UserIdentifier(e.getUserIdentifier())
-                        .orElse(Collections.emptyList()).stream()
-                        .map(result -> Result.builder().input(result.getInput())
-                                .addedPoints(result.getAwardedPoints().intValue())
-                                .currentEscapeRoomLevel(result.getEscapeRoomLevel().intValue())
-                                .solvedDate(result.getSolvedLevelAt() != null
-                                        ? result.getSolvedLevelAt().atOffset(ZoneOffset.UTC) : null)
-                                .build())
-                        .toList())
-                .build()).toList();
+    public List<UserProgress> getUserProgessesBySession(SessionResponse session) {
+        return userProgressRepository.getUserProgressesByRoomPin(session.getRoomPin().longValue()).stream()
+                .map(e -> UserProgress.builder().sessionId(session.getSessionId()).playerName(e.getUserName())
+                        .currentEscapeRoomLevel(e.getCurrentEscapeRoomLevel().intValue())
+                        .score(e.getCurrentPoints().intValue())
+                        .lastRiddleSolvedAt(e.getLastRiddleSolvedAt() != null
+                                ? e.getLastRiddleSolvedAt().atOffset(ZoneOffset.UTC) : null)
+                        .results(resultRepository.getResultsByUserProgress_UserIdentifier(e.getUserIdentifier())
+                                .orElse(Collections.emptyList()).stream()
+                                .map(result -> Result.builder().input(result.getInput())
+                                        .addedPoints(result.getAwardedPoints().intValue())
+                                        .currentEscapeRoomLevel(result.getEscapeRoomLevel().intValue())
+                                        .solvedDate(result.getSolvedLevelAt() != null
+                                                ? result.getSolvedLevelAt().atOffset(ZoneOffset.UTC) : null)
+                                        .build())
+                                .toList())
+                        .build())
+                .toList();
     }
-
 
 }
