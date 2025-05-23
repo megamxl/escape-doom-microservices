@@ -35,6 +35,7 @@ const CreateTemplateButton = () => {
             }, {
                 onSuccess: (newTemplate) => {
                     router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${newTemplate.template_id}`)
+                    router.refresh()
                 },
                 onError: (errorMsg) => {
                     setIsError(true)

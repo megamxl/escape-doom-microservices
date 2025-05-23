@@ -40,6 +40,7 @@ const LectorPortalDashboard = () => {
 
     const redirectToTemplateView = () => {
         router.push(LECTOR_PORTAL_APP_PATHS.TEMPLATE_VIEW)
+        router.refresh()
     }
 
     const handleFilterSelection = (state: string) => {

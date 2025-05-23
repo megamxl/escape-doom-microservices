@@ -15,7 +15,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import SessionStateDisplay from "@/app/lector-portal/dashboard/_components/SessionStateDisplay.tsx";
 import {useRouter} from "next/navigation";
-import {LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
+import {GAME_SESSION_APP_PATHS, LECTOR_PORTAL_APP_PATHS} from "@/app/constants/paths.ts";
+import {Leaderboard} from '@mui/icons-material';
 
 type SessionCardProps = {
     session: SessionResponse,
@@ -38,7 +39,7 @@ const SessionCard = ({session, templateName, onSessionUpdate}: SessionCardProps)
 
     const handleSessionStateChange = (state: EscapeRoomStateEnum) => {
         mutate({
-            //@ts-ignore
+            //@ts-expect-error Könnte in der Theorie leer sein, sollte aber nie der Fall sein
             state: state.toUpperCase(),
             session_id: cardInfo.session_id!
         }, {
@@ -54,7 +55,8 @@ const SessionCard = ({session, templateName, onSessionUpdate}: SessionCardProps)
     }
 
     const redirectToEdit = () => {
-        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.template_id}`)
+        router.push(`${LECTOR_PORTAL_APP_PATHS.EDITOR}/${cardInfo.template_id}`,)
+        router.refresh()
     }
 
     const handleAddTag = () => {
@@ -109,6 +111,13 @@ const SessionCard = ({session, templateName, onSessionUpdate}: SessionCardProps)
                 <Fab style={{position: "absolute", top: '10px', left: '10px'}} size="small" color="primary"
                      aria-label="change-state" onClick={redirectToEdit}>
                     <EditIcon/>
+                </Fab>
+                <Fab style={{position: "absolute", top: '10px', right: '10px'}} size="small" color="primary"
+                     aria-label="change-state"
+                     href={`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${cardInfo.room_pin}`}
+                     target="_blank"
+                >
+                    <Leaderboard/>
                 </Fab>
                 <Stack style={{position: "absolute", bottom: '5px', left: "50%", transform: "translate(-50%, 0)"}}
                        spacing={1} direction={"row"}>

@@ -46,6 +46,9 @@ public class SessionResponse {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private @Nullable OffsetDateTime createdAt;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private @Nullable OffsetDateTime endTime = null;
+
     private @Nullable Integer roomPin;
 
     @lombok.Builder.Default
@@ -158,6 +161,27 @@ public class SessionResponse {
         this.createdAt = createdAt;
     }
 
+    public SessionResponse endTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    /**
+     * The timestamp when the escape-room session will be closed
+     *
+     * @return endTime
+     */
+    @Valid
+    @Schema(name = "end_time", example = "2025-04-06T15:30Z", description = "The timestamp when the escape-room session will be closed", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("end_time")
+    public OffsetDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     public SessionResponse roomPin(Integer roomPin) {
         this.roomPin = roomPin;
         return this;
@@ -223,13 +247,14 @@ public class SessionResponse {
                 && Objects.equals(this.sessionId, sessionResponse.sessionId)
                 && Objects.equals(this.playTime, sessionResponse.playTime)
                 && Objects.equals(this.createdAt, sessionResponse.createdAt)
+                && Objects.equals(this.endTime, sessionResponse.endTime)
                 && Objects.equals(this.roomPin, sessionResponse.roomPin)
                 && Objects.equals(this.tags, sessionResponse.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(state, templateId, sessionId, playTime, createdAt, roomPin, tags);
+        return Objects.hash(state, templateId, sessionId, playTime, createdAt, endTime, roomPin, tags);
     }
 
     @Override
@@ -241,6 +266,7 @@ public class SessionResponse {
         sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
         sb.append("    playTime: ").append(toIndentedString(playTime)).append("\n");
         sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+        sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
         sb.append("    roomPin: ").append(toIndentedString(roomPin)).append("\n");
         sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
         sb.append("}");

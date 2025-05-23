@@ -5,20 +5,34 @@ import TopThree from "@/app/game-session/leaderboard/[id]/_components/TopThree";
 import LeaderboardRankEntry from "@/app/game-session/leaderboard/[id]/_components/LeaderboardRankEntry";
 import {formatTimeInt} from "@/app/utils/formatTime";
 import {useGetRoomPinHook, UserProgress} from "@/app/gen/leaderboard";
+import {useGetERSessionByPinHook} from "@/app/gen/session";
 
 const Leaderboard = ({roomPin}: { roomPin: number }) => {
 
-    const {
-        data: leaderboardData,
-        isFetching: isFetching,
-        //isError: errorState,
-        //error: errorObject
-    } = useGetRoomPinHook( {room_pin: roomPin});
-    const startTime = 1000 * 60 * 60 * 2 // TODO: Let backend give me this info
-    const [remainingTime, setRemainingTime] = useState(startTime) // 2 hours TODO: Let backend give me this info
+    const {data: leaderboardData, isFetching: isFetching} = useGetRoomPinHook({room_pin: roomPin});
+    const {data: sessionInfo, isFetching: isSessionFetching} = useGetERSessionByPinHook({pin: roomPin})
+
+    const [remainingTime, setRemainingTime] = useState<number | null>(null)
 
     useEffect(() => {
-        if (remainingTime <= 0) return;
+        if (sessionInfo?.end_time) {
+
+            const targetTime = new Date(sessionInfo.end_time)
+            const curDate = new Date();
+
+            console.log(curDate.getTime())
+            console.log(targetTime.getTime())
+
+            console.log(Math.floor((targetTime.getTime() - curDate.getTime()) / (1000 * 60)))
+
+            const diffMs = targetTime.getTime() - curDate.getTime()
+
+            setRemainingTime(diffMs)
+        }
+    }, [sessionInfo]);
+
+    useEffect(() => {
+        if (remainingTime && remainingTime <= 0) return;
 
         // Creates interval that subtracts 1 every second => Countdown
         const interval = setInterval(() => {
@@ -34,9 +48,18 @@ const Leaderboard = ({roomPin}: { roomPin: number }) => {
     return (
 
         <div className={"flex flex-col w-5/6 lg:w-1/2 mt-4 gap-8 justify-center m-auto"}>
-            <p className={"text-8xl font-bold self-center"}> {formatTimeInt(remainingTime / 1000)} </p>
+            {
+                !isSessionFetching && remainingTime ?
+                    <p className={"text-8xl font-bold self-center"}>
+                        {formatTimeInt(remainingTime / 1000)}
+                    </p> :
+                    <p className="text-5xl font-bold self-center">
+                        {roomPin} - Not started yet
+                    </p>
+            }
 
-            {!isFetching && leaderboardData ? <TopThree topThree={sortUsersByScore(leaderboardData)!.slice(0, 3)}/> : "Loading"}
+            {!isFetching && leaderboardData ?
+                <TopThree topThree={sortUsersByScore(leaderboardData)!.slice(0, 3)}/> : "Loading"}
 
             <div className={"flex flex-col gap-3"}>
                 {

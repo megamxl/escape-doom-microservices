@@ -12,7 +12,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DnDNode from "@/app/lector-portal/er-editor/[templateId]/_components/DnDNode.tsx";
 import {DndContext, DragEndEvent} from "@dnd-kit/core";
 import DnDDroppable from "@/app/lector-portal/er-editor/[templateId]/_components/DnDDroppable.tsx";
-import {SceneDTO} from "@/app/gen/player";
+import {LevelDTO, SceneDTO} from "@/app/gen/player";
 
 type EditorProps = {
     templateId: string
@@ -68,7 +68,6 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         if (!selectedLevel || !selectedLevel.scenes) return;
 
         const newScene = selectedLevel.scenes.find(s => s.scene_id === sceneId)
-
         setSelectedScene(newScene)
     }
 
@@ -76,6 +75,13 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         setTemplate(prev => ({
             ...prev,
             levels: prev?.levels!.filter(lvl => lvl.level_id !== levelId)
+        }))
+    }
+
+    const handleLevelUpdate = (level: LevelDTO) => {
+        setTemplate(prev => ({
+            ...prev,
+            levels: [...prev?.levels?.filter(l => l.level_id !== level.level_id) ?? [], level]
         }))
     }
 
@@ -123,7 +129,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                                 flexGrow: 1,
                                 overflowY: 'auto',
                                 overflowX: 'hidden',
-                                minHeight: 0, // <-- CRUCIAL for scroll to work in flex containers
+                                minHeight: 0,
                             }}
                         >
                             {template.levels
@@ -132,6 +138,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                                         <Level
                                             key={level.level_id}
                                             level={level}
+                                            onLevelUpdate={handleLevelUpdate}
                                             onDeletion={handleLevelDeletion}
                                             onSceneSelection={handleSceneSelection}
                                         />
@@ -170,7 +177,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                             <DnDNode nodeType={"CONSOLE"}/>
                             <DnDNode nodeType={"STORY"}/>
                         </div>
-                        {selectedScene && <DnDDroppable selectedScene={selectedScene} />}
+                        {selectedScene && <DnDDroppable key={selectedScene.scene_id} selectedScene={selectedScene} />}
                     </DndContext>
                 </Grid>
             </Grid>

@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Collapse, IconButton, Stack, Typography} from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from "@mui/icons-material/Close";
@@ -13,16 +13,21 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 type LevelProps = {
     level: LevelDTO
     onDeletion: (levelId: string) => void
+    onLevelUpdate: (level: LevelDTO) => void
     onSceneSelection: (sceneId: string, levelId: string) => void
 }
 
-const Level = ({level: prop, onDeletion, onSceneSelection}: LevelProps) => {
+const Level = ({level: prop, onDeletion, onSceneSelection, onLevelUpdate}: LevelProps) => {
     const {mutate: deleteLevel} = useDeleteLevelHook()
     const {mutate: updateLevel} = useUpdateLevelHook()
     const {mutate: createScene} = useCreateSceneHook()
 
     const [expanded, setExpanded] = useState(true);
     const [level, setLevel] = useState(prop)
+
+    useEffect(() => {
+        onLevelUpdate(level)
+    }, [level]);
 
     const addScene = (level: LevelDTO) => {
         if (!level.scenes) return;
@@ -38,7 +43,8 @@ const Level = ({level: prop, onDeletion, onSceneSelection}: LevelProps) => {
             {
                 onSuccess: (addedScene) => {
                     if (!level.scenes) return;
-                    setLevel({...level, scenes: [...level.scenes, addedScene]})
+
+                    setLevel(prev => ({...prev, scenes: [...prev.scenes ?? [], addedScene]}))
                 },
                 onError: (addSceneError) => {
                     console.error("Couldn't create scene:", addSceneError)
@@ -82,7 +88,7 @@ const Level = ({level: prop, onDeletion, onSceneSelection}: LevelProps) => {
 
         updateLevel({
             levelId: level.level_id,
-            data: { ...level, name: newName }
+            data: {...level, name: newName}
         }, {
             onSuccess: (result) => {
                 console.log("Updated level", result)
@@ -125,13 +131,13 @@ const Level = ({level: prop, onDeletion, onSceneSelection}: LevelProps) => {
                         {level.scenes
                             ?.sort((s1, s2) => s1.scene_sequence! - s2.scene_sequence!)
                             .map(scene => (
-                            <Scene
-                                key={scene.scene_id}
-                                scene={scene}
-                                onDeletion={handleSceneRemove}
-                                onSelection={handleSceneSelection}
-                            />)
-                        )}
+                                <Scene
+                                    key={scene.scene_id}
+                                    scene={scene}
+                                    onDeletion={handleSceneRemove}
+                                    onSelection={handleSceneSelection}
+                                />)
+                            )}
                         <Button onClick={handleSceneAdd} fullWidth
                                 sx={{color: grey[50], p: 0, justifyContent: "flex-start", height: '2rem'}}>
                             <Stack direction={"row"} spacing={1} sx={{cursor: 'pointer', color: grey[600]}}>

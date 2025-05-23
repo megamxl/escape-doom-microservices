@@ -24,12 +24,17 @@ const TopAppBar = ({children}: Readonly<{ children: React.ReactNode;}>) => {
         redirect(LECTOR_PORTAL_APP_PATHS.LOGIN)
     }
 
+    const redirectToDashboard = () => {
+        router.push(LECTOR_PORTAL_APP_PATHS.DASHBOARD)
+        router.refresh()
+    }
+
     return (
         <>
             <Box sx={{flexGrow: 1}}>
                 <AppBar position="static">
                     <Toolbar>
-                        <Button sx={{ color: '#fff' }} onClick={() => router.push(LECTOR_PORTAL_APP_PATHS.DASHBOARD)}>
+                        <Button sx={{ color: '#fff' }} onClick={redirectToDashboard}>
                             <MeetingRoomIcon className="mr-2" />
                             <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
                                 Escape Doom

@@ -47,6 +47,7 @@ const Scene = ({scene: prop, onDeletion, onSelection}: SceneProps) => {
             data: { ...scene, name: newName }
         }, {
             onSuccess: (response) => {
+                setScene(response)
                 console.log("Scene updated", response)
             },
             onError: (error) => {
@@ -56,7 +57,8 @@ const Scene = ({scene: prop, onDeletion, onSelection}: SceneProps) => {
     }
 
     const handleSceneSelection = () => {
-        onSelection(scene.scene_id!)
+        console.log(scene.scene_id)
+        onSelection(scene.scene_id ?? "")
     }
 
     return (

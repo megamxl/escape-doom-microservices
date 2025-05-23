@@ -15,7 +15,6 @@ type DroppableProps = {
 }
 
 const DnDDroppable = ({selectedScene}: DroppableProps) => {
-    const {nodes, background_image_uri, scene_id} = selectedScene
     const {isOver, setNodeRef} = useDroppable({
         id: 'droppable'
     })
@@ -26,7 +25,6 @@ const DnDDroppable = ({selectedScene}: DroppableProps) => {
     const {mutate: updateScene} = useUpdateSceneHook()
 
     useEffect(() => {
-        console.log(file)
         handleUpload()
     }, [file]);
 
@@ -44,7 +42,7 @@ const DnDDroppable = ({selectedScene}: DroppableProps) => {
                 onSuccess: (response) => {
                     console.log("File upload successful:", response)
                     updateScene({
-                        sceneId: scene_id!,
+                        sceneId: selectedScene.scene_id!,
                         data: {...selectedScene, background_image_uri: response.data.link}
                     }, {
                         onSuccess: (response) => {
@@ -65,16 +63,16 @@ const DnDDroppable = ({selectedScene}: DroppableProps) => {
     const style = isOver ? 'border-2 border-dashed rounded-md' : ""
 
     return (
-        <div>
-            {background_image_uri ?
+        <div className="h-full w-full">
+            {selectedScene.background_image_uri ?
                 <div className="relative">
                     <img
                         ref={setNodeRef}
-                        src={background_image_uri}
+                        src={selectedScene.background_image_uri}
                         alt="Scene Background"
                         className={`${style} w-full bg-no-repeat bg-contain z-0`}>
                     </img>
-                    {nodes?.map(node => {
+                    {selectedScene.nodes?.map(node => {
                         return (
                             <EditorNode key={node.node_id} node={node}/>
                         )

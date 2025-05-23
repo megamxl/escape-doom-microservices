@@ -99,7 +99,12 @@ const Session = () => {
 
         setCode(stageInformation?.riddle?.function)
         console.log("Received: ", stageInformation)
-        setCurrentScene(stageInformation.scenes.find(s => s.scene_sequence == 1))
+        setCurrentScene(stageInformation.scenes
+            .sort((s1, s2) => {
+                if (!s1.scene_sequence || !s2.scene_sequence) return 0;
+
+                return s1.scene_sequence - s2.scene_sequence;
+            })[0])
     }, [stageInformation])
 
     const handleZoomChange = (targetSceneId: string) => {
