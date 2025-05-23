@@ -16,6 +16,7 @@ import at.escapedoom.spring.redis.RedisConfig;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -29,6 +30,12 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 @Profile("!test")
 public class AppConfig {
 
+    @Value("${escapedoom.communication.session-api-url}")
+    private String sessionApiUrl;
+
+    @Value("${escapedoom.communication.data-api-url}")
+    private String dataApiUrl;
+
     @Primary
     @Bean
     public EscapeRoomSessionRepositoryService escapeRoomSessionRepositoryService(
@@ -38,13 +45,13 @@ public class AppConfig {
 
     @Bean
     public SessionApi getSessionApi(@Autowired OkHttpClient client) {
-        return new SessionApi(new ApiClient(client).setBasePath("http://localhost:8081/session-api/v1"));
+        return new SessionApi(new ApiClient(client).setBasePath(sessionApiUrl));
     }
 
     @Bean
     public TemplateApi getTemplateApi(@Autowired OkHttpClient client) {
-        return new TemplateApi(new at.escapedoom.spring.communication.data.invoker.ApiClient(client)
-                .setBasePath("http://localhost:8081/data-api/v1"));
+        return new TemplateApi(
+                new at.escapedoom.spring.communication.data.invoker.ApiClient(client).setBasePath(dataApiUrl));
     }
 
     @Bean

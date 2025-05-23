@@ -68,15 +68,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    session:
-                      $ref: "#/components/schemas/EscapeRoomSessionResponse"
-                    user_progress:
-                      type: array
-                      description: List of user progress for the session.
-                      items:
-                        $ref: "#/components/schemas/UserProgress"
+                  $ref: "#/components/schemas/FullExportResponse"
               example:
                   - session:
                       state: "CLOSED"
@@ -107,15 +99,13 @@ paths:
       summary: Get all session leaderboards
       description: Retrieve leaderboards for all sessions, optionally filtered by session tags.
       parameters:
-        - name: tags
+        - name: tag
           in: query
-          description: A comma-separated list of tags to filter sessions.
+          description: A tags to filter sessions.
           required: false
           schema:
-            type: array
-            items:
-              type: string
-              example: "SDE26"
+            type: string
+            example: "SDE26"
       responses:
         "200":
           description: All session leaderboards
@@ -124,15 +114,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    session:
-                      $ref: "#/components/schemas/EscapeRoomSessionResponse"
-                    user_progress:
-                      type: array
-                      description: List of user progress for the session.
-                      items:
-                        $ref: "#/components/schemas/UserProgress"
+                  $ref: "#/components/schemas/FullExportResponse"
               example:
                 - session:
                     state: "CLOSED"
@@ -256,3 +238,13 @@ components:
           type: integer
           description: Points awarded for solving the riddle.
           example: 100
+    FullExportResponse:
+      type: object
+      properties:
+        session:
+          $ref: "#/components/schemas/EscapeRoomSessionResponse"
+        user_progress:
+          type: array
+          description: List of user progress for the session.
+          items:
+            $ref: "#/components/schemas/UserProgress"

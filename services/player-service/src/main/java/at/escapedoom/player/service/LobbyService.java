@@ -1,6 +1,7 @@
 package at.escapedoom.player.service;
 
 import at.escapedoom.player.utils.MapperFunctions;
+import at.escapedoom.player.utils.UsernameSanitizer;
 import at.escapedoom.spring.redis.data.models.SessionView;
 import at.escapedoom.player.data.postgres.entity.UserProgress;
 import at.escapedoom.player.data.postgres.repository.UserProgressRepository;
@@ -39,6 +40,12 @@ public class LobbyService {
                 .contains(sessionView.getRoomState())) {
             throw new IllegalArgumentException("The roomPin you entered is Not Open or Started");
         }
+
+        if (playerName.isBlank()) {
+            throw new IllegalArgumentException("The username you entered is empty or only contains whitespaces");
+        }
+
+        playerName = UsernameSanitizer.sanitizeUsername(playerName);
 
         UserProgress newUser = createAndInitializeAUserObject(roomPin, playerName,
                 sessionView.getEscapeRoomTemplateId());

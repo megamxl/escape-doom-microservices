@@ -13,15 +13,27 @@ public class RiddleToFunctionMapper {
                 .builder();
 
         builder.language(at.escapedoom.player.rest.model.CodingLanguage.fromValue(riddle.getLanguage().getValue()));
-        builder.function(riddle.getFunctionSignature() + "{ \n \n \n}");
+        builder.function(String.format("""
+                import java.util.*;
+
+                public class Main {
+
+                    %s{
+
+                    }
+                }
+
+                """, riddle.getFunctionSignature()));
         builder.levelId(riddle.getLevelId());
         builder.riddleId(riddle.getRiddleId());
 
         return builder.build();
     }
 
-    public static String riddleToBackendFunction(RiddleDTO riddle) {
-        return null;
+    public static String riddleToBackendFunction(String riddle, String input) {
+
+        return riddle.replaceFirst("public class Main \\{",
+                "public class Main { \n public static void main(String[] args) { \n " + input + " \n }");
     }
 
 }

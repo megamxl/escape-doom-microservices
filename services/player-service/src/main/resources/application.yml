@@ -15,7 +15,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: player_schema
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
   security:
     oauth2:
       resourceserver:
@@ -39,6 +39,10 @@ escapedoom:
   redis:
     host: localhost
     port: 6379
+  communication:
+    session-api-url: http://localhost:8081/session-api/v1
+    data-api-url: http://localhost:8081/data-api/v1
+
 
 logging:
   level:
