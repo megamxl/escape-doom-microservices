@@ -1,11 +1,10 @@
 'use client'
 
 import React, {useEffect, useState} from 'react';
-import {useGetLeaderboard} from "@/app/hooks/leaderboard/useGetLeaderboard";
 import TopThree from "@/app/game-session/leaderboard/[id]/_components/TopThree";
 import LeaderboardRankEntry from "@/app/game-session/leaderboard/[id]/_components/LeaderboardRankEntry";
-import {formatTime, formatTimeInt} from "@/app/utils/formatTime";
-import {getRoomPinHook, useGetRoomPinHook, UserProgress} from "@/app/gen/leaderboard";
+import {formatTimeInt} from "@/app/utils/formatTime";
+import {useGetRoomPinHook, UserProgress} from "@/app/gen/leaderboard";
 
 const Leaderboard = ({roomPin}: { roomPin: number }) => {
 
