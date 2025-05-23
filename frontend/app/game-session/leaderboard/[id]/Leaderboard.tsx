@@ -9,7 +9,12 @@ import {useGetERSessionByPinHook} from "@/app/gen/session";
 
 const Leaderboard = ({roomPin}: { roomPin: number }) => {
 
-    const {data: leaderboardData, isFetching: isFetching} = useGetRoomPinHook({room_pin: roomPin});
+    const {data: playerProgress} = useGetRoomPinHook({room_pin: roomPin}, {
+        query: {
+            refetchInterval: 1000 * 10, // Every 10 seconds
+            refetchIntervalInBackground: true
+        }
+    });
     const {data: sessionInfo, isFetching: isSessionFetching} = useGetERSessionByPinHook({pin: roomPin})
 
     const [remainingTime, setRemainingTime] = useState<number | null>(null)
@@ -36,14 +41,23 @@ const Leaderboard = ({roomPin}: { roomPin: number }) => {
 
         // Creates interval that subtracts 1 every second => Countdown
         const interval = setInterval(() => {
-            setRemainingTime(prev => Math.max(prev - 1000, 0));
+            setRemainingTime(prev => Math.max(prev! - 1000, 0));
         }, 1000)
 
         return () => clearInterval(interval)
     }, [remainingTime]);
 
     const sortUsersByScore = (users: UserProgress[]): UserProgress[] =>
-        [...users].sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+        [...users].sort((a, b) => {
+            const scoreDif = (b.score ?? 0) - (a.score ?? 0)
+            if (scoreDif !== 0) return scoreDif
+            else {
+                if (!a.last_riddle_solved_at || !b.last_riddle_solved_at) return 0
+                const aDate = Date.parse(a.last_riddle_solved_at)
+                const bDate = Date.parse(b.last_riddle_solved_at)
+                return aDate - bDate
+            }
+        });
 
     return (
 
@@ -58,12 +72,12 @@ const Leaderboard = ({roomPin}: { roomPin: number }) => {
                     </p>
             }
 
-            {!isFetching && leaderboardData ?
-                <TopThree topThree={sortUsersByScore(leaderboardData)!.slice(0, 3)}/> : "Loading"}
+            {playerProgress ?
+                <TopThree topThree={sortUsersByScore(playerProgress)!.slice(0, 3)}/> : "Loading"}
 
             <div className={"flex flex-col gap-3"}>
                 {
-                    !isFetching && leaderboardData ? sortUsersByScore(leaderboardData).slice(3).map((player, idx) => {
+                    playerProgress ? sortUsersByScore(playerProgress).slice(3).map((player, idx) => {
                         return (
                             <LeaderboardRankEntry rankingInfo={player} index={idx + 3} key={idx + 3}/>
                         )

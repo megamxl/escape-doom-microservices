@@ -47,6 +47,9 @@ public class SessionResponse {
     private @Nullable OffsetDateTime createdAt;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private @Nullable OffsetDateTime startTime = null;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private @Nullable OffsetDateTime endTime = null;
 
     private @Nullable Integer roomPin;
@@ -151,7 +154,7 @@ public class SessionResponse {
      * @return createdAt
      */
     @Valid
-    @Schema(name = "created_at", example = "2025-04-06T14:30Z", description = "The timestamp when the escape-room session was created", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(name = "created_at", example = "2025-04-06T14:20Z", description = "The timestamp when the escape-room session was created", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     @JsonProperty("created_at")
     public OffsetDateTime getCreatedAt() {
         return createdAt;
@@ -159,6 +162,27 @@ public class SessionResponse {
 
     public void setCreatedAt(OffsetDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public SessionResponse startTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
+     * The timestamp when the escape-room session went from open to start
+     *
+     * @return startTime
+     */
+    @Valid
+    @Schema(name = "start_time", example = "2025-04-06T14:30Z", description = "The timestamp when the escape-room session went from open to start", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("start_time")
+    public OffsetDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public SessionResponse endTime(OffsetDateTime endTime) {
@@ -247,6 +271,7 @@ public class SessionResponse {
                 && Objects.equals(this.sessionId, sessionResponse.sessionId)
                 && Objects.equals(this.playTime, sessionResponse.playTime)
                 && Objects.equals(this.createdAt, sessionResponse.createdAt)
+                && Objects.equals(this.startTime, sessionResponse.startTime)
                 && Objects.equals(this.endTime, sessionResponse.endTime)
                 && Objects.equals(this.roomPin, sessionResponse.roomPin)
                 && Objects.equals(this.tags, sessionResponse.tags);
@@ -254,7 +279,7 @@ public class SessionResponse {
 
     @Override
     public int hashCode() {
-        return Objects.hash(state, templateId, sessionId, playTime, createdAt, endTime, roomPin, tags);
+        return Objects.hash(state, templateId, sessionId, playTime, createdAt, startTime, endTime, roomPin, tags);
     }
 
     @Override
@@ -266,6 +291,7 @@ public class SessionResponse {
         sb.append("    sessionId: ").append(toIndentedString(sessionId)).append("\n");
         sb.append("    playTime: ").append(toIndentedString(playTime)).append("\n");
         sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
+        sb.append("    startTime: ").append(toIndentedString(startTime)).append("\n");
         sb.append("    endTime: ").append(toIndentedString(endTime)).append("\n");
         sb.append("    roomPin: ").append(toIndentedString(roomPin)).append("\n");
         sb.append("    tags: ").append(toIndentedString(tags)).append("\n");
