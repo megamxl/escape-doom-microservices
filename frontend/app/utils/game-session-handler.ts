@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {
     getSessionStorageItem,
     removeSessionStorageItem,
@@ -6,16 +5,37 @@ import {
 } from "@/app/utils/session-storage-handler";
 import {session_id_key} from "@/app/utils/Constants.ts";
 
+export type GameSessionData = {
+    sessionID: string,
+    roomPin: string,
+    playerName: string,
+}
 
-export const useSession = () => {
-    const [session, setSession] = useState<string>((): string => {
-        return getSessionStorageItem(session_id_key) || ""
-    })
+export function getSessionData(): GameSessionData | null {
+    const raw = getSessionStorageItem(session_id_key);
+    if (!raw) return null;
 
-    const setGameSession = (newSession: string) => {
-        setSessionStorageItem(session_id_key, newSession, setSession)
+    try {
+         const parse = JSON.parse(raw) as GameSessionData;
+         if (parse.sessionID == "" || parse.playerName == "" || parse.roomPin == "") {
+             console.error('Error parsing sessionStorage JSON some things are empty:');
+             return null;
+         }
+         return parse;
+    } catch (error) {
+        console.error('Error parsing sessionStorage JSON:', error);
+        return null;
     }
-    return [session, setGameSession] as const;
+}
+
+export function setSessionData(value :GameSessionData): Error  | null {
+    try {
+        const serialized = JSON.stringify(value);
+        setSessionStorageItem(session_id_key, serialized);
+        return null;
+    } catch (error) {
+        console.error('Error stringifying sessionStorage JSON:', error);
+        return error instanceof Error ? error : new Error(String(error));    }
 }
 
 export const removeGameSession = () => {

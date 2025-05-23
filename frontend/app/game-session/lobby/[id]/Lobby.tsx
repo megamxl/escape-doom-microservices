@@ -9,9 +9,10 @@ import {LobbyState} from "@/app/types/lobby/LobbyState";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import {initializeStompClient} from "@/app/utils/stompClient.tsx";
 import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
-import {player_name_key, session_id_key} from "@/app/utils/Constants.ts";
+import { session_id_key} from "@/app/utils/Constants.ts";
 import {escapeRoomStateEnum} from "@/app/gen/session";
 import {Client} from '@stomp/stompjs';
+import {getSessionData} from "@/app/utils/game-session-handler.ts";
 
 const Lobby = ({lobbyID}: { lobbyID: number }) => {
     const [lobbyState, setLobbyState] = useState<LobbyState>({
@@ -30,14 +31,16 @@ const Lobby = ({lobbyID}: { lobbyID: number }) => {
         if (stompClient && subscribed) {
             sendMessage();
         }
-        const storedName = getSessionStorageItem(player_name_key);
+        const storedName = getSessionData();
+
         if (storedName === null) {
             console.error("make popup playerName empty")
             return
         }
+
         setLobbyState(prevState => ({
             ...prevState,
-            name: storedName
+            name: storedName.playerName
         }));
         console.debug("storedName: " + storedName);
         console.debug("lobbystate Name: " + lobbyState.name)
