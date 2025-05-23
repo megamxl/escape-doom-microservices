@@ -7,8 +7,6 @@ import {common} from '@mui/material/colors';
 import {redirect, useRouter} from "next/navigation";
 import {GAME_SESSION_APP_PATHS} from "@/app/constants/paths";
 import {EscapeRoomJoin, escapeRoomStateEnum, useHandlePlayerJoinHook} from "@/app/gen/player";
-import {getSessionStorageItem} from "@/app/utils/session-storage-handler.ts";
-import { session_id_key} from "@/app/utils/Constants.ts";
 import {getSessionData, removeGameSession, setSessionData} from "@/app/utils/game-session-handler.ts";
 
 const StudentJoin = () => {
