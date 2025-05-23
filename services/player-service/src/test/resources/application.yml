@@ -7,9 +7,14 @@ spring:
     username: sa
     password: sa
 
-
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: test
+
+
+escapedoom:
+  communication:
+    session-api-url: http://localhost:8081/session-api/v1
+    data-api-url: http://localhost:8081/data-api/v1

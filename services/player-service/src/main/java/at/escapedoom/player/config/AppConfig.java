@@ -50,8 +50,8 @@ public class AppConfig {
 
     @Bean
     public TemplateApi getTemplateApi(@Autowired OkHttpClient client) {
-        return new TemplateApi(new at.escapedoom.spring.communication.data.invoker.ApiClient(client)
-                .setBasePath(dataApiUrl));
+        return new TemplateApi(
+                new at.escapedoom.spring.communication.data.invoker.ApiClient(client).setBasePath(dataApiUrl));
     }
 
     @Bean

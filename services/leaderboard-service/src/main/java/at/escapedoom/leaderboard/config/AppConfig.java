@@ -17,7 +17,7 @@ public class AppConfig {
 
     @Bean
     public SessionApi getSessionApi(@Autowired OkHttpClient client) {
-        return new SessionApi(new at.escapedoom.spring.communication.session.invoker.ApiClient(client)
-                .setBasePath(sessionApiUrl));
+        return new SessionApi(
+                new at.escapedoom.spring.communication.session.invoker.ApiClient(client).setBasePath(sessionApiUrl));
     }
 }

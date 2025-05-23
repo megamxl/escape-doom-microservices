@@ -30,8 +30,7 @@ public class AppConfigMock {
     @Bean
     public at.escapedoom.spring.communication.session.api.SessionApi getSessionApi(@Autowired OkHttpClient client) {
         return new at.escapedoom.spring.communication.session.api.SessionApi(
-                new at.escapedoom.spring.communication.session.invoker.ApiClient(client)
-                        .setBasePath(sessionApiUrl));
+                new at.escapedoom.spring.communication.session.invoker.ApiClient(client).setBasePath(sessionApiUrl));
     }
 
     @Bean
