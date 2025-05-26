@@ -1,0 +1,82 @@
+\hypertarget{section-architecture-constraints}{%
+\section{Architecture
+Constraints}\label{section-architecture-constraints}}
+
+\subsection{Technical Constraints}
+\label{subsection:technical-constraints}
+
+\begin{table}[htbp]
+    \centering
+    \begin{tabularx}{1\textwidth} {
+        | >{\raggedright\arraybackslash}X
+        | >{\raggedleft\arraybackslash}X | }
+        \hline
+        Constraint & Background and/or motivation \\
+        \hline
+        Microservice Architecture & The system must follow a microservice architecture to enable modularity, scalability, and independent deployment of services. \\
+        \hline
+        Frontend Framework & The frontend must use React/Next.js for server-side rendering and better SEO support. \\
+        \hline
+        Implementation in Java & The backend uses Java Spring Boot MVC due to its ecosystem support and developer familiarity. The code is written on based on Java 17 \\
+        \hline
+        Message Queuing & Use of a message broker like RabbitMQ/Kafka for asynchronous communication \\
+        \hline
+        API Communication & RESTful APIs must be the primary communication method between the frontend and backend \\
+        \hline
+        Third-party software freely available & If third-party software is involved (for example, a graphical front end), this should ideally be freely available and free of charge. This way the threshold to use it is kept low \\
+        \hline
+         Deployable to Kubernetes & Since the goal is to build a micro service architecture Kubernetes is the orchestrator choosen to handle the complex deployment of the system. \\
+         \hline
+    \end{tabularx}
+    \caption{Technical Constraints}
+    \label{tab:technical-constraints}
+\end{table}
+
+\subsection{Organizational Constraints}
+\label{subsection:organizational-constraints}
+\begin{table}[h!tbp]
+    \centering
+    \begin{tabularx}{1\textwidth} {
+        | >{\raggedright\arraybackslash}X
+        | >{\raggedleft\arraybackslash}X | }
+        \hline
+         Team & Kambal, Nowak, Perov, Selbach, Winter are tackling the problem with the guidance of Doz. DI DI Mag. Dr. Karl M. Göschka \\
+        \hline
+         Time Table & The planning phase began in November 2024, with the rearchitecture plan scheduled to be completed by the end of January 2025. Following the planning phase, the implementation will take place over the course of the second semester of 2025. The objective is to have a fully functioning system ready before the semester ends, allowing for an acceptance test to be conducted during a lecture. \\
+         \hline
+         Development approach & The team works riskdriven and incremental. The main goal of this approach would be to have an CI/CD deployment cycle in place that each change is deliverable without overhead. \\
+         \hline
+         Development Tools & Version control is handled through git and published to Github. The provided code is tested through the GitHub action capabilities. For IDE'S the jet brains suit is recommended but not mandatory. For development docker is used to mange all systems EscapeDoom is depending on. \\
+         \hline 
+         Open Source license & All source code is published under Apache 2.0 license to enable every university to use this System for their own curriculum. \\
+         \hline
+    \end{tabularx}
+    \caption{Organizational Constraints}
+    \label{tab:organizational-constraints}
+\end{table}
+
+\newpage
+
+\subsection{Conventions}
+\label{subsection:conventions}
+
+\begin{table}[h!tbp]
+    \centering
+    \begin{tabularx}{1\textwidth} {
+        | >{\raggedright\arraybackslash}X
+        | >{\raggedleft\arraybackslash}X | }
+        \hline
+        Convention & Background and/or motivation \\
+        \hline
+        Architecture documentation & Terminology and structure according to the arc42 template. \\
+        \hline
+        Coding guidelines for Java & The system must be refactored according to \href{https://vaadin.com/docs/latest/building-apps/project-structure/multi-module}{Java and Maven multi-module standards}. \\
+        \hline
+        Coding guidelines for Next.js / React & The system must be refactored according to \href{https://github.com/dwarvesf/nextjs-boilerplate/blob/master/docs/CODE_STYLE.md}{Next.js standards}. \\
+        \hline
+        Coding guidelines for Go & The system must be refactored according to \href{https://github.com/golang-standards/project-layout}{Go project layout standard.}. \\
+        \hline
+    \end{tabularx}
+    \caption{Conventions}
+    \label{tab:conventions}
+\end{table}
