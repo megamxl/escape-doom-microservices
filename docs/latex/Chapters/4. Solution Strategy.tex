@@ -4,11 +4,11 @@
 To fulfill the task of providing a microservices system which is also maintainable, the team constructed some guiding principles.
 
 \begin{enumerate}
-    \item All backend services from the escape room domain will be written in Spring Boot. To achieve the quality goal of easy maintainabilty. Because only framework needs to be understood when developing in the system
-    \item Since the focus of our project is to build a micro service system the frontend is a single Next.js application, which serves as our only client for students as well as lectors.
-    \item The system is splintered into microservices by grouping the business needs in scalable units of compute. This was the choice to enjoy the rapid elasticity and scalability of the architecture pattern. 
+    \item All backend services from the escape room domain will be written in Spring Boot. To achieve the quality goal of easy maintainability. Because only framework needs to be understood when developing in the system.
+    \item Since the focus of our project is to build a microservice system the frontend is a single Next.js application, which serves as our only client for students as well as lectors.
+    \item The system is split into microservices by grouping the business needs in scalable units of compute. This was the choice to enjoy the rapid elasticity and scalability of the architecture pattern.
     \item The system itself is being split by business needs, and therefore runtime dependency is a side effect the team is accepting for faster iterations and architecture overhead.
-    \item The cloud technology used to enable microservices development with the largest velocity possible is the spring cloud ecosystem with a strong emphesisi on the Spring cloud Gateway. For efficent  and easy custmizable service routing.
-    \item The deployment is on a Kubernetes cluster and, therefore all systems are built stateless and the state is externalizued in systems like redis and Postgres-sql. 
-    \item The Code Executor is a system developed by us but seen as an external system since it is an already solved sub-domain and also could easily be swapped with a finished project. Instead of the own implementation.
+    \item The cloud technology used to enable microservices development with the largest velocity possible is the spring cloud ecosystem with a strong emphasis on the Spring cloud Gateway. For efficent  and easy custmizable service routing.
+    \item The deployment is on a Kubernetes cluster and, therefore all systems are built stateless and the state is externalized in systems like redis and Postgres-sql.
+    \item The Code Executor is a system developed by us but seen as an external system since it is an already solved sub-domain and also could easily be swapped with a finished project. Instead of the own implementation. To support this flexibility, we have also implemented an interface that allows integration with external APIs capable of compiling and executing code.
 \end{enumerate}
