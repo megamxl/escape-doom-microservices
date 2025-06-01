@@ -30,4 +30,22 @@ class LevelControllerMvcTest extends ControllerTestConfig {
         actions.assertTemplateHasNoLevels(templateId, templateResponse);
     }
 
+    @Test
+    void updateLevel_inFullyBuiltTemplate_success() throws Exception {
+        TestActions actions = new TestActions(mockMvc, objectMapper).withTemplateApiDelegate(templateApiDelegate)
+                .withLevelApiDelegate(levelApiDelegate).withSceneApiDelegate(sceneApiDelegate);
+
+        String templateId = actions.createTemplate();
+
+        String levelId = actions.createLevel(templateId);
+
+        actions.createScene(levelId);
+
+        String updatedName = "Renovated Level";
+        int updatedSequence = 42;
+
+        actions.updateLevel(levelId, updatedName, updatedSequence);
+
+        actions.assertLevelUpdated(levelId, updatedName, updatedSequence);
+    }
 }
