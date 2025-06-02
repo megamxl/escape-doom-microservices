@@ -432,7 +432,93 @@ services:
           communication:
             session-api-url: http://gateway-svc.default.svc.cluster.local:8081/session-api/v1
             data-api-url: http://gateway-svc.default.svc.cluster.local:8081/data-api/v1
-        
+
+  - name: leaderboard-api
+    replicaCount: 1
+
+    image:
+      repository: ghcr.io/megamxl/escape-doom-microservices/leaderboard-service
+      pullPolicy: Always
+      tag: "latest"
+
+    imagePullSecrets: [ ]
+    nameOverride: ""
+    fullnameOverride: ""
+
+    podAnnotations: { }
+    podLabels: { }
+
+    podSecurityContext: { }
+
+    securityContext: { }
+
+    service:
+      type: ClusterIP
+      port: 8092
+
+    ingress:
+      enabled: false
+      className: ""
+      annotations: { }
+      hosts:
+        - host: chart-example.local
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls: [ ]
+
+    resources: { }
+
+    livenessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 100
+      targetCPUUtilizationPercentage: 80
+
+    volumes:
+      - name: config-volume
+        secret:
+          secretName: leaderboard-api-secret
+
+    volumeMounts:
+      - name: config-volume
+        mountPath: /config/application-prod.yaml
+        subPath: application.yaml
+
+    nodeSelector: { }
+
+    tolerations: [ ]
+
+    affinity: { }
+
+    secret:
+      application.yaml: |-
+        spring:
+          datasource:
+            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            username: admin
+            password: admin
+          security:
+            oauth2:
+              resourceserver:
+                jwt:
+                  jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
+        escapedoom:
+          redis:
+            host: esc-redis-master.default.svc.cluster.local
+            port: 6379
+          communication:
+            session-api-url: http://gateway-svc.default.svc.cluster.local:8081/session-api/v1
+            data-api-url: http://gateway-svc.default.svc.cluster.local:8081/data-api/v1
 
   - name: frontend
     replicaCount: 1
