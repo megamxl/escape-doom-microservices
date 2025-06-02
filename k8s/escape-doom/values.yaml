@@ -1,0 +1,498 @@
+postgresql:
+  auth:
+    postgresPassword: "admin"
+    password: "admin"
+    username: "admin"
+    replicationPassword: "admin"
+    database: "main"
+  primary:
+    initdb:
+      scripts:
+        my_init_script.sql: |
+          DO $$
+              BEGIN
+                  CREATE USER dataApi WITH PASSWORD 'escapedoom';
+                  CREATE USER sessionApi WITH PASSWORD 'escapedoom';
+                  CREATE USER leaderboardApi WITH PASSWORD 'escapedoom';
+                  CREATE USER playerApi WITH PASSWORD 'escapedoom';
+              EXCEPTION WHEN duplicate_object THEN RAISE NOTICE '%, skipping', SQLERRM USING ERRCODE = SQLSTATE;
+              END
+          $$;
+  
+          CREATE SCHEMA IF NOT EXISTS data_schema AUTHORIZATION admin;
+          CREATE SCHEMA IF NOT EXISTS session_schema AUTHORIZATION admin;
+          CREATE SCHEMA IF NOT EXISTS leaderboard_schema AUTHORIZATION admin;
+          CREATE SCHEMA IF NOT EXISTS player_schema AUTHORIZATION admin;
+  
+          GRANT ALL PRIVILEGES ON SCHEMA data_schema TO dataApi;
+          GRANT ALL PRIVILEGES ON SCHEMA session_schema TO sessionApi;
+          GRANT ALL PRIVILEGES ON SCHEMA leaderboard_schema TO leaderboardApi;
+          GRANT ALL PRIVILEGES ON SCHEMA player_schema TO playerApi;
+  
+          -- Grant access to admin and api_user
+          GRANT USAGE ON SCHEMA data_schema TO dataApi;
+          GRANT USAGE ON SCHEMA session_schema TO sessionApi;
+          GRANT USAGE ON SCHEMA leaderboard_schema TO leaderboardApi;
+          GRANT USAGE ON SCHEMA player_schema TO playerApi;
+  
+          GRANT CREATE, USAGE ON SCHEMA data_schema TO dataApi;
+          GRANT CREATE, USAGE ON SCHEMA session_schema TO sessionApi;
+          GRANT CREATE, USAGE ON SCHEMA leaderboard_schema TO leaderboardApi;
+          GRANT CREATE, USAGE ON SCHEMA player_schema TO playerApi;
+  
+          -- Grant full privileges on all tables inside the schemas
+          GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA data_schema TO dataApi;
+          GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA session_schema TO sessionApi;
+          GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA leaderboard_schema TO leaderboardApi;
+          GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA player_schema TO playerApi;
+  
+          -- Ensure future tables inherit permissions
+          ALTER DEFAULT PRIVILEGES IN SCHEMA data_schema GRANT ALL ON TABLES TO dataApi;
+          ALTER DEFAULT PRIVILEGES IN SCHEMA session_schema GRANT ALL ON TABLES TO sessionApi;
+          ALTER DEFAULT PRIVILEGES IN SCHEMA leaderboard_schema GRANT ALL ON TABLES TO leaderboardApi;
+          ALTER DEFAULT PRIVILEGES IN SCHEMA player_schema GRANT ALL ON TABLES TO playerApi;
+
+redis:
+  auth:
+    enabled: false
+
+serviceAccount:
+  create: false
+  automount: true
+  annotations: {}
+  name: ""
+
+services:
+  -   name: gateway
+      replicaCount: 1
+
+      image:
+        repository: ghcr.io/megamxl/escape-doom-microservices/gateway-service
+        pullPolicy: Always
+        tag: "latest"
+
+      imagePullSecrets: []
+      nameOverride: ""
+      fullnameOverride: ""
+
+
+      podAnnotations: {}
+      podLabels: {}
+
+      podSecurityContext: {}
+
+      securityContext: {}
+
+      service:
+        type: ClusterIP
+        port: 8081
+
+      ingress:
+        enabled: false
+        className: ""
+        annotations: {}
+        hosts:
+          - host: chart-example.local
+            paths:
+              - path: /
+                pathType: ImplementationSpecific
+        tls: []
+
+      resources: {}
+
+      livenessProbe:
+        httpGet:
+          path: /actuator/health
+          port: http
+      readinessProbe:
+        httpGet:
+          path: /actuator/health
+          port: http
+
+      autoscaling:
+        enabled: false
+        minReplicas: 1
+        maxReplicas: 100
+        targetCPUUtilizationPercentage: 80
+
+      volumes:
+        - name: config-volume
+          secret:
+            secretName: gateway-secret
+
+      volumeMounts:
+        - name: config-volume
+          mountPath: /config/application-prod.yaml
+          subPath: application.yaml
+
+      nodeSelector: {}
+
+      tolerations: []
+
+      affinity: {}
+
+      secret:
+        application.yaml: |-
+          spring:
+            security:
+              oauth2:
+                resourceserver:
+                  jwt:
+                    jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
+                client:
+                  provider:
+                    keycloak:
+                      issuer-uri: https://kc.helmheim.de/realms/escape-doom
+                  registration:
+                    gateway:
+                      provider: keycloak
+                      client-id: gateway
+                      client-secret: 379tziAv7ietfR5jRLxpaV59ijpy4Nmi
+                      authorization-grant-type: authorization_code
+                      scope: openid
+          
+            cloud:
+              gateway:
+                default-filters:
+                  - TokenRelay=
+                routes:
+                  - id: data-api
+                    uri: http://data-api-svc.default.svc.cluster.local:8090
+                    predicates:
+                      - Path=/data-api/**
+                  - id: session-api
+                    uri: http://session-api-svc.default.svc.cluster.local:8094
+                    predicates:
+                      - Path=/session-api/**
+                  - id: player-api
+                    uri: http://player-api-svc.default.svc.cluster.local:8093
+                    predicates:
+                      - Path=/player-api/**
+                  - id: leaderboard-api
+                    uri: http://leaderboard-api-svc.default.svc.cluster.local:8092
+                    predicates:
+                      - Path=/leaderboard-api/**
+                  - id: websocket_route
+                    uri: ws://player-api-svc.default.svc.cluster.local:8093
+                    predicates:
+                      - Path=/player-api/gs-guide-websocket
+                  - id: frontend
+                    uri: http://frontend-svc.default.svc.cluster.local:3000
+                    predicates:
+                      - Path= /frontend/**
+    
+
+  - name: data-api
+    replicaCount: 1
+
+    image:
+      repository: ghcr.io/megamxl/escape-doom-microservices/data-service
+      pullPolicy: Always
+      tag: "latest"
+
+    imagePullSecrets: [ ]
+    nameOverride: ""
+    fullnameOverride: ""
+
+    podAnnotations: { }
+    podLabels: { }
+
+    podSecurityContext: { }
+
+    securityContext: { }
+
+    service:
+      type: ClusterIP
+      port: 8090
+
+    ingress:
+      enabled: false
+      className: ""
+      annotations: { }
+      hosts:
+        - host: chart-example.local
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls: [ ]
+
+    resources: { }
+
+    livenessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 100
+      targetCPUUtilizationPercentage: 80
+
+    volumes:
+      - name: config-volume
+        secret:
+          secretName: data-api-secret
+
+    volumeMounts:
+      - name: config-volume
+        mountPath: /config/application-prod.yaml
+        subPath: application.yaml
+
+    nodeSelector: { }
+
+    tolerations: [ ]
+
+    affinity: { }
+
+    secret:
+      application.yaml: |-
+        spring:
+          datasource:
+            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            username: admin
+            password: admin
+          security:
+            oauth2:
+              resourceserver:
+                jwt:
+                  jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
+
+  - name: session-api
+    replicaCount: 1
+
+    image:
+      repository: ghcr.io/megamxl/escape-doom-microservices/session-service
+      pullPolicy: Always
+      tag: "latest"
+
+    imagePullSecrets: [ ]
+    nameOverride: ""
+    fullnameOverride: ""
+
+    podAnnotations: { }
+    podLabels: { }
+
+    podSecurityContext: { }
+
+    securityContext: { }
+
+    service:
+      type: ClusterIP
+      port: 8094
+
+    ingress:
+      enabled: false
+      className: ""
+      annotations: { }
+      hosts:
+        - host: chart-example.local
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls: [ ]
+
+    resources: { }
+
+    livenessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 100
+      targetCPUUtilizationPercentage: 80
+
+    volumes:
+      - name: config-volume
+        secret:
+          secretName: session-api-secret
+
+    volumeMounts:
+      - name: config-volume
+        mountPath: /config/application-prod.yaml
+        subPath: application.yaml
+
+    nodeSelector: { }
+
+    tolerations: [ ]
+
+    affinity: { }
+
+    secret:
+      application.yaml: |-
+        spring:
+          datasource:
+            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            username: admin
+            password: admin
+          security:
+            oauth2:
+              resourceserver:
+                jwt:
+                  jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
+        escapedoom:
+          redis:
+            host: esc-redis-master.default.svc.cluster.local
+            port: 6379
+
+  - name: player-api
+    replicaCount: 1
+
+    image:
+      repository: ghcr.io/megamxl/escape-doom-microservices/player-service
+      pullPolicy: Always
+      tag: "latest"
+
+    imagePullSecrets: [ ]
+    nameOverride: ""
+    fullnameOverride: ""
+
+    podAnnotations: { }
+    podLabels: { }
+
+    podSecurityContext: { }
+
+    securityContext: { }
+
+    service:
+      type: ClusterIP
+      port: 8093
+
+    ingress:
+      enabled: false
+      className: ""
+      annotations: { }
+      hosts:
+        - host: chart-example.local
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls: [ ]
+
+    resources: { }
+
+    livenessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /actuator/health
+        port: http
+
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 100
+      targetCPUUtilizationPercentage: 80
+
+    volumes:
+      - name: config-volume
+        secret:
+          secretName: session-api-secret
+
+    volumeMounts:
+      - name: config-volume
+        mountPath: /config/application-prod.yaml
+        subPath: application.yaml
+
+    nodeSelector: { }
+
+    tolerations: [ ]
+
+    affinity: { }
+
+    secret:
+      application.yaml: |-
+        spring:
+          datasource:
+            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            username: admin
+            password: admin
+          security:
+            oauth2:
+              resourceserver:
+                jwt:
+                  jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
+        escapedoom:
+          redis:
+            host: esc-redis-master.default.svc.cluster.local
+            port: 6379
+          communication:
+            session-api-url: http://gateway-svc.default.svc.cluster.local/session-api/v1
+            data-api-url: http://gateway-svc.default.svc.cluster.local/data-api/v1
+  - name: frontend
+    replicaCount: 1
+
+    image:
+      repository: ghcr.io/megamxl/escape-doom-microservices/DEV-frontend
+      pullPolicy: Always
+      tag: "latest"
+
+    imagePullSecrets: [ ]
+    nameOverride: ""
+    fullnameOverride: ""
+
+    podAnnotations: { }
+    podLabels: { }
+
+    podSecurityContext: { }
+
+    securityContext: { }
+
+    service:
+      type: ClusterIP
+      port: 3000
+
+    ingress:
+      enabled: false
+      className: ""
+      annotations: { }
+      hosts:
+        - host: chart-example.local
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls: [ ]
+
+    resources: { }
+
+    livenessProbe:
+      httpGet:
+        path: /
+        port: http
+    readinessProbe:
+      httpGet:
+        path: /
+        port: http
+
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 100
+      targetCPUUtilizationPercentage: 80
+
+    volumes: []
+
+    volumeMounts: []
+
+    nodeSelector: { }
+
+    tolerations: [ ]
+
+    affinity: { }
+
+    secret:
+      application.yaml: |-
+        empty
