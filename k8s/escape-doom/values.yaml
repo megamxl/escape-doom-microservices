@@ -18,34 +18,34 @@ postgresql:
               EXCEPTION WHEN duplicate_object THEN RAISE NOTICE '%, skipping', SQLERRM USING ERRCODE = SQLSTATE;
               END
           $$;
-  
+          
           CREATE SCHEMA IF NOT EXISTS data_schema AUTHORIZATION admin;
           CREATE SCHEMA IF NOT EXISTS session_schema AUTHORIZATION admin;
           CREATE SCHEMA IF NOT EXISTS leaderboard_schema AUTHORIZATION admin;
           CREATE SCHEMA IF NOT EXISTS player_schema AUTHORIZATION admin;
-  
+          
           GRANT ALL PRIVILEGES ON SCHEMA data_schema TO dataApi;
           GRANT ALL PRIVILEGES ON SCHEMA session_schema TO sessionApi;
           GRANT ALL PRIVILEGES ON SCHEMA leaderboard_schema TO leaderboardApi;
           GRANT ALL PRIVILEGES ON SCHEMA player_schema TO playerApi;
-  
+          
           -- Grant access to admin and api_user
           GRANT USAGE ON SCHEMA data_schema TO dataApi;
           GRANT USAGE ON SCHEMA session_schema TO sessionApi;
           GRANT USAGE ON SCHEMA leaderboard_schema TO leaderboardApi;
           GRANT USAGE ON SCHEMA player_schema TO playerApi;
-  
+          
           GRANT CREATE, USAGE ON SCHEMA data_schema TO dataApi;
           GRANT CREATE, USAGE ON SCHEMA session_schema TO sessionApi;
           GRANT CREATE, USAGE ON SCHEMA leaderboard_schema TO leaderboardApi;
           GRANT CREATE, USAGE ON SCHEMA player_schema TO playerApi;
-  
+          
           -- Grant full privileges on all tables inside the schemas
           GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA data_schema TO dataApi;
           GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA session_schema TO sessionApi;
           GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA leaderboard_schema TO leaderboardApi;
           GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA player_schema TO playerApi;
-  
+          
           -- Ensure future tables inherit permissions
           ALTER DEFAULT PRIVILEGES IN SCHEMA data_schema GRANT ALL ON TABLES TO dataApi;
           ALTER DEFAULT PRIVILEGES IN SCHEMA session_schema GRANT ALL ON TABLES TO sessionApi;
@@ -180,7 +180,7 @@ services:
                     uri: http://frontend-svc.default.svc.cluster.local:3000
                     predicates:
                       - Path= /frontend/**
-    
+
 
   - name: data-api
     replicaCount: 1
@@ -400,7 +400,7 @@ services:
     volumes:
       - name: config-volume
         secret:
-          secretName: session-api-secret
+          secretName: player-api-secret
 
     volumeMounts:
       - name: config-volume
@@ -430,13 +430,15 @@ services:
             host: esc-redis-master.default.svc.cluster.local
             port: 6379
           communication:
-            session-api-url: http://gateway-svc.default.svc.cluster.local/session-api/v1
-            data-api-url: http://gateway-svc.default.svc.cluster.local/data-api/v1
+            session-api-url: http://gateway-svc.default.svc.cluster.local:8081/session-api/v1
+            data-api-url: http://gateway-svc.default.svc.cluster.local:8081/data-api/v1
+        
+
   - name: frontend
     replicaCount: 1
 
     image:
-      repository: ghcr.io/megamxl/escape-doom-microservices/DEV-frontend
+      repository: ghcr.io/megamxl/escape-doom-microservices/dev-frontend
       pullPolicy: Always
       tag: "latest"
 
