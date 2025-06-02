@@ -41,3 +41,11 @@ jobs:
           IMAGE_NAME=ghcr.io/megamxl/escape-doom-microservices/frontend:latest
               docker build -t $IMAGE_NAME .
               docker push $IMAGE_NAME
+
+      - name: Build and push Dev-Docker image
+        working-directory: ./frontend
+        run: |
+          IMAGE_NAME=ghcr.io/megamxl/escape-doom-microservices/DEV-frontend:latest
+              docker build -f Dockerfile-dev -t $IMAGE_NAME .
+              docker push $IMAGE_NAME
+      
