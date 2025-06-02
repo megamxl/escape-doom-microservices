@@ -33,7 +33,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
       - name: kubb it
         working-directory: ./frontend
         run: npm run gen && npm run format
