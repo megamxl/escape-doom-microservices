@@ -17,6 +17,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
@@ -63,8 +64,9 @@ class LevelServiceTest extends PostgresTestConfig {
                 .userId(UUID.randomUUID()).build();
         template = templateRepository.saveAndFlush(template);
 
-        Level level = Level.builder().name("Test Level").levelSequence(1).scenes(List.of())
+        Level level = Level.builder().name("Test Level").levelSequence(1).scenes(new ArrayList<>())
                 .templateId(template.getTemplateId()).build();
+
         level = levelRepository.saveAndFlush(level);
 
         Riddle riddle = Riddle.builder().input("1,2").expectedOutput("3")
@@ -132,7 +134,7 @@ class LevelServiceTest extends PostgresTestConfig {
         final int newSequence = 2;
 
         LevelDTO levelRequest = LevelDTO.builder().levelId(level.getLevelId()).levelSequence(newSequence)
-                .scenes(level.getScenes()).riddle(level.getRiddle()).name("Classroom").build();
+                .scenes(new ArrayList<>(level.getScenes())).riddle(level.getRiddle()).name("Classroom").build();
 
         LevelDTO updatedLevel = service.updateLevel(level.getLevelId(), levelRequest);
 

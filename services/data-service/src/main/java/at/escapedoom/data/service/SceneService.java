@@ -3,7 +3,9 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.SceneRepository;
 import at.escapedoom.data.data.entity.Level;
+import at.escapedoom.data.data.entity.Node;
 import at.escapedoom.data.data.entity.Scene;
+import at.escapedoom.data.mapper.NodeMapper;
 import at.escapedoom.data.mapper.SceneMapper;
 import at.escapedoom.data.rest.model.DeleteLevelResponseDTO;
 import at.escapedoom.data.rest.model.SceneDTO;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -24,6 +27,7 @@ public class SceneService {
     private final SceneRepository sceneRepository;
     private final SceneMapper sceneMapper;
     private final LevelRepository levelRepository;
+    private final NodeMapper nodeMapper;
 
     public List<SceneDTO> getAllScenes() {
         log.info("Getting all scenes");
@@ -109,18 +113,10 @@ public class SceneService {
         assert id != null : "Scene id is null";
 
         UUID sceneId = UUID.fromString(id);
-        Optional<Scene> optionalScene = sceneRepository.findById(sceneId);
+        Scene scene = sceneRepository.findById(sceneId)
+                .orElseThrow(() -> new NoSuchElementException("Scene with ID " + id + " not found"));
 
-        if (optionalScene.isEmpty()) {
-            log.warn("Scene with ID {} not found. Skipping delete.", id);
-            return new DeleteLevelResponseDTO("Scene not found. Nothing to delete.");
-        }
-
-        Scene scene = optionalScene.get();
-
-        Level parentLevel = levelRepository.findAll().stream().filter(level -> level.getScenes().contains(scene))
-                .findFirst().orElse(null);
-
+        Level parentLevel = scene.getLevel();
         if (parentLevel != null) {
             parentLevel.getScenes().remove(scene);
             levelRepository.saveAndFlush(parentLevel);
