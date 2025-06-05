@@ -15,7 +15,7 @@ const Droppable = ({children}: DroppableProps) => {
     }
 
     return (
-        <div className="w-[100vw] h-[100vh] border-2 border-dashed" ref={setNodeRef} style={style}>
+        <div className="w-full h-full border-2 border-dashed" ref={setNodeRef} style={style}>
             {children}
         </div>
     );

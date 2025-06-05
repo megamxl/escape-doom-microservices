@@ -2,19 +2,20 @@
 
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDroppable} from "@dnd-kit/core";
-import {SceneDTO} from '@/app/gen/player';
-import EditorNode from './EditorNode';
+import {NodeDTO, SceneDTO} from '@/app/gen/player';
 import {FileUpload} from "@mui/icons-material";
 import {Button, Typography} from "@mui/material";
 import HiddenFileUpload from "@/app/lector-portal/er-editor/[templateId]/_components/HiddenFileUpload.tsx";
 import {useUploadImageToImgur} from "@/app/tanstack/imgurAxiosClient.ts";
 import {useUpdateSceneHook} from "@/app/gen/data";
+import NodeDraggable from "@/app/lector-portal/er-editor/[templateId]/_components/NodeDraggable.tsx";
 
 type DroppableProps = {
     selectedScene: SceneDTO
+    elements: NodeDTO[]
 }
 
-const DnDDroppable = ({selectedScene}: DroppableProps) => {
+const DnDDroppable = ({selectedScene, elements}: DroppableProps) => {
     const {isOver, setNodeRef} = useDroppable({
         id: 'droppable'
     })
@@ -65,16 +66,23 @@ const DnDDroppable = ({selectedScene}: DroppableProps) => {
     return (
         <div className="h-full w-full">
             {selectedScene.background_image_uri ?
-                <div className="relative">
+                <div className="relative w-full mx-auto">
                     <img
+                        id="sceneImageContainer"
                         ref={setNodeRef}
                         src={selectedScene.background_image_uri}
                         alt="Scene Background"
                         className={`${style} w-full bg-no-repeat bg-contain z-0`}>
                     </img>
-                    {selectedScene.nodes?.map(node => {
+                    {elements.map((node) => {
                         return (
-                            <EditorNode key={node.node_id} node={node}/>
+                            <NodeDraggable style={{
+                                position: "absolute",
+                                top: `${node.position?.top_percentage}%`,
+                                left: `${node.position?.left_percentage}%`
+                            }}
+                               key={node.node_id}
+                               node={node} />
                         )
                     })}
                 </div> :

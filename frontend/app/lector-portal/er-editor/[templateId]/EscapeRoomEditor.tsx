@@ -9,10 +9,11 @@ import {grey} from "@mui/material/colors";
 import {useRouter} from "next/navigation";
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import SaveIcon from '@mui/icons-material/Save';
-import DnDNode from "@/app/lector-portal/er-editor/[templateId]/_components/DnDNode.tsx";
-import {DndContext, DragEndEvent} from "@dnd-kit/core";
+import NodeDraggable from "@/app/lector-portal/er-editor/[templateId]/_components/NodeDraggable.tsx";
+import {DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
 import DnDDroppable from "@/app/lector-portal/er-editor/[templateId]/_components/DnDDroppable.tsx";
-import {LevelDTO, SceneDTO} from "@/app/gen/player";
+import {LevelDTO, NodeDTO, NodeTypeEnum, nodeTypeEnum, SceneDTO} from "@/app/gen/player";
+import {nanoid} from "nanoid";
 
 type EditorProps = {
     templateId: string
@@ -26,7 +27,14 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     const {mutate: createLevel} = useCreateLevelHook()
 
     const [template, setTemplate] = useState<TemplateDTO>()
-    const [selectedScene, setSelectedScene] = useState<SceneDTO>()
+    const [selectedScene, setSelectedScene] = useState<SceneDTO | undefined>()
+
+    const [elements, setElements] = useState<NodeDTO[]>([])
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {distance: 5}
+        })
+    )
 
     useEffect(() => {
         if (!data || !data.levels) return;
@@ -106,6 +114,18 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
 
     const handleDragEnd = (event: DragEndEvent) => {
         console.log('Event:', event)
+
+        // event.
+        if (event.over) {
+            // @ts-expect-error Since DnD Data is not typed this will throw an error as it doesn't know data.node exists
+            const droppedNode = event.active.data.current.node as NodeDTO
+            droppedNode.position = {
+                top_percentage: 50.5,
+                left_percentage: 50.5
+            }
+            setElements(prev => [...prev, droppedNode]);
+        }
+
     }
 
     if (isLoading || !template) return <Skeleton variant="rectangular" width="100%" height="100vh"/>;
@@ -169,20 +189,31 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                     </Stack>
                 </Grid>
                 <Grid size='grow' style={{backgroundColor: '#1e1e1e'}} className="p-4 relative h-full">
-                    <DndContext autoScroll={false} onDragEnd={handleDragEnd}>
-                        <div id="NodesContainer"
-                             className="p-2 rounded-lg z-10 bg-[#2e2e2e] flex justify-center gap-4 absolute bottom-4 left-[50%] translate-x-[-50%]">
-                            <DnDNode nodeType={"ZOOM"}/>
-                            <DnDNode nodeType={"DETAIL"}/>
-                            <DnDNode nodeType={"CONSOLE"}/>
-                            <DnDNode nodeType={"STORY"}/>
+                    <DndContext autoScroll={false} onDragEnd={handleDragEnd} sensors={sensors}>
+                        {selectedScene && <DnDDroppable
+                            key={selectedScene.scene_id}
+                            selectedScene={selectedScene}
+                            elements={elements}>
+                        </DnDDroppable>
+                        }
+                        <div
+                            className="p-2 rounded-lg z-10 bg-[#2e2e2e] flex justify-center gap-4 absolute bottom-4 left-[50%] translate-x-[-50%]">
+                            {Object.keys(nodeTypeEnum).map(type => {
+                                const key = nanoid(11)
+                                return (
+                                    <NodeDraggable key={key} node={{
+                                        node_id: key,
+                                        node_specifics: {node_type: type as NodeTypeEnum}
+                                    }}/>
+                                )
+                            })}
                         </div>
-                        {selectedScene && <DnDDroppable key={selectedScene.scene_id} selectedScene={selectedScene} />}
                     </DndContext>
                 </Grid>
             </Grid>
         </>
-    );
+    )
+        ;
 };
 
 export default EscapeRoomEditor;
