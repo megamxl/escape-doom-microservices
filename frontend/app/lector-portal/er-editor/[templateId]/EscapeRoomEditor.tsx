@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import {TemplateDTO, useCreateLevelHook, useGetTemplateHook, useUpdateTemplateHook} from "@/app/gen/data";
@@ -29,7 +29,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     const [template, setTemplate] = useState<TemplateDTO>()
     const [selectedScene, setSelectedScene] = useState<SceneDTO | undefined>()
 
-    const [elements, setElements] = useState<NodeDTO[]>([])
+    const [sceneNodes, setSceneNodes] = useState<NodeDTO[]>([])
     const sensors = useSensors(
         useSensor(PointerSensor, {
             activationConstraint: {distance: 5}
@@ -43,7 +43,9 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         const firstLevel = data.levels.find(level => level.level_sequence === 1)
         if (!firstLevel || !firstLevel.scenes) return;
 
-        setSelectedScene(firstLevel.scenes.find(scene => scene.scene_sequence === 1))
+        const firstScene = firstLevel.scenes.find(scene => scene.scene_sequence === 1)
+        setSelectedScene(firstScene)
+        setSceneNodes(firstScene?.nodes ?? [])
     }, [data]);
 
     useEffect(() => {
@@ -77,6 +79,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
 
         const newScene = selectedLevel.scenes.find(s => s.scene_id === sceneId)
         setSelectedScene(newScene)
+        setSceneNodes(newScene?.nodes ?? [])
     }
 
     const handleLevelDeletion = (levelId: string) => {
@@ -113,26 +116,51 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     }
 
     const handleDragEnd = (event: DragEndEvent) => {
-        console.log('Event:', event)
+        console.log('DragEndEvent:', event)
         if (event.over) {
-            // @ts-expect-error Since DnD Data is not typed this will throw an error as it doesn't know data.node exists
-            const node = event.active.data.current.node as NodeDTO
+            const node = event.active.data.current?.node as NodeDTO
 
-            const element = document.getElementById('sceneImageContainer');
-            if (!element) return;
-
-            const rect = element.getBoundingClientRect();
-            console.log("Rect:", rect);
-            const e = event.activatorEvent
-
-            console.log(e.clientY / rect.height * 100)
-            console.log(e.clientX / rect.width * 100)
-
-            node.position = {
-                top_percentage: e.clientY / rect.height * 100,
-                left_percentage: e.clientX / rect.width * 100
+            //Get droppable container (image) element
+            const droppableElement = document.getElementById('sceneImageContainer');
+            if (!droppableElement) {
+                console.error('Scene image container not found!')
+                return
             }
-            setElements(prev => [...prev, node]);
+            const rect = droppableElement.getBoundingClientRect();
+
+            // Final drop position for event
+            const dropX = event.delta.x + (event.activatorEvent as PointerEvent).clientX
+            const dropY = event.delta.y + (event.activatorEvent as PointerEvent).clientY
+
+            // Calc relative position within droppable
+            const relativeX = dropX - rect.left
+            const relativeY = dropY - rect.top
+
+            //Percentages
+            const leftPercentage = Math.max(0, Math.min(100, (relativeX / rect.width) * 100))
+            const topPercentage = Math.max(0, Math.min(100, (relativeY / rect.height) * 100))
+
+            const existingNodeIndex = sceneNodes.findIndex(n => n.node_id === node.node_id)
+            if (existingNodeIndex >= 0) {
+                const updatedNodes = [...sceneNodes]
+                updatedNodes[existingNodeIndex] = {
+                    ...updatedNodes[existingNodeIndex],
+                    position: {
+                        top_percentage: topPercentage,
+                        left_percentage: leftPercentage
+                    }
+                }
+                setSceneNodes(updatedNodes)
+            } else {
+                const newNode: NodeDTO = {
+                    ...node,
+                    position: {
+                        top_percentage: topPercentage,
+                        left_percentage: leftPercentage
+                    }
+                }
+                setSceneNodes(prev => [...prev, newNode])
+            }
         }
     }
 
@@ -197,11 +225,15 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                     </Stack>
                 </Grid>
                 <Grid size='grow' style={{backgroundColor: '#1e1e1e'}} className="p-4 relative h-full">
-                    <DndContext autoScroll={false} onDragEnd={handleDragEnd} sensors={sensors}>
+                    <DndContext
+                        autoScroll={false}
+                        onDragEnd={handleDragEnd}
+                        sensors={sensors}
+                    >
                         {selectedScene && <DnDDroppable
                             key={selectedScene.scene_id}
                             selectedScene={selectedScene}
-                            elements={elements}>
+                            elements={sceneNodes}>
                         </DnDDroppable>
                         }
                         <div

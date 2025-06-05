@@ -20,6 +20,7 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
         listeners,
         setNodeRef,
         transform,
+        isDragging
     } = useDraggable({
         id: node.node_id!,
         data: {
@@ -31,10 +32,14 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
     if (!node || !node.node_specifics) return null
 
     const {icon: Icon, styling} = nodeTypeClassMapper[node.node_specifics.node_type!]
-    const dragStyle: CSSProperties | undefined = {
+    const dragStyle: CSSProperties = {
         position: "relative",
         transform: CSS.Translate.toString(transform),
         backgroundColor: styling.color,
+        opacity: isDragging ? 0.5 : 1,
+        cursor: isDragging ? 'grabbing' : 'grab',
+        zIndex: isDragging ? 1000 : 'auto',
+        ...style
     }
 
     return (
@@ -42,10 +47,12 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
             <IconButton
                 ref={setNodeRef}
                 className={className}
-                style={{...dragStyle, ...style}}
+                style={dragStyle}
                 {...listeners}
                 {...attributes}
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                    if (!isDragging) setIsOpen(true)
+                }}
             >
                 <Icon fontSize={"small"}/>
             </IconButton>

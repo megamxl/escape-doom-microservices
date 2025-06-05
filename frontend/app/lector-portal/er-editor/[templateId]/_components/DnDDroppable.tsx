@@ -1,6 +1,6 @@
 'use client'
 
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, CSSProperties, HTMLProps, useEffect, useState} from 'react';
 import {useDroppable} from "@dnd-kit/core";
 import {NodeDTO, SceneDTO} from '@/app/gen/player';
 import {FileUpload} from "@mui/icons-material";
@@ -61,7 +61,7 @@ const DnDDroppable = ({selectedScene, elements}: DroppableProps) => {
         }
     }
 
-    const style = isOver ? 'border-2 border-dashed rounded-md' : ""
+    const style = isOver ? 'border-2 border-dashed border-blue-500 rounded-md' : ""
 
     return (
         <div className="h-full w-full">
@@ -79,7 +79,8 @@ const DnDDroppable = ({selectedScene, elements}: DroppableProps) => {
                             <NodeDraggable style={{
                                 position: "absolute",
                                 top: `${node.position?.top_percentage}%`,
-                                left: `${node.position?.left_percentage}%`
+                                left: `${node.position?.left_percentage}%`,
+                                transform: 'translate(-50%, -50%)'
                             }}
                                key={node.node_id}
                                node={node} />
