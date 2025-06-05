@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Button, Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import {TemplateDTO, useCreateLevelHook, useGetTemplateHook, useUpdateTemplateHook} from "@/app/gen/data";
@@ -114,18 +114,26 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
 
     const handleDragEnd = (event: DragEndEvent) => {
         console.log('Event:', event)
-
-        // event.
         if (event.over) {
             // @ts-expect-error Since DnD Data is not typed this will throw an error as it doesn't know data.node exists
-            const droppedNode = event.active.data.current.node as NodeDTO
-            droppedNode.position = {
-                top_percentage: 50.5,
-                left_percentage: 50.5
-            }
-            setElements(prev => [...prev, droppedNode]);
-        }
+            const node = event.active.data.current.node as NodeDTO
 
+            const element = document.getElementById('sceneImageContainer');
+            if (!element) return;
+
+            const rect = element.getBoundingClientRect();
+            console.log("Rect:", rect);
+            const e = event.activatorEvent
+
+            console.log(e.clientY / rect.height * 100)
+            console.log(e.clientX / rect.width * 100)
+
+            node.position = {
+                top_percentage: e.clientY / rect.height * 100,
+                left_percentage: e.clientX / rect.width * 100
+            }
+            setElements(prev => [...prev, node]);
+        }
     }
 
     if (isLoading || !template) return <Skeleton variant="rectangular" width="100%" height="100vh"/>;
