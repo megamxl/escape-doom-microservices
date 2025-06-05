@@ -109,8 +109,12 @@ public class TestActions {
     }
 
     public void assertLevelHasNoRiddle(String levelId) throws Exception {
+        // LevelDTO levelWithoutRiddle =
+        // LevelDTO.builder().levelId(levelId).name("Classroom").templateId("some-template")
+        // .levelSequence(1).riddle(null).build();
+
         LevelDTO levelWithoutRiddle = LevelDTO.builder().levelId(levelId).name("Classroom").templateId("some-template")
-                .levelSequence(1).riddle(null).build();
+                .levelSequence(1).build();
 
         when(levelApiDelegate.getLevel(levelId)).thenReturn(ResponseEntity.ok(levelWithoutRiddle));
 

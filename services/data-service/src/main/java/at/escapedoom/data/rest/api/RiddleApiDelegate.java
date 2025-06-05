@@ -3,7 +3,6 @@ package at.escapedoom.data.rest.api;
 import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
-import at.escapedoom.data.rest.model.Riddle;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
@@ -46,42 +45,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"message\" : \"Invalid data provided\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"message\" : \"An unexpected error occurred on the server\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-    /**
-     * POST /riddles/v2 : Create a new riddle Create a riddle without linking it to a specific level
-     *
-     * @param riddle
-     *            The details of the riddle to create (required)
-     *
-     * @return Riddle created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
-     *         (status code 500)
-     *
-     * @see RiddleApi#createRiddleV2
-     */
-    default ResponseEntity<Riddle> createRiddleV2(Riddle riddle) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"code\" : \"code\", \"testCases\" : [ { \"input\" : \"input\", \"expectedOutput\" : \"expectedOutput\" }, { \"input\" : \"input\", \"expectedOutput\" : \"expectedOutput\" } ], \"language\" : \"python\", \"type\" : \"type\" }";
+                    String exampleString = "{ \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"riddle\" : { \"code\" : { \"key\" : \"code\" }, \"testCases\" : [ { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } }, { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } } ], \"type\" : \"type\" } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -147,7 +111,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }, { \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" } ]";
+                    String exampleString = "[ { \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"riddle\" : { \"code\" : { \"key\" : \"code\" }, \"testCases\" : [ { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } }, { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } } ], \"type\" : \"type\" } }, { \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"riddle\" : { \"code\" : { \"key\" : \"code\" }, \"testCases\" : [ { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } }, { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } } ], \"type\" : \"type\" } } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -176,7 +140,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
+                    String exampleString = "{ \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"riddle\" : { \"code\" : { \"key\" : \"code\" }, \"testCases\" : [ { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } }, { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } } ], \"type\" : \"type\" } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -208,7 +172,7 @@ public interface RiddleApiDelegate {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType : MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"function_signature\" : \"public static int sum(int a, int b)\", \"input\" : \"2, 3\", \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"expected_output\" : \"42\", \"language\" : \"JAVA\", \"variable_name\" : \"result\" }";
+                    String exampleString = "{ \"riddle_id\" : \"5830daed-cb7f-47dd-8248-5dee9bf0aa3d\", \"level_id\" : \"a12b34c5-6789-4def-abcd-12345678abcd\", \"riddle\" : { \"code\" : { \"key\" : \"code\" }, \"testCases\" : [ { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } }, { \"input\" : { \"key\" : \"input\" }, \"expectedOutput\" : { \"key\" : \"expectedOutput\" } } ], \"type\" : \"type\" } }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

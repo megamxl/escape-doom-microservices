@@ -3,11 +3,11 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.entity.Level;
-import at.escapedoom.data.data.entity.Riddle;
+import at.escapedoom.data.data.entity.riddle.CodingRiddleEntity;
+import at.escapedoom.data.data.entity.riddle.Riddle;
+import at.escapedoom.data.data.entity.riddle.TestCaseEntity;
 import at.escapedoom.data.mapper.RiddleMapper;
-import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
-import at.escapedoom.data.rest.model.RiddleDTO;
-import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
+import at.escapedoom.data.rest.model.*;
 import at.escapedoom.data.utils.LoggerUtils;
 import at.escapedoom.data.utils.ReflectionUtils;
 import lombok.NonNull;
@@ -16,9 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.UUID;
+import java.util.*;
 
 import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 
@@ -28,11 +26,10 @@ import static at.escapedoom.data.utils.LoggerUtils.logCreation;
 public class RiddleService {
 
     private final RiddleRepository riddleRepository;
-    private final RiddleMapper riddleMapper;
     private final LevelRepository levelRepository;
 
     public List<RiddleDTO> getAllRiddles() {
-        return riddleRepository.findAll().stream().map(riddleMapper::toDTO).toList();
+        return riddleRepository.findAll().stream().map(RiddleMapper::toDTO).toList();
     }
 
     public RiddleDTO getRiddleById(@NonNull String uuid) {
@@ -41,34 +38,49 @@ public class RiddleService {
 
         log.info("Riddle {} found", riddle.getRiddleId());
 
-        return riddleMapper.toDTO(riddle);
+        return RiddleMapper.toDTO(riddle);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public RiddleDTO createRiddle(RiddleCreationRequestDTO riddleRequest) {
+
+        Riddle ret;
+
         assert riddleRequest != null : "Creation request cannot be null";
-        assert riddleRequest.getLevelId() != null : "Level id cannot be null";
+        assert riddleRequest.getRiddle() != null : "Creation request cannot be null";
 
-        UUID levelUuid = UUID.fromString(riddleRequest.getLevelId());
+        switch (riddleRequest.getRiddle().getType()) {
+        case "CODING" -> {
+            ret = createCodingRiddle(riddleRequest);
+        }
+        default -> throw new IllegalStateException("Unexpected value: " + riddleRequest.getClass());
+        }
 
-        Level level = levelRepository.findById(levelUuid)
-                .orElseThrow(() -> new IllegalArgumentException("Level not found"));
+        return RiddleMapper.toDTO(ret);
+    }
+
+    private Riddle createCodingRiddle(RiddleCreationRequestDTO riddleRequest) {
+
+        Level level = fetchLevel(riddleRequest.getLevelId());
 
         if (level.getRiddle() != null) {
             throw new IllegalArgumentException(String.format("Riddle already exists on level %s", level.getLevelId()));
         }
 
-        Riddle riddle = riddleMapper.toEntity(riddleRequest);
+        Riddle codingRiddleEntity = RiddleMapper.toEntity(riddleRequest);
 
-        riddle.setLevel(level);
+        codingRiddleEntity.setLevelId(level.getLevelId());
 
-        riddle = riddleRepository.saveAndFlush(riddle);
+        codingRiddleEntity = riddleRepository.saveAndFlush(codingRiddleEntity);
+        riddleLog(LoggerUtils.LogType.CREATION, codingRiddleEntity.getRiddleId());
 
-        level.setRiddle(riddle);
-        levelRepository.saveAndFlush(level);
+        return codingRiddleEntity;
+    }
 
-        riddleLog(LoggerUtils.LogType.CREATION, riddle.getRiddleId());
-        return riddleMapper.toDTO(riddle);
+    private Level fetchLevel(String levelId) {
+        UUID levelUuid = UUID.fromString(levelId);
+
+        return levelRepository.findById(levelUuid).orElseThrow(() -> new IllegalArgumentException("Level not found"));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -84,7 +96,8 @@ public class RiddleService {
 
         riddleLog(LoggerUtils.LogType.UPDATE, riddle.getRiddleId());
 
-        return riddleMapper.toDTO(riddle);
+        return RiddleMapper.toDTO(riddle);
+
     }
 
     public RiddleDeletionResponseDTO deleteRiddle(String uuid) {

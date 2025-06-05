@@ -3,7 +3,6 @@ package at.escapedoom.data.rest.api;
 import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
-import at.escapedoom.data.rest.model.Riddle;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;

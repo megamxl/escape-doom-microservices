@@ -1,5 +1,6 @@
 package at.escapedoom.data.data.entity;
 
+import at.escapedoom.data.data.entity.riddle.Riddle;
 import jakarta.persistence.*;
 import lombok.*;
 

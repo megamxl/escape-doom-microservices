@@ -23,7 +23,9 @@ public enum CodingLanguage {
 
     JAVA("JAVA"),
 
-    TYPESCRIPT("TYPESCRIPT");
+    TYPESCRIPT("TYPESCRIPT"),
+
+    PYTHON("PYTHON");
 
     private String value;
 

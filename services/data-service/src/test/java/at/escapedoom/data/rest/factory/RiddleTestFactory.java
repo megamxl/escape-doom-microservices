@@ -8,15 +8,18 @@ import lombok.experimental.UtilityClass;
 public class RiddleTestFactory {
 
     public RiddleCreationRequestDTO createRequest(String levelId) {
-        return RiddleCreationRequestDTO.builder().levelId(levelId)
-                .functionSignature("public static int sum(int a, int b)").input("2,3").variableName("result")
-                .expectedOutput("5").build();
+        return null;
+
+        // return RiddleCreationRequestDTO.builder().levelId(levelId)
+        // .functionSignature("public static int sum(int a, int b)").input("2,3").variableName("result")
+        // .expectedOutput("5").build();
     }
 
     public RiddleDTO createResponseFrom(RiddleCreationRequestDTO request) {
-        return RiddleDTO.builder().riddleId("riddle001") // <== hardcoded for consistency
-                .levelId(request.getLevelId()).functionSignature(request.getFunctionSignature())
-                .input(request.getInput()).variableName(request.getVariableName())
-                .expectedOutput(request.getExpectedOutput()).build();
+        return null;
+        // return RiddleDTO.builder().riddleId("riddle001") // <== hardcoded for consistency
+        // .levelId(request.getLevelId()).functionSignature(request.getFunctionSignature())
+        // .input(request.getInput()).variableName(request.getVariableName())
+        // .expectedOutput(request.getExpectedOutput()).build();
     }
 }

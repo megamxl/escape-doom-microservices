@@ -1,6 +1,7 @@
 package at.escapedoom.data.service.delegate;
 
 import at.escapedoom.data.rest.api.RiddleApiDelegate;
+import at.escapedoom.data.rest.model.RiddleWrapper;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
@@ -36,8 +37,8 @@ public class RiddleApiDelegateImpl implements RiddleApiDelegate {
     }
 
     @Override
-    public ResponseEntity<RiddleDTO> createRiddle(RiddleCreationRequestDTO riddleCreationRequest) {
-        return new ResponseEntity<>(service.createRiddle(riddleCreationRequest), HttpStatus.OK);
+    public ResponseEntity<RiddleDTO> createRiddle(RiddleCreationRequestDTO riddle) {
+        return new ResponseEntity<>(service.createRiddle(riddle), HttpStatus.OK);
     }
 
     @Override

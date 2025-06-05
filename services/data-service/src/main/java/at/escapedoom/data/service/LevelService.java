@@ -3,7 +3,7 @@ package at.escapedoom.data.service;
 import at.escapedoom.data.data.LevelRepository;
 import at.escapedoom.data.data.RiddleRepository;
 import at.escapedoom.data.data.entity.Level;
-import at.escapedoom.data.data.entity.Riddle;
+import at.escapedoom.data.data.entity.riddle.Riddle;
 import at.escapedoom.data.data.entity.Scene;
 import at.escapedoom.data.data.entity.Template;
 import at.escapedoom.data.mapper.LevelMapper;

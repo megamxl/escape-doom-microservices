@@ -307,31 +307,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
   ### Riddle
-  /riddles/v2:
-    post:
-      operationId: createRiddleV2
-      tags:
-        - Riddle
-      summary: Create a new riddle
-      description: Create a riddle without linking it to a specific level
-      requestBody:
-        description: The details of the riddle to create
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Riddle'
-      responses:
-        '201':
-          description: Riddle created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Riddle'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
   /riddles:
     get:
       operationId: getAllRiddles
@@ -698,34 +673,33 @@ paths:
 
 components:
   schemas:
-    Riddle:
+    RiddleWrapper:
       oneOf:
-        - $ref: '#/components/schemas/CodingRiddle'
-        - $ref: '#/components/schemas/StringCompareRiddle'
+        - $ref: '#/components/schemas/CodingRiddleDTO'
+        - $ref: '#/components/schemas/StringCompareRiddleDTO'
       discriminator:
         propertyName: type
         mapping:
-          CODING: '#/components/schemas/CodingRiddle'
-          STRING_COMPARE: '#/components/schemas/StringCompareRiddle'
+          CODING: '#/components/schemas/CodingRiddleDTO'
+          STRING_COMPARE: '#/components/schemas/StringCompareRiddleDTO'
 
     RiddleType:
       type: string
 
-    CodingRiddle:
+    CodingRiddleDTO:
       type: object
       required: [ type, language, code, testCases ]
       properties:
         type:
           $ref: '#/components/schemas/RiddleType'
-        language:
-          type: string
-          example: "python"
-        code:
-          type: string
         testCases:
           $ref: '#/components/schemas/TestCases'
+        code:
+          type: object
+          additionalProperties:
+            type: string
 
-    StringCompareRiddle:
+    StringCompareRiddleDTO:
       type: object
       required: [ type ]
       properties:
@@ -739,16 +713,22 @@ components:
     TestCases:
       type: array
       items:
-        $ref: '#/components/schemas/TestCase'
+        $ref: '#/components/schemas/TestCaseDTO'
 
-    TestCase:
+    TestCaseDTO:
       type: object
       required: [ input, expectedOutput ]
       properties:
         input:
-          type: string
+          type: object
+          description: A key-value list representing the test input, where all values must be strings.
+          additionalProperties:
+            type: string # Enforces that any additional property's value must be a string
         expectedOutput:
-          type: string
+          type: object
+          description: A key-value list representing the expected test output, where all values must be strings.
+          additionalProperties:
+            type: string # Enforces that any additional property's value must be a string
 
     NodeType:
       description: The type of a node
@@ -874,6 +854,7 @@ components:
       enum:
         - JAVA
         - TYPESCRIPT
+        - PYTHON
       example: "JAVA"
     # Classes
     TemplateDTO:
@@ -1005,7 +986,7 @@ components:
             $ref: "#/components/schemas/SceneDTO"
           description: List of scenes in the level
         riddle:
-          $ref: "#/components/schemas/RiddleDTO"
+         $ref: "#/components/schemas/RiddleDTO"
     SceneDTO:
       description: A scene of an escape-room instance
       type: object
@@ -1047,47 +1028,15 @@ components:
           type: string
           description: The ID of the escape room level that contains this riddle
           example: "a12b34c5-6789-4def-abcd-12345678abcd"
-        language:
-          $ref: "#/components/schemas/CodingLanguage"
-        function_signature:
-          type: string
-          description: The function signature
-          example: "public static int sum(int a, int b)"
-        input:
-          type: string
-          description: The input values for the function
-          example: "2, 3"
-        variable_name:
-          type: string
-          description: The name of the variable to compare
-          example: "result"
-        expected_output:
-          type: string
-          description: The expected output of the riddle
-          example: "42"
+        riddle:
+          $ref: "#/components/schemas/RiddleWrapper"
 
     RiddleCreationRequestDTO:
       description: Base schema for riddle creation
       type: object
       properties:
-        language:
-          $ref: "#/components/schemas/CodingLanguage"
-        function_signature:
-          type: string
-          description: The function signature
-          example: "public static int sum(int a, int b)"
-        input:
-          type: string
-          description: The input values for the function
-          example: "2, 3"
-        variable_name:
-          type: string
-          description: The name of the variable to compare
-          example: "result"
-        expected_output:
-          type: string
-          description: The expected output of the riddle
-          example: "42"
+        riddle:
+          $ref: "#/components/schemas/RiddleWrapper"
         level_id:
           type: string
           description: The ID of the Escape Room Level this riddle belongs to
