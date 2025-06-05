@@ -17,9 +17,7 @@ import jakarta.annotation.Generated;
  * Base schema for any request to the scene API
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "SceneRequestDTO", description = "Base schema for any request to the scene API")

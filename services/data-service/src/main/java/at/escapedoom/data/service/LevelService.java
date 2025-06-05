@@ -100,7 +100,7 @@ public class LevelService {
         }
 
         repository.delete(level);
-        return new DeleteLevelSuccessDTO().message("Level deleted successfully");
+        return DeleteLevelSuccessDTO.builder().message("Level deleted successfully").build();
     }
 
     @Transactional

@@ -19,9 +19,7 @@ import jakarta.annotation.Generated;
  * An error returned by the API
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "ErrorObject", description = "An error returned by the API")

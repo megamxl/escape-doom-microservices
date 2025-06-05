@@ -175,7 +175,10 @@
                                     <!-- Use tags for creating interface and controller classnames -->
                                     <useTags>true</useTags>
 
-                                    <additionalModelTypeAnnotations>@lombok.Builder @lombok.NoArgsConstructor @lombok.AllArgsConstructor @lombok.Getter @lombok.Setter </additionalModelTypeAnnotations>
+                                    <useEnumTypeAlias>true</useEnumTypeAlias>
+
+                                   <additionalModelTypeAnnotations>  @lombok.Builder @lombok.AllArgsConstructor  @lombok.Setter </additionalModelTypeAnnotations>
+
                                 </configOptions>
                             </configuration>
                         </execution>

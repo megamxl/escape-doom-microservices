@@ -17,9 +17,7 @@ import jakarta.annotation.Generated;
  * The escape-room template, base for an Game
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "TemplateCreateRequestDTO", description = "The escape-room template, base for an  Game")

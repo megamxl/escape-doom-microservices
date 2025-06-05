@@ -19,9 +19,7 @@ import jakarta.annotation.Generated;
  * Base schema for a riddle
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "RiddleDTO", description = "Base schema for a riddle")

@@ -22,9 +22,7 @@ import jakarta.annotation.Generated;
  * A scene of an escape-room instance
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "Scene", description = "A scene of an escape-room instance")

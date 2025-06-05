@@ -17,9 +17,7 @@ import jakarta.annotation.Generated;
  * The information of a node
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "NodeInfoDTO", description = "The information of a node")

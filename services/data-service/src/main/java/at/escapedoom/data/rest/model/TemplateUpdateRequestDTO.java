@@ -21,9 +21,7 @@ import jakarta.annotation.Generated;
  * The payload for updating an Template
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "TemplateUpdateRequestDTO", description = "The payload for updating an Template")

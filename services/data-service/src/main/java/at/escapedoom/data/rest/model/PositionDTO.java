@@ -17,9 +17,7 @@ import jakarta.annotation.Generated;
  * The position of a node
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "PositionDTO", description = "The position of a node")

@@ -19,9 +19,7 @@ import jakarta.annotation.Generated;
  * Represents the result of a user&#39;s progress in a session.
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "Result", description = "Represents the result of a user's progress in a session.")

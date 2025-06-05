@@ -22,9 +22,7 @@ import jakarta.annotation.Generated;
  * Represents metadata for a session in API responses.
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "EscapeRoomSessionResponse", description = "Represents metadata for a session in API responses.")

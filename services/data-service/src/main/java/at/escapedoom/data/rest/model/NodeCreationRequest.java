@@ -19,9 +19,7 @@ import jakarta.annotation.Generated;
  * The payload for creating a node
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "NodeCreationRequest", description = "The payload for creating a node")

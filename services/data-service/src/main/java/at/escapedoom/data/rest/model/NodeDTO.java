@@ -20,9 +20,7 @@ import jakarta.annotation.Generated;
  * A node of an escape-room instance
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "NodeDTO", description = "A node of an escape-room instance")

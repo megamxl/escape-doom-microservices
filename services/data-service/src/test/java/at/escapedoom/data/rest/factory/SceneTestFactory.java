@@ -8,22 +8,22 @@ import java.util.UUID;
 public class SceneTestFactory {
 
     public static SceneRequestDTO createRequest(String levelId) {
-        SceneRequestDTO request = new SceneRequestDTO();
-        request.setName("Test Scene");
-        request.setLevelId(levelId);
-        request.setSceneSequence(1);
-        request.setBackgroundImageUri("https://example.com/background.png");
-        return request;
+        SceneRequestDTO.SceneRequestDTOBuilder builder = SceneRequestDTO.builder();
+        builder.name("Test Scene");
+        builder.levelId(levelId);
+        builder.sceneSequence(1);
+        builder.backgroundImageUri("https://example.com/background.png");
+        return builder.build();
     }
 
     public static SceneDTO createResponseFrom(SceneRequestDTO request) {
-        SceneDTO response = new SceneDTO();
-        response.setSceneId(UUID.randomUUID().toString());
-        response.setLevelId(request.getLevelId());
-        response.setSceneSequence(request.getSceneSequence());
-        response.setBackgroundImageUri(request.getBackgroundImageUri());
-        response.setName(request.getName());
-        response.setNodes(java.util.Collections.emptyList());
-        return response;
+        SceneDTO.SceneDTOBuilder response = SceneDTO.builder();
+        response.sceneId(UUID.randomUUID().toString());
+        response.levelId(request.getLevelId());
+        response.sceneSequence(request.getSceneSequence());
+        response.backgroundImageUri(request.getBackgroundImageUri());
+        response.name(request.getName());
+        response.nodes(java.util.Collections.emptyList());
+        return response.build();
     }
 }

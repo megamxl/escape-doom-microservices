@@ -18,9 +18,7 @@ import jakarta.annotation.Generated;
  * The tag to add or remove
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "EscapeRoomTagChange", description = "The tag to add or remove")

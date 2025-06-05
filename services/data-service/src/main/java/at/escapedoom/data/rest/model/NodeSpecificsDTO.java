@@ -24,9 +24,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
  * Depending on the node type, different params should be given
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "NodeSpecificsDTO", description = "Depending on the node type, different params should be given")

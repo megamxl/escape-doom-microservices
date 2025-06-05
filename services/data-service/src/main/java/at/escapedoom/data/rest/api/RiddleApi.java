@@ -8,6 +8,7 @@ package at.escapedoom.data.rest.api;
 import at.escapedoom.data.rest.model.CreateBadRequestDTO;
 import at.escapedoom.data.rest.model.CreateInternalServerErrorDTO;
 import at.escapedoom.data.rest.model.CreateNotFoundDTO;
+import at.escapedoom.data.rest.model.Riddle;
 import at.escapedoom.data.rest.model.RiddleCreationRequestDTO;
 import at.escapedoom.data.rest.model.RiddleDTO;
 import at.escapedoom.data.rest.model.RiddleDeletionResponseDTO;
@@ -66,6 +67,31 @@ public interface RiddleApi {
     default ResponseEntity<RiddleDTO> createRiddle(
             @Parameter(name = "RiddleCreationRequestDTO", description = "The details of the riddle to create", required = true) @Valid @RequestBody RiddleCreationRequestDTO riddleCreationRequestDTO) {
         return getDelegate().createRiddle(riddleCreationRequestDTO);
+    }
+
+    /**
+     * POST /riddles/v2 : Create a new riddle Create a riddle without linking it to a specific level
+     *
+     * @param riddle
+     *            The details of the riddle to create (required)
+     *
+     * @return Riddle created successfully (status code 201) or Bad Request (status code 400) or Internal Server Error
+     *         (status code 500)
+     */
+    @Operation(operationId = "createRiddleV2", summary = "Create a new riddle", description = "Create a riddle without linking it to a specific level", tags = {
+            "Riddle" }, responses = {
+                    @ApiResponse(responseCode = "201", description = "Riddle created successfully", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = Riddle.class)) }),
+                    @ApiResponse(responseCode = "400", description = "Bad Request", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBadRequestDTO.class)) }),
+                    @ApiResponse(responseCode = "500", description = "Internal Server Error", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateInternalServerErrorDTO.class)) }) })
+    @RequestMapping(method = RequestMethod.POST, value = "/riddles/v2", produces = { "application/json" }, consumes = {
+            "application/json" })
+
+    default ResponseEntity<Riddle> createRiddleV2(
+            @Parameter(name = "Riddle", description = "The details of the riddle to create", required = true) @Valid @RequestBody Riddle riddle) {
+        return getDelegate().createRiddleV2(riddle);
     }
 
     /**

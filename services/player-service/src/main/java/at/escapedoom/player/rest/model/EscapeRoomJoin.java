@@ -18,9 +18,7 @@ import jakarta.annotation.Generated;
  * The escape-room instance to join
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "EscapeRoomJoin", description = "The escape-room instance to join")

@@ -17,9 +17,7 @@ import jakarta.annotation.Generated;
  * The result of an operation on an Template
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "TemplateResultDTO", description = "The result of an operation on an Template")

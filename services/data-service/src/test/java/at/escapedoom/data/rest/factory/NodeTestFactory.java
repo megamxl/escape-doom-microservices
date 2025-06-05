@@ -9,33 +9,33 @@ public class NodeTestFactory {
 
     public static NodeCreationRequest createRequest(String sceneId) {
 
-        NodeSpecificsDTO nodeSpecific = new NodeSpecificsDTO();
-        nodeSpecific.setNodeType(NodeType.ZOOM);
-        nodeSpecific.setAdditionalProperties(Map.of("return_description", "I am a console node return description",
+        NodeSpecificsDTO.NodeSpecificsDTOBuilder nodeSpecific = NodeSpecificsDTO.builder();
+        nodeSpecific.nodeType(NodeType.ZOOM);
+        nodeSpecific.additionalProperties(Map.of("return_description", "I am a console node return description",
                 "constraints", "Some funny constraints", "example", "Some example"));
 
-        PositionDTO position = new PositionDTO();
-        position.setTopPercentage(50.0);
-        position.setLeftPercentage(30.0);
+        PositionDTO.PositionDTOBuilder position = PositionDTO.builder();
+        position.topPercentage(50.0);
+        position.leftPercentage(30.0);
 
-        NodeCreationRequest request = new NodeCreationRequest();
-        request.setSceneId(sceneId);
-        request.setTitle("Test Node");
-        request.setDescription("This is a test node");
-        request.setNodeSpecifics(nodeSpecific);
-        request.setPosition(position);
+        NodeCreationRequest.NodeCreationRequestBuilder request = NodeCreationRequest.builder();
+        request.sceneId(sceneId);
+        request.title("Test Node");
+        request.description("This is a test node");
+        request.nodeSpecifics(nodeSpecific.build());
+        request.position(position.build());
 
-        return request;
+        return request.build();
     }
 
     public static NodeDTO createResponseFrom(NodeCreationRequest request) {
-        NodeDTO dto = new NodeDTO();
-        dto.setNodeId(UUID.fromString(UUID.randomUUID().toString()));
-        dto.setSceneId(UUID.fromString(request.getSceneId()));
-        dto.setTitle(request.getTitle());
-        dto.setDescription(request.getDescription());
-        dto.setPosition(request.getPosition());
-        dto.setNodeSpecifics(request.getNodeSpecifics());
-        return dto;
+        NodeDTO.NodeDTOBuilder dto = NodeDTO.builder();
+        dto.nodeId(UUID.fromString(UUID.randomUUID().toString()));
+        dto.sceneId(UUID.fromString(request.getSceneId()));
+        dto.title(request.getTitle());
+        dto.description(request.getDescription());
+        dto.position(request.getPosition());
+        dto.nodeSpecifics(request.getNodeSpecifics());
+        return dto.build();
     }
 }

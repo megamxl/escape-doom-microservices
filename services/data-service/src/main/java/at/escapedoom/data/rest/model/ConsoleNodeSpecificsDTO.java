@@ -19,9 +19,7 @@ import jakarta.annotation.Generated;
  * Console node specifics - Used for the frontend type-safety
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "ConsoleNodeSpecificsDTO", description = "Console node specifics - Used for the frontend type-safety")

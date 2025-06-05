@@ -20,9 +20,7 @@ import jakarta.annotation.Generated;
  * Detail node specifics - Used for the frontend type-safety
  */
 @lombok.Builder
-@lombok.NoArgsConstructor
 @lombok.AllArgsConstructor
-@lombok.Getter
 @lombok.Setter
 
 @Schema(name = "ZoomNodeSpecificsDTO", description = "Detail node specifics - Used for the frontend type-safety")
