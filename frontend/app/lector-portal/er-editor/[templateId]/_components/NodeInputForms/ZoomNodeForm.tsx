@@ -9,16 +9,22 @@ type ZoomNodeProps = {
 
 const ZoomNodeForm = ({sceneId}: ZoomNodeProps) => {
     const [lvlId, setLvlId] = useState<string>()
-    const [zoomLinks, setZoomLinks] = useState({from: sceneId, to: ''})
+    const [zoomLinks, setZoomLinks] = useState({from: '', to: ''})
     const {data: sceneInfo} = useGetSceneByIdHook({sceneId: sceneId})
 
-    const {refetch: loadLevelInfo} = useGetLevelHook({levelId: lvlId}, {query: {enabled: false}})
+    const {refetch: loadLevelInfo} = useGetLevelHook({levelId: lvlId!}, {query: {enabled: false}})
     const [useableScenes, setUseableScenes] = useState<SceneDTO[]>([])
 
     useEffect(() => {
         if (!sceneInfo) return
         setLvlId(sceneInfo.level_id!)
     }, [sceneInfo]);
+
+    useEffect(() => {
+        if (useableScenes.length > 0 && !zoomLinks.from) {
+            setZoomLinks(prev => ({...prev, from: sceneId}))
+        }
+    }, [useableScenes, sceneId, zoomLinks.from]);
 
     useEffect(() => {
         if (!lvlId) return
