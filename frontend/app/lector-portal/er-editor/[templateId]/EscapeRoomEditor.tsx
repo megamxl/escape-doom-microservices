@@ -3,7 +3,13 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Grid, Skeleton, Stack, Typography} from "@mui/material";
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
-import {TemplateDTO, useCreateLevelHook, useGetTemplateHook, useUpdateTemplateHook} from "@/app/gen/data";
+import {
+    TemplateDTO,
+    useCreateLevelHook,
+    useGetTemplateHook,
+    useUpdateNodeHook,
+    useUpdateTemplateHook
+} from "@/app/gen/data";
 import Level from "@/app/lector-portal/er-editor/[templateId]/_components/Level.tsx";
 import {grey} from "@mui/material/colors";
 import {useRouter} from "next/navigation";
@@ -24,6 +30,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
 
     const {data, isLoading} = useGetTemplateHook({templateId: templateId})
     const {mutate: updateTemplate} = useUpdateTemplateHook()
+    const {mutate: updateNode} = useUpdateNodeHook()
     const {mutate: createLevel} = useCreateLevelHook()
 
     const [template, setTemplate] = useState<TemplateDTO>()

@@ -1,12 +1,15 @@
 'use client'
 
-import React, {CSSProperties, useState} from 'react';
+import React, {CSSProperties, useEffect, useState} from 'react';
 import {NodeDTO} from "@/app/gen/player";
-import {PointerSensor, useDraggable, useSensor, useSensors} from "@dnd-kit/core";
+import {useDraggable} from "@dnd-kit/core";
 import IconButton from "@mui/material/IconButton";
 import {nodeTypeClassMapper} from "@/app/game-session/session/_components/nodes/Node.tsx";
 import {CSS} from '@dnd-kit/utilities';
-import {Card, CardContent, CardHeader, Dialog} from "@mui/material";
+import {Card, CardContent, CardHeader, Dialog, Typography} from "@mui/material";
+import BasicNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/BasicNodeForm.tsx";
+import ZoomNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ZoomNodeForm.tsx";
+import {useGetLevelHook, useGetSceneByIdHook, useGetTemplateHook} from "@/app/gen/data";
 
 type DnDNodeProps = {
     node: NodeDTO
@@ -42,6 +45,11 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
         ...style
     }
 
+    const formatTitle = () => {
+        const nType = node.node_specifics?.node_type ?? ''
+        return nType[0].toUpperCase() + nType.slice(1).toLowerCase() + ' Node'
+    }
+
     return (
         <>
             <IconButton
@@ -63,9 +71,16 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
                 fullWidth
             >
                 <Card>
-                    <CardHeader title={node.title} sx={{backgroundColor: styling.color}}/>
+                    <CardHeader title={formatTitle()} sx={{backgroundColor: styling.color, height: '4rem'}}/>
                     <CardContent className="w-full">
-                        {node.description}
+                        { (node.node_specifics.node_type === "CONSOLE" || node.node_specifics.node_type === "DETAIL") && <>
+                            <Typography> {node.description} </Typography>
+                            <br/>
+                            <BasicNodeForm node={node} />
+                        </>  }
+                        { node.node_specifics.node_type === "ZOOM" &&
+                            <ZoomNodeForm sceneId={node.scene_id!} />
+                        }
                     </CardContent>
                 </Card>
             </Dialog>

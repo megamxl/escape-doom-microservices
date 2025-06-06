@@ -1,6 +1,6 @@
 'use client'
 
-import React, {ChangeEvent, CSSProperties, HTMLProps, useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {useDroppable} from "@dnd-kit/core";
 import {NodeDTO, SceneDTO} from '@/app/gen/player';
 import {FileUpload} from "@mui/icons-material";
