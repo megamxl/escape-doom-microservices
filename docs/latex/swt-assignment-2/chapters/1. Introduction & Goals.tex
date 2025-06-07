@@ -1,0 +1,99 @@
+\section{Quality Requirements}
+\label{section-quality-requirements}
+
+\subsection*{Quality Overview Table}
+
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{|p{4.8cm}|X|}
+    \hline
+    \textbf{Functionality} &
+    \textbf{Requirements:}
+    \begin{itemize}
+        \item Instructor login and room management
+        \item Student interaction with rooms
+        \item Code editor syntax highlighting
+        \item Real-time leaderboard updates
+    \end{itemize}
+    \textbf{Scenarios:}
+    \begin{itemize}
+        \item Instructors log in securely to manage rooms
+        \item Leaderboards update after solving riddles
+    \end{itemize} \\
+    \hline
+    \textbf{Performance} &
+    \textbf{Requirements:}
+    \begin{itemize}
+        \item Handle 200 concurrent users
+        \item Code execution within 10 seconds
+    \end{itemize}
+    \textbf{Scenarios:}
+    \begin{itemize}
+        \item High concurrency in a single room
+        \item Fast result feedback for code
+    \end{itemize} \\
+    \hline
+    \textbf{Usability} &
+    \textbf{Requirements:}
+    \begin{itemize}
+        \item Join room in under one minute
+        \item Visible hints on all screen sizes
+    \end{itemize}
+    \textbf{Scenarios:}
+    \begin{itemize}
+        \item Fast room joining
+        \item Hints visible on various devices
+        \item Keyboard navigation for all actions
+    \end{itemize} \\
+    \hline
+    \textbf{Reliability} &
+    \textbf{Requirements:}
+    \begin{itemize}
+        \item Persistent progress after browser cache is cleared
+        \item Handle malicious code without crashing
+        \item Keep core features during partial outage
+    \end{itemize}
+    \textbf{Scenarios:}
+    \begin{itemize}
+        \item Progress restoration after cache clear
+        \item System stability on bad input
+        \item Maintain basic features during failure
+    \end{itemize} \\
+    \hline
+    \textbf{Security} &
+    \textbf{Requirements:}
+    \begin{itemize}
+        \item Prevent unauthorized access
+        \item Sandbox for code execution
+        \item Encrypted communication
+    \end{itemize}
+    \textbf{Scenarios:}
+    \begin{itemize}
+        \item Block access on login failure
+        \item Run code in isolation
+        \item Use HTTPS for all communication
+    \end{itemize} \\
+    \hline
+    \textbf{Data Integrity} &
+    \textbf{Requirements:}
+    \begin{itemize}
+        \item Secure storage of results
+        \item Backup and recovery
+    \end{itemize}
+    \textbf{Scenarios:}
+    \begin{itemize}
+        \item Restore leaderboard after crash
+        \item Recover from backup in 10 minutes
+    \end{itemize} \\
+    \hline
+    \textbf{Accessibility} &
+    \textbf{Requirements:}
+    \begin{itemize}
+        \item WCAG 2.1 compliance
+        \item Support for color blindness
+    \end{itemize}
+    \textbf{Scenarios:}
+    \begin{itemize}
+        \item ---
+    \end{itemize} \\
+    \hline
+\end{tabularx}

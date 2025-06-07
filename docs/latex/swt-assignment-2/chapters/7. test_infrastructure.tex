@@ -1,0 +1,49 @@
+\section{Test Infrastructure}
+\label{section-test-infrastructure}
+
+This chapter describes the infrastructure required to execute automated and manual tests across the Escape Doom platform. A consistent and reliable test environment is critical for maintaining test quality and enabling reproducible results across services.
+
+\subsection*{Test Environment}
+
+The system is built on a containerized microservice architecture. Therefore, all test environments replicate production-like conditions using:
+
+\begin{itemize}
+    \item \textbf{Docker Compose / Kubernetes (Minikube):} Local environments replicate service orchestration, routing, and scaling behavior.
+    \item \textbf{TestContainers:} Used in integration and system tests to spin up real dependencies like PostgreSQL and Redis on-demand.
+    \item \textbf{Flyway:} Ensures consistent database migrations across test environments for schema alignment.
+\end{itemize}
+
+\subsection*{Test Data}
+
+\begin{itemize}
+    \item \textbf{Static test data:} Predefined users, sessions, and escape rooms for repeatable scenarios.
+    \item \textbf{Dynamic test data:} Generated on the fly using factories in tests for coverage of edge cases.
+    \item \textbf{Schema migration tools:} Flyway migrations are applied automatically to ensure a valid schema state before tests execute.
+\end{itemize}
+
+\subsection*{Tooling Overview}
+
+The following tools are used across all testing levels:
+
+\begin{itemize}
+    \item \textbf{JUnit 5} – Test runner for unit and integration tests
+    \item \textbf{AssertJ} – Fluent assertion library for readable test output
+    \item \textbf{Mockito} – For mocking dependencies during isolated unit testing
+    \item \textbf{MockMVC} – For controller-level testing without a real HTTP server
+    \item \textbf{TestContainers} – For running real database containers during integration tests
+    \item \textbf{Playwright / Selenium} – For system and end-to-end tests via browser simulation
+    \item \textbf{Flyway} – For applying database migrations in test environments
+\end{itemize}
+
+\subsection*{CI Integration}
+
+\begin{itemize}
+    \item Tests are executed via a CI pipeline on each merge request to ensure no regressions.
+    \item TestContainers and Flyway enable clean and isolated database states for every CI run.
+    \item Test reports are generated and archived to identify failures early.
+\end{itemize}
+
+\subsection*{Test Stability and Repeatability}
+
+All tests are designed to be environment-independent. No reliance on shared mutable state or external live systems ensures that results are deterministic and failures are traceable to code changes, not environment noise.
+
