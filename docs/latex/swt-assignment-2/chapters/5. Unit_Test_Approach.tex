@@ -1,0 +1,60 @@
+\section{Unit Test Approach}
+\label{section-unit-test-approach}
+
+\subsection*{General Approach}
+
+Unit tests are written following a Test-Driven Development (TDD) strategy where applicable, particularly during the early stages of service implementation. Tests are focused on public methods. Private methods are not tested directly, as their logic is implicitly validated through the public interface.
+
+Each microservice follows a consistent folder structure to support maintainable and repeatable testing workflows. When upper layers (e.g., services or controllers) are introduced, previously granular tests may be reduced to improve build speed while still ensuring coverage through layered validation.
+
+\subsection*{Test Structure by Domain Service}
+
+\paragraph{Data Service}
+As a core service, the data service maintains the highest test coverage:
+
+\begin{itemize}
+    \item \textbf{Data access layer:} 62\% of classes, 74\% of lines covered
+    \item \textbf{Mapping layer:} 90\% of classes, 53\% of lines covered
+    \item \textbf{Service layer:} 100\% of classes, 83\% of lines covered
+\end{itemize}
+
+Testing began with TDD to ensure all repositories implement and verify CRUD operations. Service-layer tests validate integration with data handlers and repositories. Flyway is also integrated to provide a stable schema for testing.
+
+\paragraph{Leaderboard Service}
+This service is not yet fully implemented. Testing is planned as follows:
+
+\begin{itemize}
+    \item \textbf{Unit tests} will focus on transformation logic between session data and leaderboard models.
+    \item \textbf{Edge cases} such as empty result sets and invalid session responses will be covered.
+    \item \textbf{Risk-based focus:} Inaccurate or missing leaderboard data could break user trust, so correctness and reliability are critical.
+\end{itemize}
+
+\paragraph{Player Service}
+Current coverage status:
+
+\begin{itemize}
+    \item \textbf{Data access layer:} 33\% of classes, 18\% of lines
+    \item \textbf{Service layer:} 84\% of classes, 18\% of lines
+\end{itemize}
+
+Further testing is required to reach at least 60\% line coverage. Focus areas include data integrity, score calculation logic, and boundary conditions for user progress tracking.
+
+\paragraph{Session Service}
+Already has strong test coverage:
+
+\begin{itemize}
+    \item \textbf{Data access layer:} 100\% of classes, 80\% of lines
+    \item \textbf{Service layer:} 100\% of classes, 36\% of lines
+\end{itemize}
+
+Remaining work includes covering more complex logic branches in the service layer, particularly scenarios with invalid session states or timing constraints.
+
+\paragraph{Gateway Service}
+As this component mainly handles routing and security, its logic will be validated through frontend end-to-end and system integration tests rather than unit tests.
+
+\subsection*{Test Tools}
+\begin{itemize}
+    \item \texttt{JUnit 5} for all Java service-level tests
+    \item \texttt{Mockito} for mocking dependencies in isolation
+    \item \texttt{Flyway} for consistent schema migration and rollback in test environments
+\end{itemize}
