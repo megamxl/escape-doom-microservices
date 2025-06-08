@@ -4,11 +4,14 @@ import {
     setSessionStorageItem
 } from "@/app/utils/session-storage-handler";
 import {session_id_key} from "@/app/utils/Constants.ts";
+import {RiddleWrapper} from "@/app/gen/player";
 
 export type GameSessionData = {
     sessionID: string,
     roomPin: string,
     playerName: string,
+    riddleType: string,
+    riddle: RiddleWrapper
 }
 
 export function getSessionData(): GameSessionData | null {

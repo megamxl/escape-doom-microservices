@@ -295,6 +295,40 @@ components:
           type: string
           description: The name of the scene
           example: "Scene 1"
+
+    RiddleWrapper:
+      oneOf:
+        - $ref: '#/components/schemas/CodingRiddleDTO'
+        - $ref: '#/components/schemas/StringCompareRiddleDTO'
+      discriminator:
+        propertyName: type
+        mapping:
+          CODING: '#/components/schemas/CodingRiddleDTO'
+          STRING_COMPARE: '#/components/schemas/StringCompareRiddleDTO'
+
+    RiddleType:
+      type: string
+
+    CodingRiddleDTO:
+      type: object
+      required: [ type, language, code, testCases ]
+      properties:
+        type:
+          $ref: '#/components/schemas/RiddleType'
+        code:
+          type: object
+          additionalProperties:
+            type: string
+
+    StringCompareRiddleDTO:
+      type: object
+      required: [ type ]
+      properties:
+        type:
+          $ref: '#/components/schemas/RiddleType'
+        input:
+          type: string
+
     RiddleDTO:
       description: Base schema for a riddle
       type: object
@@ -307,18 +341,15 @@ components:
           type: string
           description: The ID of the escape room level that contains this riddle
           example: "a12b34c5-6789-4def-abcd-12345678abcd"
-        language:
-          $ref: "#/components/schemas/CodingLanguage"
-        function:
-          type: string
-          description: The function signature
-          example: "public static int sum(int a, int b) "
+        riddle:
+          $ref: '#/components/schemas/RiddleWrapper'
     # Enums
     CodingLanguage:
       type: string
       enum:
         - JAVA
         - TYPESCRIPT
+        - PYTHON
       example: "JAVA"
     NodeType:
       description: The type of a node

@@ -6,16 +6,10 @@ import at.escapedoom.data.data.entity.riddle.RiddleType;
 import at.escapedoom.data.data.entity.riddle.TestCaseEntity;
 import at.escapedoom.data.rest.model.*;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.SubclassMapping;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 public class RiddleMapper {
@@ -30,7 +24,9 @@ public class RiddleMapper {
                 .build();
 
         return toEntity(build);
-    };
+    }
+
+    ;
 
     public static RiddleDTO toDTO(Riddle riddle) {
         log.trace("riddle was null in mapping ");

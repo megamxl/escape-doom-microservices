@@ -2,10 +2,9 @@ package at.escapedoom.player.rest.model;
 
 import java.net.URI;
 import java.util.Objects;
-import at.escapedoom.player.rest.model.CodingLanguage;
+import at.escapedoom.player.rest.model.RiddleWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.lang.Nullable;
 import java.time.OffsetDateTime;
 import jakarta.validation.Valid;
@@ -30,9 +29,7 @@ public class RiddleDTO {
 
     private @Nullable String levelId;
 
-    private @Nullable CodingLanguage language;
-
-    private @Nullable String function;
+    private @Nullable RiddleWrapper riddle;
 
     public RiddleDTO riddleId(String riddleId) {
         this.riddleId = riddleId;
@@ -76,46 +73,25 @@ public class RiddleDTO {
         this.levelId = levelId;
     }
 
-    public RiddleDTO language(CodingLanguage language) {
-        this.language = language;
+    public RiddleDTO riddle(RiddleWrapper riddle) {
+        this.riddle = riddle;
         return this;
     }
 
     /**
-     * Get language
+     * Get riddle
      *
-     * @return language
+     * @return riddle
      */
     @Valid
-    @Schema(name = "language", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("language")
-    public CodingLanguage getLanguage() {
-        return language;
+    @Schema(name = "riddle", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @JsonProperty("riddle")
+    public RiddleWrapper getRiddle() {
+        return riddle;
     }
 
-    public void setLanguage(CodingLanguage language) {
-        this.language = language;
-    }
-
-    public RiddleDTO function(String function) {
-        this.function = function;
-        return this;
-    }
-
-    /**
-     * The function signature
-     *
-     * @return function
-     */
-
-    @Schema(name = "function", example = "public static int sum(int a, int b) ", description = "The function signature", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    @JsonProperty("function")
-    public String getFunction() {
-        return function;
-    }
-
-    public void setFunction(String function) {
-        this.function = function;
+    public void setRiddle(RiddleWrapper riddle) {
+        this.riddle = riddle;
     }
 
     @Override
@@ -128,13 +104,12 @@ public class RiddleDTO {
         }
         RiddleDTO riddleDTO = (RiddleDTO) o;
         return Objects.equals(this.riddleId, riddleDTO.riddleId) && Objects.equals(this.levelId, riddleDTO.levelId)
-                && Objects.equals(this.language, riddleDTO.language)
-                && Objects.equals(this.function, riddleDTO.function);
+                && Objects.equals(this.riddle, riddleDTO.riddle);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(riddleId, levelId, language, function);
+        return Objects.hash(riddleId, levelId, riddle);
     }
 
     @Override
@@ -143,8 +118,7 @@ public class RiddleDTO {
         sb.append("class RiddleDTO {\n");
         sb.append("    riddleId: ").append(toIndentedString(riddleId)).append("\n");
         sb.append("    levelId: ").append(toIndentedString(levelId)).append("\n");
-        sb.append("    language: ").append(toIndentedString(language)).append("\n");
-        sb.append("    function: ").append(toIndentedString(function)).append("\n");
+        sb.append("    riddle: ").append(toIndentedString(riddle)).append("\n");
         sb.append("}");
         return sb.toString();
     }
