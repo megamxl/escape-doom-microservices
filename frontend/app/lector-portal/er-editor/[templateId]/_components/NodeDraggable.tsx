@@ -9,7 +9,7 @@ import {CSS} from '@dnd-kit/utilities';
 import {Card, CardContent, CardHeader, Dialog, Typography} from "@mui/material";
 import BasicNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/BasicNodeForm.tsx";
 import ZoomNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ZoomNodeForm.tsx";
-import {useGetLevelHook, useGetSceneByIdHook, useGetTemplateHook} from "@/app/gen/data";
+import {toCapitalCase} from "@/app/utils/stringFormatting.ts";
 
 type DnDNodeProps = {
     node: NodeDTO
@@ -31,6 +31,7 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
         },
     })
     const [isOpen, setIsOpen] = useState(false)
+    const [nodeState, setNodeState] = useState(node)
 
     if (!node || !node.node_specifics) return null
 
@@ -45,10 +46,7 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
         ...style
     }
 
-    const formatTitle = () => {
-        const nType = node.node_specifics?.node_type ?? ''
-        return nType[0].toUpperCase() + nType.slice(1).toLowerCase() + ' Node'
-    }
+    const formatTitle = () => `${toCapitalCase(node.node_specifics?.node_type ?? '')} Node`
 
     return (
         <>
@@ -76,7 +74,7 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
                         { (node.node_specifics.node_type === "CONSOLE" || node.node_specifics.node_type === "DETAIL") && <>
                             <Typography> {node.description} </Typography>
                             <br/>
-                            <BasicNodeForm node={node} />
+                            <BasicNodeForm node={nodeState} setNode={setNodeState} />
                         </>  }
                         { node.node_specifics.node_type === "ZOOM" &&
                             <ZoomNodeForm sceneId={node.scene_id!} />

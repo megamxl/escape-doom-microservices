@@ -1,51 +1,73 @@
-import React, {useState} from 'react';
-import {FormControl, Stack, TextField} from "@mui/material";
+import React from 'react';
+import {Button, FormControl, Stack, TextField} from "@mui/material";
 import {NodeDTO, NodeSpecificsDTO} from "@/app/gen/player";
+import SaveIcon from '@mui/icons-material/Save';
 import ConsoleNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ConsoleNodeForm.tsx";
+import {useUpdateNodeHook} from "@/app/gen/data";
 
-type BasicNodeForm = {
-    node: NodeDTO
-}
+type BasicNodeFormProps = {
+    node: NodeDTO,
+    setNode:  React.Dispatch<React.SetStateAction<NodeDTO>>
+};
 
 export type NodeSpecificProps = {
     nodeSpecifics: NodeSpecificsDTO
     setter: React.Dispatch<React.SetStateAction<NodeDTO>>
 }
 
-const BasicNodeForm = ({node}: BasicNodeForm) => {
-    const [nodeState, setNodeState] = useState(node)
+const BasicNodeForm = ({node, setNode}: BasicNodeFormProps) => {
+
+    const {mutate: updateNode} = useUpdateNodeHook()
 
     const renderNodeSpecificForm = () => {
-        switch (nodeState.node_specifics?.node_type) {
+        switch (node.node_specifics?.node_type) {
             case "CONSOLE":
-                return <ConsoleNodeForm nodeSpecifics={nodeState.node_specifics} setter={setNodeState}/>
+                return <ConsoleNodeForm nodeSpecifics={node.node_specifics} setter={setNode}/>
             case "DETAIL":
                 return
         }
     }
 
+    const handleNodeUpdate = () => {
+        if (!node.node_id) {
+            console.error("This node has no node id:", node)
+            return;
+        }
+        updateNode({nodeId: node.node_id, data: node}, {
+            onSuccess: (response) => {
+                console.log("Node updated successfully", response)
+            }, onError: (error) => {
+                console.error("Saving node didn't work:", error)
+            }
+        })
+    }
+
     return (
         <FormControl fullWidth>
             <Stack direction="row" spacing={4}>
-                { nodeState.node_specifics?.node_type !== "ZOOM" &&
+                { node.node_specifics?.node_type !== "ZOOM" &&
                 <Stack className="w-full" spacing={2}>
                     <TextField label="Title"
                                onChange={
-                                   (e) => setNodeState(prev => ({...prev, title: e.target.value}))
+                                   (e) => setNode(prev => ({...prev, title: e.target.value}))
                                }
-                               value={nodeState.title}
+                               value={node.title}
                                variant="outlined"
                                required/>
                     <TextField label="Description"
                                onChange={
-                                   (e) => setNodeState(prev => ({...prev, title: e.target.value}))
+                                   (e) => setNode(prev => ({...prev, description: e.target.value}))
                                }
                                variant="outlined"
-                               value={nodeState.description}
+                               value={node.description}
                                required/>
                 </Stack> }
                 {renderNodeSpecificForm()}
             </Stack>
+            <br/>
+            <Button variant="contained" startIcon={<SaveIcon/>} onClick={handleNodeUpdate}>
+                Save
+            </Button>
         </FormControl>
     );
 };

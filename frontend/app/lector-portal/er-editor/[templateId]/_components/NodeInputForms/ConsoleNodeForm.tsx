@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Stack, TextField} from "@mui/material";
 import {ConsoleNodeSpecificsDTO} from "@/app/gen/data";
 import {

@@ -56,7 +56,6 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     }, [data]);
 
     useEffect(() => {
-        console.log("Template", template)
         saveTemplate()
     }, [template]);
 
@@ -157,7 +156,13 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                         left_percentage: leftPercentage
                     }
                 }
+                const toUpdate = updatedNodes[existingNodeIndex]
+                if (!toUpdate.node_id) {
+                    console.error("No node-id was found when trying to update node", toUpdate)
+                    return;
+                }
                 setSceneNodes(updatedNodes)
+                updateNode({nodeId: toUpdate.node_id, data: toUpdate })
             } else {
                 const newNode: NodeDTO = {
                     ...node,
@@ -166,7 +171,12 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                         left_percentage: leftPercentage
                     }
                 }
+                if (!newNode.node_id) {
+                    console.error("No node-id was found when trying to update node", newNode)
+                    return;
+                }
                 setSceneNodes(prev => [...prev, newNode])
+                updateNode({nodeId: newNode.node_id, data: newNode })
             }
         }
     }
