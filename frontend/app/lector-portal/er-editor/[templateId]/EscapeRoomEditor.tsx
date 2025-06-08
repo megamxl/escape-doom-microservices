@@ -260,7 +260,8 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                                 return (
                                     <NodeDraggable key={key} node={{
                                         node_id: key,
-                                        node_specifics: {node_type: type as NodeTypeEnum}
+                                        node_specifics: {node_type: type as NodeTypeEnum},
+                                        scene_id: selectedScene?.scene_id
                                     }}/>
                                 )
                             })}

@@ -1,19 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {InputLabel, MenuItem, Select, Stack} from "@mui/material";
-import {useGetLevelHook, useGetSceneByIdHook} from "@/app/gen/data";
-import {SceneDTO} from "@/app/gen/player";
+import {Button, InputLabel, MenuItem, Select, SelectChangeEvent, Stack} from "@mui/material";
+import {useGetLevelHook, useGetSceneByIdHook, useUpdateNodeHook, ZoomNodeSpecificsDTO} from "@/app/gen/data";
+import {NodeDTO, SceneDTO} from "@/app/gen/player";
+import SaveIcon from "@mui/icons-material/Save";
 
 type ZoomNodeProps = {
-    sceneId: string
+    node: NodeDTO,
+    setNode:  React.Dispatch<React.SetStateAction<NodeDTO>>
 }
 
-const ZoomNodeForm = ({sceneId}: ZoomNodeProps) => {
-    const [lvlId, setLvlId] = useState<string>()
-    const [zoomLinks, setZoomLinks] = useState({from: '', to: ''})
-    const {data: sceneInfo} = useGetSceneByIdHook({sceneId: sceneId})
+const ZoomNodeForm = ({node, setNode}: ZoomNodeProps) => {
+    const sceneId = node.scene_id ?? ''
 
-    const {refetch: loadLevelInfo} = useGetLevelHook({levelId: lvlId!}, {query: {enabled: false}})
+    const [lvlId, setLvlId] = useState<string>()
     const [useableScenes, setUseableScenes] = useState<SceneDTO[]>([])
+
+    const {data: sceneInfo} = useGetSceneByIdHook({sceneId: sceneId})
+    const {refetch: loadLevelInfo} = useGetLevelHook({levelId: lvlId!}, {query: {enabled: false}})
+    const {mutate: updateNode} = useUpdateNodeHook()
 
     useEffect(() => {
         if (!sceneInfo) return
@@ -21,10 +25,12 @@ const ZoomNodeForm = ({sceneId}: ZoomNodeProps) => {
     }, [sceneInfo]);
 
     useEffect(() => {
+        const zoomLinks = node.node_specifics as ZoomNodeSpecificsDTO
         if (useableScenes.length > 0 && !zoomLinks.from) {
-            setZoomLinks(prev => ({...prev, from: sceneId}))
+            zoomLinks.parent_scene_id = sceneId
+            setNode(prev => ({...prev, node_specifics: zoomLinks}))
         }
-    }, [useableScenes, sceneId, zoomLinks.from]);
+    }, [useableScenes, sceneId, node.node_specifics, setNode]);
 
     useEffect(() => {
         if (!lvlId) return
@@ -37,30 +43,67 @@ const ZoomNodeForm = ({sceneId}: ZoomNodeProps) => {
         })
     }, [loadLevelInfo, lvlId]);
 
+    const handleNodeUpdate = () => {
+        if (!node.node_id) {
+            console.error("This node has no node id:", node)
+            return;
+        }
+
+        setNode(prev => ({...prev, node_specifics: node}))
+        updateNode({nodeId: node.node_id, data: node}, {
+            onSuccess: (response) => {
+                console.log("Node updated successfully", response)
+            }, onError: (error) => {
+                console.error("Saving node didn't work:", error)
+            }
+        })
+    }
+
+    const handleParentLinkChange = (e: SelectChangeEvent) => {
+        const zoomSpecifics = node.node_specifics as ZoomNodeSpecificsDTO
+        console.log(zoomSpecifics)
+        zoomSpecifics.parent_scene_id = e.target.value as string
+        setNode(prev => ({...prev, node_specifics: zoomSpecifics}))
+    }
+
+    const handleChildLinkChange = (e: SelectChangeEvent) => {
+        const zoomSpecifics = node.node_specifics as ZoomNodeSpecificsDTO
+        console.log(zoomSpecifics)
+        zoomSpecifics.linked_scene_id = e.target.value as string
+        setNode(prev => ({...prev, node_specifics: zoomSpecifics}))
+    }
+
+
     return (
-        <Stack direction="row" spacing={4}>
-            <div className="w-full">
-                <InputLabel> Parent Scene </InputLabel>
-                <Select
-                    value={zoomLinks.from}
-                    fullWidth
-                    onChange={(e) => setZoomLinks(prev => ({...prev, from: e.target.value as string}))}
-                >
-                    {useableScenes.map(s => <MenuItem key={s.scene_id} value={s.scene_id}> {s.name} </MenuItem>)}
-                </Select>
-            </div>
-            <div className="w-full">
-                <InputLabel> Linked Scene </InputLabel>
-                <Select
-                    value={zoomLinks.to}
-                    onChange={(e) => setZoomLinks(prev => ({...prev, to: e.target.value as string}))}
-                    fullWidth
-                >
-                    {useableScenes.filter(s => s.scene_id !== sceneId).map(s => <MenuItem key={s.scene_id}
-                                                                                          value={s.scene_id}> {s.name} </MenuItem>)}
-                </Select>
-            </div>
-        </Stack>
+        <>
+            <Stack direction="row" spacing={4}>
+                <div className="w-full">
+                    <InputLabel> Parent Scene </InputLabel>
+                    <Select
+                        value={(node.node_specifics as ZoomNodeSpecificsDTO).parent_scene_id}
+                        fullWidth
+                        onChange={handleParentLinkChange}
+                    >
+                        {useableScenes.map(s => <MenuItem key={s.scene_id} value={s.scene_id}> {s.name} </MenuItem>)}
+                    </Select>
+                </div>
+                <div className="w-full">
+                    <InputLabel> Linked Scene </InputLabel>
+                    <Select
+                        value={(node.node_specifics as ZoomNodeSpecificsDTO).linked_scene_id}
+                        onChange={handleChildLinkChange}
+                        fullWidth
+                    >
+                        {useableScenes.filter(s => s.scene_id !== sceneId)
+                            .map(s => <MenuItem key={s.scene_id} value={s.scene_id}> {s.name} </MenuItem>)}
+                    </Select>
+                </div>
+            </Stack>
+            <br/>
+            <Button fullWidth variant="contained" startIcon={<SaveIcon/>} onClick={handleNodeUpdate}>
+                Save
+            </Button>
+        </>
     );
 };
 

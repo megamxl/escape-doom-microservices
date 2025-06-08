@@ -3,7 +3,7 @@ import {Button, FormControl, Stack, TextField} from "@mui/material";
 import {NodeDTO, NodeSpecificsDTO} from "@/app/gen/player";
 import SaveIcon from '@mui/icons-material/Save';
 import ConsoleNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ConsoleNodeForm.tsx";
-import {useUpdateNodeHook} from "@/app/gen/data";
+import {useCreateNodeHook, useUpdateNodeHook} from "@/app/gen/data";
 
 type BasicNodeFormProps = {
     node: NodeDTO,
@@ -18,6 +18,7 @@ export type NodeSpecificProps = {
 const BasicNodeForm = ({node, setNode}: BasicNodeFormProps) => {
 
     const {mutate: updateNode} = useUpdateNodeHook()
+    const {mutate: createNode} = useCreateNodeHook()
 
     const renderNodeSpecificForm = () => {
         switch (node.node_specifics?.node_type) {
@@ -37,7 +38,18 @@ const BasicNodeForm = ({node, setNode}: BasicNodeFormProps) => {
             onSuccess: (response) => {
                 console.log("Node updated successfully", response)
             }, onError: (error) => {
-                console.error("Saving node didn't work:", error)
+                if (error.status !== 400) {
+                    console.error("Saving node didn't work:", error, node)
+                    return;
+                }
+                createNode({data: node}, {
+                    onSuccess: (response) => {
+                        console.log("Created node", response)
+                    },
+                    onError: (createError) => {
+                        console.error("Creating node didn't work", createError, node)
+                    }
+                })
             }
         })
     }

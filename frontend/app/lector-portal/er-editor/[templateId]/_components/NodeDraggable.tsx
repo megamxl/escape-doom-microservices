@@ -1,6 +1,6 @@
 'use client'
 
-import React, {CSSProperties, useEffect, useState} from 'react';
+import React, {CSSProperties, useState} from 'react';
 import {NodeDTO} from "@/app/gen/player";
 import {useDraggable} from "@dnd-kit/core";
 import IconButton from "@mui/material/IconButton";
@@ -72,12 +72,10 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
                     <CardHeader title={formatTitle()} sx={{backgroundColor: styling.color, height: '4rem'}}/>
                     <CardContent className="w-full">
                         { (node.node_specifics.node_type === "CONSOLE" || node.node_specifics.node_type === "DETAIL") && <>
-                            <Typography> {node.description} </Typography>
-                            <br/>
                             <BasicNodeForm node={nodeState} setNode={setNodeState} />
                         </>  }
                         { node.node_specifics.node_type === "ZOOM" &&
-                            <ZoomNodeForm sceneId={node.scene_id!} />
+                            <ZoomNodeForm node={nodeState} setNode={setNodeState} />
                         }
                     </CardContent>
                 </Card>
