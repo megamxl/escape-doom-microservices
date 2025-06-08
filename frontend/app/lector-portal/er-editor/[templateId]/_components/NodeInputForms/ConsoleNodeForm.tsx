@@ -13,10 +13,6 @@ const ConsoleNodeForm = ({nodeSpecifics}: NodeSpecificProps) => {
         node_type: "CONSOLE",
     });
 
-    useEffect(() => {
-        console.log(return_description, example, constraints)
-    }, [return_description, example, constraints]);
-
     return (
         <Stack className="w-full" spacing={2}>
             <TextField
