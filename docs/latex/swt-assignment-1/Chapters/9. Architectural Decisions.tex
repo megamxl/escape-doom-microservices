@@ -1,0 +1,156 @@
+\hypertarget{section-design-decisions}{%
+\section{Architecture Decisions}\label{section-design-decisions}}
+
+This section offers a comprehensive overview of the critical architectural decisions made during the planning phase of the project. These decisions were carefully documented in the form of Architecture Decision Records (ADRs), which serve as structured summaries of the reasoning, options considered, and outcomes chosen. By listing these ADRs, we aim to provide clarity and transparency regarding the choices that shaped the system's architecture and the rationale behind them. This documentation will also serve as a reference for future decision-making and project evolution.
+
+
+\subsection{Microservices}
+\textbf{Status:} Accepted
+\newline
+\newline
+\textbf{Context:}
+For this FH project, the team wanted to explore a new architectural design. The term "microservices" has been one of the most prominent concepts in software architecture over the past few years. This prompted a discussion on whether we should adopt this architectural blueprint. While the decision sparked debate, weighing the pros and cons ultimately led us to this choice. This ADR serves to justify and highlight the reasons behind this decision.
+\newline
+\newline
+\textbf{Decision:}
+We have decided to use a microservices architecture to build EscapeDoom.
+\newline
+The primary reasons for this decision are as follows:
+\begin{itemize}
+    \item Team Interest: The team has a shared interest in designing and implementing a microservices-based system.
+    \item Efficient Parallel Development: Microservices enable the team to work efficiently in parallel by dividing responsibilities across services. Given that we have one semester, this allows us to plan the contracts of each system effectively.
+    \item Handoff to Customer: The project will eventually be handed off to a customer who may want to modify or extend it. A microservices architecture provides modularity and makes the system easier to extend without requiring detailed knowledge of all components.
+\end{itemize}
+\textbf{Consequences:}
+\newline
+\newline
+While microservices offer significant benefits, they also introduce challenges:
+\begin{itemize}
+    \item Deployment Complexity: Deploying a microservices system, especially with Kubernetes, is not trivial. One of our five team members will need to focus heavily on writing deployment configurations.
+    \item Increased Operational Overhead: Logging and monitoring are more complex in a microservices architecture. These challenges must be addressed and resolved before handing over the project.
+\end{itemize}
+
+
+\subsection{Apache Kafka}
+\textbf{Status:} Proposed
+\newline
+\newline
+\textbf{Context:}
+Kafka is already used in the current system, but only for limited purposes, such as a single topic to handle code compilation events. The current implementation is basic but sufficient for existing requirements.
+The project is transitioning from a monolithic architecture to a microservices-based architecture. A scalable and reliable messaging system is essential for communication between microservices. Kafka is a strong choice for this purpose and offers additional benefits for managing event pipelines, which is important for coordinating events across services.
+Future plans include using Kafka for stream processing, such as real-time data processing and analytics. These future use cases support the decision to use Kafka as a long-term solution.
+\newline
+\newline
+\textbf{Decision:}
+Kafka will remain the central messaging system for the project.
+\newline
+\newline
+\textbf{Consequences:}
+\newline
+\newline
+Positive
+\begin{itemize}
+    \item Kafka ensures event persistence, avoiding data loss even if some services are temporarily unavailable.
+    \item It scales well, both in processing large amounts of data and supporting additional topics, which provides flexibility for a microservices architecture.
+    \item Kafka is a suitable option for microservice communication and event pipelines, helping to simplify the transition from a monolithic to a microservices architecture.
+    \item Kafka Streams provide a way to handle real-time data processing and analytics in the future.
+\end{itemize}
+Negative
+\begin{itemize}
+    \item Expanding the current Kafka implementation requires additional resources and expertise.
+    \item For the current simple use case, Kafka may seem overly complex compared to lighter messaging systems like RabbitMQ.
+    \item Managing Kafka, including partitioning, replication, and monitoring, adds technical complexity.
+\end{itemize}
+
+
+
+\subsection{API Gateway}
+\textbf{Status:} Proposed
+\newline
+\newline
+\textbf{Context:}
+The existing system is built using a monolithic architecture. 
+As we transition to a microservices architecture, the number of individual services increases, adding to the overall system complexity. 
+The new architecture introduces challenges in routing, authentication, and communication between external clients and internal microservices.
+To address these issues, we propose introducing an API Gateway. The primary role of an API Gateway is to act as a single entry point for external requests, abstracting and managing the complexity of the underlying microservices.
+\newline
+The API Gateway will serve as a centralized access point to simplify communication and provide essential functionalities like:
+\begin{itemize}
+    \item Routing: Directing incoming requests to the appropriate microservice.
+    \item Filtering: Pre-processing requests to ensure only valid and secure requests reach the backend.
+    \item Authentication \& Authorization: Ensuring only authenticated and authorized users can access protected resources.
+    \item Caching \& Throttling: Enhancing performance by caching frequently requested responses and protecting the system from being 
+    \item overwhelmed by too many requests.
+\end{itemize}
+\textbf{Consequences:}
+\newline
+\newline
+Positive
+\begin{itemize}
+    \item Microservices remain isolated and communicate indirectly, reducing interdependencies and allowing independent scaling or updates.
+    \item External clients only need to interact with a single entry point, reducing the complexity of client-side implementations.
+    \item All requests and responses pass through the API Gateway, enabling easier monitoring, troubleshooting, and analytics.
+\end{itemize}
+Negative
+\begin{itemize}
+    \item The API Gateway becomes a critical component, and its failure could disrupt the entire system.
+    \item If not scaled properly, the API Gateway could become a performance bottleneck, especially under high load.
+    \item Our team needs to acquire expertise in using and configuring the API Gateway, which could slow down the initial adoption
+\end{itemize}
+
+\subsection{WebSockets}
+\textbf{Status:} Accepted
+\newline
+\newline
+\textbf{Context:}
+The escape DOOM web application needs real-time communication between the server and multiple clients. The application involves collaborative puzzles, synchronized game state updates, and event-based interactions that must be broadcast to all participants without significant delays.\newline
+Several communication technologies were considered for achieving this functionality:
+\begin{itemize}
+    \item HTTP Polling: Inefficient due to the high frequency of requests needed to simulate
+real-time communication.
+    \item Server-Sent Events (SSE): One-directional communication from server to client,
+insufficient for bidirectional interaction.
+    \item WebSockets: Enables full-duplex, low-latency communication, well-suited for realtime, interactive applications.
+\end{itemize}
+\textbf{Decision:}
+We will use WebSockets as the primary communication protocol for real-time interactions within the escape DOOM application for the following reasons
+
+\begin{enumerate}
+    \item Low Latency: WebSockets provide near-instantaneous communication between the server and clients, critical for the fast-paced and interactive nature of the application.
+    \item Bidirectional Communication: Both server-to-client and client-to-server communication are supported, enabling features like synchronized game state updates and dynamic puzzle interactions.
+    \item Scalability: Compatible with the planned microservice architecture and supports multiple concurrent connections with low resource usage.
+    \item Cross-Browser Support: WebSocket APIs are natively supported by modern browsers, ensuring compatibility with most client devices.
+\end{enumerate}
+\textbf{Consequences:}
+\newline
+\newline
+Positive
+\begin{itemize}
+    \item Enhanced user experience with seamless real-time interactions.
+    \item Improved scalability and performance compared to polling methods.
+\end{itemize}
+Negative
+\begin{itemize}
+    \item Increased complexity in implementation.
+    \item Dependency on WebSocket libraries.
+\end{itemize}
+
+
+\subsection{Unified Frontend}
+\textbf{Status:} Accepted
+\newline
+\newline
+\textbf{Context:}
+The frontend is currently managed as a single repository and service that combines the `lector-portal` and `game-session` into a single-page application (SPA). The two options being considered are: separating the frontend into two distinct repositories or maintaining it as a unified repository.
+\newline
+\newline
+\textbf{Decision:}
+We will continue to maintain the frontend as a single repository.\newline
+Despite anticipating an FH-wide rollout, the expected request volume remains low enough that a single instance of the frontend will suffice. The additional complexity and overhead associated with creating and maintaining micro frontends would not justify the benefits, given the simplicity of maintaining a monolithic approach.
+\newline
+\newline
+\textbf{Consequences:}
+\begin{itemize}
+    \item Unlike the backend, the frontend will remain a monolithic application, which simplifies maintenance and avoids scalability concerns for the foreseeable future. 
+    \item The frontend will still require some form of wrapper or middleware to facilitate communication with the backend services.
+\end{itemize}
