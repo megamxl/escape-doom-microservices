@@ -6,18 +6,19 @@ import {useDraggable} from "@dnd-kit/core";
 import IconButton from "@mui/material/IconButton";
 import {nodeTypeClassMapper} from "@/app/game-session/session/_components/nodes/Node.tsx";
 import {CSS} from '@dnd-kit/utilities';
-import {Card, CardContent, CardHeader, Dialog, Typography} from "@mui/material";
+import {Card, CardContent, CardHeader, Dialog} from "@mui/material";
 import BasicNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/BasicNodeForm.tsx";
 import ZoomNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ZoomNodeForm.tsx";
 import {toCapitalCase} from "@/app/utils/stringFormatting.ts";
 
 type DnDNodeProps = {
     node: NodeDTO
+    onDeletion: (nodeId: string) => void
     className?: string;
     style?: React.CSSProperties
 }
 
-const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
+const NodeDraggable = ({node, onDeletion, className, style}: DnDNodeProps) => {
     const {
         attributes,
         listeners,
@@ -71,11 +72,11 @@ const NodeDraggable = ({node, className, style}: DnDNodeProps) => {
                 <Card>
                     <CardHeader title={formatTitle()} sx={{backgroundColor: styling.color, height: '4rem'}}/>
                     <CardContent className="w-full">
-                        { (node.node_specifics.node_type === "CONSOLE" || node.node_specifics.node_type === "DETAIL") && <>
-                            <BasicNodeForm node={nodeState} setNode={setNodeState} />
-                        </>  }
-                        { node.node_specifics.node_type === "ZOOM" &&
-                            <ZoomNodeForm node={nodeState} setNode={setNodeState} />
+                        {(node.node_specifics.node_type === "CONSOLE" || node.node_specifics.node_type === "DETAIL") && <>
+                            <BasicNodeForm node={nodeState} setNode={setNodeState} onDeletion={onDeletion} />
+                        </>}
+                        {node.node_specifics.node_type === "ZOOM" &&
+                            <ZoomNodeForm onDeletion={onDeletion} node={nodeState} setNode={setNodeState}/>
                         }
                     </CardContent>
                 </Card>

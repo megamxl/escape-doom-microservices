@@ -6,6 +6,7 @@ import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import {
     TemplateDTO,
     useCreateLevelHook,
+    useCreateNodeHook,
     useGetTemplateHook,
     useUpdateNodeHook,
     useUpdateTemplateHook
@@ -32,6 +33,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
     const {mutate: updateTemplate} = useUpdateTemplateHook()
     const {mutate: updateNode} = useUpdateNodeHook()
     const {mutate: createLevel} = useCreateLevelHook()
+    const {mutate: createNode} = useCreateNodeHook()
 
     const [template, setTemplate] = useState<TemplateDTO>()
     const [selectedScene, setSelectedScene] = useState<SceneDTO | undefined>()
@@ -162,23 +164,34 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                     return;
                 }
                 setSceneNodes(updatedNodes)
-                updateNode({nodeId: toUpdate.node_id, data: toUpdate })
+                updateNode({nodeId: toUpdate.node_id, data: toUpdate})
             } else {
-                const newNode: NodeDTO = {
+                const newNodeDTO: NodeDTO = {
                     ...node,
                     position: {
                         top_percentage: topPercentage,
                         left_percentage: leftPercentage
                     }
                 }
-                if (!newNode.node_id) {
-                    console.error("No node-id was found when trying to update node", newNode)
+                if (!newNodeDTO.node_id) {
+                    console.error("No node-id was found when trying to update node", newNodeDTO)
                     return;
                 }
-                setSceneNodes(prev => [...prev, newNode])
-                updateNode({nodeId: newNode.node_id, data: newNode })
+                createNode({data: newNodeDTO}, {
+                    onSuccess: (createdNode) => {
+                        console.log(createdNode)
+                        setSceneNodes(prev => [...prev, createdNode])
+                    },
+                    onError: (err) => {
+                        console.error(err)
+                    }
+                })
             }
         }
+    }
+
+    const handleNodeDeletion = (nodeId: string) => {
+        setSceneNodes(prev => prev.filter(n => n.node_id !== nodeId))
     }
 
     if (isLoading || !template) return <Skeleton variant="rectangular" width="100%" height="100vh"/>;
@@ -250,6 +263,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                         {selectedScene && <DnDDroppable
                             key={selectedScene.scene_id}
                             selectedScene={selectedScene}
+                            onDeletion={handleNodeDeletion}
                             elements={sceneNodes}>
                         </DnDDroppable>
                         }
@@ -258,11 +272,15 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                             {Object.keys(nodeTypeEnum).map(type => {
                                 const key = nanoid(11)
                                 return (
-                                    <NodeDraggable key={key} node={{
-                                        node_id: key,
-                                        node_specifics: {node_type: type as NodeTypeEnum},
-                                        scene_id: selectedScene?.scene_id
-                                    }}/>
+                                    <NodeDraggable
+                                        key={key}
+                                        node={{
+                                            node_id: key,
+                                            node_specifics: {node_type: type as NodeTypeEnum},
+                                            scene_id: selectedScene?.scene_id
+                                        }}
+                                        onDeletion={handleNodeDeletion}
+                                    />
                                 )
                             })}
                         </div>

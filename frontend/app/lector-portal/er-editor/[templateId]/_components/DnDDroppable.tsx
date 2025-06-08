@@ -13,9 +13,10 @@ import NodeDraggable from "@/app/lector-portal/er-editor/[templateId]/_component
 type DroppableProps = {
     selectedScene: SceneDTO
     elements: NodeDTO[]
+    onDeletion: (nodeId: string) => void
 }
 
-const DnDDroppable = ({selectedScene, elements}: DroppableProps) => {
+const DnDDroppable = ({selectedScene, onDeletion, elements}: DroppableProps) => {
     const {isOver, setNodeRef} = useDroppable({
         id: 'droppable'
     })
@@ -82,8 +83,10 @@ const DnDDroppable = ({selectedScene, elements}: DroppableProps) => {
                                 left: `${node.position?.left_percentage}%`,
                                 transform: 'translate(-50%, -50%)'
                             }}
-                               key={node.node_id}
-                               node={node} />
+                                           key={node.node_id}
+                                           node={node}
+                                           onDeletion={onDeletion}
+                            />
                         )
                     })}
                 </div> :

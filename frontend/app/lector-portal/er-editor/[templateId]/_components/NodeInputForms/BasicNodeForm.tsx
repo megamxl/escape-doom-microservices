@@ -1,13 +1,17 @@
+'use client'
+
 import React from 'react';
 import {Button, FormControl, Stack, TextField} from "@mui/material";
 import {NodeDTO, NodeSpecificsDTO} from "@/app/gen/player";
 import SaveIcon from '@mui/icons-material/Save';
+import DeleteIcon from '@mui/icons-material/Delete';
 import ConsoleNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ConsoleNodeForm.tsx";
-import {useCreateNodeHook, useUpdateNodeHook} from "@/app/gen/data";
+import {useCreateNodeHook, useDeleteNodeHook, useUpdateNodeHook} from "@/app/gen/data";
 
 type BasicNodeFormProps = {
     node: NodeDTO,
     setNode:  React.Dispatch<React.SetStateAction<NodeDTO>>
+    onDeletion: (nodeId: string) => void
 };
 
 export type NodeSpecificProps = {
@@ -15,10 +19,11 @@ export type NodeSpecificProps = {
     setter: React.Dispatch<React.SetStateAction<NodeDTO>>
 }
 
-const BasicNodeForm = ({node, setNode}: BasicNodeFormProps) => {
+const BasicNodeForm = ({node, onDeletion, setNode}: BasicNodeFormProps) => {
 
     const {mutate: updateNode} = useUpdateNodeHook()
     const {mutate: createNode} = useCreateNodeHook()
+    const {mutate: removeNode} = useDeleteNodeHook()
 
     const renderNodeSpecificForm = () => {
         switch (node.node_specifics?.node_type) {
@@ -54,6 +59,17 @@ const BasicNodeForm = ({node, setNode}: BasicNodeFormProps) => {
         })
     }
 
+    const handleNodeDeletion = () => {
+        removeNode({nodeId: node.node_id ?? ''}, {
+            onSuccess: () => {
+                onDeletion(node.node_id ?? '')
+            },
+            onError: (error) => {
+                console.error("Deleting node failed", error)
+            }
+        })
+    }
+
     return (
         <FormControl fullWidth>
             <Stack direction="row" spacing={4}>
@@ -63,7 +79,7 @@ const BasicNodeForm = ({node, setNode}: BasicNodeFormProps) => {
                                onChange={
                                    (e) => setNode(prev => ({...prev, title: e.target.value}))
                                }
-                               value={node.title}
+                               value={node.title ?? ''}
                                variant="outlined"
                                required/>
                     <TextField label="Description"
@@ -71,15 +87,20 @@ const BasicNodeForm = ({node, setNode}: BasicNodeFormProps) => {
                                    (e) => setNode(prev => ({...prev, description: e.target.value}))
                                }
                                variant="outlined"
-                               value={node.description}
+                               value={node.description  ?? ''}
                                required/>
                 </Stack> }
                 {renderNodeSpecificForm()}
             </Stack>
             <br/>
-            <Button variant="contained" startIcon={<SaveIcon/>} onClick={handleNodeUpdate}>
-                Save
-            </Button>
+            <Stack direction="row" spacing={4}>
+                <Button fullWidth variant="contained" color="error" startIcon={<DeleteIcon/>} onClick={handleNodeDeletion}>
+                    Delete
+                </Button>
+                <Button fullWidth variant="contained" color="success" startIcon={<SaveIcon/>} onClick={handleNodeUpdate}>
+                    Save
+                </Button>
+            </Stack>
         </FormControl>
     );
 };

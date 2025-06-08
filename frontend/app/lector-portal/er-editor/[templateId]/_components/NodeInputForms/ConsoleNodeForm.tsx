@@ -19,7 +19,7 @@ const ConsoleNodeForm = ({nodeSpecifics, setter}: NodeSpecificProps) => {
                 label="Return description"
                 variant="outlined"
                 rows="3"
-                value={consoleSpecifics.return_description}
+                value={consoleSpecifics.return_description ?? ''}
             />
             <TextField
                 onChange={(e) => {
@@ -29,7 +29,7 @@ const ConsoleNodeForm = ({nodeSpecifics, setter}: NodeSpecificProps) => {
                 label="Constraints"
                 variant="outlined"
                 rows="3"
-                value={consoleSpecifics.constraints}
+                value={consoleSpecifics.constraints ?? ''}
             />
             <TextField
                 onChange={(e) => {
@@ -39,7 +39,7 @@ const ConsoleNodeForm = ({nodeSpecifics, setter}: NodeSpecificProps) => {
                 required
                 variant="outlined"
                 rows="3"
-                value={consoleSpecifics.example}
+                value={consoleSpecifics.example ?? ''}
             />
         </Stack>
     );
