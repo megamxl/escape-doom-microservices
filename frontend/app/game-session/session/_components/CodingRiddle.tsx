@@ -14,13 +14,14 @@ import {
 } from "@/app/gen/player";
 import {GameSessionData} from "@/app/utils/game-session-handler.ts";
 import {CompileStatus} from "@/app/enums/CompileStatus.ts";
+import WinPopUp from "@/app/game-session/session/_components/WinPopUp.tsx";
 
 type CodingRiddleProps = {
     riddlePassed: CodingRiddleDTO
     session: GameSessionData
 }
 
-type RiddleInfo ={
+type RiddleInfo = {
     riddle: CodingRiddleDTO,
     selectedLanguage: string,
     code: string,
@@ -30,6 +31,8 @@ type RiddleInfo ={
 }
 
 const CodingRiddle = ({riddlePassed, session}: CodingRiddleProps) => {
+
+    const [showWinPopup, setShowWinPopup] = useState(false);
 
     const [riddleInfo, setRiddleInfo] = useState<RiddleInfo>({
         riddle: riddlePassed,
@@ -46,8 +49,9 @@ const CodingRiddle = ({riddlePassed, session}: CodingRiddleProps) => {
     const monacoEditorRef = useRef()
 
 
-    const handleLanguageChange =  (event: SelectChangeEvent) => {
-        setRiddleInfo(prev => ({...prev,
+    const handleLanguageChange = (event: SelectChangeEvent) => {
+        setRiddleInfo(prev => ({
+            ...prev,
             selectedLanguage: event.target.value,
             code: riddleInfo.riddle.code[event.target.value]
         }))
@@ -58,7 +62,10 @@ const CodingRiddle = ({riddlePassed, session}: CodingRiddleProps) => {
     }
 
     const handleCodeChange = (value: string) => {
-        setRiddleInfo(prev => ({...prev,
+        //TODO save to local-storge
+
+        setRiddleInfo(prev => ({
+            ...prev,
             code: value
         }))
     }
@@ -73,7 +80,8 @@ const CodingRiddle = ({riddlePassed, session}: CodingRiddleProps) => {
     const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
 
     const handleCodeSubmission = async () => {
-        setRiddleInfo(prev => ({...prev,
+        setRiddleInfo(prev => ({
+            ...prev,
             loadingExecResponse: true
         }))
 
@@ -98,13 +106,14 @@ const CodingRiddle = ({riddlePassed, session}: CodingRiddleProps) => {
             if (refetchData.data !== undefined && refetchData.data.status !== escapeRoomResultStatusEnum.WAITING) {
 
                 if (refetchData.data.status === CompileStatus.WON) {
-                    //setShowWinPopup(true)
+                    setShowWinPopup(true)
                     console.log("escapeRoom won")
                     return
                 }
 
                 console.log("Code compilation completed")
-                setRiddleInfo(prev => ({...prev,
+                setRiddleInfo(prev => ({
+                    ...prev,
                     codeExecutionResponse: refetchData.data,
                     loadingExecResponse: false
                 }))
@@ -116,74 +125,78 @@ const CodingRiddle = ({riddlePassed, session}: CodingRiddleProps) => {
     }
 
     return (
-        <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>
-            <EditorContainer>
-                <Stack direction="row" alignItems="center">
-                    <Typography mx={2}> Code </Typography>
-                    <FormControl variant="standard" size='small'>
-                        <Select
-                            labelId='languageSelect'
-                            value={riddleInfo.selectedLanguage}
-                            label="Language"
-                            onChange={handleLanguageChange}
-                            variant={"standard"}>
-                            {
-                                Object.keys(riddleInfo.riddle.code).map(language => {
-                                    return (
-                                        <MenuItem key={language}
-                                                  value={language}> {language[0]}{language.slice(1).toLowerCase()} </MenuItem>
-                                    )
-                                })
-                            }
-                        </Select>
-                    </FormControl>
+        <>
+            {showWinPopup && <WinPopUp roompin={riddleInfo.sessionData.roomPin}/>}
 
-                    <Tooltip title={riddleInfo.sessionData.playerName.slice(0, 1).toUpperCase()} arrow>
-                        <Avatar sx={{ml: "auto"}}>{riddleInfo.sessionData.playerName}</Avatar>
-                    </Tooltip>
-                </Stack>
-            </EditorContainer>
-            <EditorContainer sx={{flexGrow: 1, flexShrink: 1}}>
-                <Editor
-                    height="100%"
-                    width="30vw"
-                    language={riddleInfo.selectedLanguage.toLowerCase()}
-                    value={riddleInfo.code}
-                    onMount={handleEditorMount}
-                    onChange={handleCodeChange}
-                    theme={"vs-dark"}
-                    options={{
-                        wordWrap: 'on',
-                        minimap: {enabled: false},
-                        folding: false,
-                        lineNumbersMinChars: 3,
-                        scrollBeyondLastLine: false,
-                        automaticLayout: true,
-                    }}
-                />
-            </EditorContainer>
-            <EditorContainer>
-                <Stack direction="column">
-                    <Typography position={{sx: 'relative', lg: 'absolute'}}> Actions </Typography>
-                    <LoadingButton
-                        sx={{
-                            height: 60,
-                            width: 250,
-                            m: 1,
-                            alignSelf: 'center'
+            <Stack direction="column" height="100vh" maxWidth={"31.5vw"}>
+                <EditorContainer>
+                    <Stack direction="row" alignItems="center">
+                        <Typography mx={2}> Code </Typography>
+                        <FormControl variant="standard" size='small'>
+                            <Select
+                                labelId='languageSelect'
+                                value={riddleInfo.selectedLanguage}
+                                label="Language"
+                                onChange={handleLanguageChange}
+                                variant={"standard"}>
+                                {
+                                    Object.keys(riddleInfo.riddle.code).map(language => {
+                                        return (
+                                            <MenuItem key={language}
+                                                      value={language}> {language[0]}{language.slice(1).toLowerCase()} </MenuItem>
+                                        )
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
+
+                        <Tooltip title={riddleInfo.sessionData.playerName.slice(0, 1).toUpperCase()} arrow>
+                            <Avatar sx={{ml: "auto"}}>{riddleInfo.sessionData.playerName}</Avatar>
+                        </Tooltip>
+                    </Stack>
+                </EditorContainer>
+                <EditorContainer sx={{flexGrow: 1, flexShrink: 1}}>
+                    <Editor
+                        height="100%"
+                        width="30vw"
+                        language={riddleInfo.selectedLanguage.toLowerCase()}
+                        value={riddleInfo.code}
+                        onMount={handleEditorMount}
+                        onChange={handleCodeChange}
+                        theme={"vs-dark"}
+                        options={{
+                            wordWrap: 'on',
+                            minimap: {enabled: false},
+                            folding: false,
+                            lineNumbersMinChars: 3,
+                            scrollBeyondLastLine: false,
+                            automaticLayout: true,
                         }}
-                        startIcon={<PlayArrow/>}
-                        variant='contained'
-                        loading={riddleInfo.loadingExecResponse}
-                        loadingPosition="start"
-                        onClick={handleCodeSubmission}
-                    >
-                        <span> Execute </span>
-                    </LoadingButton>
-                </Stack>
-            </EditorContainer>
-            <CodeExectuionDisplay codeExecResponse={riddleInfo.codeExecutionResponse}/>
-        </Stack>
+                    />
+                </EditorContainer>
+                <EditorContainer>
+                    <Stack direction="column">
+                        <Typography position={{sx: 'relative', lg: 'absolute'}}> Actions </Typography>
+                        <LoadingButton
+                            sx={{
+                                height: 60,
+                                width: 250,
+                                m: 1,
+                                alignSelf: 'center'
+                            }}
+                            startIcon={<PlayArrow/>}
+                            variant='contained'
+                            loading={riddleInfo.loadingExecResponse}
+                            loadingPosition="start"
+                            onClick={handleCodeSubmission}
+                        >
+                            <span> Execute </span>
+                        </LoadingButton>
+                    </Stack>
+                </EditorContainer>
+                <CodeExectuionDisplay codeExecResponse={riddleInfo.codeExecutionResponse}/>
+            </Stack>
+        </>
     )
 };
 

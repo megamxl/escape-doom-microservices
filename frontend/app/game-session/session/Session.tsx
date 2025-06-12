@@ -21,9 +21,6 @@ import {GameSessionData, getSessionData, removeGameSession} from "@/app/utils/ga
 import CodingRiddle from "@/app/game-session/session/_components/CodingRiddle.tsx";
 
 const Session = () => {
-    const appRouterInstance = useRouter();
-
-    const [showWinPopup, setShowWinPopup] = useState(false)
 
     const [currentScene, setCurrentScene] = useState<SceneDTO>()
     const [sessionData, setSessionData] = useState<GameSessionData>({
@@ -142,29 +139,6 @@ const Session = () => {
                     }
                 </div>
             </Stack>
-
-
-            <Dialog
-                open={showWinPopup}
-                TransitionComponent={Grow}
-                transitionDuration={500}
-                keepMounted
-                onClose={() => setShowWinPopup(false)}
-            >
-                <DialogTitle>🎉 You Escaped! 🎉</DialogTitle>
-                <DialogContent>
-                    You’ve solved the escape room. That was awesome!
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        setShowWinPopup(false)
-                        removeGameSession()
-                        appRouterInstance.push(`${GAME_SESSION_APP_PATHS.LEADERBOARD}/${sessionData?.roomPin}`)
-                    }} autoFocus>
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </>
 
     );

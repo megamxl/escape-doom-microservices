@@ -81,6 +81,7 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
             String responseBody = response.body().string();
             PistonResponse result = gson.fromJson(responseBody, PistonResponse.class);
 
+
             if (result.getRun().getCode() == 0) {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.COMPILED);
                 if (result.getRun().getOutput() == null) {
@@ -90,7 +91,7 @@ public class CodeCompilerApiInterfaceImpl implements CodeCompilerInterface {
                 }
             } else {
                 attempt.setStatus(EscapeRoomResult.StatusEnum.ERROR);
-                attempt.setOutput(result.run.stderr);
+                attempt.setOutput(result.run.output);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -72,14 +72,14 @@ public class GamePlayService {
         at.escapedoom.spring.communication.data.model.LevelDTO template = getFullLvl(userIdentifier);
 
         switch (template.getRiddle().getRiddle().getActualInstance()) {
-        case CodingRiddleDTO coding -> {
-            List<String> attempts = RiddleToFunctionMapper.riddleToBackendFunction(coding, escapeRoomSolutionSubmition);
-            escapeRoomSolutionSubmition.setSolution(attempts.get(0));
+            case CodingRiddleDTO coding -> {
+                List<String> attempts = RiddleToFunctionMapper.riddleToBackendFunction(coding, escapeRoomSolutionSubmition);
+                escapeRoomSolutionSubmition.setSolution(attempts.get(0));
 
-            codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
-        }
-        default -> throw new IllegalStateException(
-                "Unexpected value: " + template.getRiddle().getRiddle().getActualInstance());
+                codeCompilerInterface.queueCodeAttempt(userIdentifier, escapeRoomSolutionSubmition);
+            }
+            default -> throw new IllegalStateException(
+                    "Unexpected value: " + template.getRiddle().getRiddle().getActualInstance());
         }
     }
 
@@ -96,35 +96,37 @@ public class GamePlayService {
 
         EscapeRoomResult.StatusEnum status = EscapeRoomResult.StatusEnum.COMPILED;
 
-        // if (template.getRiddle().getExpectedOutput().trim().equals(byPlayerUUID.get().getOutput().trim())) {
-        // int numberOfLvls = escapeRoomTemplateRepositoryService
-        // .getNumberOfLevels(UUID.fromString(template.getTemplateId()));
-        //
-        // if (numberOfLvls > byPlayerUUID.get().getCurrentEscapeRoomLevel() + 1) {
-        // userProgressRepository.updateUserLvl(userIdentifier);
-        // status = EscapeRoomResult.StatusEnum.SUCCESS;
-        // } else {
-        // status = EscapeRoomResult.StatusEnum.WON;
-        // }
-        // userProgressRepository.updateUserProgress(userIdentifier, POINTS_PER_LVL);
-        //
-        // Optional<UserProgress> userProgress = userProgressRepository
-        // .getUserProgressByUserId(byPlayerUUID.get().getPlayerUUID());
-        //
-        // if (userProgress.isEmpty()) {
-        // throw new NoSuchElementException(
-        // "Can't find user progress with identifier " + byPlayerUUID.get().getPlayerUUID());
-        // }
-        //
-        // Result result = new Result().builder().awardedPoints(POINTS_PER_LVL.doubleValue())
-        // .escapeRoomLevel(byPlayerUUID.get().getCurrentEscapeRoomLevel())
-        // .input(byPlayerUUID.get().getCodeSubmition()).solvedLevelAt(LocalDateTime.now())
-        // .userProgress(userProgress.get()).build();
-        // resultRepository.save(result);
-        //
-        // } else {
-        // status = byPlayerUUID.get().getStatus();
-        // }
+        //TODO support more than coding
+
+        if (byPlayerUUID.get().getStatus() == EscapeRoomResult.StatusEnum.COMPILED) {
+            int numberOfLvls = escapeRoomTemplateRepositoryService
+                    .getNumberOfLevels(UUID.fromString(template.getTemplateId()));
+
+            if (numberOfLvls > byPlayerUUID.get().getCurrentEscapeRoomLevel() + 1) {
+                userProgressRepository.updateUserLvl(userIdentifier);
+                status = EscapeRoomResult.StatusEnum.SUCCESS;
+            } else {
+                status = EscapeRoomResult.StatusEnum.WON;
+            }
+            userProgressRepository.updateUserProgress(userIdentifier, POINTS_PER_LVL);
+
+            Optional<UserProgress> userProgress = userProgressRepository
+                    .getUserProgressByUserId(byPlayerUUID.get().getPlayerUUID());
+
+            if (userProgress.isEmpty()) {
+                throw new NoSuchElementException(
+                        "Can't find user progress with identifier " + byPlayerUUID.get().getPlayerUUID());
+            }
+
+            Result result = new Result().builder().awardedPoints(POINTS_PER_LVL.doubleValue())
+                    .escapeRoomLevel(byPlayerUUID.get().getCurrentEscapeRoomLevel())
+                    .input(byPlayerUUID.get().getCodeSubmition()).solvedLevelAt(LocalDateTime.now())
+                    .userProgress(userProgress.get()).build();
+            resultRepository.save(result);
+
+        } else {
+            status = byPlayerUUID.get().getStatus();
+        }
 
         EscapeRoomResult build = EscapeRoomResult.builder().status(status).output(byPlayerUUID.get().getOutput())
                 .build();
