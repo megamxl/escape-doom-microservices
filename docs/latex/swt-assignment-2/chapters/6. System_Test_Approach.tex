@@ -1,0 +1,55 @@
+\section{System Test Approach}
+\label{section-system-test-approach}
+
+System testing plays a critical role in validating that all components of the Escape Doom platform work together as expected from an end-user perspective. While unit and integration tests focus on isolated components and internal logic, system tests verify real-world behavior across services, interfaces, and layers.
+
+\subsection*{Test Basis}
+System tests are based on:
+\begin{itemize}
+    \item Functional specifications
+    \item Use cases for both student and lecturer roles
+    \item Previously identified product risks and quality goals
+\end{itemize}
+
+\subsection*{Test Objects}
+\begin{itemize}
+    \item Complete microservice-based application stack (frontend, backend, gateway)
+    \item End-to-end flows such as:
+    \begin{itemize}
+        \item Joining and playing an escape room
+        \item Submitting and evaluating code
+        \item Viewing and updating the leaderboard
+        \item Session management by instructors
+    \end{itemize}
+\end{itemize}
+
+\subsection*{System Testing Strategy}
+
+The system tests are primarily conducted through **end-to-end (E2E) automation**, simulating realistic user behavior across the application stack. These tests aim to ensure that key user-facing functionality remains intact during development cycles.
+
+\begin{itemize}
+    \item \textbf{E2E Tests with Playwright and Selenium:} Used to simulate browser-based interaction scenarios involving students and lecturers. This ensures that critical user workflows (e.g., login, code submission, viewing leaderboards) work across services and through the UI.
+
+    \item \textbf{MockMVC Tests:} Used within backend services to simulate HTTP requests at the controller level. This allows us to test edge cases, error handling, and validation logic without requiring a full UI-driven scenario.
+\end{itemize}
+
+\subsection*{Test Tools}
+The team has agreed on the following tools to support system and controller-level testing:
+
+\begin{itemize}
+    \item \textbf{Playwright / Selenium} – For simulating real user actions and full-stack testing.
+    \item \textbf{MockMVC} – For controller tests, especially useful where UI coverage is not sufficient.
+    \item \textbf{TestContainers} – To create realistic, isolated test environments with actual database instances.
+    \item \textbf{AssertJ} – For fluent and human-readable assertions in all Java-based tests.
+\end{itemize}
+
+\subsection*{Why System Tests Are Important}
+
+Given our microservice architecture and external dependencies (e.g., Code Executor, Authentication Provider), integration and contract errors may not be caught at the unit level. System tests help verify:
+
+\begin{itemize}
+    \item Cross-service communication and data flow
+    \item User-visible behavior consistency
+    \item Fault tolerance and error handling under real conditions
+    \item Confidence in critical flows such as progress tracking and leaderboard updates
+\end{itemize}

@@ -136,6 +136,7 @@ class NodeServiceTest extends PostgresTestConfig {
     }
 
     @Test
+
     @Transactional
     void testUpdateNode() {
 

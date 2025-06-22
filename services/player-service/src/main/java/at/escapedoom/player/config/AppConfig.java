@@ -13,6 +13,7 @@ import at.escapedoom.player.service.interfaces.EscapeRoomSessionRepositoryServic
 import at.escapedoom.spring.communication.session.invoker.ApiClient;
 
 import at.escapedoom.spring.redis.RedisConfig;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +29,7 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
 @Configuration
 @Profile("!test")
+@Slf4j
 public class AppConfig {
 
     @Value("${escapedoom.communication.session-api-url}")
@@ -45,11 +47,13 @@ public class AppConfig {
 
     @Bean
     public SessionApi getSessionApi(@Autowired OkHttpClient client) {
+        log.info("Using SessionApi Url: {}", sessionApiUrl);
         return new SessionApi(new ApiClient(client).setBasePath(sessionApiUrl));
     }
 
     @Bean
     public TemplateApi getTemplateApi(@Autowired OkHttpClient client) {
+        log.info("Using TemplateApi Url: {}", dataApiUrl);
         return new TemplateApi(
                 new at.escapedoom.spring.communication.data.invoker.ApiClient(client).setBasePath(dataApiUrl));
     }
