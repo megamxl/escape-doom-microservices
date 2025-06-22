@@ -157,27 +157,27 @@ services:
                   - TokenRelay=
                 routes:
                   - id: data-api
-                    uri: http://data-api-svc.default.svc.cluster.local:8090
+                    uri: http://data-api-svc.escape.svc.cluster.local:8090
                     predicates:
                       - Path=/data-api/**
                   - id: session-api
-                    uri: http://session-api-svc.default.svc.cluster.local:8094
+                    uri: http://session-api-svc.escape.svc.cluster.local:8094
                     predicates:
                       - Path=/session-api/**
                   - id: player-api
-                    uri: http://player-api-svc.default.svc.cluster.local:8093
+                    uri: http://player-api-svc.escape.svc.cluster.local:8093
                     predicates:
                       - Path=/player-api/**
                   - id: leaderboard-api
-                    uri: http://leaderboard-api-svc.default.svc.cluster.local:8092
+                    uri: http://leaderboard-api-svc.escape.svc.cluster.local:8092
                     predicates:
                       - Path=/leaderboard-api/**
                   - id: websocket_route
-                    uri: ws://player-api-svc.default.svc.cluster.local:8093
+                    uri: ws://player-api-svc.escape.svc.cluster.local:8093
                     predicates:
                       - Path=/player-api/gs-guide-websocket
                   - id: frontend
-                    uri: http://frontend-svc.default.svc.cluster.local:3000
+                    uri: http://frontend-svc.escape.svc.cluster.local:3000
                     predicates:
                       - Path= /frontend/**
 
@@ -253,7 +253,7 @@ services:
       application.yaml: |-
         spring:
           datasource:
-            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            url: jdbc:postgresql://esc-postgresql.escape.svc.cluster.local/main
             username: admin
             password: admin
           security:
@@ -333,7 +333,7 @@ services:
       application.yaml: |-
         spring:
           datasource:
-            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            url: jdbc:postgresql://esc-postgresql.escape.svc.cluster.local/main
             username: admin
             password: admin
           security:
@@ -343,7 +343,7 @@ services:
                   jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
         escapedoom:
           redis:
-            host: esc-redis-master.default.svc.cluster.local
+            host: esc-redis-master.escape.svc.cluster.local
             port: 6379
 
   - name: player-api
@@ -417,7 +417,7 @@ services:
       application.yaml: |-
         spring:
           datasource:
-            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            url: jdbc:postgresql://esc-postgresql.escape.svc.cluster.local/main
             username: admin
             password: admin
           security:
@@ -427,11 +427,11 @@ services:
                   jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
         escapedoom:
           redis:
-            host: esc-redis-master.default.svc.cluster.local
+            host: esc-redis-master.escape.svc.cluster.local
             port: 6379
           communication:
-            session-api-url: http://gateway-svc.default.svc.cluster.local:8081/session-api/v1
-            data-api-url: http://gateway-svc.default.svc.cluster.local:8081/data-api/v1
+            session-api-url: http://gateway-svc.escape.svc.cluster.local:8081/session-api/v1
+            data-api-url: http://gateway-svc.escape.svc.cluster.local:8081/data-api/v1
 
   - name: leaderboard-api
     replicaCount: 1
@@ -504,7 +504,7 @@ services:
       application.yaml: |-
         spring:
           datasource:
-            url: jdbc:postgresql://esc-postgresql.default.svc.cluster.local/main
+            url: jdbc:postgresql://esc-postgresql.escape.svc.cluster.local/main
             username: admin
             password: admin
           security:
@@ -514,11 +514,11 @@ services:
                   jwk-set-uri: https://kc.helmheim.de/realms/escape-doom/protocol/openid-connect/certs
         escapedoom:
           redis:
-            host: esc-redis-master.default.svc.cluster.local
+            host: esc-redis-master.escape.svc.cluster.local
             port: 6379
           communication:
-            session-api-url: http://gateway-svc.default.svc.cluster.local:8081/session-api/v1
-            data-api-url: http://gateway-svc.default.svc.cluster.local:8081/data-api/v1
+            session-api-url: http://gateway-svc.escape.svc.cluster.local:8081/session-api/v1
+            data-api-url: http://gateway-svc.escape.svc.cluster.local:8081/data-api/v1
 
   - name: frontend
     replicaCount: 1
@@ -571,10 +571,15 @@ services:
       maxReplicas: 100
       targetCPUUtilizationPercentage: 80
 
-    volumes: []
+    volumes:
+      - name: config-volume
+        secret:
+          secretName: frontend-secret
 
-    volumeMounts: []
-
+    volumeMounts:
+      - name: config-volume
+        mountPath: .env.development
+        subPath: .env.development
     nodeSelector: { }
 
     tolerations: [ ]
@@ -582,5 +587,15 @@ services:
     affinity: { }
 
     secret:
-      application.yaml: |-
-        empty
+      .env.development: |-
+        NEXT_PUBLIC_GW_URI=https://helmheim.de/gw
+        NEXT_PUBLIC_LEADERBOARD_SERVICE_URI="${NEXT_PUBLIC_GW_URI}/leaderboard-api/v1/leaderboard/"
+        NEXT_PUBLIC_DATA_SERVICE_URI="${NEXT_PUBLIC_GW_URI}/data-api/v1/"
+        NEXT_PUBLIC_GATEWAY_URI="${NEXT_PUBLIC_GW_URI}/gateway-api/v1/"
+        NEXT_PUBLIC_PLAYER_URI="${NEXT_PUBLIC_GW_URI}/player-api/v1/"
+        NEXT_PUBLIC_SESSION_URI="${NEXT_PUBLIC_GW_URI}/session-api/v1/"
+        
+        NEXT_PUBLIC_LECTOR_PORTAL_BASE_URL=http://localhost:8080/api/v1
+        NEXT_PUBLIC_GAME_SESSION_BASE_URL=http://localhost:8090/api
+        NEXT_PUBLIC_WEB_URL=https://helmheim.de/gw/frontend
+        NEXT_PUBLIC_WEB_SOCKETS=ws://localhost:8090
