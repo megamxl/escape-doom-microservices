@@ -48,3 +48,9 @@ spring:
           uri: http://localhost:3000
           predicates:
             - Path= /frontend/**
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
