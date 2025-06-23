@@ -35,7 +35,7 @@ const ConsoleNodeDetails = ({specifics, desc}: { specifics: ConsoleNodeSpecifics
 
                     <div>
                         <Typography variant="h6" fontWeight="bold" mb={0.5}> Example </Typography>
-                        <Typography> {example} </Typography>
+                        <Typography fontFamily='monospace'> {example} </Typography>
                     </div>
                 </Stack>
             </Paper>

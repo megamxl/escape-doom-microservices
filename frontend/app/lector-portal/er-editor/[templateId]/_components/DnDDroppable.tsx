@@ -14,9 +14,10 @@ type DroppableProps = {
     selectedScene: SceneDTO
     elements: NodeDTO[]
     onDeletion: (nodeId: string) => void
+    onImageUpload: (imageUri: string) => void
 }
 
-const DnDDroppable = ({selectedScene, onDeletion, elements}: DroppableProps) => {
+const DnDDroppable = ({selectedScene, onImageUpload, onDeletion, elements}: DroppableProps) => {
     const {isOver, setNodeRef} = useDroppable({
         id: 'droppable'
     })
@@ -47,8 +48,9 @@ const DnDDroppable = ({selectedScene, onDeletion, elements}: DroppableProps) => 
                         sceneId: selectedScene.scene_id!,
                         data: {...selectedScene, background_image_uri: response.data.link}
                     }, {
-                        onSuccess: (response) => {
-                            console.log("Scene updated", response)
+                        onSuccess: (updateResponse) => {
+                            onImageUpload(updateResponse.background_image_uri ?? "")
+                            console.log("Scene updated", updateResponse)
                         },
                         onError: (error) => {
                             console.error("Updating scene failed:", error)

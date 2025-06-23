@@ -194,6 +194,10 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
         setSceneNodes(prev => prev.filter(n => n.node_id !== nodeId))
     }
 
+    const handleSceneImageSet = (image_uri: string) => {
+        setSelectedScene(prev => ({...prev, background_image_uri: image_uri}))
+    }
+
     if (isLoading || !template) return <Skeleton variant="rectangular" width="100%" height="100vh"/>;
 
     return (
@@ -264,6 +268,7 @@ const EscapeRoomEditor = ({templateId}: EditorProps) => {
                             key={selectedScene.scene_id}
                             selectedScene={selectedScene}
                             onDeletion={handleNodeDeletion}
+                            onImageUpload={handleSceneImageSet}
                             elements={sceneNodes}>
                         </DnDDroppable>
                         }
