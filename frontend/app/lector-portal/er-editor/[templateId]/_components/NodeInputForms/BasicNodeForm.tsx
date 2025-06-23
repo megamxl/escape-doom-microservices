@@ -7,6 +7,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConsoleNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ConsoleNodeForm.tsx";
 import {useCreateNodeHook, useDeleteNodeHook, useUpdateNodeHook} from "@/app/gen/data";
+import DetailsNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/DetailsNodeForm.tsx";
 
 type BasicNodeFormProps = {
     node: NodeDTO,
@@ -30,7 +31,7 @@ const BasicNodeForm = ({node, onDeletion, setNode}: BasicNodeFormProps) => {
             case "CONSOLE":
                 return <ConsoleNodeForm nodeSpecifics={node.node_specifics} setter={setNode}/>
             case "DETAIL":
-                return
+                return <DetailsNodeForm />
         }
     }
 
@@ -86,6 +87,8 @@ const BasicNodeForm = ({node, onDeletion, setNode}: BasicNodeFormProps) => {
                                onChange={
                                    (e) => setNode(prev => ({...prev, description: e.target.value}))
                                }
+                               multiline
+                               minRows={2}
                                variant="outlined"
                                value={node.description  ?? ''}
                                required/>
