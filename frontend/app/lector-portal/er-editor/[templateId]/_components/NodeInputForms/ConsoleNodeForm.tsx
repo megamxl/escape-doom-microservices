@@ -2,13 +2,15 @@
 
 import React from 'react';
 import {Stack, TextField} from "@mui/material";
-import {
-    NodeSpecificProps
-} from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/BasicNodeForm.tsx";
 import {ConsoleNodeSpecificsDTO} from "@/app/gen/data";
+import {NodeDTO} from "@/app/gen/player";
 
-const ConsoleNodeForm = ({nodeSpecifics, setter}: NodeSpecificProps) => {
-    const consoleSpecifics = nodeSpecifics as ConsoleNodeSpecificsDTO
+export type ConsoleNodeSpecificProps = {
+    nodeSpecifics: ConsoleNodeSpecificsDTO
+    setter: React.Dispatch<React.SetStateAction<NodeDTO>>
+}
+
+const ConsoleNodeForm = ({nodeSpecifics, setter}: ConsoleNodeSpecificProps) => {
     return (
         <Stack className="w-full" spacing={2}>
             <TextField
@@ -19,7 +21,7 @@ const ConsoleNodeForm = ({nodeSpecifics, setter}: NodeSpecificProps) => {
                 label="Return description"
                 variant="outlined"
                 rows="3"
-                value={consoleSpecifics.return_description ?? ''}
+                value={nodeSpecifics.return_description}
             />
             <TextField
                 onChange={(e) => {
@@ -29,7 +31,7 @@ const ConsoleNodeForm = ({nodeSpecifics, setter}: NodeSpecificProps) => {
                 label="Constraints"
                 variant="outlined"
                 rows="3"
-                value={consoleSpecifics.constraints ?? ''}
+                value={nodeSpecifics.constraints}
             />
             <TextField
                 onChange={(e) => {
@@ -39,7 +41,7 @@ const ConsoleNodeForm = ({nodeSpecifics, setter}: NodeSpecificProps) => {
                 required
                 variant="outlined"
                 rows="3"
-                value={consoleSpecifics.example ?? ''}
+                value={nodeSpecifics.example}
             />
         </Stack>
     );

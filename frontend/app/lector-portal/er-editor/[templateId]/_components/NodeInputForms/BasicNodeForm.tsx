@@ -2,7 +2,7 @@
 
 import React from 'react';
 import {Button, FormControl, Stack, TextField} from "@mui/material";
-import {NodeDTO, NodeSpecificsDTO} from "@/app/gen/player";
+import {NodeDTO} from "@/app/gen/player";
 import SaveIcon from '@mui/icons-material/Save';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ConsoleNodeForm from "@/app/lector-portal/er-editor/[templateId]/_components/NodeInputForms/ConsoleNodeForm.tsx";
@@ -14,11 +14,6 @@ type BasicNodeFormProps = {
     setNode:  React.Dispatch<React.SetStateAction<NodeDTO>>
     onDeletion: (nodeId: string) => void
 };
-
-export type NodeSpecificProps = {
-    nodeSpecifics: NodeSpecificsDTO
-    setter: React.Dispatch<React.SetStateAction<NodeDTO>>
-}
 
 const BasicNodeForm = ({node, onDeletion, setNode}: BasicNodeFormProps) => {
 
