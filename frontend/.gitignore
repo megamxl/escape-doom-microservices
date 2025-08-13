@@ -13,7 +13,6 @@
 !.yarn/versions
 
 # installed packages
-package-lock.json
 pnpm-lock.yaml
 
 # testing
@@ -50,5 +49,3 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 playwright/.auth
-/app/gen/*
-!/app/gen/.gitkeep

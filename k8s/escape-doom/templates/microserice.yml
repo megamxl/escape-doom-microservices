@@ -1,0 +1,109 @@
+{{- $root := . }}
+{{- range $key, $val := .Values.services }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $val.name }}
+  labels:
+    svc-identifier: {{ $val.name }}
+    {{- include "escape-doom.labels" $root | nindent 4 }}
+spec:
+  {{- if not $val.autoscaling.enabled }}
+  replicas: {{ $val.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      svc-identifier: {{ $val.name }}
+      {{- include "escape-doom.selectorLabels" $root | nindent 6 }}
+  template:
+    metadata:
+      {{- with $val.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        svc-identifier: {{ $val.name }}
+        {{- include "escape-doom.labels" $root | nindent 8 }}
+          {{- with $val.podLabels }}
+          {{- toYaml . | nindent 8 }}
+          {{- end }}
+    spec:
+      {{- with $val.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "escape-doom.serviceAccountName" $root }}
+      {{- with $val.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ $root.Chart.Name }}
+          {{- with $val.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ $val.image.repository }}:{{ $val.image.tag | default $root.Chart.AppVersion }}"
+          imagePullPolicy: {{ $val.image.pullPolicy }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+          ports:
+            - name: http
+              containerPort: {{ $val.service.port }}
+              protocol: TCP
+
+          {{- with $val.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with $val.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with $val.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $val.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $val.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $val.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $val.name }}-secret
+  labels:
+    {{- include "escape-doom.labels" $root | nindent 4 }}
+stringData:
+  {{- toYaml $val.secret | nindent 2 }}
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $val.name }}-svc
+  labels:  {{- include "escape-doom.labels" $root | nindent 4 }}
+spec:
+  type: {{ $val.service.type }}
+  ports:
+    - port: {{ $val.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    svc-identifier: {{ $val.name }}
+
+---
+{{- end}}
