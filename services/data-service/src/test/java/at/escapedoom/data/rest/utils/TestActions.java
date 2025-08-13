@@ -8,7 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -185,4 +187,28 @@ public class TestActions {
         mockMvc.perform(delete("/v1/nodes/" + nodeId))
                 .andExpect(status().isOk());
     }
+
+    public void updateLevel(String levelId, String newName, int newSequence) throws Exception {
+        LevelDTO requestDto = LevelDTO.builder().levelId(levelId).name(newName).levelSequence(newSequence)
+                .scenes(Collections.emptyList()).build();
+
+        LevelDTO responseDto = LevelDTO.builder().levelId(levelId).name(newName).levelSequence(newSequence)
+                .templateId("template-id").scenes(Collections.emptyList()).build();
+
+        when(levelApiDelegate.updateLevel(levelId, requestDto)).thenReturn(ResponseEntity.ok(responseDto));
+
+        mockMvc.perform(put("/v1/levels/{id}", levelId).contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(requestDto))).andExpect(status().isOk());
+    }
+
+    public void assertLevelUpdated(String levelId, String expectedName, int expectedSequence) throws Exception {
+        LevelDTO response = LevelDTO.builder().levelId(levelId).name(expectedName).levelSequence(expectedSequence)
+                .templateId("some-template-id").scenes(Collections.emptyList()).build();
+
+        when(levelApiDelegate.getLevel(levelId)).thenReturn(ResponseEntity.ok(response));
+
+        mockMvc.perform(get("/v1/levels/{id}", levelId)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(expectedName));
+    }
+
 }

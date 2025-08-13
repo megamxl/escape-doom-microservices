@@ -1,0 +1,70 @@
+\section{Relevant Product Risks}\label{sec:relevant-product-risks}
+
+This chapter identifies the primary product-level risks associated with the Escape Doom system, based on its context, architectural strategy, and intended use. These risks are relevant to ensuring the platform delivers a reliable and maintainable experience for both students and lecturers of FH Campus Wien.
+
+\subsection*{Context-Based Risk Identification}
+
+The Escape Doom system enables lecturers to manage escape rooms and students to participate in them through a shared browser-based interface. Key software and systems involved include:
+
+\begin{itemize}
+    \item \textbf{Frontend (Next.js):} Unified interface for students and lectors.
+    \item \textbf{Backend (Spring Boot Microservices):} Business logic separated by domain (e.g., game management, user sessions).
+    \item \textbf{Code Executor Service:} Executes user-submitted code (externalized via API).
+    \item \textbf{Image Hosting Service:} Provides visual assets used in room puzzles.
+    \item \textbf{Authentication Provider:} Handles identity and access control.
+\end{itemize}
+
+These components interact across runtime boundaries, which introduces integration and reliability challenges that must be mitigated by effective testing.
+
+\subsection*{Risks Derived from the Solution Strategy}
+
+\begin{tabularx}{\textwidth}{|p{5cm}|X|}
+    \hline
+    \textbf{Risk Category} & \textbf{Description} \\
+    \hline
+    Deployment Configuration Errors &
+    Kubernetes-based deployment introduces risk in service discovery, routing, and persistence, especially when deploying updates to stateless services. \\
+    \hline
+    Data Loss or Corruption &
+    Mismanagement of externalized state (e.g., Redis, PostgreSQL) may lead to lost game progress or broken leaderboard data. \\
+    \hline
+    Security Misconfigurations &
+    Improper gateway configuration or missing authentication checks could expose APIs or user data, especially since third-party services like Code Executor are integrated. \\
+    \hline
+    Frontend Failure or Desync &
+    Since a single Next.js application serves both user groups, any frontend bug can affect all flows. Moreover, inconsistency between client state and backend responses may lead to corrupted game flows. \\
+    \hline
+    Performance Degradation Under Load &
+    Scalability is a stated goal, but it comes with the risk that system components (especially custom services) may not scale equally, leading to degraded UX. \\
+    \hline
+    Code Execution Instability &
+    As the Code Executor is an externalized subsystem, failures or incorrect behavior in this service can block entire escape room flows. \\
+    \hline
+    Inter-Service Communication Failures &
+    The system relies heavily on service-to-service calls (e.g., Spring Cloud Gateway). Misrouting, timeouts, or schema mismatches can disrupt game logic. \\
+    \hline
+\end{tabularx}
+
+\subsection*{Test-Relevant Risk Dimensions}
+
+Each risk will be further analyzed along three key dimensions during test design:
+
+\begin{itemize}
+    \item \textbf{Likelihood:} How likely is this risk to occur given current implementation and system context?
+    \item \textbf{Impact:} What would be the consequence to user experience or data integrity if the risk occurred?
+    \item \textbf{Detectability:} Can this issue be easily discovered during development or testing?
+\end{itemize}
+
+These will help prioritize test effort and define test depth and scope for each risk area.
+
+\subsection*{Implications for System Quality}
+
+The product risks identified above point to areas where the system’s quality could be compromised if not properly addressed during testing. Several architectural decisions such as splitting the backend into microservices, using external services for code execution, and relying on runtime communication—introduce specific challenges that could affect both user experience and system robustness.
+
+For example, inter-service dependencies may lead to cascading failures, which makes resilience and fault tolerance essential. The integration of external components, like the Code Executor, creates additional attack surfaces and reliability concerns that must be mitigated through isolation and fallback mechanisms.
+
+Ensuring smooth frontend-backend interaction is key to maintaining a consistent game flow, while performance bottlenecks during peak usage could directly impact the responsiveness expected by students and instructors.
+
+These risks underline the importance of focusing testing efforts on aspects such as maintainability, availability, data integrity, security, and overall system responsiveness. Addressing these proactively in the test design will support the delivery of a stable, usable, and secure application.
+
+Testing will therefore be closely aligned with these quality characteristics to reduce the likelihood and impact of such risks.

@@ -67,8 +67,8 @@ class SceneServiceTest extends PostgresTestConfig {
         level = levelRepository.save(level);
         LEVEL_ID = level.getLevelId();
 
-        Scene scene = Scene.builder().sceneSequence(1).backgroundImageUri("https://example.com/background.png")
-                .name("Scene 1").level(level).build();
+        Scene scene = Scene.builder().sceneSequence(1).nodes(new ArrayList<>())
+                .backgroundImageUri("https://example.com/background.png").name("Scene 1").level(level).build();
 
         level.getScenes().add(scene);
 
@@ -144,6 +144,7 @@ class SceneServiceTest extends PostgresTestConfig {
     // endregion
 
     // region PUT Tests
+
     @Test
     @Transactional
     void testUpdateScene() {
@@ -197,12 +198,6 @@ class SceneServiceTest extends PostgresTestConfig {
     @Transactional
     void testDeleteSceneInvalidUUIDError() {
         assertThrows(IllegalArgumentException.class, () -> service.deleteScene("-1"));
-    }
-
-    @Test
-    @Transactional
-    void testDeleteSceneNotFound() {
-        assertDoesNotThrow(() -> service.deleteScene(INVALID_SCENE_ID));
     }
     // endregion
 

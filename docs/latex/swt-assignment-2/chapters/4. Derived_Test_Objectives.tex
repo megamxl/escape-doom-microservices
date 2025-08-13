@@ -1,0 +1,24 @@
+\section{Derived Test Objectives}
+\label{section-derived-test-objectives}
+
+Based on the identified product risks and defined quality requirements, the following test objectives have been established to guide test design and prioritization:
+
+\begin{itemize}
+    \item \textbf{Verify system stability across microservices}, ensuring failures in one service do not propagate and that fallback or error handling is in place.
+
+    \item \textbf{Test secure user authentication and role management}, validating that only authorized users can access protected features and user data is handled securely.
+
+    \item \textbf{Validate persistent and correct game state management}, including user progress, session data, and leaderboard synchronization, even in failure scenarios.
+
+    \item \textbf{Confirm code execution behavior is safe and reliable}, particularly in handling edge cases, incorrect input, or malicious submissions.
+
+    \item \textbf{Assess frontend usability and responsiveness}, especially in terms of navigation, accessibility, and performance across devices and screen sizes.
+
+    \item \textbf{Check system performance under expected concurrency}, ensuring smooth operation with up to 200 users per room and acceptable response times.
+
+    \item \textbf{Ensure recoverability and data integrity}, with proper test coverage for backup, restore, and resilience mechanisms in the case of data loss or outages.
+
+    \item \textbf{Verify CRUD operations in all repositories}, ensuring that each microservice managing a domain entity has complete test coverage for Create, Read, Update, and Delete functionality. This applies to all persistent components within the system.
+\end{itemize}
+
+These objectives reflect the test priorities and help define the focus areas for unit and system-level testing. Each objective will be mapped to specific test cases in later test design phases.
